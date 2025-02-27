@@ -1,6 +1,6 @@
 {
-  "name": "zestawienia",
-  "version": "0.0.0",
+  "name": "zestawienia frontend",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

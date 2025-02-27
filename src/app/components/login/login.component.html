@@ -1,0 +1,27 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="wrapper">
+    <div class="field">
+      <label for="login">Login</label>
+      <input id="login" type="text" [formControl]="form.controls.login" />
+      @if(loginIsInvalid) {
+      <p class="error">Login is required</p>
+      } @else {
+      <p class="error">&nbsp;</p>
+      }
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" />
+      @if(passwordIsInvalid) {
+      <p class="error">Password is required</p>
+      } @else {
+      <p class="error">&nbsp;</p>
+      }
+    </div>
+  </div>
+
+  <div class="submit">
+    <input type="submit" value="Login" />
+  </div>
+</form>

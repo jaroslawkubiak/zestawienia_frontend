@@ -1,0 +1,28 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+}
+
+.field label {
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 1.6rem;
+}
