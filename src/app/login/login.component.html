@@ -5,8 +5,6 @@
       <input id="login" type="text" [formControl]="form.controls.login" />
       @if(loginIsInvalid) {
       <p class="error">Login is required</p>
-      } @else {
-      <p class="error">&nbsp;</p>
       }
     </div>
 
@@ -15,13 +13,15 @@
       <input id="password" type="password" formControlName="password" />
       @if(passwordIsInvalid) {
       <p class="error">Password is required</p>
-      } @else {
-      <p class="error">&nbsp;</p>
       }
     </div>
-  </div>
 
-  <div class="submit">
+    @if(errorMessage) {
+    <p class="submit-error">
+      {{ errorMessage }}
+    </p>
+    }
+
     <input type="submit" value="Login" />
   </div>
 </form>

@@ -5,11 +5,16 @@
   justify-content: center;
   gap: 2rem;
   padding: 2rem;
+  margin-top: 8rem;
+  width: 500px;
+  justify-self: center;
+  position: relative;
 }
 
 .field {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .field label {
@@ -17,12 +22,15 @@
   font-weight: 700;
 }
 
-.submit {
-  display: flex;
-  justify-content: center;
+.error {
+  color: var(--error-color);
+  font-size: 1.6rem;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
 
-.error {
+.submit-error {
   color: var(--error-color);
   font-size: 1.6rem;
 }

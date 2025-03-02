@@ -1,0 +1,45 @@
+* {
+  --input-border-width: 2px;
+  --checkbox-height: 30px;
+  --inputs-transitions: background-color 0.5s linear;
+}
+
+input {
+  all: unset;
+  border: var(--input-border-width) solid var(--color-primary);
+  background-color: var(--bg-color);
+  color: var(--color-primary);
+  padding: 5px 10px;
+  transition: var(--inputs-transitions);
+  margin-bottom: 24px;
+}
+
+input:focus {
+  color: var(--color-secondary);
+  background-color: var(--color-primary);
+}
+
+input[type="submit"] {
+  text-align: center;
+  color: var(--color-primary);
+  background-color: var(--color-secondary);
+  border: var(--input-border-width) solid var(--color-primary);
+  cursor: pointer;
+  padding: 5px 0px;
+  width: 150px;
+  transition: var(--inputs-transitions);
+}
+
+input[type="submit"]:hover {
+  color: var(--color-secondary);
+  background-color: var(--color-primary);
+  border: var(--input-border-width) solid var(--color-secondary);
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
+  border: var(--input-border-width) solid var(--color-primary);
+}

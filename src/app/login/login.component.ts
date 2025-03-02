@@ -1,18 +1,24 @@
 import { Component } from '@angular/core';
 import {
-  FormGroup,
   FormControl,
-  Validators,
+  FormGroup,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
+import { ApiService } from '../services/api.service';
+import { IUser } from '../types/User';
+import { ILoggedUser } from '../types/LoggedUser';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrls: ['./login.component.css', '../shared/css/input.css'],
+  standalone: true,
 })
 export class LoginComponent {
+  errorMessage = '';
   form = new FormGroup({
     login: new FormControl('', {
       validators: [Validators.required],
@@ -21,6 +27,9 @@ export class LoginComponent {
       validators: [Validators.required],
     }),
   });
+
+  constructor(private authService: AuthService) {}
+
   get loginIsInvalid() {
     return (
       this.form.controls.login.touched &&
@@ -28,6 +37,7 @@ export class LoginComponent {
       this.form.controls.login.dirty
     );
   }
+
   get passwordIsInvalid() {
     return (
       this.form.controls.password.touched &&
@@ -37,11 +47,19 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    const enteredLogin = this.form.value.login;
-    const enteredPassword = this.form.value.password;
+    if (this.form.invalid) {
+      this.errorMessage = 'Login and password are required';
+      return;
+    }
 
-    console.log(`##### credentials #####`);
-    console.log(enteredLogin);
-    console.log(enteredPassword);
+    const enteredData: IUser = {
+      username: this.form.value.login as string,
+      password: this.form.value.password as string,
+    };
+
+    this.authService.login(enteredData).subscribe({
+      next: () => this.errorMessage = '',
+      error: () => this.errorMessage = 'Failed to login. Try again.',
+    });
   }
 }

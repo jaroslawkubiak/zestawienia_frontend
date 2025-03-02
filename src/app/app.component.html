@@ -1,1 +1,6 @@
+@if(user()) {
+<p>Witaj, {{ user() }}! <button (click)="logout()">Wyloguj</button></p>
+} @else {
+
 <app-login />
+}

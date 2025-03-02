@@ -1,11 +1,8 @@
 :root {
   --color-primary: rgb(0, 0, 0);
   --color-secondary: rgb(255, 255, 255);
-  --error-color: crimson;
+  --error-color: rgb(235, 24, 48);
   --bg-color: rgb(255, 255, 255);
-  --form-field-border: 2px solid rgb(0, 0, 0);
-  --checkbox-height: 30px;
-  --inputs-transitions: background-color 0.5s linear;
 }
 
 * {
@@ -20,7 +17,9 @@ html {
   font-family: "Poppins", sans-serif;
 }
 
-a {
+a,
+ul,
+li {
   all: unset;
 }
 
@@ -32,44 +31,4 @@ body {
   font-size: 2rem;
   margin: 0 auto;
   padding: 30px;
-}
-
-input {
-  all: unset;
-  border: var(--form-field-border);
-  background-color: var(--bg-color);
-  color: var(--color-primary);
-  padding: 5px 10px;
-  transition: var(--inputs-transitions);
-}
-input:focus {
-  color: var(--color-secondary);
-  background-color: var(--color-primary);
-}
-
-input[type="submit"],
-input[type="button"] {
-  text-align: center;
-  color: var(--color-primary);
-  background-color: var(--color-secondary);
-  border: 1px solid var(--color-primary);
-  cursor: pointer;
-  padding: 5px 0px;
-  width: 150px;
-  transition: var(--inputs-transitions);
-}
-
-input[type="submit"]:hover,
-input[type="button"]:hover {
-  color: var(--color-secondary);
-  background-color: var(--color-primary);
-  border: 1px solid var(--color-secondary);
-}
-
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
-  border: 1px solid var(--color-primary);
 }
