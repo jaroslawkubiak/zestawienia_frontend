@@ -2,7 +2,12 @@
   <div class="wrapper">
     <div class="field">
       <label for="login">Login</label>
-      <input id="login" type="text" [formControl]="form.controls.login" />
+      <input
+        id="login"
+        type="text"
+        [formControl]="form.controls.login"
+        autocomplete="on"
+      />
       @if(loginIsInvalid) {
       <p class="error">Login is required</p>
       }
@@ -10,7 +15,12 @@
 
     <div class="field">
       <label for="password">Password</label>
-      <input id="password" type="password" formControlName="password" />
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="off"
+      />
       @if(passwordIsInvalid) {
       <p class="error">Password is required</p>
       }
@@ -22,6 +32,6 @@
     </p>
     }
 
-    <input type="submit" value="Login" />
+    <button type="submit" class="submit" >Login <i class="pi pi-sign-in icon"></i></button>
   </div>
 </form>

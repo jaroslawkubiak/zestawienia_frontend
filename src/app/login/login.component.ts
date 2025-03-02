@@ -5,14 +5,13 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ApiService } from '../services/api.service';
 import { IUser } from '../types/User';
-import { ILoggedUser } from '../types/LoggedUser';
 import { AuthService } from './auth.service';
+import { InputTextModule } from 'primeng/inputtext';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, InputTextModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css', '../shared/css/input.css'],
   standalone: true,

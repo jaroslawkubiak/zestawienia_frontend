@@ -19,7 +19,9 @@ input:focus {
   background-color: var(--color-primary);
 }
 
-input[type="submit"] {
+input[type="submit"],
+input[type="button"],
+button {
   text-align: center;
   color: var(--color-primary);
   background-color: var(--color-secondary);
@@ -28,18 +30,18 @@ input[type="submit"] {
   padding: 5px 0px;
   width: 150px;
   transition: var(--inputs-transitions);
+  font-size: 2rem;
 }
 
-input[type="submit"]:hover {
+input[type="submit"]:hover,
+input[type="button"]:hover,
+button:hover {
   color: var(--color-secondary);
   background-color: var(--color-primary);
   border: var(--input-border-width) solid var(--color-secondary);
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
   border: var(--input-border-width) solid var(--color-primary);
 }
