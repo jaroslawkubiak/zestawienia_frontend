@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { IUser } from '../types/User';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -9,7 +10,7 @@ import { IUser } from '../types/User';
 export class AuthService {
   user = signal<string | null>(null);
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private router: Router) {}
 
   login(enteredData: IUser) {
     return this.apiService.logUser(enteredData).pipe(
@@ -17,6 +18,7 @@ export class AuthService {
         localStorage.setItem('access_token', response.accessToken);
         localStorage.setItem('user_name', response.name);
         this.user.set(response.name); // Ustawienie użytkownika
+        this.router.navigate(['/welcome']);
       }),
       catchError((error) => {
         return throwError(() => new Error('Błędne dane logowania'));
@@ -24,9 +26,19 @@ export class AuthService {
     );
   }
 
+  isAuthenticated(): boolean {
+    const token = localStorage.getItem('access_token');
+    if (this.user() && !!token) {
+      return true;
+    }
+
+    return false;
+  }
+
   logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_name');
     this.user.set(null);
+    this.router.navigate(['/login']);
   }
 }

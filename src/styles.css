@@ -1,8 +1,11 @@
+@import "primeicons/primeicons.css";
+
 :root {
-  --color-primary: rgb(0, 0, 0);
-  --color-secondary: rgb(255, 255, 255);
-  --error-color: rgb(235, 24, 48);
-  --bg-color: rgb(255, 255, 255);
+  --primary-color: #212121;
+  --secondary-color: #ffffff;
+  --accent-color: #C2185B;
+  --error-color: #e91e63;
+  --bg-color: FFFFFF;
 }
 
 * {
@@ -13,13 +16,14 @@
 
 html {
   font-size: 10px;
-  color: var(--color-primary);
+  color: var(--primary-color);
   font-family: "Poppins", sans-serif;
 }
 
 a,
 ul,
-li {
+li,
+button {
   all: unset;
 }
 
@@ -27,8 +31,8 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  background-color: rgb(227, 227, 227);
+  background-color: rgb(255, 255, 255);
   font-size: 2rem;
   margin: 0 auto;
-  padding: 30px;
+  padding: 0;
 }

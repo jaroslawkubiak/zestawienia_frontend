@@ -1,7 +1,4 @@
-@if(user()) {
+@if(auth() && user()) {
 <app-menu />
-<router-outlet></router-outlet>
-
-} @else {
-<app-login />
 }
+<router-outlet></router-outlet>

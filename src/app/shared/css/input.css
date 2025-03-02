@@ -6,26 +6,26 @@
 
 input {
   all: unset;
-  border: var(--input-border-width) solid var(--color-primary);
+  border: var(--input-border-width) solid var(--primary-color);
   background-color: var(--bg-color);
-  color: var(--color-primary);
+  color: var(--primary-color);
   padding: 5px 10px;
   transition: var(--inputs-transitions);
   margin-bottom: 24px;
 }
 
 input:focus {
-  color: var(--color-secondary);
-  background-color: var(--color-primary);
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
 }
 
 input[type="submit"],
 input[type="button"],
 button {
   text-align: center;
-  color: var(--color-primary);
-  background-color: var(--color-secondary);
-  border: var(--input-border-width) solid var(--color-primary);
+  color: var(--primary-color);
+  background-color: var(--secondary-color);
+  border: var(--input-border-width) solid var(--primary-color);
   cursor: pointer;
   padding: 5px 0px;
   width: 150px;
@@ -36,12 +36,12 @@ button {
 input[type="submit"]:hover,
 input[type="button"]:hover,
 button:hover {
-  color: var(--color-secondary);
-  background-color: var(--color-primary);
-  border: var(--input-border-width) solid var(--color-secondary);
+  color: var(--secondary-color);
+  background-color: var(--primary-color);
+  border: var(--input-border-width) solid var(--secondary-color);
 }
 
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
-  border: var(--input-border-width) solid var(--color-primary);
+  border: var(--input-border-width) solid var(--primary-color);
 }
