@@ -1,10 +1,12 @@
 <div class="menu-wrapper">
-  <li *ngFor="let item of menuItems">
-    <a [routerLink]="item.route"
-      ><i class="pi {{ item.icon }} icon"></i>{{ item.name }}
-    </a>
-  </li>
-  <button type="submit" class="submit" (click)="logout()">
-    <i class="pi pi-sign-out icon"></i>
-  </button>
+  <div class="menu">
+    <li *ngFor="let item of menuItems">
+      <a [routerLink]="item.route" routerLinkActive="selected"
+        ><i class="pi {{ item.icon }} icon"></i>{{ item.name }}
+      </a>
+    </li>
+    <button type="submit" class="submit" (click)="logout()">
+      <i class="pi pi-sign-out icon"></i>
+    </button>
+  </div>
 </div>

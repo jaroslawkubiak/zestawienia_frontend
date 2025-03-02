@@ -1,16 +1,25 @@
 .menu-wrapper {
   display: flex;
+  justify-content: center;
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  width: 100%;
+}
+
+.menu {
+  display: flex;
   padding: 1rem 2rem;
   gap: 3rem;
   justify-content: end;
-  background-color: var(--color-primary);
-  color: var(--color-secondary);
+  background-color: var(--primary-color);
+  color: var(--secondary-color);
+  width: 100%;
+  max-width: 1200px;
 }
 
 li {
   cursor: pointer;
   padding: 6px 10px;
-  border-bottom: 2px solid transparent;
 }
 
 li a {
@@ -21,7 +30,7 @@ li a {
 }
 
 li:hover {
-  border-bottom: 2px solid var(--color-secondary);
+  color: var(--accent-color);
 }
 
 .submit {
@@ -33,4 +42,8 @@ li:hover {
 
 .icon {
   font-size: 2rem;
+}
+
+.selected {
+  color: var(--accent-color);
 }

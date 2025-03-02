@@ -1,0 +1,6 @@
+.welcome {
+  display: flex;
+  justify-content: center;
+  font-size: 3rem;
+  margin-top: 4rem;
+}
