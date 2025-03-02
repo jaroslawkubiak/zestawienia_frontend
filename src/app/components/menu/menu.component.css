@@ -1,0 +1,36 @@
+.menu-wrapper {
+  display: flex;
+  padding: 1rem 2rem;
+  gap: 3rem;
+  justify-content: end;
+  background-color: var(--color-primary);
+  color: var(--color-secondary);
+}
+
+li {
+  cursor: pointer;
+  padding: 6px 10px;
+  border-bottom: 2px solid transparent;
+}
+
+li a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+li:hover {
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.icon {
+  font-size: 2rem;
+}

@@ -1,22 +1,18 @@
 import { Component, computed } from '@angular/core';
-// import { RouterOutlet } from '@angular/router';
+import { RouterOutlet } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthService } from './login/auth.service';
+import { MenuComponent } from './components/menu/menu.component';
 
 @Component({
   selector: 'app-root',
-  imports: [LoginComponent],
+  imports: [LoginComponent, MenuComponent, RouterOutlet],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
 })
 export class AppComponent {
-  title = 'zestawienia';
   user = computed(() => this.authService.user());
 
   constructor(private authService: AuthService) {}
-
-  logout() {
-    this.authService.logout();
-  }
 }

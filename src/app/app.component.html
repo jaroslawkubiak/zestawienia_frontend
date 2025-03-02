@@ -1,6 +1,7 @@
 @if(user()) {
-<p>Witaj, {{ user() }}! <button (click)="logout()">Wyloguj</button></p>
-} @else {
+<app-menu />
+<router-outlet></router-outlet>
 
+} @else {
 <app-login />
 }
