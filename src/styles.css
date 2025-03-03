@@ -1,9 +1,24 @@
-@import "primeicons/primeicons.css";
+@font-face {
+  font-family: "PrimeIcons";
+  src: url("/assets/fonts/primeicons.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/primeicons.woff2") format("woff2"),
+    url("/assets/fonts/primeicons.woff") format("woff"),
+    url("/assets/fonts/primeicons.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@import "tailwindcss";
+@import "tailwindcss-primeui";
+
+.pi {
+  font-family: "PrimeIcons" !important;
+}
 
 :root {
   --primary-color: #212121;
   --secondary-color: #ffffff;
-  --accent-color: #C2185B;
+  --accent-color: #c2185b;
   --error-color: #e91e63;
   --bg-color: FFFFFF;
 }

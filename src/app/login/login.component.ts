@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUser } from '../types/User';
+import { IUser } from './User';
 import { AuthService } from './auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 
@@ -57,8 +57,8 @@ export class LoginComponent {
     };
 
     this.authService.login(enteredData).subscribe({
-      next: () => this.errorMessage = '',
-      error: () => this.errorMessage = 'Failed to login. Try again.',
+      next: () => (this.errorMessage = ''),
+      error: () => (this.errorMessage = 'Failed to login. Try again.'),
     });
   }
 }

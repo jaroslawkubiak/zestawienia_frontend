@@ -1,15 +1,17 @@
 import { Injectable, signal } from '@angular/core';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ApiService } from '../services/api.service';
-import { IUser } from '../types/User';
+import { IUser } from './User';
 import { Router } from '@angular/router';
-import { ILoggedUser } from '../types/LoggedUser';
+import { ILoggedUser } from './LoggedUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user = signal<string | null>(null);
+  //TODO remove temporary token
+  authorizationToken: string | null = 'TEMORARY_TOKEN';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -28,12 +30,16 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    const token = localStorage.getItem('access_token');
-    if (this.user() && !!token) {
-      return true;
-    }
+    //TODO fix this
+    return true;
 
-    return false;
+    // temporary solution
+    // this.authorizationToken = localStorage.getItem('access_token');
+    // if (this.user() && !!this.authorizationToken) {
+    //   return true;
+    // }
+
+    // return false;
   }
 
   logout(): void {

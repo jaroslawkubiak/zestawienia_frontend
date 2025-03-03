@@ -1,7 +1,7 @@
 import { Component, computed, Input } from '@angular/core';
 import { AuthService } from '../../login/auth.service';
 import { CommonModule } from '@angular/common';
-import { IMenu } from '../../types/Menu';
+import { IMenu } from './Menu';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 

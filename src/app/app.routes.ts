@@ -10,8 +10,9 @@ import { ProduktyComponent } from './components/produkty/produkty.component';
 import { KlienciComponent } from './components/klienci/klienci.component';
 import { DostawcyComponent } from './components/dostawcy/dostawcy.component';
 
+//TODO add /login as default
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/klienci', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,

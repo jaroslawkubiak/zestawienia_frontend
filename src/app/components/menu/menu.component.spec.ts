@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-import { IMenu } from '../../types/Menu';
+import { IMenu } from './Menu';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
