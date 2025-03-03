@@ -19,9 +19,24 @@ export class MenuComponent {
       icon: 'pi-list',
     },
     {
-      name: 'ank',
+      name: 'Klienci',
+      route: '/klienci',
+      icon: 'pi-user',
+    },
+    {
+      name: 'Dostawcy',
+      route: '/dostawcy',
+      icon: 'pi-truck',
+    },
+    {
+      name: 'Produkty',
+      route: '/produkty',
+      icon: 'pi-list-check',
+    },
+    {
+      name: 'Ankiety',
       route: '/ankiety',
-      icon: 'pi-file-o',
+      icon: 'pi-file-check',
     },
     {
       name: 'Ustawienia',

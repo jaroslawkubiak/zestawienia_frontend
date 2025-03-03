@@ -6,6 +6,9 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { ZestawieniaComponent } from './components/zestawienia/zestawienia.component';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { ProduktyComponent } from './components/produkty/produkty.component';
+import { KlienciComponent } from './components/klienci/klienci.component';
+import { DostawcyComponent } from './components/dostawcy/dostawcy.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -30,6 +33,21 @@ export const routes: Routes = [
   {
     path: 'zestawienia',
     component: ZestawieniaComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'produkty',
+    component: ProduktyComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dostawcy',
+    component: DostawcyComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'klienci',
+    component: KlienciComponent,
     canActivate: [AuthGuard],
   },
   {

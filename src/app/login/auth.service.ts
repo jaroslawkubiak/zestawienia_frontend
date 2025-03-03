@@ -1,8 +1,9 @@
 import { Injectable, signal } from '@angular/core';
-import { catchError, tap, throwError } from 'rxjs';
+import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { IUser } from '../types/User';
 import { Router } from '@angular/router';
+import { ILoggedUser } from '../types/LoggedUser';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class AuthService {
 
   constructor(private apiService: ApiService, private router: Router) {}
 
-  login(enteredData: IUser) {
+  login(enteredData: IUser): Observable<ILoggedUser> {
     return this.apiService.logUser(enteredData).pipe(
       tap((response) => {
         localStorage.setItem('access_token', response.accessToken);
