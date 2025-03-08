@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../login/auth.service';
 import { ApiService } from '../../services/api.service';
-import { IClient } from './IKlient';
+import { IClient } from './IClient';
 import {
   FormBuilder,
   FormGroup,
@@ -37,8 +37,8 @@ interface ExportColumn {
 }
 
 @Component({
-  selector: 'app-klienci',
-  templateUrl: './klienci.component.html',
+  selector: 'app-clients',
+  templateUrl: './clients.component.html',
   standalone: true,
   imports: [
     TableModule,
@@ -59,12 +59,12 @@ interface ExportColumn {
     ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, ApiService],
-  styleUrls: ['./klienci.component.css', '../../shared/css/basic.css'],
+  styleUrls: ['./clients.component.css', '../../shared/css/basic.css'],
 })
-export class KlienciComponent implements OnInit {
-  klientDialog: boolean = false;
-  klienci!: IClient[];
-  klient!: IClient;
+export class ClientsComponent implements OnInit {
+  clientDialog: boolean = false;
+  clients!: IClient[];
+  client!: IClient;
   selectedClient!: IClient[] | null;
   submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
@@ -101,14 +101,14 @@ export class KlienciComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.loadClients();
+    this.getClients();
   }
 
-  loadClients() {
+  getClients() {
     if (this.authorizationToken) {
       this.apiService.getClients(this.authorizationToken).subscribe({
         next: (data) => {
-          this.klienci = data;
+          this.clients = data;
           this.cd.markForCheck();
         },
         error: (err) => console.error('Error getting clients ', err),
@@ -132,7 +132,7 @@ export class KlienciComponent implements OnInit {
   }
 
   openNew() {
-    this.klient = {} as IClient;
+    this.client = {} as IClient;
     this.form.setValue({
       firma: null,
       imie: null,
@@ -141,20 +141,20 @@ export class KlienciComponent implements OnInit {
       telefon: null,
     });
     this.submitted = false;
-    this.klientDialog = true;
+    this.clientDialog = true;
   }
 
-  editKlient(klient: IClient) {
-    this.klient = { ...klient };
+  editClient(client: IClient) {
+    this.client = { ...client };
     this.form.setValue({
-      firma: this.klient.firma ?? null,
-      imie: this.klient.imie ?? null,
-      nazwisko: this.klient.nazwisko ?? null,
-      email: this.klient.email ?? null,
-      telefon: this.klient.telefon ?? null,
+      firma: this.client.firma ?? null,
+      imie: this.client.imie ?? null,
+      nazwisko: this.client.nazwisko ?? null,
+      email: this.client.email ?? null,
+      telefon: this.client.telefon ?? null,
     });
 
-    this.klientDialog = true;
+    this.clientDialog = true;
   }
 
   deleteSelectedClient() {
@@ -169,9 +169,10 @@ export class KlienciComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        this.klienci = this.klienci.filter(
+        this.clients = this.clients.filter(
           (val) => !this.selectedClient?.includes(val)
         );
+
         const idList = this.selectedClient?.map((client) => client.id) ?? [];
         this.selectedClient = null;
 
@@ -202,13 +203,13 @@ export class KlienciComponent implements OnInit {
   }
 
   hideDialog() {
-    this.klientDialog = false;
+    this.clientDialog = false;
     this.submitted = false;
   }
 
-  deleteClient(klient: IClient) {
+  deleteClient(client: IClient) {
     this.confirmationService.confirm({
-      message: 'Czy na pewno usunąć klienta ' + klient.firma + ' ?',
+      message: 'Czy na pewno usunąć klienta ' + client.firma + ' ?',
       header: 'Potwierdź usunięcie klienta',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
@@ -220,7 +221,7 @@ export class KlienciComponent implements OnInit {
       accept: () => {
         if (this.authorizationToken) {
           this.apiService
-            .removeClients(this.authorizationToken, [klient.id])
+            .removeClients(this.authorizationToken, [client.id])
             .subscribe({
               next: (response) => {
                 this.messageService.add({
@@ -240,15 +241,16 @@ export class KlienciComponent implements OnInit {
               },
             });
         }
-        this.klienci = this.klienci.filter((val) => val.id !== klient.id);
+
+        this.clients = this.clients.filter((val) => val.id !== client.id);
       },
     });
   }
 
   findIndexById(id: number): number {
     let index = -1;
-    for (let i = 0; i < this.klienci.length; i++) {
-      if (this.klienci[i].id === id) {
+    for (let i = 0; i < this.clients.length; i++) {
+      if (this.clients[i].id === id) {
         index = i;
         break;
       }
@@ -266,20 +268,20 @@ export class KlienciComponent implements OnInit {
       this.form.value.email
     ) {
       // save client
-      if (this.klient.id) {
-        const editedKlient: IClient = {
-          id: this.klient.id,
+      if (this.client.id) {
+        const editedClient: IClient = {
+          id: this.client.id,
           email: this.form.value.email,
           imie: this.form.value.imie,
           nazwisko: this.form.value.nazwisko,
           firma: this.form.value.firma,
           telefon: this.form.value.telefon || '',
         };
-        this.klienci[this.findIndexById(this.klient.id)] = editedKlient;
+        this.clients[this.findIndexById(this.client.id)] = editedClient;
 
         if (this.authorizationToken) {
           this.apiService
-            .saveClient(this.authorizationToken, editedKlient)
+            .saveClient(this.authorizationToken, editedClient)
             .subscribe({
               next: (response) => {
                 this.messageService.add({
@@ -301,7 +303,6 @@ export class KlienciComponent implements OnInit {
         }
       } else {
         // add client
-        this.klienci.push(this.klient);
         const newClient: Partial<IClient> = {
           email: this.form.value.email,
           imie: this.form.value.imie,
@@ -309,6 +310,10 @@ export class KlienciComponent implements OnInit {
           firma: this.form.value.firma,
           telefon: this.form.value.telefon || undefined,
         };
+
+        this.clients.push(newClient as IClient);
+        console.log(`##### newClient #####`);
+        console.log(newClient);
 
         if (this.authorizationToken) {
           this.apiService
@@ -334,8 +339,8 @@ export class KlienciComponent implements OnInit {
         }
       }
 
-      this.klienci = [...this.klienci];
-      this.klientDialog = false;
+      this.clients = [...this.clients];
+      this.clientDialog = false;
     }
   }
 }

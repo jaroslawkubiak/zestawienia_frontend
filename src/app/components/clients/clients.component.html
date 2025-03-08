@@ -23,7 +23,7 @@
 
   <p-table
     #dt
-    [value]="klienci"
+    [value]="clients"
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
@@ -77,24 +77,24 @@
         <th style="min-width: 6rem"></th>
       </tr>
     </ng-template>
-    <ng-template #body let-klient>
+    <ng-template #body let-client>
       <tr>
         <td style="width: 3rem">
-          <p-tableCheckbox [value]="klient" />
+          <p-tableCheckbox [value]="client" />
         </td>
 
-        <td style="min-width: 16rem">{{ klient.firma }}</td>
-        <td style="min-width: 10rem">{{ klient.imie }}</td>
-        <td style="min-width: 12rem">{{ klient.nazwisko }}</td>
-        <td style="min-width: 12rem">{{ klient.email }}</td>
-        <td style="min-width: 10rem">{{ klient.telefon }}</td>
+        <td style="min-width: 16rem">{{ client.firma }}</td>
+        <td style="min-width: 10rem">{{ client.imie }}</td>
+        <td style="min-width: 12rem">{{ client.nazwisko }}</td>
+        <td style="min-width: 12rem">{{ client.email }}</td>
+        <td style="min-width: 10rem">{{ client.telefon }}</td>
         <td>
           <p-button
             icon="pi pi-pencil"
             class="p-4"
             [rounded]="true"
             [outlined]="true"
-            (click)="editKlient(klient)"
+            (click)="editClient(client)"
           />
           <p-button
             icon="pi pi-trash"
@@ -102,18 +102,18 @@
             class="p-4"
             [rounded]="true"
             [outlined]="true"
-            (click)="deleteClient(klient)"
+            (click)="deleteClient(client)"
           />
         </td>
       </tr>
     </ng-template>
     <ng-template #summary>
-      <div class="total p-4">Total {{ klienci ? klienci.length : 0 }}</div>
+      <div class="total p-4">Total {{ clients ? clients.length : 0 }}</div>
     </ng-template>
   </p-table>
 
   <p-dialog
-    [(visible)]="klientDialog"
+    [(visible)]="clientDialog"
     [style]="{ width: '750px' }"
     header=""
     [modal]="true"

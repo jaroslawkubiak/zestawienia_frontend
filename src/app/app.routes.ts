@@ -7,8 +7,8 @@ import { ZestawieniaComponent } from './components/zestawienia/zestawienia.compo
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { ProduktyComponent } from './components/produkty/produkty.component';
-import { KlienciComponent } from './components/klienci/klienci.component';
-import { DostawcyComponent } from './components/dostawcy/dostawcy.component';
+import { ClientsComponent } from './components/clients/clients.component';
+import { SuppliersComponent } from './components/suppliers/suppliers.component';
 
 //TODO add /login as default
 export const routes: Routes = [
@@ -43,12 +43,12 @@ export const routes: Routes = [
   },
   {
     path: 'dostawcy',
-    component: DostawcyComponent,
+    component: SuppliersComponent,
     canActivate: [AuthGuard],
   },
   {
     path: 'klienci',
-    component: KlienciComponent,
+    component: ClientsComponent,
     canActivate: [AuthGuard],
   },
   {
