@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { IUser } from '../login/User';
 import { ILoggedUser } from '../login/LoggedUser';
-import { IKlient } from '../components/klienci/IKlient';
+import { IClient } from '../components/klienci/IKlient';
 
 @Injectable({
   providedIn: 'root',
@@ -19,12 +19,65 @@ export class ApiService {
     );
   }
 
-  getClients(authorizationToken: string | null): Observable<IKlient[]> {
+  getClients(authorizationToken: string | null): Observable<IClient[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authorizationToken}`,
     });
 
-    return this.http.get<IKlient[]>(`${environment.API_URL}/klienci`, {
+    return this.http.get<IClient[]>(`${environment.API_URL}/clients`, {
+      headers,
+    });
+  }
+
+  addClient(
+    authorizationToken: string | null,
+    client: Partial<IClient>
+  ): Observable<IClient> {
+    console.log(`##### service adding #####`);
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+    console.log(client);
+    const { id, ...newClient } = client as Partial<IClient>;
+    console.log(`##### newclient #####`);
+    console.log(newClient);
+    return this.http.post<IClient>(
+      `${environment.API_URL}/clients`,
+      newClient,
+      {
+        headers,
+      }
+    );
+  }
+
+  saveClient(
+    authorizationToken: string | null,
+    client: Partial<IClient>
+  ): Observable<IClient> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+    const { id, ...updatedClient } = client as Partial<IClient>;
+
+    return this.http.patch<IClient>(
+      `${environment.API_URL}/clients/${id}`,
+      updatedClient,
+      {
+        headers,
+      }
+    );
+  }
+
+  removeClients(
+    authorizationToken: string | null,
+    ids: number[]
+  ): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+
+    return this.http.request('delete', `${environment.API_URL}/clients/`, {
+      body: { ids },
       headers,
     });
   }

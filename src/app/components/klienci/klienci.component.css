@@ -4,6 +4,29 @@
   display: block;
 }
 
-.btn {
-  margin: 6px;
+.card {
+  width: 1200px;
+}
+
+.total {
+  font-size: 1.4rem;
+}
+
+.wrapper {
+  font-size: 3rem;
+  padding: 0 10px;
+}
+
+.input {
+  font-size: 2rem;
+}
+
+.error {
+  color: var(--error-color);
+  font-size: 1.6rem;
+}
+
+label {
+  margin-top: 20px;
+  display: block;
 }

@@ -1,13 +1,8 @@
-export interface IKlient {
+export interface IClient {
   id: number;
   firma: string;
-  imie?: string;
-  nazwisko?: string;
-  telefon?: string;
+  imie: string;
+  nazwisko: string;
   email: string;
-  image?: string;
-  inventoryStatus?: string;
-  category?: string;
-  price?: string;
-  quantity?: string;
+  telefon?: string;
 }

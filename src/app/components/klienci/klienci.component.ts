@@ -2,9 +2,15 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../login/auth.service';
 import { ApiService } from '../../services/api.service';
-import { IKlient } from './IKlient';
-
-import { FormsModule } from '@angular/forms';
+import { IClient } from './IKlient';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormsModule,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
@@ -12,9 +18,7 @@ import { Dialog } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
-import { InputNumber } from 'primeng/inputnumber';
 import { InputTextModule } from 'primeng/inputtext';
-import { RadioButton } from 'primeng/radiobutton';
 import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
@@ -47,22 +51,21 @@ interface ExportColumn {
     TextareaModule,
     CommonModule,
     DropdownModule,
-    RadioButton,
     InputTextModule,
     FormsModule,
-    InputNumber,
     IconFieldModule,
     InputIconModule,
     ButtonModule,
+    ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, ApiService],
-  styleUrl: './klienci.component.css',
+  styleUrls: ['./klienci.component.css', '../../shared/css/basic.css'],
 })
 export class KlienciComponent implements OnInit {
-  productDialog: boolean = false;
-  klienci!: IKlient[];
-  klient!: IKlient;
-  selectedClient!: IKlient[] | null;
+  klientDialog: boolean = false;
+  klienci!: IClient[];
+  klient!: IClient;
+  selectedClient!: IClient[] | null;
   submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
   cols!: Column[];
@@ -70,6 +73,7 @@ export class KlienciComponent implements OnInit {
   public authorizationToken: string | null;
 
   constructor(
+    private fb: FormBuilder,
     private authService: AuthService,
     private apiService: ApiService,
 
@@ -79,6 +83,22 @@ export class KlienciComponent implements OnInit {
   ) {
     this.authorizationToken = this.authService.authorizationToken;
   }
+
+  form = new FormGroup({
+    firma: new FormControl('', {
+      validators: [Validators.required],
+    }),
+    imie: new FormControl('', {
+      validators: [Validators.required],
+    }),
+    nazwisko: new FormControl('', {
+      validators: [Validators.required],
+    }),
+    email: new FormControl('', {
+      validators: [Validators.required, Validators.email],
+    }),
+    telefon: new FormControl(''),
+  });
 
   ngOnInit(): void {
     this.loadClients();
@@ -112,55 +132,110 @@ export class KlienciComponent implements OnInit {
   }
 
   openNew() {
-    this.klient = {} as IKlient;
+    this.klient = {} as IClient;
+    this.form.setValue({
+      firma: null,
+      imie: null,
+      nazwisko: null,
+      email: null,
+      telefon: null,
+    });
     this.submitted = false;
-    this.productDialog = true;
+    this.klientDialog = true;
   }
 
-  editProduct(product: IKlient) {
-    this.klient = { ...product };
-    this.productDialog = true;
+  editKlient(klient: IClient) {
+    this.klient = { ...klient };
+    this.form.setValue({
+      firma: this.klient.firma ?? null,
+      imie: this.klient.imie ?? null,
+      nazwisko: this.klient.nazwisko ?? null,
+      email: this.klient.email ?? null,
+      telefon: this.klient.telefon ?? null,
+    });
+
+    this.klientDialog = true;
   }
 
+  //TODO batch delete, add endpoint
   deleteSelectedClient() {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete the selected products?',
-      header: 'Confirm',
+      message: 'Czy na pewno usunąć zaznaczonych klientów?',
+      header: 'Potwierdź usunięcie klienta',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Tak',
+      rejectLabel: 'Nie',
+      acceptIcon: '',
       accept: () => {
         this.klienci = this.klienci.filter(
           (val) => !this.selectedClient?.includes(val)
         );
+        const idList = this.selectedClient?.map((client) => client.id) ?? [];
         this.selectedClient = null;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Products Deleted',
-          life: 3000,
-        });
+
+        if (this.authorizationToken) {
+          this.apiService
+            .removeClients(this.authorizationToken, idList)
+            .subscribe({
+              next: (response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Sukces',
+                  detail: 'Klienci zostali usunięci',
+                  life: 3000,
+                });
+              },
+              error: (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Błąd',
+                  detail: error.message,
+                  life: 3000,
+                });
+              },
+            });
+        }
       },
     });
   }
 
   hideDialog() {
-    this.productDialog = false;
+    this.klientDialog = false;
     this.submitted = false;
   }
 
-  deleteClient(klient: IKlient) {
+  deleteClient(klient: IClient) {
     this.confirmationService.confirm({
-      message: 'Na pewno usunąć klienta ' + klient.firma + '?',
-      header: 'Confirm',
+      message: 'Czy na pewno usunąć klienta ' + klient.firma + '?',
+      header: 'Potwierdź usunięcie klienta',
       icon: 'pi pi-exclamation-triangle',
+      acceptLabel: 'Tak',
+      rejectLabel: 'Nie',
+      acceptButtonStyleClass: 'danger',
       accept: () => {
+        if (this.authorizationToken) {
+          this.apiService
+            .removeClients(this.authorizationToken, [klient.id])
+            .subscribe({
+              next: (response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Sukces',
+                  detail: 'Klient został usunięty',
+                  life: 3000,
+                });
+              },
+              error: (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Błąd',
+                  detail: error.message,
+                  life: 3000,
+                });
+              },
+            });
+        }
         this.klienci = this.klienci.filter((val) => val.id !== klient.id);
-        // this.klient = {};
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Klient usunięty',
-          life: 3000,
-        });
       },
     });
   }
@@ -179,30 +254,83 @@ export class KlienciComponent implements OnInit {
 
   saveClient() {
     this.submitted = true;
-
-    if (this.klient.firma?.trim()) {
+    if (
+      this.form.value.firma?.trim() &&
+      this.form.value.nazwisko &&
+      this.form.value.imie &&
+      this.form.value.email
+    ) {
+      // save client
       if (this.klient.id) {
-        this.klienci[this.findIndexById(this.klient.id)] = this.klient;
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Updated',
-          life: 3000,
-        });
+        const editedKlient: IClient = {
+          id: this.klient.id,
+          email: this.form.value.email,
+          imie: this.form.value.imie,
+          nazwisko: this.form.value.nazwisko,
+          firma: this.form.value.firma,
+          telefon: this.form.value.telefon || undefined,
+        };
+        this.klienci[this.findIndexById(this.klient.id)] = editedKlient;
+
+        if (this.authorizationToken) {
+          this.apiService
+            .saveClient(this.authorizationToken, editedKlient)
+            .subscribe({
+              next: (response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Sukces',
+                  detail: 'Dane klienta zaktualizowane',
+                  life: 3000,
+                });
+              },
+              error: (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Błąd',
+                  detail: error.message,
+                  life: 3000,
+                });
+              },
+            });
+        }
       } else {
-        this.klient.image = 'product-placeholder.svg';
+        // add client
         this.klienci.push(this.klient);
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Successful',
-          detail: 'Product Created',
-          life: 3000,
-        });
+        const newClient: Partial<IClient> = {
+          email: this.form.value.email,
+          imie: this.form.value.imie,
+          nazwisko: this.form.value.nazwisko,
+          firma: this.form.value.firma,
+          telefon: this.form.value.telefon || undefined,
+        };
+
+        if (this.authorizationToken) {
+          this.apiService
+            .addClient(this.authorizationToken, newClient)
+            .subscribe({
+              next: (response) => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Sukces',
+                  detail: 'Klient został dodany',
+                  life: 3000,
+                });
+              },
+              error: (error) => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Błąd',
+                  detail: error.message,
+                  life: 3000,
+                });
+              },
+            });
+        }
       }
 
       this.klienci = [...this.klienci];
-      this.productDialog = false;
-      // this.klient = {};
+      this.klientDialog = false;
     }
   }
 }
