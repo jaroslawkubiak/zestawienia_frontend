@@ -157,15 +157,17 @@ export class KlienciComponent implements OnInit {
     this.klientDialog = true;
   }
 
-  //TODO batch delete, add endpoint
   deleteSelectedClient() {
     this.confirmationService.confirm({
       message: 'Czy na pewno usunąć zaznaczonych klientów?',
       header: 'Potwierdź usunięcie klienta',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
+      acceptIcon: 'pi pi-trash',
       rejectLabel: 'Nie',
-      acceptIcon: '',
+      rejectIcon: 'pi pi-times',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
         this.klienci = this.klienci.filter(
           (val) => !this.selectedClient?.includes(val)
@@ -206,12 +208,15 @@ export class KlienciComponent implements OnInit {
 
   deleteClient(klient: IClient) {
     this.confirmationService.confirm({
-      message: 'Czy na pewno usunąć klienta ' + klient.firma + '?',
+      message: 'Czy na pewno usunąć klienta ' + klient.firma + ' ?',
       header: 'Potwierdź usunięcie klienta',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
+      acceptIcon: 'pi pi-trash',
       rejectLabel: 'Nie',
-      acceptButtonStyleClass: 'danger',
+      rejectIcon: 'pi pi-times',
+      acceptButtonStyleClass: 'p-button-danger',
+      rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
         if (this.authorizationToken) {
           this.apiService
@@ -268,7 +273,7 @@ export class KlienciComponent implements OnInit {
           imie: this.form.value.imie,
           nazwisko: this.form.value.nazwisko,
           firma: this.form.value.firma,
-          telefon: this.form.value.telefon || undefined,
+          telefon: this.form.value.telefon || '',
         };
         this.klienci[this.findIndexById(this.klient.id)] = editedKlient;
 

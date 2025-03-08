@@ -33,14 +33,12 @@ export class ApiService {
     authorizationToken: string | null,
     client: Partial<IClient>
   ): Observable<IClient> {
-    console.log(`##### service adding #####`);
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authorizationToken}`,
     });
-    console.log(client);
+
     const { id, ...newClient } = client as Partial<IClient>;
-    console.log(`##### newclient #####`);
-    console.log(newClient);
+
     return this.http.post<IClient>(
       `${environment.API_URL}/clients`,
       newClient,
