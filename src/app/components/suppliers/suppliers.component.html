@@ -1,0 +1,240 @@
+<div class="card">
+  <p-toast />
+  <p-toolbar>
+    <ng-template #start>
+      <p-button
+        severity="primary"
+        label="New"
+        icon="pi pi-plus"
+        size="large"
+        (onClick)="openNew()"
+      />
+      <p-button
+        severity="danger"
+        label="Delete"
+        icon="pi pi-trash"
+        class="m-6"
+        size="large"
+        (onClick)="deleteSelectedSupplier()"
+        [disabled]="!selected || !selected.length"
+      />
+    </ng-template>
+  </p-toolbar>
+
+  <p-table
+    #dt
+    [value]="suppliers"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="['imie']"
+    [tableStyle]="{ 'min-width': '105rem' }"
+    [(selection)]="selected"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="{first} to {last}"
+    [showCurrentPageReport]="true"
+  >
+    <!-- <ng-template #caption>
+      <div class="">
+        <h5 class="">Manage Products</h5>
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target, 'contains')"
+            placeholder="Search..."
+          />
+        </p-iconfield>
+      </div>
+    </ng-template> -->
+    <ng-template #header>
+      <tr>
+        <th style="width: 3rem">
+          <p-tableHeaderCheckbox />
+        </th>
+        <th pSortableColumn="firma" style="min-width: 16rem">
+          Firma
+          <p-sortIcon field="firma" />
+        </th>
+        <th pSortableColumn="imie" style="min-width: 8rem">
+          Imię
+          <p-sortIcon field="imie" />
+        </th>
+        <th pSortableColumn="nazwisko" style="min-width: 8rem">
+          Nazwisko
+          <p-sortIcon field="nazwisko" />
+        </th>
+        <th pSortableColumn="email" style="min-width: 8rem">
+          E-mail
+          <p-sortIcon field="email" />
+        </th>
+        <th pSortableColumn="telefon" style="min-width: 6rem">
+          Telefon
+          <p-sortIcon field="telefon" />
+        </th>
+        <th style="min-width: 6rem"></th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-supplier>
+      <tr>
+        <td style="width: 3rem">
+          <p-tableCheckbox [value]="supplier" />
+        </td>
+
+        <td style="min-width: 16rem">{{ supplier.firma }}</td>
+        <td style="min-width: 10rem">{{ supplier.imie }}</td>
+        <td style="min-width: 12rem">{{ supplier.nazwisko }}</td>
+        <td style="min-width: 12rem">{{ supplier.email }}</td>
+        <td style="min-width: 10rem">{{ supplier.telefon }}</td>
+        <td>
+          <p-button
+            icon="pi pi-pencil"
+            class="p-4"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="editSupplier(supplier)"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            class="p-4"
+            [rounded]="true"
+            [outlined]="true"
+            (click)="deleteSupplier(supplier)"
+          />
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #summary>
+      <div class="total p-4">Total {{ suppliers ? suppliers.length : 0 }}</div>
+    </ng-template>
+  </p-table>
+
+  <p-dialog
+    [(visible)]="supplierDialog"
+    [style]="{ width: '750px' }"
+    header=""
+    [modal]="true"
+  >
+    <ng-template #content>
+      <form [formGroup]="form">
+        <div class="wrapper">
+          <div>
+            <label for="firma">Firma</label>
+            <input
+              type="text"
+              pInputText
+              id="firma"
+              formControlName="firma"
+              class="input"
+              fluid
+            />
+            <div
+              *ngIf="
+                form.controls['firma'].invalid && form.controls['firma'].touched
+              "
+              class="error"
+            >
+              <span
+                class="error"
+                *ngIf="form.controls['firma'].errors?.['required']"
+                >Firma jest wymagana.</span
+              >
+            </div>
+          </div>
+          <div>
+            <label for="imie">Imię</label>
+            <input
+              type="text"
+              pInputText
+              id="imie"
+              formControlName="imie"
+              class="input"
+              fluid
+            />
+            <div
+              *ngIf="
+                form.controls['imie'].invalid && form.controls['imie'].touched
+              "
+              class="error"
+            >
+              <span
+                class="error"
+                *ngIf="form.controls['imie'].errors?.['required']"
+                >Imię jest wymagane.</span
+              >
+            </div>
+          </div>
+          <div>
+            <label for="nazwisko">Nazwisko</label>
+            <input
+              type="text"
+              pInputText
+              id="nazwisko"
+              formControlName="nazwisko"
+              class="input"
+              fluid
+            />
+            <div
+              *ngIf="
+                form.controls['nazwisko'].invalid &&
+                form.controls['nazwisko'].touched
+              "
+              class="error"
+            >
+              <span
+                class="error"
+                *ngIf="form.controls['nazwisko'].errors?.['required']"
+                >Nazwisko jest wymagane.</span
+              >
+            </div>
+          </div>
+          <div>
+            <label for="email">E-mail</label>
+            <input
+              type="email"
+              pInputText
+              id="email"
+              formControlName="email"
+              class="input"
+              fluid
+            />
+            <span class="error" *ngIf="form.controls['email'].errors?.['email']"
+              >Niepoprawny format adresu e-mail.</span
+            >
+          </div>
+          <div>
+            <label for="telefon">Telefon</label>
+            <input
+              type="text"
+              pInputText
+              id="telefon"
+              formControlName="telefon"
+              class="input"
+              fluid
+            />
+          </div>
+        </div>
+      </form>
+    </ng-template>
+
+    <ng-template #footer>
+      <p-button
+        label="Cancel"
+        icon="pi pi-times"
+        text
+        (click)="hideDialog()"
+        size="large"
+      />
+      <p-button
+        label="Save"
+        icon="pi pi-check"
+        (click)="saveSupplier()"
+        size="large"
+      />
+    </ng-template>
+  </p-dialog>
+  <p-confirmDialog [style]="{ width: '750px' }" />
+</div>
