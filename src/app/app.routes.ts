@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { AnkietyComponent } from './components/ankiety/ankiety.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UstawieniaComponent } from './components/ustawienia/ustawienia.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -24,11 +23,6 @@ export const routes: Routes = [
   {
     path: 'welcome',
     component: WelcomeComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'ankiety',
-    component: AnkietyComponent,
     canActivate: [AuthGuard],
   },
   {

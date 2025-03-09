@@ -34,11 +34,6 @@ export class MenuComponent {
       icon: 'pi-list-check',
     },
     {
-      name: 'Ankiety',
-      route: '/ankiety',
-      icon: 'pi-file-check',
-    },
-    {
       name: 'Ustawienia',
       route: '/ustawienia',
       icon: 'pi-cog',
