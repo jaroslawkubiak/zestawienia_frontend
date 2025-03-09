@@ -15,22 +15,22 @@ export class MenuComponent {
   menuItems: IMenu[] = [
     {
       name: 'zest',
-      route: '/zestawienia',
+      route: '/sets',
       icon: 'pi-list',
     },
     {
       name: 'Klienci',
-      route: '/klienci',
+      route: '/clients',
       icon: 'pi-user',
     },
     {
       name: 'Dostawcy',
-      route: '/dostawcy',
+      route: '/suppliers',
       icon: 'pi-truck',
     },
     {
       name: 'Produkty',
-      route: '/produkty',
+      route: '/products',
       icon: 'pi-list-check',
     },
     {

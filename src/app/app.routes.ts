@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { UstawieniaComponent } from './components/ustawienia/ustawienia.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
-import { ZestawieniaComponent } from './components/zestawienia/zestawienia.component';
+import { SetsComponent } from './components/sets/sests.component';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { ProduktyComponent } from './components/produkty/produkty.component';
+import { ProductsComponent } from './components/products/products.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
 
@@ -26,22 +26,22 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'zestawienia',
-    component: ZestawieniaComponent,
+    path: 'sets',
+    component: SetsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'produkty',
-    component: ProduktyComponent,
+    path: 'products',
+    component: ProductsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'dostawcy',
+    path: 'suppliers',
     component: SuppliersComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'klienci',
+    path: 'clients',
     component: ClientsComponent,
     canActivate: [AuthGuard],
   },
