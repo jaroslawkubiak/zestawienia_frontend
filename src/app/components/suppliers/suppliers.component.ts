@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../login/auth.service';
-import { ISupplier } from './ISupplier';
 import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormsModule,
   FormControl,
+  FormGroup,
+  FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -23,6 +20,8 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { AuthService } from '../../login/auth.service';
+import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
 
 interface Column {
@@ -133,19 +132,12 @@ export class SuppliersComponent implements OnInit {
   openNew() {
     this.supplier = {} as ISupplier;
     this.form.setValue({
-      firma: 'testt',
-      imie: 'testt',
-      nazwisko: 'testt',
+      firma: null,
+      imie: null,
+      nazwisko: null,
       email: null,
       telefon: null,
     });
-    // this.form.setValue({
-    //   firma: null,
-    //   imie: null,
-    //   nazwisko: null,
-    //   email: null,
-    //   telefon: null,
-    // });
     this.submitted = false;
     this.supplierDialog = true;
   }
@@ -264,8 +256,6 @@ export class SuppliersComponent implements OnInit {
   }
 
   saveSupplier() {
-    console.log(this.form.valid);
-    console.log(this.form);
     this.submitted = true;
     if (this.form.valid) {
       // save supplier
@@ -304,9 +294,6 @@ export class SuppliersComponent implements OnInit {
         }
       } else {
         // add supplier
-        console.log(`##### nowy dostawca #####`);
-        this.suppliers.push(this.supplier);
-
         const newSupplier: Partial<ISupplier> = {
           imie: this.form.value.imie!,
           nazwisko: this.form.value.nazwisko!,
@@ -326,6 +313,8 @@ export class SuppliersComponent implements OnInit {
                   detail: 'Dostawca został dodany',
                   life: 3000,
                 });
+                this.suppliers.push(newSupplier as ISupplier);
+                this.cd.markForCheck();
               },
               error: (error) => {
                 this.messageService.add({

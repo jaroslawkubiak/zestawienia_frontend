@@ -7,10 +7,10 @@
 
 :root {
   --primary-color: #212121;
-  --secondary-color: #ffffff;
+  --secondary-color: #fff;
   --accent-color: #c2185b;
   --error-color: #e91e63;
-  --bg-color: FFFFFF;
+  --bg-color: #fff;
 }
 
 * {

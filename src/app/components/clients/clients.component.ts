@@ -1,14 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../login/auth.service';
-import { IClient } from './IClient';
 import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-  FormsModule,
   FormControl,
+  FormGroup,
+  FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -23,7 +20,9 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { AuthService } from '../../login/auth.service';
 import { ClientsService } from './clients.service';
+import { IClient } from './IClient';
 
 interface Column {
   field: string;
@@ -260,20 +259,15 @@ export class ClientsComponent implements OnInit {
 
   saveClient() {
     this.submitted = true;
-    if (
-      this.form.value.firma?.trim() &&
-      this.form.value.nazwisko &&
-      this.form.value.imie &&
-      this.form.value.email
-    ) {
+    if (this.form.valid) {
       // save client
       if (this.client.id) {
         const editedClient: IClient = {
           id: this.client.id,
-          email: this.form.value.email,
-          imie: this.form.value.imie,
-          nazwisko: this.form.value.nazwisko,
-          firma: this.form.value.firma,
+          email: this.form.value.email!,
+          imie: this.form.value.imie!,
+          nazwisko: this.form.value.nazwisko!,
+          firma: this.form.value.firma!,
           telefon: this.form.value.telefon || '',
         };
         this.clients[this.findIndexById(this.client.id)] = editedClient;
@@ -303,16 +297,12 @@ export class ClientsComponent implements OnInit {
       } else {
         // add client
         const newClient: Partial<IClient> = {
-          email: this.form.value.email,
-          imie: this.form.value.imie,
-          nazwisko: this.form.value.nazwisko,
-          firma: this.form.value.firma,
+          email: this.form.value.email!,
+          imie: this.form.value.imie!,
+          nazwisko: this.form.value.nazwisko!,
+          firma: this.form.value.firma!,
           telefon: this.form.value.telefon || undefined,
         };
-
-        this.clients.push(newClient as IClient);
-        console.log(`##### newClient #####`);
-        console.log(newClient);
 
         if (this.authorizationToken) {
           this.clientsService
@@ -325,6 +315,8 @@ export class ClientsComponent implements OnInit {
                   detail: 'Klient został dodany',
                   life: 3000,
                 });
+                this.clients.push(newClient as IClient);
+                this.cd.markForCheck();
               },
               error: (error) => {
                 this.messageService.add({

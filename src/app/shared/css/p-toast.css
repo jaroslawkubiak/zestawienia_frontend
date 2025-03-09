@@ -1,0 +1,87 @@
+/* notification position and size */
+::ng-deep .p-toast {
+  top: 20px !important;
+  width: 400px !important;
+}
+/* header font size */
+::ng-deep .p-toast-summary {
+  font-size: 1.6rem !important;
+}
+/* window border radius */
+::ng-deep .p-toast-message {
+  border-radius: 8px !important;
+}
+/* content message font size */
+::ng-deep .p-toast-detail {
+  font-size: 20px !important;
+  color: rgb(23, 21, 21) !important;
+}
+/* flex gap */
+::ng-deep .p-toast-message-content {
+  gap: 25px !important;
+}
+/* left icon size */
+::ng-deep .p-iconwrapper svg {
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* ### success notification ### */
+/* backgroudn and icon color  */
+::ng-deep .p-toast-message-success {
+  background: #d6fce3 !important;
+  color: #147932 !important; /* left icon color */
+}
+/* header text color */
+::ng-deep .p-toast-message-success .p-toast-summary {
+  color: #147932 !important;
+}
+/* close icons color */
+::ng-deep .p-toast-message-success .p-toast-close-icon {
+  color: #147932 !important;
+}
+
+/* ### error notification ### */
+/* backgroudn and icon color  */
+::ng-deep .p-toast-message-error {
+  background: #f9bfbf !important;
+  color: #871719 !important; /* left icon color */
+}
+/* header text color */
+::ng-deep .p-toast-message-error .p-toast-summary {
+  color: #871719 !important;
+}
+/* close icons color */
+::ng-deep .p-toast-message-error .p-toast-close-icon {
+  color: #871719 !important;
+}
+
+/* ### info notification ### */
+/* backgroudn and icon color  */
+::ng-deep .p-toast-message-info {
+  background: #b8d9fb !important;
+  color: #114779 !important; /* left icon color */
+}
+/* header text color */
+::ng-deep .p-toast-message-info .p-toast-summary {
+  color: #114779 !important;
+}
+/* close icons color */
+::ng-deep .p-toast-message-info .p-toast-close-icon {
+  color: #114779 !important;
+}
+
+/* ### warn notification ### */
+/* backgroudn and icon color  */
+::ng-deep .p-toast-message-warn {
+  background: #f9f4b6 !important;
+  color: #aea859 !important; /* left icon color */
+}
+/* header text color */
+::ng-deep .p-toast-message-warn .p-toast-summary {
+  color: #aea859 !important;
+}
+/* close icons color */
+::ng-deep .p-toast-message-warn .p-toast-close-icon {
+  color: #aea859 !important;
+}

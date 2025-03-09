@@ -7,14 +7,12 @@ import { MenuComponent } from './components/menu/menu.component';
   selector: 'app-root',
   imports: [MenuComponent, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrls: ['./app.component.css', './shared/css/p-toast.css'],
   standalone: true,
 })
 export class AppComponent {
   user = computed(() => this.authService.user());
   auth = () => this.authService.isAuthenticated();
 
-
   constructor(private authService: AuthService) {}
-
 }
