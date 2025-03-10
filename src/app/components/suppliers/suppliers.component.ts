@@ -46,7 +46,6 @@ interface ExportColumn {
     ToastModule,
     ToolbarModule,
     ConfirmDialog,
-    InputTextModule,
     TextareaModule,
     CommonModule,
     DropdownModule,
@@ -330,6 +329,13 @@ export class SuppliersComponent implements OnInit {
 
       this.suppliers = [...this.suppliers];
       this.supplierDialog = false;
+    }
+  }
+
+  onGlobalFilter(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (this.dt) {
+      this.dt.filterGlobal(inputElement.value, 'contains');
     }
   }
 }

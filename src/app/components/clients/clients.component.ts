@@ -50,7 +50,6 @@ interface ExportColumn {
     TextareaModule,
     CommonModule,
     DropdownModule,
-    InputTextModule,
     FormsModule,
     IconFieldModule,
     InputIconModule,
@@ -332,6 +331,13 @@ export class ClientsComponent implements OnInit {
 
       this.clients = [...this.clients];
       this.clientDialog = false;
+    }
+  }
+
+  onGlobalFilter(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (this.dt) {
+      this.dt.filterGlobal(inputElement.value, 'contains');
     }
   }
 }

@@ -4,14 +4,14 @@
     <ng-template #start>
       <p-button
         severity="primary"
-        label="New"
+        label="Nowy"
         icon="pi pi-plus"
         size="large"
         (onClick)="openNew()"
       />
       <p-button
         severity="danger"
-        label="Delete"
+        label="Usuń"
         icon="pi pi-trash"
         class="m-6"
         size="large"
@@ -27,7 +27,7 @@
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
-    [globalFilterFields]="['imie']"
+    [globalFilterFields]="['firma', 'imie', 'nazwisko', 'email', 'telefon']"
     [tableStyle]="{ 'min-width': '105rem' }"
     [(selection)]="selected"
     [rowHover]="true"
@@ -35,20 +35,20 @@
     currentPageReportTemplate="{first} to {last}"
     [showCurrentPageReport]="true"
   >
-    <!-- <ng-template #caption>
-      <div class="">
-        <h5 class="">Manage Products</h5>
-        <p-iconfield>
-          <p-inputicon styleClass="pi pi-search" />
-          <input
-            pInputText
-            type="text"
-            (input)="dt.filterGlobal($event.target, 'contains')"
-            placeholder="Search..."
-          />
-        </p-iconfield>
-      </div>
-    </ng-template> -->
+  <ng-template #caption>
+    <div class="search-wrapper">
+      <p-iconfield>
+        <p-inputicon styleClass="pi pi-search" />
+        <input
+          pInputText
+          type="text"
+          class="search-input"
+          (input)="onGlobalFilter($event)"
+          placeholder="Firma, imię, nazwisko, email, telefon"
+        />
+      </p-iconfield>
+    </div>
+  </ng-template>
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
@@ -218,14 +218,14 @@
 
     <ng-template #footer>
       <p-button
-        label="Cancel"
+        label="Anuluj"
         icon="pi pi-times"
         text
         (click)="hideDialog()"
         size="large"
       />
       <p-button
-        label="Save"
+        label="Zapisz"
         icon="pi pi-check"
         (click)="saveSupplier()"
         size="large"

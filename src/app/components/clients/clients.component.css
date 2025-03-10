@@ -24,3 +24,20 @@ label {
   margin-top: 20px;
   display: block;
 }
+
+.search-wrapper {
+  position: absolute;
+  top: -44px;
+  left: 200px;
+  display: flex;
+}
+
+.search-input {
+  display: flex;
+  font-size: 1rem;
+  font-weight: normal;
+  border: 2px solid rgb(0, 0, 0) !important;
+  border-radius: 0 !important;
+  width: 300px;
+  color: rgb(0, 0, 0) !important;
+}
