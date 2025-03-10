@@ -7,7 +7,7 @@ import { MenuComponent } from './components/menu/menu.component';
   selector: 'app-root',
   imports: [MenuComponent, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './shared/css/p-toast.css'],
+  styleUrls: ['./app.component.css', './shared/css/p-toast.css', './shared/css/basic.css'],
   standalone: true,
 })
 export class AppComponent {

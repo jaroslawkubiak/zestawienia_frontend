@@ -11,7 +11,7 @@ import { SuppliersComponent } from './components/suppliers/suppliers.component';
 
 //TODO add /login as default
 export const routes: Routes = [
-  { path: '', redirectTo: '/klienci', pathMatch: 'full' },
+  { path: '', redirectTo: '/sets', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -46,7 +46,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'ustawienia',
+    path: 'settings',
     component: UstawieniaComponent,
     canActivate: [AuthGuard],
   },

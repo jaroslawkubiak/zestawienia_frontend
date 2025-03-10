@@ -1,4 +1,4 @@
-import { Component, computed, Input } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { AuthService } from '../../login/auth.service';
 import { CommonModule } from '@angular/common';
 import { IMenu } from './Menu';
@@ -35,7 +35,7 @@ export class MenuComponent {
     },
     {
       name: 'Ustawienia',
-      route: '/ustawienia',
+      route: '/settings',
       icon: 'pi-cog',
     },
   ];

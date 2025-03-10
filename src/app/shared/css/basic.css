@@ -37,3 +37,15 @@
 .m-10 {
   margin: 10px;
 }
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}

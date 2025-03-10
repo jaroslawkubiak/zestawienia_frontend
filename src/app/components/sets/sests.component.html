@@ -1,1 +1,121 @@
-<p>sety works!</p>
+<div class="card">
+  <p-table
+    #dt2
+    [value]="sets"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    [paginator]="true"
+    [globalFilterFields]="['numer', 'clientId.firma', 'clientId.email']"
+    [tableStyle]="{ 'min-width': '75rem' }"
+  >
+    <ng-template #caption>
+      <div>
+        <p-iconfield iconPosition="left">
+          <p-inputicon>
+            <i class="pi pi-search flex"></i>
+          </p-inputicon>
+          <input
+            pInputText
+            type="text"
+            (input)="onGlobalFilter($event, dt2)"
+            placeholder="numer, firma, email"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th>LP</th>
+        <th>Numer</th>
+        <th>Firma</th>
+        <th>E-mail</th>
+        <th>Status</th>
+        <th>Utworzone</th>
+        <th>Zaktualizowne</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="numer"
+            placeholder="Szukaj po numerze"
+            ariaLabel="Szukaj po numerze"
+          ></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter
+            type="text"
+            field="klient"
+            placeholder="Szukaj po kliencie"
+            ariaLabel="Szukaj po kliencie"
+          ></p-columnFilter>
+        </th>
+        <th>
+          <p-columnFilter
+            class="input-wrapper"
+            type="text"
+            field="email"
+            placeholder="Szukaj po e-mailu"
+            ariaLabel="Szukaj po e-mailu"
+          ></p-columnFilter>
+        </th>
+        <th>
+          <p-select
+            [options]="statuses"
+            [(ngModel)]="selectedStatus"
+            optionLabel="name"
+            placeholder="Wybierz status"
+            class="status-wrapper"
+          />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-set let-i="rowIndex">
+      <tr>
+        <td>
+          <div class="field">{{ i + 1 }}</div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.numer }}
+          </div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.clientId.firma }}
+          </div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.clientId.email }}
+          </div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.status }}
+          </div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.createDate }}
+            ({{ set.createdBy.name }})
+          </div>
+        </td>
+        <td>
+          <div class="field">
+            {{ set.updateDate }}
+            ({{ set.updatedBy.name }})
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="5">Brak wyników.</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
