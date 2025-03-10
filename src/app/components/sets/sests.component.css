@@ -4,25 +4,19 @@
   height: 500px;
 }
 
-.field {
+.search-input {
   display: flex;
-  font-size: 1.6rem;
-  align-items: center;
-}
-
-::ng-deep .p-select,
-::ng-deep input {
   font-size: 1rem;
   font-weight: normal;
-  border: 1px solid rgb(0, 0, 0) !important;
+  border: 2px solid rgb(0, 0, 0) !important;
   border-radius: 0 !important;
+  width: 300px;
   color: rgb(0, 0, 0) !important;
 }
 
-.status-wrapper {
-  width: 100%;
-}
-
-::ng-deep .p-datatable-filter {
-  width: 200px;
+.search-wrapper {
+  position: absolute;
+  top: -38px;
+  left: 100px;
+  display: flex;
 }

@@ -1,7 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Dialog } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
@@ -9,14 +13,22 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
+import { TextareaModule } from 'primeng/textarea';
+import { ToastModule } from 'primeng/toast';
+import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
+import { ISet } from './ISet';
 import { SetsService } from './sets.service';
 import { SetStatus } from './status';
-import { ISet } from './ISet';
+interface Column {
+  field: string;
+  header: string;
+  customExportHeader?: string;
+}
 
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
+interface ExportColumn {
+  title: string;
+  dataKey: string;
 }
 
 @Component({
@@ -25,35 +37,42 @@ interface AutoCompleteCompleteEvent {
   templateUrl: './sests.component.html',
   styleUrls: ['./sests.component.css', '../../shared/css/basic.css'],
   imports: [
+    ConfirmDialog,
+    Dialog,
+    ToolbarModule,
     TableModule,
-    TagModule,
-    IconFieldModule,
+    ToastModule,
     InputTextModule,
+    TextareaModule,
+    CommonModule,
+    DropdownModule,
+    FormsModule,
+    IconFieldModule,
+    ButtonModule,
+    ReactiveFormsModule,
+    TagModule,
     InputIconModule,
     MultiSelectModule,
     SelectModule,
-    HttpClientModule,
-    CommonModule,
-    FormsModule,
-    SelectModule,
   ],
-  providers: [SetsService],
+  providers: [SetsService, MessageService, ConfirmationService],
 })
 export class SetsComponent implements OnInit {
   statuses!: any[];
   selectedStatus: any;
 
-  loading: boolean = false;
-
-  activityValues: number[] = [0, 100];
-
   public authorizationToken: string | null;
   sets: ISet[] = [];
+  @ViewChild('dt') dt!: Table;
+  cols!: Column[];
+  exportColumns!: ExportColumn[];
 
   constructor(
     private setsService: SetsService,
     private authService: AuthService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private messageService: MessageService,
+    private confirmationService: ConfirmationService
   ) {
     this.authorizationToken = this.authService.authorizationToken;
   }
@@ -71,15 +90,32 @@ export class SetsComponent implements OnInit {
     this.setsService.getSets(this.authorizationToken).subscribe({
       next: (data) => {
         this.sets = data;
-        this.loading = false;
         this.cd.markForCheck();
       },
       error: (err) => console.error('Error getting sets ', err),
     });
-  }
 
-  onGlobalFilter(event: Event, table: Table) {
-    const input = event.target as HTMLInputElement;
-    table.filterGlobal(input.value, 'contains');
+    this.cols = [
+      { field: 'firma', header: 'Firma' },
+      { field: 'email', header: 'E-mail' },
+      { field: 'numer', header: 'Numer' },
+      { field: 'status', header: 'Status' },
+      { field: 'utworzone', header: 'Utworzone' },
+      { field: 'zaktualizowane', header: 'Zaktualizowane' },
+    ];
+
+    this.exportColumns = this.cols.map((col) => ({
+      title: col.header,
+      dataKey: col.field,
+    }));
+  }
+  openNew() {}
+  editSet() {}
+
+  onGlobalFilter(event: Event) {
+    const inputElement = event.target as HTMLInputElement;
+    if (this.dt) {
+      this.dt.filterGlobal(inputElement.value, 'contains');
+    }
   }
 }

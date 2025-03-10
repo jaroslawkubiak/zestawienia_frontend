@@ -1,121 +1,100 @@
 <div class="card">
+  <p-toast />
+  <p-toolbar>
+    <ng-template #start>
+      <p-button
+        severity="primary"
+        label="Nowe"
+        icon="pi pi-plus"
+        size="large"
+        (onClick)="openNew()"
+      />
+    </ng-template>
+  </p-toolbar>
+
   <p-table
-    #dt2
+    #dt
     [value]="sets"
-    dataKey="id"
     [rows]="10"
-    [rowsPerPageOptions]="[10, 25, 50]"
-    [loading]="loading"
     [paginator]="true"
-    [globalFilterFields]="['numer', 'clientId.firma', 'clientId.email']"
-    [tableStyle]="{ 'min-width': '75rem' }"
+    [globalFilterFields]="['client.firma', 'client.email', 'numer', 'status']"
+    [tableStyle]="{ 'min-width': '105rem' }"
+    [rowHover]="true"
+    dataKey="id"
+    currentPageReportTemplate="{first} to {last}"
+    [showCurrentPageReport]="true"
   >
     <ng-template #caption>
-      <div>
-        <p-iconfield iconPosition="left">
-          <p-inputicon>
-            <i class="pi pi-search flex"></i>
-          </p-inputicon>
+      <div class="search-wrapper">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
           <input
             pInputText
             type="text"
-            (input)="onGlobalFilter($event, dt2)"
-            placeholder="numer, firma, email"
+            class="search-input"
+            (input)="onGlobalFilter($event)"
+            placeholder="Firma, email, numer, status"
           />
         </p-iconfield>
       </div>
     </ng-template>
     <ng-template #header>
       <tr>
-        <th>LP</th>
-        <th>Numer</th>
-        <th>Firma</th>
-        <th>E-mail</th>
-        <th>Status</th>
-        <th>Utworzone</th>
-        <th>Zaktualizowne</th>
-      </tr>
-      <tr>
-        <th></th>
-        <th>
-          <p-columnFilter
-            type="text"
-            field="numer"
-            placeholder="Szukaj po numerze"
-            ariaLabel="Szukaj po numerze"
-          ></p-columnFilter>
+        <th style="width: 3rem">LP</th>
+        <th pSortableColumn="client.firma" style="min-width: 16rem">
+          Firma
+          <p-sortIcon field="client.firma" />
         </th>
-        <th>
-          <p-columnFilter
-            type="text"
-            field="klient"
-            placeholder="Szukaj po kliencie"
-            ariaLabel="Szukaj po kliencie"
-          ></p-columnFilter>
+        <th pSortableColumn="client.email" style="min-width: 8rem">
+          E-mail
+          <p-sortIcon field="client.email" />
         </th>
-        <th>
-          <p-columnFilter
-            class="input-wrapper"
-            type="text"
-            field="email"
-            placeholder="Szukaj po e-mailu"
-            ariaLabel="Szukaj po e-mailu"
-          ></p-columnFilter>
+        <th pSortableColumn="numer" style="min-width: 8rem">
+          Numer
+          <p-sortIcon field="numer" />
         </th>
-        <th>
-          <p-select
-            [options]="statuses"
-            [(ngModel)]="selectedStatus"
-            optionLabel="name"
-            placeholder="Wybierz status"
-            class="status-wrapper"
-          />
+        <th pSortableColumn="status" style="min-width: 8rem">
+          Status
+          <p-sortIcon field="status" />
         </th>
+        <th pSortableColumn="createTimeStamp" style="min-width: 6rem">
+          Utworzone
+          <p-sortIcon field="createTimeStamp" />
+        </th>
+        <th pSortableColumn="updateTimeStamp" style="min-width: 6rem">
+          Zaktualizowne
+          <p-sortIcon field="updateTimeStamp" />
+        </th>
+        <th style="min-width: 6rem"></th>
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
       <tr>
         <td>
-          <div class="field">{{ i + 1 }}</div>
-        </td>
-        <td>
-          <div class="field">
-            {{ set.numer }}
+          <div class="flex-center">
+            {{ i + 1 }}
           </div>
         </td>
+        <td>{{ set.client.firma }}</td>
+        <td>{{ set.client.email }}</td>
+        <td>{{ set.numer }}</td>
+        <td>{{ set.status }}</td>
         <td>
-          <div class="field">
-            {{ set.clientId.firma }}
-          </div>
+          {{ set.createDate }}
+          ({{ set.createdBy.name }})
         </td>
-        <td>
-          <div class="field">
-            {{ set.clientId.email }}
-          </div>
+        <td style="min-width: 10rem">
+          {{ set.updateDate }}
+          ({{ set.updatedBy.name }})
         </td>
+
         <td>
-          <div class="field">
-            {{ set.status }}
-          </div>
-        </td>
-        <td>
-          <div class="field">
-            {{ set.createDate }}
-            ({{ set.createdBy.name }})
-          </div>
-        </td>
-        <td>
-          <div class="field">
-            {{ set.updateDate }}
-            ({{ set.updatedBy.name }})
-          </div>
+          <p-button icon="pi pi-pencil" class="p-4" (click)="editSet()" />
         </td>
       </tr>
     </ng-template>
-    <ng-template #emptymessage>
-      <tr>
-        <td colspan="5">Brak wyników.</td>
-      </tr>
+    <ng-template #summary>
+      <div class="total p-4">Total {{ sets ? sets.length : 0 }}</div>
     </ng-template>
   </p-table>
 </div>

@@ -45,3 +45,4 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
   border: var(--input-border-width) solid var(--primary-color);
 }
+

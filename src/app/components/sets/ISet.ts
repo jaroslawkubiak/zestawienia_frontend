@@ -1,4 +1,3 @@
-
 export interface ISet {
   id: number;
   numer: string;
@@ -8,7 +7,7 @@ export interface ISet {
   updateDate: string;
   updateTimeStamp: string;
   hash: string;
-  clientId: {
+  client: {
     firma: string;
     email: string;
   };
