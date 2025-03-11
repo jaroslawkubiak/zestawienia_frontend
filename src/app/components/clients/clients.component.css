@@ -12,7 +12,7 @@
 }
 
 .input {
-  font-size: 2rem;
+  font-size: 1.6rem;
 }
 
 .error {
@@ -23,11 +23,12 @@
 label {
   margin-top: 20px;
   display: block;
+  font-size: 2rem;
 }
 
 .search-wrapper {
   position: absolute;
-  top: -44px;
+  top: -50px;
   left: 200px;
   display: flex;
 }
@@ -36,7 +37,7 @@ label {
   display: flex;
   font-size: 1rem;
   font-weight: normal;
-  border: 2px solid rgb(0, 0, 0) !important;
+  border: 1px solid rgb(0, 0, 0) !important;
   border-radius: 0 !important;
   width: 300px;
   color: rgb(0, 0, 0) !important;

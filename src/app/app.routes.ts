@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { UstawieniaComponent } from './components/ustawienia/ustawienia.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { SetsComponent } from './components/sets/sests.component';
 import { AuthGuard } from './login/auth.guard';
@@ -8,10 +7,12 @@ import { LoginComponent } from './login/login.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ClientsComponent } from './components/clients/clients.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
+import { NewSetComponent } from './components/sets/new-set/new-set.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
-//TODO add /login as default
+//TODO add /login as default path
 export const routes: Routes = [
-  { path: '', redirectTo: '/sets', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -31,6 +32,11 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
+    path: 'sets/new',
+    component: NewSetComponent,
+    canActivate: [AuthGuard],
+  },
+  {
     path: 'products',
     component: ProductsComponent,
     canActivate: [AuthGuard],
@@ -47,7 +53,7 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
-    component: UstawieniaComponent,
+    component: SettingsComponent,
     canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '/notfound' },

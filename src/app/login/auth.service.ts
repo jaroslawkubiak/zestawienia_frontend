@@ -3,15 +3,15 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ApiService } from '../services/api.service';
 import { IUser } from './User';
 import { Router } from '@angular/router';
-import { ILoggedUser } from './LoggedUser';
+import { ILoggedUser } from './ILoggedUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user = signal<string | null>(null);
-  //TODO remove temporary token
-  authorizationToken: string | null = 'TEMORARY_TOKEN';
+  //TODO remove temporary token TEMP_TOKEN
+  authorizationToken: string | null = 'TEMP_TOKEN';
 
   constructor(private apiService: ApiService, private router: Router) {}
 
@@ -20,6 +20,7 @@ export class AuthService {
       tap((response) => {
         localStorage.setItem('access_token', response.accessToken);
         localStorage.setItem('user_name', response.name);
+        localStorage.setItem('user_id', String(response.id));
         this.user.set(response.name); // Ustawienie użytkownika
         this.router.navigate(['/welcome']);
       }),
@@ -30,21 +31,21 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    //TODO fix this
+    //TODO use for deveelopment
     return true;
 
-    // temporary solution
-    // this.authorizationToken = localStorage.getItem('access_token');
-    // if (this.user() && !!this.authorizationToken) {
-    //   return true;
-    // }
+    this.authorizationToken = localStorage.getItem('access_token');
+    if (this.user() && !!this.authorizationToken) {
+      return true;
+    }
 
-    // return false;
+    return false;
   }
 
   logout(): void {
     localStorage.removeItem('access_token');
     localStorage.removeItem('user_name');
+    localStorage.removeItem('user_id');
     this.user.set(null);
     this.router.navigate(['/login']);
   }

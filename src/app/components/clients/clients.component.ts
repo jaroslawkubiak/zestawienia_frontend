@@ -198,12 +198,10 @@ export class ClientsComponent implements OnInit {
       },
     });
   }
-
   hideDialog() {
     this.clientDialog = false;
     this.submitted = false;
   }
-
   deleteClient(client: IClient) {
     this.confirmationService.confirm({
       message: 'Czy na pewno usunąć klienta ' + client.firma + ' ?',
