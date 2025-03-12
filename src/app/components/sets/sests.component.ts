@@ -3,8 +3,9 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
-import { Dialog } from 'primeng/dialog';
+// import { ConfirmDialog } from 'primeng/confirmdialog';
+// import { Dialog } from 'primeng/dialog';
+import { Router } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -19,7 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { ISet } from './ISet';
 import { SetsService } from './sets.service';
-import { SetStatus } from './status';
+
 interface Column {
   field: string;
   header: string;
@@ -37,8 +38,6 @@ interface ExportColumn {
   templateUrl: './sests.component.html',
   styleUrls: ['./sests.component.css', '../../shared/css/basic.css'],
   imports: [
-    ConfirmDialog,
-    Dialog,
     ToolbarModule,
     TableModule,
     ToastModule,
@@ -55,12 +54,13 @@ interface ExportColumn {
     MultiSelectModule,
     SelectModule,
   ],
-  providers: [SetsService, MessageService, ConfirmationService],
+  providers: [
+    SetsService,
+    MessageService,
+    ConfirmationService,
+  ],
 })
 export class SetsComponent implements OnInit {
-  statuses!: any[];
-  selectedStatus: any;
-
   public authorizationToken: string | null;
   sets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
@@ -68,6 +68,7 @@ export class SetsComponent implements OnInit {
   exportColumns!: ExportColumn[];
 
   constructor(
+    private router: Router,
     private setsService: SetsService,
     private authService: AuthService,
     private cd: ChangeDetectorRef,
@@ -79,11 +80,6 @@ export class SetsComponent implements OnInit {
 
   ngOnInit() {
     this.getSets();
-
-    this.statuses = Object.entries(SetStatus).map(([key, value]) => ({
-      name: value,
-      value: key,
-    }));
   }
 
   getSets() {
@@ -109,7 +105,12 @@ export class SetsComponent implements OnInit {
       dataKey: col.field,
     }));
   }
-  openNew() {}
+
+  openNew() {
+    this.router.navigate(['/sets/new']);
+  }
+
+  //TODO dokończyć
   editSet() {}
 
   onGlobalFilter(event: Event) {

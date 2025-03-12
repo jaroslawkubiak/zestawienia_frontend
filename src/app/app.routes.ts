@@ -12,7 +12,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 
 //TODO add /login as default path
 export const routes: Routes = [
-  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: '', redirectTo: '/sets/new', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,

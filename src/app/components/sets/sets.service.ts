@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { INewSet } from './new-set/INewSet';
 
 
 @Injectable({
@@ -33,4 +34,22 @@ export class SetsService {
       })
       .pipe(catchError(this.handleError));
   }
+
+  addSet(
+    authorizationToken: string | null,
+    newSet: Partial<INewSet>
+  ): Observable<INewSet> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+
+    // const { id, ...newClient } = newSet as Partial<INewSet>;
+
+    return this.http
+      .post<INewSet>(`${environment.API_URL}/sets/new`, newSet, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
 }

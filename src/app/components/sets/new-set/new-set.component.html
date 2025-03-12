@@ -1,0 +1,51 @@
+<p-toast />
+<form #form="ngForm" (ngSubmit)="onSubmit(form)">
+  <div class="container">
+    <div class="field">
+      @if(setNumber) { Numer: {{ setNumber }}
+      }
+    </div>
+
+    <div class="field">
+      <p-select
+        [options]="allClients"
+        [(ngModel)]="selectedClient"
+        name="client"
+        placeholder="Wybierz klienta"
+        class="select-client"
+        optionLabel="firma"
+      />
+    </div>
+
+    <div class="field">
+      <div class="bookmarks-container">
+        <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
+          <p-checkbox
+            [inputId]="bookmark.id.toString()"
+            name="bookmarks"
+            [value]="bookmark"
+            [(ngModel)]="selectedBookmarks"
+            size="large"
+            class="bookmarks-checkbox"
+          >
+          </p-checkbox>
+          <label [for]="bookmark.id.toString()" class="ml-2">
+            {{ bookmark.nazwa }}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex-center">
+      @if(selectedClient) {
+      <p-button
+        type="submit"
+        label="Dalej"
+        icon="pi pi-chevron-right"
+        severity="primary"
+        size="large"
+      />
+      }
+    </div>
+  </div>
+</form>
