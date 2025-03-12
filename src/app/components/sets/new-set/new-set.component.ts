@@ -1,25 +1,22 @@
-import { Component, OnInit, viewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
   FormsModule,
-  NgForm,
+  NgForm
 } from '@angular/forms';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { SelectModule } from 'primeng/select';
+import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../../../login/auth.service';
+import { BookmarksService } from '../../bookmarks/bookmarks.service';
+import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/IClient';
 import { SettingsService } from '../../settings/settings.service';
-import { CommonModule } from '@angular/common';
-import { BookmarksService } from '../../bookmarks/bookmarks.service';
-import { IBookmark } from '../../bookmarks/IBookmark';
-import { ButtonModule } from 'primeng/button';
-import { INewSet } from './INewSet';
 import { SetsService } from '../sets.service';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
+import { INewSet } from './INewSet';
 
 @Component({
   selector: 'app-new-set',
@@ -39,14 +36,12 @@ import { ToastModule } from 'primeng/toast';
 export class NewSetComponent implements OnInit {
   setNumber: string = '';
   userId = Number(localStorage.getItem('user_id'));
-
   allClients: IClient[] | undefined;
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
   selectedBookmarks: IBookmark[] = [];
 
   public authorizationToken: string | null;
-  // private formularz = viewChild.required<NgForm>('form');
 
   constructor(
     private authService: AuthService,
@@ -104,7 +99,7 @@ export class NewSetComponent implements OnInit {
     bookmarks.map((item: IBookmark) => delete item.default);
     //TODO remove this later when turn on auth
     if (this.userId === 0) {
-      this.userId = 2;
+      this.userId = 1;
     }
 
     const newSet: INewSet = {
@@ -117,8 +112,6 @@ export class NewSetComponent implements OnInit {
     if (this.authorizationToken) {
       this.setsService.addSet(this.authorizationToken, newSet).subscribe({
         next: (response) => {
-          console.log(`##### sukces #####`);
-          //TODO nie działa notyfikacja
           this.messageService.add({
             severity: 'success',
             summary: 'Sukces',

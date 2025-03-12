@@ -69,6 +69,7 @@ describe('LoginComponent', () => {
         accessToken:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNzQxMDE4ODEwLCJleHAiOjE3NDEwMjI0MTB9.taFAhkrrv9FTzE8SeVmmh2PL8XUKBbSGe8e2TxHOr0Y',
         name: 'Jarek',
+        id: 1
       })
     );
 
