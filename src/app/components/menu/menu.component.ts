@@ -14,7 +14,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class MenuComponent {
   menuItems: IMenu[] = [
     {
-      name: 'zest',
+      name: 'Zestawienia',
       route: '/sets',
       icon: 'pi-list',
     },

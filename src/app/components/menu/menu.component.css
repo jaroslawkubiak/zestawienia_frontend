@@ -41,6 +41,10 @@ li:hover {
   cursor: pointer;
 }
 
+.submit:hover {
+  color: var(--accent-color);
+}
+
 .icon {
   font-size: 2rem;
 }
