@@ -78,7 +78,7 @@
       </tr>
     </ng-template>
     <ng-template #body let-client>
-      <tr>
+      <tr (click)="editClient(client)">
         <td style="width: 3rem">
           <p-tableCheckbox [value]="client" />
         </td>

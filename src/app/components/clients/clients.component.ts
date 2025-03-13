@@ -21,6 +21,7 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
+import { notificationLifeTime } from '../../shared/constans';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
 
@@ -68,7 +69,7 @@ export class ClientsComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   cols!: Column[];
   exportColumns!: ExportColumn[];
-  public authorizationToken: string | null;
+  private authorizationToken: string | null;
 
   constructor(
     private authService: AuthService,
@@ -182,7 +183,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Klienci zostali usunięci',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -190,7 +191,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -223,7 +224,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Klient został usunięty',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -231,7 +232,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -278,7 +279,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Dane klienta zaktualizowane',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -286,7 +287,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -310,7 +311,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Klient został dodany',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
                 this.clients.push(newClient as IClient);
                 this.cd.markForCheck();
@@ -320,7 +321,7 @@ export class ClientsComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });

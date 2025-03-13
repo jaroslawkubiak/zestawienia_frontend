@@ -1,3 +1,5 @@
+import { IBookmark } from "../bookmarks/IBookmark";
+
 export interface ISet {
   id: number;
   numer: string;
@@ -7,7 +9,8 @@ export interface ISet {
   updateDate: string;
   updateTimeStamp: string;
   hash: string;
-  client: {
+  bookmarks: IBookmark[];
+  clientId: {
     firma: string;
     email: string;
   };

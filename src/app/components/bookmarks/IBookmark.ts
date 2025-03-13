@@ -1,5 +1,5 @@
 export interface IBookmark {
   id: number;
-  nazwa: string;
+  name: string;
   default?: boolean;
 }

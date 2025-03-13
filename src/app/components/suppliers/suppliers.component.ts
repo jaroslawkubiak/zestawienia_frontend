@@ -23,6 +23,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
+import { notificationLifeTime } from '../../shared/constans';
 
 interface Column {
   field: string;
@@ -68,7 +69,7 @@ export class SuppliersComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   cols!: Column[];
   exportColumns!: ExportColumn[];
-  public authorizationToken: string | null;
+  private authorizationToken: string | null;
 
   constructor(
     private authService: AuthService,
@@ -92,13 +93,15 @@ export class SuppliersComponent implements OnInit {
       validators: [Validators.required],
     }),
     email: new FormControl('', {
-      validators: [Validators.email],
+      validators: [Validators.required, Validators.email],
     }),
     telefon: new FormControl(''),
   });
 
   ngOnInit(): void {
     this.getSuppliers();
+    console.log(`##### notificationLifeTime #####`);
+    console.log(notificationLifeTime);
   }
 
   getSuppliers() {
@@ -181,7 +184,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Dostawcy zostali usunięci',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -189,7 +192,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -224,7 +227,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Dostawca został usunięty',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -232,7 +235,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -278,7 +281,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Dane dostawcy zaktualizowane',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
               error: (error) => {
@@ -286,7 +289,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });
@@ -310,7 +313,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'success',
                   summary: 'Sukces',
                   detail: 'Dostawca został dodany',
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
                 this.suppliers.push(newSupplier as ISupplier);
                 this.cd.markForCheck();
@@ -320,7 +323,7 @@ export class SuppliersComponent implements OnInit {
                   severity: 'error',
                   summary: 'Błąd',
                   detail: error.message,
-                  life: 3000,
+                  life: notificationLifeTime,
                 });
               },
             });

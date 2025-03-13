@@ -35,20 +35,20 @@
     currentPageReportTemplate="{first} to {last}"
     [showCurrentPageReport]="true"
   >
-  <ng-template #caption>
-    <div class="search-wrapper">
-      <p-iconfield>
-        <p-inputicon styleClass="pi pi-search" />
-        <input
-          pInputText
-          type="text"
-          class="search-input"
-          (input)="onGlobalFilter($event)"
-          placeholder="Firma, imię, nazwisko, email, telefon"
-        />
-      </p-iconfield>
-    </div>
-  </ng-template>
+    <ng-template #caption>
+      <div class="search-wrapper">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            class="search-input"
+            (input)="onGlobalFilter($event)"
+            placeholder="Firma, imię, nazwisko, email, telefon"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
@@ -78,7 +78,7 @@
       </tr>
     </ng-template>
     <ng-template #body let-supplier>
-      <tr>
+      <tr (click)="editSupplier(supplier)">
         <td style="width: 3rem">
           <p-tableCheckbox [value]="supplier" />
         </td>
@@ -197,9 +197,23 @@
               class="input"
               fluid
             />
-            <span class="error" *ngIf="form.controls['email'].errors?.['email']"
-              >Niepoprawny format adresu e-mail.</span
+            <div
+              *ngIf="
+                form.controls['email'].invalid && form.controls['email'].touched
+              "
+              class="error"
             >
+              <span
+                class="error"
+                *ngIf="form.controls['email'].errors?.['required']"
+                >E-mail jest wymagany.</span
+              >
+              <span
+                class="error"
+                *ngIf="form.controls['email'].errors?.['email']"
+                >Niepoprawny format adresu e-mail.</span
+              >
+            </div>
           </div>
           <div>
             <label for="telefon">Telefon</label>
