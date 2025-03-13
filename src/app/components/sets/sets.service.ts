@@ -65,7 +65,7 @@ export class SetsService {
 
   addSet(
     authorizationToken: string | null,
-    newSet: Partial<INewSet>
+    newSet: INewSet
   ): Observable<INewSet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authorizationToken}`,

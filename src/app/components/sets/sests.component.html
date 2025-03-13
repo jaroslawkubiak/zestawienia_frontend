@@ -17,7 +17,12 @@
     [value]="sets"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="['clientId.firma', 'clientId.email', 'numer', 'status']"
+    [globalFilterFields]="[
+      'clientId.firma',
+      'clientId.email',
+      'name',
+      'status'
+    ]"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
     dataKey="id"
@@ -33,7 +38,7 @@
             type="text"
             class="search-input"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, email, numer, status"
+            placeholder="Firma, email, nazwa, status"
           />
         </p-iconfield>
       </div>
@@ -41,31 +46,31 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">LP</th>
-        <th pSortableColumn="clientId.firma" style="min-width: 16rem">
+        <th pSortableColumn="clientId.firma">
           Firma
-          <p-sortIcon field="clientId.firma" />
+          <p-sortIcon field="clientId.firma"/>
         </th>
-        <th pSortableColumn="clientId.email" style="min-width: 8rem">
+        <th pSortableColumn="clientId.email">
           E-mail
-          <p-sortIcon field="clientId.email" />
+          <p-sortIcon field="clientId.email"/>
         </th>
-        <th pSortableColumn="numer" style="min-width: 8rem">
-          Numer
-          <p-sortIcon field="numer" />
+        <th pSortableColumn="numer">
+          Nazwa
+          <p-sortIcon field="numer"/>
         </th>
-        <th pSortableColumn="status" style="min-width: 8rem">
+        <th pSortableColumn="status">
           Status
-          <p-sortIcon field="status" />
+          <p-sortIcon field="status"/>
         </th>
-        <th pSortableColumn="createTimeStamp" style="min-width: 6rem">
+        <th pSortableColumn="createdAtTimestamp">
           Utworzone
-          <p-sortIcon field="createTimeStamp" />
+          <p-sortIcon field="createdAtTimestamp"/>
         </th>
-        <th pSortableColumn="updateTimeStamp" style="min-width: 6rem">
+        <th pSortableColumn="updatedAtTimestamp">
           Zaktualizowne
-          <p-sortIcon field="updateTimeStamp" />
+          <p-sortIcon field="updatedAtTimestamp"/>
         </th>
-        <th style="min-width: 6rem"></th>
+        <th></th>
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
@@ -77,14 +82,14 @@
         </td>
         <td>{{ set.clientId.firma }}</td>
         <td>{{ set.clientId.email }}</td>
-        <td>{{ set.numer }}</td>
+        <td>{{ set.name }}</td>
         <td>{{ set.status }}</td>
         <td>
-          {{ set.createDate }}
+          {{ set.createdAt }}
           ({{ set.createdBy.name }})
         </td>
         <td style="min-width: 10rem">
-          {{ set.updateDate }}
+          {{ set.updatedAt }}
           ({{ set.updatedBy.name }})
         </td>
 

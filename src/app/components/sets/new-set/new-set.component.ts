@@ -1,20 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {
-  FormsModule,
-  NgForm
-} from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
+import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../../../login/auth.service';
+import { notificationLifeTime } from '../../../shared/constans';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/IClient';
-import { SettingsService } from '../../settings/settings.service';
 import { SetsService } from '../sets.service';
 import { INewSet } from './INewSet';
 
@@ -29,23 +27,23 @@ import { INewSet } from './INewSet';
     CheckboxModule,
     CommonModule,
     ButtonModule,
+    InputTextModule,
   ],
   providers: [MessageService],
   styleUrls: ['./new-set.component.css', '../../../shared/css/basic.css'],
 })
 export class NewSetComponent implements OnInit {
-  setNumber: string = '';
+  name: string = '';
   userId = Number(localStorage.getItem('user_id'));
   allClients: IClient[] | undefined;
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
   selectedBookmarks: IBookmark[] = [];
 
-  public authorizationToken: string | null;
+  private authorizationToken: string | null;
 
   constructor(
     private authService: AuthService,
-    private settingsService: SettingsService,
     private bookmarksService: BookmarksService,
     private setsService: SetsService,
     private clientsService: ClientsService,
@@ -55,19 +53,8 @@ export class NewSetComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getSetNumber();
     this.getClients();
     this.getBookmarks();
-  }
-
-  getSetNumber() {
-    this.settingsService.getSetNumber().subscribe({
-      next: (data) => {
-        const currentYear = new Date().getFullYear();
-        this.setNumber = `${data[0].value}/${currentYear}`;
-      },
-      error: (err) => console.error('Error getting set number ', err),
-    });
   }
 
   getClients() {
@@ -98,12 +85,12 @@ export class NewSetComponent implements OnInit {
     const bookmarks: IBookmark[] = Object.values(bookmarksData);
     bookmarks.map((item: IBookmark) => delete item.default);
     //TODO remove this later when turn on auth
-    if (this.userId === 0) {
-      this.userId = 1;
-    }
+    // if (this.userId === 0) {
+    //   this.userId = 1;
+    // }
 
     const newSet: INewSet = {
-      numer: this.setNumber,
+      name: this.name,
       clientId: client.id,
       createdBy: this.userId,
       bookmarks,
@@ -116,16 +103,15 @@ export class NewSetComponent implements OnInit {
             severity: 'success',
             summary: 'Sukces',
             detail: 'Nowe zestawienie zostało dodane',
-            life: 3000,
+            life: notificationLifeTime,
           });
         },
         error: (error) => {
-          console.log(`##### error #####`);
           this.messageService.add({
             severity: 'error',
             summary: 'Błąd',
             detail: error.message,
-            life: 3000,
+            life: notificationLifeTime,
           });
         },
       });

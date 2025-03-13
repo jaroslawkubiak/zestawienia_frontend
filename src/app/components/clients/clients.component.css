@@ -49,3 +49,7 @@ label {
 tr {
   cursor: pointer;
 }
+
+::ng-deep .p-checkbox {
+  display: flex;
+}

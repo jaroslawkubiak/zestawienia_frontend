@@ -9,10 +9,20 @@
 .field {
   font-size: 2.2rem;
   display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 10px;
 }
 
-.select-client {
+.label {
+  color: var(--accent-color);
+  font-size: 1.6rem;
+}
+
+.form-field {
   width: 100%;
+  font-size: 2rem;
+  font-weight: 700;
 }
 
 .bookmarks-container {
@@ -26,6 +36,7 @@
 .bookmarks-cell {
   display: flex;
   gap: 30px;
+  align-items: center; 
 }
 
 .bookmarks-cell label {

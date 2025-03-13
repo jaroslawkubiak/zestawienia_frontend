@@ -1,2 +1,2 @@
-export const notificationLifeTime = 1000;
+export const notificationLifeTime = 2500;
 
