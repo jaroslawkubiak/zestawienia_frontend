@@ -1,4 +1,4 @@
-import { Component, computed } from '@angular/core';
+import { Component, computed, ViewEncapsulation } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './login/auth.service';
 import { MenuComponent } from './components/menu/menu.component';
@@ -7,8 +7,14 @@ import { MenuComponent } from './components/menu/menu.component';
   selector: 'app-root',
   imports: [MenuComponent, RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css', './shared/css/p-toast.css', './shared/css/basic.css'],
+  styleUrls: [
+    './app.component.css',
+    './shared/css/p-toast.css',
+    './shared/css/basic.css',
+    './shared/css/p-table.css',
+  ],
   standalone: true,
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
   user = computed(() => this.authService.user());

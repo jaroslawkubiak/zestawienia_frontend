@@ -26,6 +26,7 @@
 label {
   margin-top: 20px;
   display: block;
+  color: var(--accent-color);
   font-size: 2rem;
 }
 
@@ -46,10 +47,11 @@ label {
   color: rgb(0, 0, 0) !important;
 }
 
-tr {
-  cursor: pointer;
-}
-
 ::ng-deep .p-checkbox {
   display: flex;
+}
+
+::ng-deep .p-dialog-title {
+  font-size: 2rem;
+  color: var(--accent-color-darker);
 }

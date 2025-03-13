@@ -32,6 +32,8 @@
 label {
   margin-top: 20px;
   display: block;
+  color: var(--accent-color);
+  font-size: 2rem;
 }
 
 .search-wrapper {
@@ -51,10 +53,11 @@ label {
   color: rgb(0, 0, 0) !important;
 }
 
-tr {
-  cursor: pointer;
-}
-
 ::ng-deep .p-checkbox {
   display: flex;
+}
+
+::ng-deep .p-dialog-title {
+  font-size: 2rem !important;
+  color: var(--accent-color);
 }

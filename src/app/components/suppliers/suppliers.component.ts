@@ -21,20 +21,10 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
+import { notificationLifeTime } from '../../shared/constans';
+import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
-import { notificationLifeTime } from '../../shared/constans';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
 
 @Component({
   selector: 'app-suppliers',
@@ -58,7 +48,7 @@ interface ExportColumn {
     ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, SuppliersService],
-  styleUrls: ['./suppliers.component.css', '../../shared/css/basic.css'],
+  styleUrl: './suppliers.component.css',
 })
 export class SuppliersComponent implements OnInit {
   supplierDialog: boolean = false;
@@ -67,8 +57,8 @@ export class SuppliersComponent implements OnInit {
   selected!: ISupplier[] | null;
   submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
-  cols!: Column[];
-  exportColumns!: ExportColumn[];
+  cols!: IColumn[];
+  exportColumns!: IExportColumn[];
   private authorizationToken: string | null;
 
   constructor(

@@ -22,19 +22,9 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { notificationLifeTime } from '../../shared/constans';
+import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
 
 @Component({
   selector: 'app-clients',
@@ -58,7 +48,7 @@ interface ExportColumn {
     ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, ClientsService],
-  styleUrls: ['./clients.component.css', '../../shared/css/basic.css'],
+  styleUrl: './clients.component.css',
 })
 export class ClientsComponent implements OnInit {
   clientDialog: boolean = false;
@@ -67,8 +57,8 @@ export class ClientsComponent implements OnInit {
   selectedClient!: IClient[] | null;
   submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
-  cols!: Column[];
-  exportColumns!: ExportColumn[];
+  cols!: IColumn[];
+  exportColumns!: IExportColumn[];
   private authorizationToken: string | null;
 
   constructor(

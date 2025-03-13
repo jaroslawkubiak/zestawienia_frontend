@@ -1,0 +1,7 @@
+tr {
+  cursor: pointer;
+}
+
+.row:hover {
+  background-color: var(--accent-color-lighter) !important;
+}

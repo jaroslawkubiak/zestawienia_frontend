@@ -78,7 +78,7 @@
       </tr>
     </ng-template>
     <ng-template #body let-supplier>
-      <tr (click)="editSupplier(supplier)">
+      <tr (click)="editSupplier(supplier)" class="row">
         <td style="width: 3rem">
           <p-tableCheckbox [value]="supplier" />
         </td>
@@ -111,7 +111,7 @@
   <p-dialog
     [(visible)]="supplierDialog"
     [style]="{ width: '750px' }"
-    header=""
+    header="Nowy dostawca"
     [modal]="true"
   >
     <ng-template #content>
