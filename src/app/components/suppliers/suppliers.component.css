@@ -61,3 +61,7 @@ label {
   font-size: 2rem !important;
   color: var(--accent-color);
 }
+
+tr {
+  cursor: pointer;
+}

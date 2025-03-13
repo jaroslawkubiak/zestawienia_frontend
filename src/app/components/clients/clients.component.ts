@@ -244,7 +244,6 @@ export class ClientsComponent implements OnInit {
 
     return index;
   }
-
   saveClient() {
     this.submitted = true;
     if (this.form.valid) {
@@ -322,11 +321,30 @@ export class ClientsComponent implements OnInit {
       this.clientDialog = false;
     }
   }
-
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
+  }
+
+  handleRowReorder(event: any) {
+    console.log(`##### event  #####`);
+    console.log(event);
+    // console.log('przed:');
+    console.log(this.clients);
+
+    // const { dragIndex, dropIndex } = event;
+
+    // if (dragIndex === dropIndex) return; // Jeśli indeksy są takie same, nie rób nic
+  
+    // const updatedClients = [...this.clients]; // Tworzymy kopię listy
+    // const [movedItem] = updatedClients.splice(dragIndex, 1); // Usuwamy element z jego pierwotnej pozycji
+    // updatedClients.splice(dropIndex, 0, movedItem); // Wstawiamy element na nową pozycję
+  
+    // this.clients = updatedClients; // Aktualizujemy listę klientów
+
+    // console.log('Nowa kolejność:');
+    // console.log(this.clients);
   }
 }

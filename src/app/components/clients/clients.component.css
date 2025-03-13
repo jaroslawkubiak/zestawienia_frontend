@@ -55,3 +55,7 @@ label {
   font-size: 2rem;
   color: var(--accent-color-darker);
 }
+
+tr {
+  cursor: pointer;
+}

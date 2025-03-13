@@ -3,7 +3,7 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductsComponent } from './components/products/products.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
-import { PositionsComponent } from './components/sets/positions/positions.component';
+import { SetComponent } from './components/sets/set/set.component';
 import { SetsComponent } from './components/sets/sests.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
@@ -39,7 +39,7 @@ export const routes: Routes = [
   },
   {
     path: 'sets/:id',
-    component: PositionsComponent,
+    component: SetComponent,
     canActivate: [AuthGuard],
   },
   {

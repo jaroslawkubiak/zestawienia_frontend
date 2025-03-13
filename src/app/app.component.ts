@@ -1,4 +1,4 @@
-import { Component, computed, ViewEncapsulation } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthService } from './login/auth.service';
 import { MenuComponent } from './components/menu/menu.component';
