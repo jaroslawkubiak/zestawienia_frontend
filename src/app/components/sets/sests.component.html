@@ -48,33 +48,33 @@
         <th style="width: 3rem">LP</th>
         <th pSortableColumn="clientId.firma">
           Firma
-          <p-sortIcon field="clientId.firma"/>
+          <p-sortIcon field="clientId.firma" />
         </th>
         <th pSortableColumn="clientId.email">
           E-mail
-          <p-sortIcon field="clientId.email"/>
+          <p-sortIcon field="clientId.email" />
         </th>
         <th pSortableColumn="numer">
           Nazwa
-          <p-sortIcon field="numer"/>
+          <p-sortIcon field="numer" />
         </th>
         <th pSortableColumn="status">
           Status
-          <p-sortIcon field="status"/>
+          <p-sortIcon field="status" />
         </th>
         <th pSortableColumn="createdAtTimestamp">
           Utworzone
-          <p-sortIcon field="createdAtTimestamp"/>
+          <p-sortIcon field="createdAtTimestamp" />
         </th>
         <th pSortableColumn="updatedAtTimestamp">
           Zaktualizowne
-          <p-sortIcon field="updatedAtTimestamp"/>
+          <p-sortIcon field="updatedAtTimestamp" />
         </th>
         <th></th>
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
-      <tr (click)="editSet(set.id)">
+      <tr (click)="editSet(set.id)" class="row">
         <td>
           <div class="flex-center">
             {{ i + 1 }}

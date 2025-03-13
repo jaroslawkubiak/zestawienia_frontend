@@ -8,7 +8,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { INewSet } from './new-set/INewSet';
 import { ISet } from './ISet';
-import { IPosition } from './positions/IPosition';
+import { IPosition } from './position/IPosition';
 
 @Injectable({
   providedIn: 'root',
