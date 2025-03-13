@@ -100,8 +100,6 @@ export class SuppliersComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSuppliers();
-    console.log(`##### notificationLifeTime #####`);
-    console.log(notificationLifeTime);
   }
 
   getSuppliers() {

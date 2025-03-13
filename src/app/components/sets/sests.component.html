@@ -17,7 +17,7 @@
     [value]="sets"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="['client.firma', 'client.email', 'numer', 'status']"
+    [globalFilterFields]="['clientId.firma', 'clientId.email', 'numer', 'status']"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
     dataKey="id"
@@ -41,13 +41,13 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">LP</th>
-        <th pSortableColumn="client.firma" style="min-width: 16rem">
+        <th pSortableColumn="clientId.firma" style="min-width: 16rem">
           Firma
-          <p-sortIcon field="client.firma" />
+          <p-sortIcon field="clientId.firma" />
         </th>
-        <th pSortableColumn="client.email" style="min-width: 8rem">
+        <th pSortableColumn="clientId.email" style="min-width: 8rem">
           E-mail
-          <p-sortIcon field="client.email" />
+          <p-sortIcon field="clientId.email" />
         </th>
         <th pSortableColumn="numer" style="min-width: 8rem">
           Numer
@@ -69,7 +69,7 @@
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
-      <tr>
+      <tr (click)="editSet(set.id)">
         <td>
           <div class="flex-center">
             {{ i + 1 }}
@@ -89,7 +89,7 @@
         </td>
 
         <td>
-          <p-button icon="pi pi-pencil" class="p-4" (click)="editSet()" />
+          <p-button icon="pi pi-pencil" class="p-4" (click)="editSet(set.id)" />
         </td>
       </tr>
     </ng-template>

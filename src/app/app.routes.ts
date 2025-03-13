@@ -1,18 +1,19 @@
 import { Routes } from '@angular/router';
+import { ClientsComponent } from './components/clients/clients.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { WelcomeComponent } from './components/welcome/welcome.component';
+import { ProductsComponent } from './components/products/products.component';
+import { NewSetComponent } from './components/sets/new-set/new-set.component';
+import { PositionsComponent } from './components/sets/positions/positions.component';
 import { SetsComponent } from './components/sets/sests.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { SuppliersComponent } from './components/suppliers/suppliers.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { ProductsComponent } from './components/products/products.component';
-import { ClientsComponent } from './components/clients/clients.component';
-import { SuppliersComponent } from './components/suppliers/suppliers.component';
-import { NewSetComponent } from './components/sets/new-set/new-set.component';
-import { SettingsComponent } from './components/settings/settings.component';
 
 //TODO add /login as default path
 export const routes: Routes = [
-  { path: '', redirectTo: '/sets/new', pathMatch: 'full' },
+  { path: '', redirectTo: '/sets', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -34,6 +35,11 @@ export const routes: Routes = [
   {
     path: 'sets/new',
     component: NewSetComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'sets/:id',
+    component: PositionsComponent,
     canActivate: [AuthGuard],
   },
   {

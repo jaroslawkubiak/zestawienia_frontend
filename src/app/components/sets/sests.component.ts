@@ -20,6 +20,7 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { ISet } from './ISet';
 import { SetsService } from './sets.service';
+// import { notificationLifeTime } from '../../shared/constans';
 
 interface Column {
   field: string;
@@ -54,14 +55,10 @@ interface ExportColumn {
     MultiSelectModule,
     SelectModule,
   ],
-  providers: [
-    SetsService,
-    MessageService,
-    ConfirmationService,
-  ],
+  providers: [SetsService, MessageService, ConfirmationService],
 })
 export class SetsComponent implements OnInit {
-  public authorizationToken: string | null;
+  private authorizationToken: string | null;
   sets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
   cols!: Column[];
@@ -110,8 +107,9 @@ export class SetsComponent implements OnInit {
     this.router.navigate(['/sets/new']);
   }
 
-  //TODO dokończyć
-  editSet() {}
+  editSet(id: number) {
+    this.router.navigate([`/sets/${id}`]);
+  }
 
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
