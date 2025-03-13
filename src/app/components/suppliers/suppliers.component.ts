@@ -148,7 +148,7 @@ export class SuppliersComponent implements OnInit {
   deleteSelectedSupplier() {
     this.confirmationService.confirm({
       message: 'Czy na pewno usunąć zaznaczonych dostawców?',
-      header: 'Potwierdź usunięcie dostawcy',
+      header: 'Potwierdź usunięcie dostawców',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
       acceptIcon: 'pi pi-trash',

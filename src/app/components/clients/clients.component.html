@@ -78,17 +78,26 @@
       </tr>
     </ng-template>
     <ng-template #body let-client>
-      <tr (click)="editClient(client)" class="row">
-        <td style="width: 3rem">
+      <tr class="row" (click)="editClient(client)">
+        <td style="width: 3rem" (click)="$event.stopPropagation()">
           <p-tableCheckbox [value]="client" />
         </td>
-
-        <td style="min-width: 16rem">{{ client.firma }}</td>
-        <td style="min-width: 10rem">{{ client.imie }}</td>
-        <td style="min-width: 12rem">{{ client.nazwisko }}</td>
-        <td style="min-width: 12rem">{{ client.email }}</td>
-        <td style="min-width: 10rem">{{ client.telefon }}</td>
-        <td>
+        <td style="min-width: 16rem">
+          {{ client.firma }}
+        </td>
+        <td style="min-width: 8rem">
+          {{ client.imie }}
+        </td>
+        <td style="min-width: 12rem">
+          {{ client.nazwisko }}
+        </td>
+        <td style="min-width: 12rem">
+          {{ client.email }}
+        </td>
+        <td style="min-width: 10rem">
+          {{ client.telefon }}
+        </td>
+        <td (click)="$event.stopPropagation()">
           <p-button
             icon="pi pi-pencil"
             class="p-4"

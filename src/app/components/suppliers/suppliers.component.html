@@ -79,16 +79,15 @@
     </ng-template>
     <ng-template #body let-supplier>
       <tr (click)="editSupplier(supplier)" class="row">
-        <td style="width: 3rem">
+        <td style="width: 3rem" (click)="$event.stopPropagation()">
           <p-tableCheckbox [value]="supplier" />
         </td>
-
         <td style="min-width: 16rem">{{ supplier.firma }}</td>
         <td style="min-width: 10rem">{{ supplier.imie }}</td>
         <td style="min-width: 12rem">{{ supplier.nazwisko }}</td>
         <td style="min-width: 12rem">{{ supplier.email }}</td>
         <td style="min-width: 10rem">{{ supplier.telefon }}</td>
-        <td>
+        <td (click)="$event.stopPropagation()">
           <p-button
             icon="pi pi-pencil"
             class="p-4"

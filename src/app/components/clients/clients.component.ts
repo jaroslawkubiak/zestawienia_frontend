@@ -148,7 +148,7 @@ export class ClientsComponent implements OnInit {
   deleteSelectedClient() {
     this.confirmationService.confirm({
       message: 'Czy na pewno usunąć zaznaczonych klientów?',
-      header: 'Potwierdź usunięcie klienta',
+      header: 'Potwierdź usunięcie klientów',
       icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak',
       acceptIcon: 'pi pi-trash',
