@@ -9,12 +9,11 @@ import { MenuComponent } from './components/menu/menu.component';
   templateUrl: './app.component.html',
   styleUrls: [
     './app.component.css',
-    './shared/css/p-toast.css',
     './shared/css/basic.css',
     './shared/css/p-table.css',
+    './shared/css/p-toast.css',
   ],
   standalone: true,
-  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
   user = computed(() => this.authService.user());
