@@ -3,9 +3,9 @@ import { AuthService } from '../../login/auth.service';
 
 @Component({
   selector: 'app-welcome',
-  imports: [],
   templateUrl: './welcome.component.html',
   styleUrl: './welcome.component.css',
+  imports: [],
 })
 export class WelcomeComponent {
   constructor(private authService: AuthService) {}

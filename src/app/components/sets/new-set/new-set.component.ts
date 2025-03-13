@@ -19,6 +19,7 @@ import { INewSet } from './INewSet';
 @Component({
   selector: 'app-new-set',
   templateUrl: './new-set.component.html',
+  styleUrls: ['./new-set.component.css', '../../../shared/css/basic.css'],
   standalone: true,
   imports: [
     ToastModule,
@@ -30,7 +31,6 @@ import { INewSet } from './INewSet';
     InputTextModule,
   ],
   providers: [MessageService],
-  styleUrls: ['./new-set.component.css', '../../../shared/css/basic.css'],
 })
 export class NewSetComponent implements OnInit {
   name: string = '';

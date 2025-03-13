@@ -1,7 +1,7 @@
-.container {
+.content-container {
   padding: 2rem;
   width: 100%;
-  display: flex; 
+  display: flex;
   justify-self: center;
-  justify-content: center; 
+  justify-content: center;
 }

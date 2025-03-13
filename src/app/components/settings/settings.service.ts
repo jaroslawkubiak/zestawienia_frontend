@@ -15,9 +15,9 @@ export class SettingsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getSetNumber(): Observable<any[]> {
+  getByType(type: string): Observable<any[]> {
     return this.http
-      .get<any[]>(`${environment.API_URL}/settings/number`)
+      .get<any[]>(`${environment.API_URL}/settings/${type}`)
       .pipe(catchError(this.handleError));
   }
 }

@@ -29,6 +29,7 @@ import { IClient } from './IClient';
 @Component({
   selector: 'app-clients',
   templateUrl: './clients.component.html',
+  styleUrl: './clients.component.css',
   standalone: true,
   imports: [
     TableModule,
@@ -48,7 +49,6 @@ import { IClient } from './IClient';
     ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, ClientsService],
-  styleUrl: './clients.component.css',
 })
 export class ClientsComponent implements OnInit {
   clientDialog: boolean = false;

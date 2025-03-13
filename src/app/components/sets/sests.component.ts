@@ -20,24 +20,14 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { ISet } from './ISet';
 import { SetsService } from './sets.service';
+import { IColumn, IExportColumn } from '../../shared/types/ITable';
 // import { notificationLifeTime } from '../../shared/constans';
-
-interface Column {
-  field: string;
-  header: string;
-  customExportHeader?: string;
-}
-
-interface ExportColumn {
-  title: string;
-  dataKey: string;
-}
 
 @Component({
   selector: 'app-sests',
-  standalone: true,
   templateUrl: './sests.component.html',
-  styleUrls: ['./sests.component.css', '../../shared/css/basic.css'],
+  styleUrl: './sests.component.css',
+  standalone: true,
   imports: [
     ToolbarModule,
     TableModule,
@@ -61,8 +51,8 @@ export class SetsComponent implements OnInit {
   private authorizationToken: string | null;
   sets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
-  cols!: Column[];
-  exportColumns!: ExportColumn[];
+  cols!: IColumn[];
+  exportColumns!: IExportColumn[];
 
   constructor(
     private router: Router,

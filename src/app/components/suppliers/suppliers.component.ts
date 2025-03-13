@@ -29,6 +29,7 @@ import { SuppliersService } from './suppliers.service';
 @Component({
   selector: 'app-suppliers',
   templateUrl: './suppliers.component.html',
+  styleUrl: './suppliers.component.css',
   standalone: true,
   imports: [
     TableModule,
@@ -48,7 +49,6 @@ import { SuppliersService } from './suppliers.service';
     ReactiveFormsModule,
   ],
   providers: [MessageService, ConfirmationService, SuppliersService],
-  styleUrl: './suppliers.component.css',
 })
 export class SuppliersComponent implements OnInit {
   supplierDialog: boolean = false;

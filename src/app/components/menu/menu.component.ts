@@ -7,9 +7,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
-  imports: [CommonModule, ButtonModule, RouterLink, RouterLinkActive],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.css',
+  standalone: true,
+  imports: [CommonModule, ButtonModule, RouterLink, RouterLinkActive],
 })
 export class MenuComponent {
   menuItems: IMenu[] = [
