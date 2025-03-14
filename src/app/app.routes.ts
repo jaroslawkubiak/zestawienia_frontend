@@ -3,14 +3,15 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductsComponent } from './components/products/products.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
-import { SetComponent } from './components/sets/set/set.component';
-import { SetsComponent } from './components/sets/sests.component';
+import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
+import { SetsComponent } from './components/sets/sets.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { UiCheckComponent } from './ui-check/ui-check.component';
+import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 
 //TODO add /login as default path
 export const routes: Routes = [
@@ -40,8 +41,9 @@ export const routes: Routes = [
   },
   {
     path: 'sets/:id',
-    component: SetComponent,
+    component: EditSetComponent,
     canActivate: [AuthGuard],
+    canDeactivate: [UnsavedChangesGuard],
   },
   {
     path: 'products',
