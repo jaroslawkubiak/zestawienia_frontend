@@ -1,4 +1,4 @@
-import { IPosition } from './IPosition';
+// import { IPosition } from './IPosition';
 import { Component, OnInit, Input } from '@angular/core';
 // import { ProductService } from '@/service/productservice';
 import { TableModule } from 'primeng/table';
@@ -6,10 +6,14 @@ import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+interface IPosition {
+  kolor: string;
+  ilosc: number;
+  netto: number;
+}
 interface IColumnList {
   name: string;
   value: string;
-  type: 'string' | 'number';
 }
 
 @Component({
@@ -30,74 +34,65 @@ export class PositionComponent implements OnInit {
   @Input() positions: IPosition[] = [];
 
   columnList: IColumnList[] = [
-    {
-      name: 'PRODUKT',
-      value: 'produkt',
-      type: 'string',
-    },
-    {
-      name: 'PRODUCENT',
-      value: 'producent',
-      type: 'string',
-    },
-    {
-      name: 'KOLEKCJA/SERIA',
-      value: 'kolekcja',
-      type: 'string',
-    },
-    {
-      name: 'NR KATALOGOWY',
-      value: 'nrKatalogowy',
-      type: 'string',
-    },
+    // {
+    //   name: 'PRODUKT',
+    //   value: 'produkt',
+    // },
+    // {
+    //   name: 'PRODUCENT',
+    //   value: 'producent',
+    // },
+    // {
+    //   name: 'KOLEKCJA/SERIA',
+    //   value: 'kolekcja',
+    // },
+    // {
+    //   name: 'NR KATALOGOWY',
+    //   value: 'nrKatalogowy',
+    // },
     {
       name: 'KOLOR',
       value: 'kolor',
-      type: 'string',
+    },
+    {
+      name: 'ILOŚĆ',
+      value: 'ilosc',
+    },
+    {
+      name: 'CENA NETTO',
+      value: 'netto',
     },
     // {
-    //   name: 'ILOŚĆ',
-    //   value: 'ilosc',
-    //   type: 'number',
-    // },
-    // {
-    //   name: 'CENA NETTO',
-    //   value: 'netto',
-    //   type: 'number',
-    // },
-    // {
     //   name: 'CENA BRUTTO',
-    //   value: 'brutto',
-    //   type: 'number',
+    //   value: 'brutto'
+    //
     // },
     // {
     //   name: 'WARTOŚĆ NETTO',
-    //   value: 'wartoscNetto',
-    //   type: 'number',
+    //   value: 'wartoscNetto'
+    //
     // },
     // {
     //   name: 'WARTOŚĆ BRUTTO',
-    //   value: 'wartoscBrutto',
-    //   type: 'number',
+    //   value: 'wartoscBrutto'
+    //
     // },
     // {
     //   name: 'DOSTAWCA',
-    //   value: 'dostawca',
-    //   type: 'string',
+    //   value: 'dostawca'
+    //
     // },
     // {
     //   name: 'POMIESZCZENIE',
-    //   value: 'pomieszczenie',
-    //   type: 'string',
+    //   value: 'pomieszczenie'
+    //
     // },
     // {
     //   name: 'LINK',
-    //   value: 'link',
-    //   type: 'string',
+    //   value: 'link'
+    //
     // },
   ];
-
-  // image: image;
 
   // constructor(private productService: ProductService) {}
   editedCell: { column: string; rowIndex: number } | null = null;

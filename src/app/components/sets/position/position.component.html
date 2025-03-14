@@ -3,7 +3,7 @@
     stripedRows
     dataKey="id"
     [scrollable]="true"
-    [resizableColumns]="true"
+    [resizableColumns]="false"
     columnResizeMode="expand"
     class="p-datatable-gridlines"
     [value]="positions"
@@ -32,20 +32,7 @@
             (onEditInit)="onEditInit(position, pos.value)"
           >
             <ng-template #input>
-              <div [ngSwitch]="pos.type">
-                <input
-                  *ngSwitchCase="'string'"
-                  pInputText
-                  type="text"
-                  [(ngModel)]="position[pos.value]"
-                />
-                <input
-                  *ngSwitchCase="'number'"
-                  pInputText
-                  type="number"
-                  [(ngModel)]="position[pos.value]"
-                />
-              </div>
+              <input pInputText type="text" [(ngModel)]="position[pos.value]" />
             </ng-template>
             <ng-template #output>
               <span class="viewMode">
