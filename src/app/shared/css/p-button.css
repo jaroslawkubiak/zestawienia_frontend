@@ -1,33 +1,3 @@
-:root {
-  --btn-primary-bg: #3bbfa1;
-  --p-button-primary-background: #3bbfa1;
-  --btn-primary-text: #ecf1f0;
-  --p-button-primary-background: #e66408 !important;
-
-  --btn-secondary-bg: #f1f5f9;
-  --btn-secondary-text: #020617;
-
-  --btn-danger-bg: #f44336;
-  --btn-danger-text: #ecf1f0;
-
-  --btn-info-bg: #03a9f4;
-  --btn-info-text: #ecf1f0;
-
-  --btn-help-bg: #9c27b0;
-  --btn-help-text: #ecf1f0;
-
-  --btn-warn-bg: #ff9800;
-  --btn-warn-text: #ecf1f0;
-
-  --btn-contrast-bg: #020617;
-  --btn-contrast-text: #ecf1f0;
-
-  --btn-success-bg: #4caf50;
-  --btn-success-text: #ecf1f0;
-
-  --p-primary-color: #600a20 !important;
-}
-
 .p-button {
   border: 1px solid transparent !important;
 }

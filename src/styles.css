@@ -28,6 +28,8 @@ html {
   --main-color-700: #9a1738;
   --main-color-800: #841736;
   --main-color-900: #600a20;
+  /* nadpisuje domyślny kolor Material */
+  /* --p-primary-color: #600a20 !important; */
 }
 
 * {

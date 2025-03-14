@@ -26,7 +26,7 @@
   --btn-contrast-bg: #020617;
   --btn-contrast-bg-hover: #061141;
   --btn-contrast-text: #ecf1f0;
-  
+
   --btn-success-bg: #4caf50;
   --btn-success-bg-hover: #4caf50;
   --btn-success-text: #ecf1f0;
@@ -41,7 +41,9 @@
   --p-button-primary-active-color: var(--p-button-primary-color) !important;
 
   --p-button-secondary-background: var(--btn-secondary-bg) !important;
-  --p-button-secondary-hover-background: var(--btn-secondary-bg-hover) !important;
+  --p-button-secondary-hover-background: var(
+    --btn-secondary-bg-hover
+  ) !important;
   --p-button-secondary-active-background: var(
     --p-button-secondary-background
   ) !important;
@@ -51,9 +53,7 @@
 
   --p-button-info-background: var(--btn-info-bg) !important;
   --p-button-info-hover-background: var(--btn-info-bg-hover) !important;
-  --p-button-info-active-background: var(
-    --p-button-info-background
-  ) !important;
+  --p-button-info-active-background: var(--p-button-info-background) !important;
   --p-button-info-color: var(--btn-info-text) !important;
   --p-button-info-hover-color: var(--btn-info-text) !important;
   --p-button-info-active-color: var(--p-button-info-color) !important;
@@ -69,18 +69,14 @@
 
   --p-button-warn-background: var(--btn-warn-bg) !important;
   --p-button-warn-hover-background: var(--btn-warn-bg-hover) !important;
-  --p-button-warn-active-background: var(
-    --p-button-warn-background
-  ) !important;
+  --p-button-warn-active-background: var(--p-button-warn-background) !important;
   --p-button-warn-color: var(--btn-warn-text) !important;
   --p-button-warn-hover-color: var(--btn-warn-text) !important;
   --p-button-warn-active-color: var(--p-button-warn-color) !important;
 
   --p-button-help-background: var(--btn-help-bg) !important;
   --p-button-help-hover-background: var(--btn-help-bg-hover) !important;
-  --p-button-help-active-background: var(
-    --p-button-help-background
-  ) !important;
+  --p-button-help-active-background: var(--p-button-help-background) !important;
   --p-button-help-color: var(--btn-help-text) !important;
   --p-button-help-hover-color: var(--btn-help-text) !important;
   --p-button-help-active-color: var(--p-button-help-color) !important;
