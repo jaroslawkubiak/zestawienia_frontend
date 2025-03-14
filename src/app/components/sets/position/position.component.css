@@ -1,0 +1,40 @@
+:host ::ng-deep .p-cell-editing {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+.positions-container {
+  font-size: 1.2rem;
+}
+
+.header {
+  background-color: rgb(235, 235, 235);
+}
+
+.viewMode {
+  display: flex;
+  align-items: center;
+  padding: 6px 8px !important;
+}
+
+.lp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-inputtext {
+  all: unset !important;
+  padding: 6px 8px !important;
+}
+
+.p-inputtext,
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active {
+  background-color: var(--accent-color-lighter) !important;
+  width: 100% !important;
+}
+
+td {
+  padding: 0 !important;
+}
