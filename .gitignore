@@ -5,6 +5,8 @@
 /tmp
 /out-tsc
 /bazel-out
+/help-files
+/src/app/ui-check
 
 # Node
 /node_modules

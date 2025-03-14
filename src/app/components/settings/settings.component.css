@@ -1,0 +1,15 @@
+li a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  margin: 20px 0;
+}
+
+.icon {
+  font-size: 2rem;
+}
+
+li a:hover {
+  color: var(--accent-color);
+}

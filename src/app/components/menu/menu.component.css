@@ -2,7 +2,6 @@
   display: flex;
   justify-content: center;
   background-color: var(--primary-color);
-  color: var(--secondary-color);
   width: 100%;
   padding: 1rem 0;
 }
@@ -30,7 +29,9 @@ li a {
   gap: 10px;
 }
 
-li:hover {
+li:hover,
+.submit:hover,
+.selected {
   color: var(--accent-color);
 }
 
@@ -41,14 +42,6 @@ li:hover {
   cursor: pointer;
 }
 
-.submit:hover {
-  color: var(--accent-color);
-}
-
 .icon {
   font-size: 2rem;
-}
-
-.selected {
-  color: var(--accent-color);
 }

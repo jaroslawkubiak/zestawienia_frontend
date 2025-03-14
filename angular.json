@@ -29,9 +29,11 @@
             "styles": [
               "src/styles.css",
               "src/app/shared/css/basic.css",
+              "src/app/shared/css/p-button.css",
               "src/app/shared/css/p-table.css",
               "src/app/shared/css/p-toast.css",
-              "node_modules/primeicons/primeicons.css"
+              "node_modules/primeicons/primeicons.css",
+              "src/app/shared/css/theme.css"
             ],
             "scripts": []
           },

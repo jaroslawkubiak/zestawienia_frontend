@@ -1,0 +1,105 @@
+:root {
+  --btn-primary-bg: #3bbfa1;
+  --btn-primary-bg-hover: #42d6b4;
+  --btn-primary-text: #ecf1f0;
+
+  --btn-secondary-bg: #f1f5f9;
+  --btn-secondary-bg-hover: #d4d7da;
+  --btn-secondary-text: #020617;
+
+  --btn-danger-bg: #f44336;
+  --btn-danger-bg-hover: #cb382e;
+  --btn-danger-text: #ecf1f0;
+
+  --btn-info-bg: #03a9f4;
+  --btn-info-bg-hover: #058ecd;
+  --btn-info-text: #ecf1f0;
+
+  --btn-help-bg: #9c27b0;
+  --btn-help-bg-hover: #b82fd0;
+  --btn-help-text: #ecf1f0;
+
+  --btn-warn-bg: #ff9800;
+  --btn-warn-bg-hover: #cc7c04;
+  --btn-warn-text: #ecf1f0;
+
+  --btn-contrast-bg: #020617;
+  --btn-contrast-bg-hover: #061141;
+  --btn-contrast-text: #ecf1f0;
+  
+  --btn-success-bg: #4caf50;
+  --btn-success-bg-hover: #4caf50;
+  --btn-success-text: #ecf1f0;
+
+  --p-button-primary-background: var(--btn-primary-bg) !important;
+  --p-button-primary-hover-background: var(--btn-primary-bg-hover) !important;
+  --p-button-primary-active-background: var(
+    --p-button-primary-background
+  ) !important;
+  --p-button-primary-color: var(--btn-primary-text) !important;
+  --p-button-primary-hover-color: var(--btn-primary-text) !important;
+  --p-button-primary-active-color: var(--p-button-primary-color) !important;
+
+  --p-button-secondary-background: var(--btn-secondary-bg) !important;
+  --p-button-secondary-hover-background: var(--btn-secondary-bg-hover) !important;
+  --p-button-secondary-active-background: var(
+    --p-button-secondary-background
+  ) !important;
+  --p-button-secondary-color: var(--btn-secondary-text) !important;
+  --p-button-secondary-hover-color: var(--btn-secondary-text) !important;
+  --p-button-secondary-active-color: var(--p-button-secondary-color) !important;
+
+  --p-button-info-background: var(--btn-info-bg) !important;
+  --p-button-info-hover-background: var(--btn-info-bg-hover) !important;
+  --p-button-info-active-background: var(
+    --p-button-info-background
+  ) !important;
+  --p-button-info-color: var(--btn-info-text) !important;
+  --p-button-info-hover-color: var(--btn-info-text) !important;
+  --p-button-info-active-color: var(--p-button-info-color) !important;
+
+  --p-button-success-background: var(--btn-success-bg) !important;
+  --p-button-success-hover-background: var(--btn-success-bg-hover) !important;
+  --p-button-success-active-background: var(
+    --p-button-success-background
+  ) !important;
+  --p-button-success-color: var(--btn-success-text) !important;
+  --p-button-success-hover-color: var(--btn-success-text) !important;
+  --p-button-success-active-color: var(--p-button-success-color) !important;
+
+  --p-button-warn-background: var(--btn-warn-bg) !important;
+  --p-button-warn-hover-background: var(--btn-warn-bg-hover) !important;
+  --p-button-warn-active-background: var(
+    --p-button-warn-background
+  ) !important;
+  --p-button-warn-color: var(--btn-warn-text) !important;
+  --p-button-warn-hover-color: var(--btn-warn-text) !important;
+  --p-button-warn-active-color: var(--p-button-warn-color) !important;
+
+  --p-button-help-background: var(--btn-help-bg) !important;
+  --p-button-help-hover-background: var(--btn-help-bg-hover) !important;
+  --p-button-help-active-background: var(
+    --p-button-help-background
+  ) !important;
+  --p-button-help-color: var(--btn-help-text) !important;
+  --p-button-help-hover-color: var(--btn-help-text) !important;
+  --p-button-help-active-color: var(--p-button-help-color) !important;
+
+  --p-button-danger-background: var(--btn-danger-bg) !important;
+  --p-button-danger-hover-background: var(--btn-danger-bg-hover) !important;
+  --p-button-danger-active-background: var(
+    --p-button-danger-background
+  ) !important;
+  --p-button-danger-color: var(--btn-danger-text) !important;
+  --p-button-danger-hover-color: var(--btn-danger-text) !important;
+  --p-button-danger-active-color: var(--p-button-danger-color) !important;
+
+  --p-button-contrast-background: var(--btn-contrast-bg) !important;
+  --p-button-contrast-hover-background: var(--btn-contrast-bg-hover) !important;
+  --p-button-contrast-active-background: var(
+    --p-button-contrast-background
+  ) !important;
+  --p-button-contrast-color: var(--btn-contrast-text) !important;
+  --p-button-contrast-hover-color: var(--btn-contrast-text) !important;
+  --p-button-contrast-active-color: var(--p-button-contrast-color) !important;
+}

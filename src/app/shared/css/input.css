@@ -7,7 +7,7 @@
 input {
   all: unset;
   border: var(--input-border-width) solid var(--primary-color);
-  background-color: var(--bg-color);
+  background-color: var(--primary-bg-color);
   color: var(--primary-color);
   padding: 5px 10px;
   transition: var(--inputs-transitions);
@@ -45,4 +45,3 @@ input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0 50px rgb(243, 243, 243) inset !important;
   border: var(--input-border-width) solid var(--primary-color);
 }
-

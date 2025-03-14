@@ -1,19 +1,33 @@
-@import "tailwindcss";
 @import "tailwindcss-primeui";
 
 .pi {
   font-family: "PrimeIcons" !important;
 }
 
-:root {
+html {
   --primary-color: #212121;
-  --secondary-color: #fff;
+  --secondary-color: #f4f3f3;
   --neutral-color: #e9efed;
+
   --accent-color: #3bbfa1;
   --accent-color-lighter: #e5fff9;
   --accent-color-darker: #2f9880;
+
   --error-color: #e91e63;
-  --bg-color: #fff;
+
+  --primary-bg-color: #f4f3f3;
+  --secondary-bg-color: #212121;
+  --neutral-bg-color: #e9efed;
+
+  --main-color-100: #fee5e6;
+  --main-color-200: #fccfd3;
+  --main-color-300: #faa7af;
+  --main-color-400: #f67686;
+  --main-color-500: #ed465e;
+  --main-color-600: #da2447;
+  --main-color-700: #9a1738;
+  --main-color-800: #841736;
+  --main-color-900: #600a20;
 }
 
 * {

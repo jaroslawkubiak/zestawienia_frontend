@@ -10,6 +10,7 @@ import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
+import { UiCheckComponent } from './ui-check/ui-check.component';
 
 //TODO add /login as default path
 export const routes: Routes = [
@@ -61,6 +62,10 @@ export const routes: Routes = [
     path: 'settings',
     component: SettingsComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'settings/ui-check',
+    component: UiCheckComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];
