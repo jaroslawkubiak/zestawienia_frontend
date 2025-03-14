@@ -1,0 +1,97 @@
+<p-dialog header="Ostrzeżenie" [(visible)]="showWarningDialog">
+  <p>
+    Masz niezapisane zmiany w formularzu! Czy na pewno chcesz opuścić stronę?
+  </p>
+  <p-footer>
+    <button pButton label="Tak, opuść" (click)="confirmExit(true)"></button>
+    <button pButton label="Anuluj" (click)="confirmExit(false)"></button>
+  </p-footer>
+</p-dialog>
+
+<div class="set-container">
+  <div class="set-header flex-center" *ngIf="set">
+    Zestawienie :&nbsp;<strong>{{ set.name }}</strong
+    >&nbsp;dla &nbsp;<strong>{{ set.clientId.firma }}</strong
+    >&nbsp; z dnia {{ set.createdAt }}
+  </div>
+  <p-tabs [value]="selectedBookmark" scrollable>
+    <p-tablist>
+      @for (bookmark of bookmarks; track bookmark.id) {
+      <p-tab [value]="bookmark.id" (click)="loadContent(bookmark.id)">{{
+        bookmark.name
+      }}</p-tab>
+      }
+    </p-tablist>
+    <p-tabpanels>
+      @for (bookmark of bookmarks; track bookmark.id) {
+      <p-tabpanel [value]="bookmark.id">
+        <div class="position-container">
+          <p-table
+            pEditableTable
+            stripedRows
+            dataKey="id"
+            editable="true"
+            columnResizeMode="expand"
+            class="p-datatable-gridlines"
+            [resizableColumns]="true"
+            [scrollable]="true"
+            [value]="formData"
+            [tableStyle]="{ 'min-width': '50rem' }"
+          >
+            <ng-template pTemplate="header">
+              <tr>
+                <th style="width: 3rem" class="position-header">LP</th>
+                <th
+                  *ngFor="let column of columnList"
+                  class="position-header"
+                  [ngClass]="column.class"
+                  pResizableColumn
+                >
+                  {{ column.name }}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template
+              pTemplate="body"
+              let-position
+              let-editing="editing"
+              let-i="rowIndex"
+            >
+              <tr>
+                <td>
+                  <div class="lp">
+                    {{ i + 1 }}
+                  </div>
+                </td>
+                <td
+                  *ngFor="let column of columnList"
+                  pEditableColumn
+                  [pEditableColumnField]="column.key"
+                  [ngClass]="column.class"
+                >
+                  <p-cellEditor>
+                    <ng-template pTemplate="input">
+                      <input
+                        pInputText
+                        type="text"
+                        [(ngModel)]="formData[i][column.key]"
+                        (ngModelChange)="markAsEdited()"
+                      />
+                    </ng-template>
+                    <ng-template pTemplate="output">
+                      <span class="viewMode">
+                        {{ formData[i][column.key] }}
+                      </span>
+                    </ng-template>
+                  </p-cellEditor>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+        <button (click)="save()">Zapisz</button>
+      </p-tabpanel>
+      }
+    </p-tabpanels>
+  </p-tabs>
+</div>

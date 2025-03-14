@@ -14,7 +14,7 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/IClient';
 import { SetsService } from '../sets.service';
-import { INewSet } from './INewSet';
+import { INewSet } from '../types/INewSet';
 
 @Component({
   selector: 'app-new-set',

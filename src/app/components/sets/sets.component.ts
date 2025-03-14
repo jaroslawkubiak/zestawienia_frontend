@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-// import { ConfirmDialog } from 'primeng/confirmdialog';
-// import { Dialog } from 'primeng/dialog';
 import { Router } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -15,23 +12,20 @@ import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
-import { ISet } from './ISet';
-import { SetsService } from './sets.service';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
-// import { notificationLifeTime } from '../../shared/constans';
+import { SetsService } from './sets.service';
+import { ISet } from './types/ISet';
 
 @Component({
-  selector: 'app-sests',
-  templateUrl: './sests.component.html',
-  styleUrl: './sests.component.css',
+  selector: 'app-sets',
+  templateUrl: './sets.component.html',
+  styleUrl: './sets.component.css',
   standalone: true,
   imports: [
     ToolbarModule,
     TableModule,
-    ToastModule,
     InputTextModule,
     TextareaModule,
     CommonModule,
@@ -45,7 +39,7 @@ import { IColumn, IExportColumn } from '../../shared/types/ITable';
     MultiSelectModule,
     SelectModule,
   ],
-  providers: [SetsService, MessageService, ConfirmationService],
+  providers: [SetsService],
 })
 export class SetsComponent implements OnInit {
   private authorizationToken: string | null;
@@ -59,8 +53,6 @@ export class SetsComponent implements OnInit {
     private setsService: SetsService,
     private authService: AuthService,
     private cd: ChangeDetectorRef,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
   ) {
     this.authorizationToken = this.authService.authorizationToken;
   }

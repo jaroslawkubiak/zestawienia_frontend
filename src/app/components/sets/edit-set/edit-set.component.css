@@ -1,0 +1,76 @@
+td {
+  padding: 0 !important;
+  height: 40px;
+}
+
+.set-container {
+  width: 1200px;
+}
+
+.set-header {
+  font-size: 3rem;
+  background-color: var(--accent-color-darker);
+  color: var(--secondary-color);
+}
+
+::ng-deep .p-tab {
+  font-size: 1.4rem;
+  background-color: var(--neutral-color);
+}
+
+::ng-deep .p-tab:hover,
+::ng-deep .p-tab-active {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+.position-container {
+  margin-top: 10px;
+  border: 1px solid rgb(109, 109, 109);
+  font-size: 1.2rem;
+}
+
+::ng-deep .p-tabpanels {
+  padding: 0 !important;
+}
+
+::ng-deep .p-cell-editing {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.position-header {
+  background-color: rgb(235, 235, 235);
+}
+
+.viewMode {
+  display: flex;
+  align-items: center;
+  padding: 0 8px !important;
+}
+
+.lp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  background-color: rgb(235, 235, 235);
+}
+
+.p-inputtext {
+  all: unset !important;
+  padding: 0 8px !important;
+}
+
+.p-inputtext,
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active {
+  background-color: var(--accent-color-lighter) !important;
+  width: auto !important;
+  height: 100% !important;
+}
+
+.hidden {
+  display: none;
+}

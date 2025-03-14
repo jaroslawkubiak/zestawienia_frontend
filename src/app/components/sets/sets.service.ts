@@ -6,9 +6,9 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { INewSet } from './new-set/INewSet';
-import { ISet } from './ISet';
-import { IPosition } from './position/IPosition';
+import { INewSet } from './types/INewSet';
+import { IPosition } from './types/IPosition';
+import { ISet } from './types/ISet';
 
 @Injectable({
   providedIn: 'root',
