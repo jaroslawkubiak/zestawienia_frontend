@@ -64,7 +64,6 @@ export class SuppliersComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private suppliersService: SuppliersService,
-
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
