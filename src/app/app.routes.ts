@@ -13,7 +13,7 @@ import { LoginComponent } from './login/login.component';
 import { UiCheckComponent } from './ui-check/ui-check.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 
-//TODO add /login as default path
+//TODOauth add /login as default path
 export const routes: Routes = [
   { path: '', redirectTo: '/sets', pathMatch: 'full' },
   {

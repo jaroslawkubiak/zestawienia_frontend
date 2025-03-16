@@ -1,13 +1,3 @@
-<p-dialog header="Ostrzeżenie" [(visible)]="showWarningDialog">
-  <p>
-    Masz niezapisane zmiany w formularzu! Czy na pewno chcesz opuścić stronę?
-  </p>
-  <p-footer>
-    <button pButton label="Tak, opuść" (click)="confirmExit(true)"></button>
-    <button pButton label="Anuluj" (click)="confirmExit(false)"></button>
-  </p-footer>
-</p-dialog>
-
 <div class="set-container">
   <div class="set-header flex-center" *ngIf="set">
     Zestawienie :&nbsp;<strong>{{ set.name }}</strong
@@ -25,7 +15,7 @@
     <p-tabpanels>
       @for (bookmark of bookmarks; track bookmark.id) {
       <p-tabpanel [value]="bookmark.id">
-        <div class="position-container">
+        <div [ngClass]="{ 'form-dirty': isEdited }" class="position-container">
           <p-table
             pEditableTable
             stripedRows
@@ -36,7 +26,8 @@
             [resizableColumns]="true"
             [scrollable]="true"
             [value]="formData"
-            [tableStyle]="{ 'min-width': '50rem' }"
+            (onColResize)="onColResize($event)"
+            [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
           >
             <ng-template pTemplate="header">
               <tr>
@@ -46,6 +37,7 @@
                   class="position-header"
                   [ngClass]="column.class"
                   pResizableColumn
+                  [ngStyle]="{ width: column?.width + 'px' }"
                 >
                   {{ column.name }}
                 </th>
@@ -68,6 +60,7 @@
                   pEditableColumn
                   [pEditableColumnField]="column.key"
                   [ngClass]="column.class"
+                  [ngStyle]="{ width: column?.width + 'px' }"
                 >
                   <p-cellEditor>
                     <ng-template pTemplate="input">
@@ -89,9 +82,20 @@
             </ng-template>
           </p-table>
         </div>
-        <button (click)="save()">Zapisz</button>
       </p-tabpanel>
       }
     </p-tabpanels>
   </p-tabs>
+  <div class="m-10 flex-center">
+    <!-- @if(isEdited) { -->
+    <p-button
+      label="Zapisz"
+      icon="pi pi-save"
+      size="large"
+      (click)="onSubmit()"
+    />
+    <!-- } -->
+  </div>
 </div>
+<p-toast />
+<p-confirmDialog [style]="{ width: '750px' }" />

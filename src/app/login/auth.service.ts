@@ -10,7 +10,8 @@ import { ILoggedUser } from './ILoggedUser';
 })
 export class AuthService {
   user = signal<string | null>(null);
-  //TODO remove temporary token TEMP_TOKEN
+  userId = signal<number | null>(null);
+  //TODOauth remove temporary token TEMP_TOKEN
   authorizationToken: string | null = 'TEMP_TOKEN';
 
   constructor(private apiService: ApiService, private router: Router) {}
@@ -21,7 +22,8 @@ export class AuthService {
         localStorage.setItem('access_token', response.accessToken);
         localStorage.setItem('user_name', response.name);
         localStorage.setItem('user_id', String(response.id));
-        this.user.set(response.name); // Ustawienie użytkownika
+        this.user.set(response.name); // Set user name
+        this.userId.set(response.id); // Set userId
         this.router.navigate(['/welcome']);
       }),
       catchError((error) => {
@@ -31,7 +33,8 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    //TODO use for deveelopment
+    //TODOauth use for development
+    this.userId.set(1);
     return true;
 
     this.authorizationToken = localStorage.getItem('access_token');

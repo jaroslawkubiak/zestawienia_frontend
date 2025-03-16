@@ -1,6 +1,5 @@
 import { IUser } from '../../../login/User';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { ISupplier } from '../../suppliers/ISupplier';
 
 export interface IPosition {
   id: number;
@@ -24,7 +23,7 @@ export interface IPosition {
   createdAtTimestamp: number;
   updatedAt: string;
   updatedAtTimestamp: number;
-  supplierId: ISupplier;
+  supplierId: number;
   bookmarkId: IBookmark;
   createdBy: IUser;
   updatedBy: IUser;

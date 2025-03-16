@@ -15,6 +15,7 @@ import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
+import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 
 @Component({
   selector: 'app-new-set',
@@ -34,12 +35,11 @@ import { INewSet } from '../types/INewSet';
 })
 export class NewSetComponent implements OnInit {
   name: string = '';
-  userId = Number(localStorage.getItem('user_id'));
+  userId: number | null;
   allClients: IClient[] | undefined;
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
   selectedBookmarks: IBookmark[] = [];
-
   private authorizationToken: string | null;
 
   constructor(
@@ -50,6 +50,7 @@ export class NewSetComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.authorizationToken = this.authService.authorizationToken;
+    this.userId = this.authService.userId();
   }
 
   ngOnInit() {
@@ -83,20 +84,19 @@ export class NewSetComponent implements OnInit {
     };
 
     const bookmarks: IBookmark[] = Object.values(bookmarksData);
-    bookmarks.map((item: IBookmark) => delete item.default);
-    //TODO remove this later when turn on auth
-    // if (this.userId === 0) {
-    //   this.userId = 1;
-    // }
+    bookmarks.map((item: IBookmark) => {
+      item.width = bookarksDefaultWidth;
+      delete item.default;
+    });
 
-    const newSet: INewSet = {
-      name: this.name,
-      clientId: client.id,
-      createdBy: this.userId,
-      bookmarks,
-    };
+    if (this.authorizationToken && this.userId) {
+      const newSet: INewSet = {
+        name: this.name,
+        clientId: client.id,
+        createdBy: this.userId,
+        bookmarks,
+      };
 
-    if (this.authorizationToken) {
       this.setsService.addSet(this.authorizationToken, newSet).subscribe({
         next: (response) => {
           this.messageService.add({

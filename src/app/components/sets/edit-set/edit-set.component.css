@@ -67,10 +67,14 @@ td {
 .p-inputtext:hover,
 .p-inputtext:active {
   background-color: var(--accent-color-lighter) !important;
-  width: auto !important;
+  width: 100% !important;
   height: 100% !important;
 }
 
 .hidden {
   display: none;
+}
+
+.form-dirty {
+  border: 1px solid var(--error-color) !important;
 }

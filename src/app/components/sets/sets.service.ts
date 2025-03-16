@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { INewSet } from './types/INewSet';
 import { IPosition } from './types/IPosition';
 import { ISet } from './types/ISet';
+import { IUpdateSet } from './types/IUpdateSet';
 
 @Injectable({
   providedIn: 'root',
@@ -45,7 +46,7 @@ export class SetsService {
     });
 
     return this.http
-      .get<IPosition[]>(`${environment.API_URL}/sets/position/${setId}`, {
+      .get<IPosition[]>(`${environment.API_URL}/positions/${setId}`, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -75,6 +76,28 @@ export class SetsService {
       .post<INewSet>(`${environment.API_URL}/sets/new`, newSet, {
         headers,
       })
+      .pipe(catchError(this.handleError));
+  }
+
+  saveSet(
+    authorizationToken: string | null,
+    savedSet: IUpdateSet
+  ): Observable<INewSet> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+
+    console.log(`##### savedSet #####`);
+    console.log(savedSet);
+
+    return this.http
+      .patch<INewSet>(
+        `${environment.API_URL}/sets/${savedSet.set.id}`,
+        savedSet,
+        {
+          headers,
+        }
+      )
       .pipe(catchError(this.handleError));
   }
 }
