@@ -18,6 +18,8 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
+import { SelectModule } from 'primeng/select';
+import { SetStatus } from '../types/status';
 
 @Component({
   selector: 'app-set',
@@ -34,6 +36,7 @@ import { columnList, IColumnList } from './column-list';
     InputTextModule,
     ConfirmDialog,
     LoadingSpinnerComponent,
+    SelectModule,
   ],
   providers: [SetsService, ConfirmationService, MessageService],
 })
@@ -51,6 +54,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   pendingNavigation: Function | null = null;
   destination: string | undefined;
   isLoading = true;
+  statuses = Object.entries(SetStatus).map(([key, value]) => ({
+    name: key,
+    label: value,
+  }));
+  selectedStatus: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -66,6 +74,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
+    console.log(this.statuses);
+    console.log(this.selectedStatus);
     this.route.paramMap.subscribe((params) => {
       this.setId = params.get('id') || '';
       if (this.setId) {
@@ -91,6 +101,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.selectedBookmark = Math.min(
             ...this.set.bookmarks.map((item) => item.id)
           );
+          this.selectedStatus = this.set.status;
           this.loadContent(this.selectedBookmark);
           this.isLoading = false;
         },
@@ -169,6 +180,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   // save data
   onSubmit() {
     this.updatePosition();
+
+    this.set.status = this.selectedStatus;
 
     if (this.authorizationToken && this.userId) {
       const savedSet: IUpdateSet = {
