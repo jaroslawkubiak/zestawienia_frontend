@@ -46,7 +46,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   positionsFromBookmark: IPosition[] = [];
   bookmarks: IBookmark[] = [];
   selectedBookmark: number = 0;
-  formData: any[] = [];
+  formData: IPosition[] = [];
   columnList = columnList;
   pendingNavigation: Function | null = null;
   destination: string | undefined;
@@ -114,13 +114,25 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // take edited data from form and update this.position array
   updatePosition(): void {
-    this.positions = this.positions.map((position: IPosition) => {
-      const form = this.formData.find(
-        (form: IPosition) => form.id === position.id
-      );
+    console.log(`##### 1 updatePosition this.positions #####`);
+    console.log(this.positions);
 
-      return form ? { ...position, ...form } : { ...position };
+    // Tworzymy mapę z formData, aby szybciej znaleźć odpowiednią pozycję na podstawie id
+    const formDataMap = new Map(
+      this.formData.map((form: IPosition) => [form.id, form])
+    );
+
+    this.positions = this.positions.map((position: IPosition) => {
+      const form = formDataMap.get(position.id); // Wyszukujemy po id
+
+      if (form) {
+        return { ...position, ...form };
+      } else {
+        return position;
+      }
     });
+    console.log(`##### 2 updatePosition this.positions #####`);
+    console.log(this.positions);
   }
 
   // load positions for a given bookmark
@@ -165,39 +177,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   onSubmit() {
     this.updatePosition();
 
-    const setCopy: Partial<ISet> = { ...this.set };
-    // delete unnecessary property
-    delete setCopy.createdAt;
-    delete setCopy.createdAtTimestamp;
-    delete setCopy.updatedAt;
-    delete setCopy.updatedAtTimestamp;
-    delete setCopy.hash;
-    delete setCopy.clientId;
-    delete setCopy.createdBy;
-    delete setCopy.updatedBy;
-
-    // delete unnecessary property
-    const positionCopy: Partial<IPosition[]> = [...this.positions];
-    // positionCopy.forEach((item) => {
-    //   if (item) {
-    //     delete item.bookmarkId;
-    //     delete item.createdBy;
-    //     delete item.updatedBy;
-    //     delete item.acceptedStatus;
-    //     delete item.acceptedAt;
-    //     delete item.acceptedAtTimestamp;
-    //     delete item.createdAt;
-    //     delete item.createdAtTimestamp;
-    //     delete item.updatedAt;
-    //     delete item.updatedAtTimestamp;
-    //   }
-    // });
-
     if (this.authorizationToken && this.userId) {
       const savedSet: IUpdateSet = {
-        set: setCopy,
-        positions: positionCopy,
         userId: this.userId,
+        set: this.set,
+        positions: this.positions,
       };
 
       this.setsService.saveSet(this.authorizationToken, savedSet).subscribe({

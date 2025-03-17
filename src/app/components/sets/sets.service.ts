@@ -87,9 +87,6 @@ export class SetsService {
       Authorization: `Bearer ${authorizationToken}`,
     });
 
-    console.log(`##### savedSet #####`);
-    console.log(savedSet);
-
     return this.http
       .patch<INewSet>(
         `${environment.API_URL}/sets/${savedSet.set.id}`,
