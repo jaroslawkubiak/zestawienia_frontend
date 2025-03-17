@@ -17,6 +17,7 @@ import { AuthService } from '../../login/auth.service';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-sets',
@@ -38,10 +39,12 @@ import { ISet } from './types/ISet';
     InputIconModule,
     MultiSelectModule,
     SelectModule,
+    LoadingSpinnerComponent
   ],
   providers: [SetsService],
 })
 export class SetsComponent implements OnInit {
+  isLoading = true;
   private authorizationToken: string | null;
   sets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
@@ -65,6 +68,7 @@ export class SetsComponent implements OnInit {
     this.setsService.getSets(this.authorizationToken).subscribe({
       next: (data) => {
         this.sets = data;
+        this.isLoading = false;
         this.cd.markForCheck();
       },
       error: (err) => console.error('Error getting sets ', err),

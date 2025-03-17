@@ -25,6 +25,7 @@ import { notificationLifeTime } from '../../shared/constans';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-clients',
@@ -47,10 +48,12 @@ import { IClient } from './IClient';
     InputIconModule,
     ButtonModule,
     ReactiveFormsModule,
+    LoadingSpinnerComponent,
   ],
   providers: [MessageService, ConfirmationService, ClientsService],
 })
 export class ClientsComponent implements OnInit {
+  isLoading = true;
   clientDialog: boolean = false;
   clients!: IClient[];
   client!: IClient;
@@ -97,6 +100,7 @@ export class ClientsComponent implements OnInit {
       this.clientsService.getClients(this.authorizationToken).subscribe({
         next: (data) => {
           this.clients = data;
+          this.isLoading = false;
           this.cd.markForCheck();
         },
         error: (err) => console.error('Error getting clients ', err),
@@ -337,11 +341,11 @@ export class ClientsComponent implements OnInit {
     // const { dragIndex, dropIndex } = event;
 
     // if (dragIndex === dropIndex) return; // Jeśli indeksy są takie same, nie rób nic
-  
+
     // const updatedClients = [...this.clients]; // Tworzymy kopię listy
     // const [movedItem] = updatedClients.splice(dragIndex, 1); // Usuwamy element z jego pierwotnej pozycji
     // updatedClients.splice(dropIndex, 0, movedItem); // Wstawiamy element na nową pozycję
-  
+
     // this.clients = updatedClients; // Aktualizujemy listę klientów
 
     // console.log('Nowa kolejność:');

@@ -1,4 +1,10 @@
-<div class="card">
+<app-loading-spinner
+  *ngIf="isLoading"
+  [isLoading]="isLoading"
+></app-loading-spinner>
+
+<div *ngIf="!isLoading" class="card">
+
   <p-toast />
   <p-toolbar>
     <ng-template #start>

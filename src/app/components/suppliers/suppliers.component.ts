@@ -25,6 +25,7 @@ import { notificationLifeTime } from '../../shared/constans';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-suppliers',
@@ -47,10 +48,12 @@ import { SuppliersService } from './suppliers.service';
     InputIconModule,
     ButtonModule,
     ReactiveFormsModule,
+    LoadingSpinnerComponent,
   ],
   providers: [MessageService, ConfirmationService, SuppliersService],
 })
 export class SuppliersComponent implements OnInit {
+  isLoading = true;
   supplierDialog: boolean = false;
   suppliers!: ISupplier[];
   supplier!: ISupplier;
@@ -96,6 +99,7 @@ export class SuppliersComponent implements OnInit {
       this.suppliersService.getSuppliers(this.authorizationToken).subscribe({
         next: (data) => {
           this.suppliers = data;
+          this.isLoading = false;
           this.cd.markForCheck();
         },
         error: (err) => console.error('Error getting suppliers ', err),
