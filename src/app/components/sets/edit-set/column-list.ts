@@ -1,8 +1,9 @@
 export interface IColumnList {
   name: string;
   key: string;
-  width?: number;
+  type: string;
   class?: string;
+  width?: number;
 }
 
 export const columnList: IColumnList[] = [
@@ -10,74 +11,76 @@ export const columnList: IColumnList[] = [
     name: 'id',
     key: 'id',
     class: 'hidden',
+    type: 'string',
   },
   {
     name: 'PRODUKT',
     key: 'produkt',
-    width: 300,
+    type: 'string',
   },
   {
     name: 'PRODUCENT',
     key: 'producent',
-    width: 100,
+    type: 'string',
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
-    width: 110,
+    type: 'string',
   },
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
-    width: 120,
+    type: 'string',
   },
   {
     name: 'KOLOR',
     key: 'kolor',
-    width: 130,
+    type: 'string',
   },
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
-    width: 140,
+    type: 'number',
   },
   {
     name: 'CENA NETTO',
     key: 'netto',
-    width: 140,
+    type: 'number',
   },
   {
     name: 'CENA BRUTTO',
     key: 'brutto',
-    width: 140,
+    type: 'number',
   },
   {
     name: 'WARTOŚĆ NETTO',
     key: 'wartoscNetto',
-    width: 140,
+    type: 'number',
   },
   {
     name: 'WARTOŚĆ BRUTTO',
     key: 'wartoscBrutto',
+    type: 'number',
   },
   {
     name: 'DOSTAWCA',
     key: 'dostawca',
-    width: 200,
+    type: 'select',
   },
   {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
-    width: 200,
+    type: 'string',
   },
   {
     name: 'LINK',
     key: 'link',
-    width: 300,
+    type: 'string',
   },
   {
     name: 'ZDJĘCIE',
     key: 'image',
-    width: 200,
+    type: 'image',
   },
 ];

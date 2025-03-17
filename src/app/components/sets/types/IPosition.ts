@@ -29,4 +29,5 @@ export interface IPosition {
   bookmarkId: IBookmark;
   createdBy: IUser;
   updatedBy: IUser;
+  [key: string]: any;
 }

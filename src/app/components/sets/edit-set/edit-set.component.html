@@ -1,19 +1,22 @@
-<div class="set-container">
+<app-loading-spinner *ngIf="isLoading"  [isLoading]="isLoading"></app-loading-spinner>
+
+<div *ngIf="!isLoading" class="set-container">
   <div class="set-header flex-center" *ngIf="set">
     Zestawienie :&nbsp;<strong>{{ set.name }}</strong
     >&nbsp;dla &nbsp;<strong>{{ set.clientId.firma }}</strong
     >&nbsp; z dnia {{ set.createdAt }}
   </div>
+
   <p-tabs [value]="selectedBookmark" scrollable>
     <p-tablist>
-      @for (bookmark of bookmarks; track bookmark.id) {
+      @for (bookmark of set.bookmarks; track bookmark.id) {
       <p-tab [value]="bookmark.id" (click)="loadContent(bookmark.id)">{{
         bookmark.name
       }}</p-tab>
       }
     </p-tablist>
     <p-tabpanels>
-      @for (bookmark of bookmarks; track bookmark.id) {
+      @for (bookmark of set.bookmarks; track bookmark.id) {
       <p-tabpanel [value]="bookmark.id">
         <div [ngClass]="{ 'form-dirty': isEdited }" class="position-container">
           <p-table

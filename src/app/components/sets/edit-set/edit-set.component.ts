@@ -2,22 +2,22 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { notificationLifeTime } from '../../../shared/constans';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { SetsService } from '../sets.service';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
-import { columnList, IColumnList } from './column-list';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmationService, MessageService } from 'primeng/api';
-import { notificationLifeTime } from '../../../shared/constans';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { IUpdateSet } from '../types/IUpdateSet';
+import { columnList, IColumnList } from './column-list';
 
 @Component({
   selector: 'app-set',
@@ -33,6 +33,7 @@ import { IUpdateSet } from '../types/IUpdateSet';
     TableModule,
     InputTextModule,
     ConfirmDialog,
+    LoadingSpinnerComponent,
   ],
   providers: [SetsService, ConfirmationService, MessageService],
 })
@@ -44,12 +45,12 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   set!: ISet;
   positions: IPosition[] = [];
   positionsFromBookmark: IPosition[] = [];
-  bookmarks: IBookmark[] = [];
   selectedBookmark: number = 0;
   formData: IPosition[] = [];
   columnList = columnList;
   pendingNavigation: Function | null = null;
   destination: string | undefined;
+  isLoading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -85,13 +86,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       this.setsService.getSet(this.authorizationToken, this.setId).subscribe({
         next: (data) => {
           this.set = data[0];
-          this.bookmarks = this.set.bookmarks;
 
-          //mark first (lowest id) bookmark as selected
+          // mark first (lowest id) bookmark as selected
           this.selectedBookmark = Math.min(
-            ...this.bookmarks.map((item) => item.id)
+            ...this.set.bookmarks.map((item) => item.id)
           );
           this.loadContent(this.selectedBookmark);
+          this.isLoading = false;
         },
         error: (err) => console.error('Error getting set ', err),
       });
@@ -114,25 +115,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // take edited data from form and update this.position array
   updatePosition(): void {
-    console.log(`##### 1 updatePosition this.positions #####`);
-    console.log(this.positions);
-
-    // Tworzymy mapę z formData, aby szybciej znaleźć odpowiednią pozycję na podstawie id
     const formDataMap = new Map(
       this.formData.map((form: IPosition) => [form.id, form])
     );
 
     this.positions = this.positions.map((position: IPosition) => {
-      const form = formDataMap.get(position.id); // Wyszukujemy po id
+      const form = formDataMap.get(position.id);
 
-      if (form) {
-        return { ...position, ...form };
-      } else {
-        return position;
-      }
+      return form ? { ...position, ...form } : position;
     });
-    console.log(`##### 2 updatePosition this.positions #####`);
-    console.log(this.positions);
   }
 
   // load positions for a given bookmark
@@ -155,19 +146,21 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       this.columnList.forEach((column) => {
         obj[column.key] = position[column.key as keyof IPosition];
       });
+
       return obj;
     });
   }
 
   // get column width from set object
   getColumnWidthToSelectedBookmark() {
-    const bookmark: IBookmark | undefined = this.set.bookmarks.find(
-      (item) => item.id === this.selectedBookmark
-    );
-    if (bookmark?.width) {
-      const widths = bookmark.width;
-      this.columnList = columnList.map((col) => {
-        const matchingWidth = widths.find((w) => w.name === col.name);
+    const selectedBookmark = this.set.bookmarks.find(
+      (bookmark) => bookmark.id === this.selectedBookmark
+    )?.width;
+
+    if (selectedBookmark && Array.isArray(selectedBookmark)) {
+      this.columnList = this.columnList.map((col) => {
+        const matchingWidth = selectedBookmark.find((w) => w.name === col.name);
+
         return matchingWidth ? { ...col, width: matchingWidth.width } : col;
       });
     }
