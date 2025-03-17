@@ -15,7 +15,7 @@
 }
 
 .label {
-  color: var(--accent-color);
+  color: var(--accent-color-darker);
   font-size: 1.6rem;
 }
 
@@ -36,7 +36,7 @@
 .bookmarks-cell {
   display: flex;
   gap: 30px;
-  align-items: center; 
+  align-items: center;
 }
 
 .bookmarks-cell label {
@@ -53,4 +53,31 @@
   align-items: center;
   justify-content: center;
   height: 100%;
+}
+
+.p-inputtext,
+.p-select {
+  all: unset !important;
+  padding: 8px 16px !important;
+  font-size: 3rem !important;
+  border: 1px solid var(--accent-color-darker) !important;
+  width: 100% !important;
+}
+
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active,
+.p-select {
+  background-color: var(--accent-color-lighter) !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.p-select {
+  all: unset !important;
+  display: flex !important;
+  padding: 0px 8px !important;
+  font-size: 3rem !important;
+  border: 1px solid var(--accent-color-darker) !important;
+  width: 100% !important;
 }
