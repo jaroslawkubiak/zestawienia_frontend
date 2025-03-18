@@ -6,3 +6,8 @@ export enum SetStatus {
   inProgress = 'W realizacji',
   archive = 'Zamknięte',
 }
+
+export type IStatus ={
+  name: string;
+  label: SetStatus;
+}

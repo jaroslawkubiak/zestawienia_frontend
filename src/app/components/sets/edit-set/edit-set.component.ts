@@ -5,7 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
+import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
@@ -13,13 +15,15 @@ import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
 import { notificationLifeTime } from '../../../shared/constans';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
+import { IBookmark } from '../../bookmarks/IBookmark';
+import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { SetsService } from '../sets.service';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
+import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
-import { SelectModule } from 'primeng/select';
-import { SetStatus } from '../types/status';
 
 @Component({
   selector: 'app-set',
@@ -37,28 +41,31 @@ import { SetStatus } from '../types/status';
     ConfirmDialog,
     LoadingSpinnerComponent,
     SelectModule,
+    Dialog,
+    EditHeaderComponent,
   ],
   providers: [SetsService, ConfirmationService, MessageService],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
   private authorizationToken: string | null;
   userId: number | null;
+  setName: string = '';
+  setStatus: string = '';
   setId!: string;
-  isEdited: boolean = false;
   set!: ISet;
   positions: IPosition[] = [];
   positionsFromBookmark: IPosition[] = [];
   selectedBookmark: number = 0;
+  selectedBookmarks: IBookmark[] = [];
   formData: IPosition[] = [];
-  columnList = columnList;
   pendingNavigation: Function | null = null;
   destination: string | undefined;
   isLoading = true;
-  statuses = Object.entries(SetStatus).map(([key, value]) => ({
-    name: key,
-    label: value,
-  }));
-  selectedStatus: string = '';
+  editHeaderDialog = false;
+  submitted = false;
+  isEdited = false;
+  columnList = columnList;
+  editHeaderProps!: ISetHeader;
 
   constructor(
     private route: ActivatedRoute,
@@ -74,8 +81,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   ngOnInit() {
-    console.log(this.statuses);
-    console.log(this.selectedStatus);
     this.route.paramMap.subscribe((params) => {
       this.setId = params.get('id') || '';
       if (this.setId) {
@@ -96,13 +101,12 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       this.setsService.getSet(this.authorizationToken, this.setId).subscribe({
         next: (data) => {
           this.set = data[0];
+          this.setName = this.set.name;
+          this.setStatus = this.set.status;
 
-          // mark first (lowest id) bookmark as selected
-          this.selectedBookmark = Math.min(
-            ...this.set.bookmarks.map((item) => item.id)
-          );
-          this.selectedStatus = this.set.status;
-          this.loadContent(this.selectedBookmark);
+          if (this.set.bookmarks.length > 0) {
+            this.updateBookmarks();
+          }
           this.isLoading = false;
         },
         error: (err) => console.error('Error getting set ', err),
@@ -177,11 +181,27 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
+  updateBookmarks() {
+    this.set.bookmarks.sort((a, b) => a.id - b.id);
+
+    // mark first (lowest id) bookmark as selected
+    this.selectedBookmark = this.set.bookmarks[0].id;
+
+    // make copy of bookmarks for header edit
+    this.selectedBookmarks = JSON.parse(JSON.stringify(this.set.bookmarks));
+    this.selectedBookmarks.forEach((item) => {
+      delete item.width;
+      return (item.default = true);
+    });
+
+    this.loadContent(this.selectedBookmark);
+  }
   // save data
   onSubmit() {
     this.updatePosition();
 
-    this.set.status = this.selectedStatus;
+    this.set.status = this.setStatus;
+    this.set.name = this.setName;
 
     if (this.authorizationToken && this.userId) {
       const savedSet: IUpdateSet = {
@@ -280,5 +300,46 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         resolve(false);
       },
     });
+  }
+
+  // edit set header
+  editHeader() {
+    this.editHeaderProps = {
+      name: this.setName,
+      selectedStatus: this.setStatus,
+      selectedBookmarks: this.selectedBookmarks,
+    };
+
+    this.editHeaderDialog = true;
+  }
+
+  hideDialog() {
+    this.editHeaderDialog = false;
+    this.submitted = false;
+  }
+
+  // set header data change
+  onDataChange(headerData: ISetHeader) {
+    const originalMap = new Map(
+      this.set.bookmarks.map((item) => [item.id, item])
+    );
+
+    this.set.bookmarks = headerData.selectedBookmarks.map((item) => ({
+      ...item,
+      width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
+    }));
+    this.updateBookmarks();
+
+    this.setName = headerData.name;
+    this.setStatus = headerData.selectedStatus;
+
+    this.messageService.add({
+      severity: 'info',
+      summary: 'Informacja',
+      detail: 'Nagłówek zestawienia został zmieniony',
+      life: notificationLifeTime,
+    });
+
+    this.isEdited = true;
   }
 }

@@ -1,0 +1,63 @@
+<p-toast />
+<form #form="ngForm">
+  <div class="container">
+    <div class="field">
+      <label for="name" class="label">Nazwa zestawienia</label>
+      <input
+        type="text"
+        pInputText
+        name="name"
+        id="name"
+        size="large"
+        class="form-field"
+        [(ngModel)]="name"
+      />
+    </div>
+
+    <div class="field">
+      <label for="status" class="label">Status</label>
+      <p-select
+        name="selectedStatus"
+        optionLabel="label"
+        optionValue="label"
+        id="status"
+        class="form-field"
+        [options]="statuses"
+        [(ngModel)]="selectedStatus"
+      />
+    </div>
+
+    <div class="field bookmarks-container">
+      <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
+        <p-checkbox
+          name="bookmarks"
+          size="large"
+          class="bookmarks-checkbox"
+          [inputId]="bookmark.id.toString()"
+          [value]="bookmark"
+          [(ngModel)]="selectedBookmarks"
+        >
+        </p-checkbox>
+        <label [for]="bookmark.id.toString()" class="ml-2">
+          {{ bookmark.name }}
+        </label>
+      </div>
+    </div>
+
+    <div class="actions">
+      <p-button
+        label="Anuluj"
+        icon="pi pi-times"
+        text
+        (click)="closeModal.emit()"
+        size="large"
+      />
+      <p-button
+        label="Zapisz"
+        icon="pi pi-check"
+        (click)="save()"
+        size="large"
+      />
+    </div>
+  </div>
+</form>

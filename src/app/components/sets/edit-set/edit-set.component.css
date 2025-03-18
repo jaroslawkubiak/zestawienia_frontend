@@ -11,10 +11,11 @@ td {
   font-size: 2.6rem;
   background-color: var(--accent-color-darker);
   color: var(--secondary-color);
-  padding: 20px 10px;
+  padding: 20px;
   display: flex;
   align-items: start;
   justify-content: space-between;
+  gap: 40px;
   border-bottom: 4px solid black;
 }
 
@@ -22,7 +23,7 @@ td {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  width: 200px;
+  align-self: center;
 }
 
 .cell-title {
@@ -30,33 +31,16 @@ td {
   color: rgb(0, 0, 0);
 }
 
+.cell-icon {
+  color: var(--secondary-color);
+}
+
+.cell-icon:hover {
+  color: var(--error-color);
+}
+
 .cell-value {
   font-size: 2rem;
-}
-
-.status-dropdown {
-  all: unset !important;
-  display: flex !important;
-  width: 98% !important;
-  background-color: var(--accent-color-darker) !important;
-}
-
-::ng-deep .p-select-dropdown-icon {
-  cursor: pointer;
-  color: var(--secondary-color) !important;
-}
-
-::ng-deep .p-select-dropdown-icon:hover {
-  color: var(--error-color) !important;
-}
-
-::ng-deep .p-select-label {
-  padding: 0;
-  color: var(--secondary-color) !important;
-}
-
-::ng-deep .p-select-label:hover {
-  color: var(--error-color) !important;
 }
 
 ::ng-deep .p-tab {

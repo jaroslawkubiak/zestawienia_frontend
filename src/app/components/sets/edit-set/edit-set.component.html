@@ -1,13 +1,15 @@
+@if(isLoading) {
 <app-loading-spinner
   *ngIf="isLoading"
   [isLoading]="isLoading"
 ></app-loading-spinner>
+}
 
 <div *ngIf="!isLoading" class="set-container">
   <div class="set-header flex-center" *ngIf="set">
     <div class="cell">
       <div class="cell-title">Zestawienie</div>
-      <div class="cell-value">{{ set.name }}</div>
+      <div class="cell-value">{{ setName }}</div>
     </div>
     <div class="cell">
       <div class="cell-title">Klient</div>
@@ -15,18 +17,7 @@
     </div>
     <div class="cell">
       <div class="cell-title">Status</div>
-      <div class="cell-value">
-        <p-select
-          [options]="statuses"
-          [(ngModel)]="selectedStatus"
-          name="selectedStatus"
-          optionLabel="label"
-          optionValue="label"
-          placeholder="Wybierz status"
-          class="status-dropdown"
-          (ngModelChange)="markAsEdited()"
-        />
-      </div>
+      <div class="cell-value">{{ setStatus }}</div>
     </div>
     <div class="cell">
       <div class="cell-title">Utworzone</div>
@@ -35,6 +26,15 @@
     <div class="cell">
       <div class="cell-title">Zaktualizowane</div>
       <div class="cell-value">{{ set.updatedAt }}</div>
+    </div>
+    <div class="cell">
+      <div class="cell-icon">
+        <i
+          class="pi pi-pencil"
+          style="font-size: 2.5rem"
+          (click)="editHeader()"
+        ></i>
+      </div>
     </div>
   </div>
 
@@ -121,15 +121,30 @@
     </p-tabpanels>
   </p-tabs>
   <div class="m-10 flex-center">
-    <!-- @if(isEdited) { -->
+    @if(isEdited) {
     <p-button
       label="Zapisz"
       icon="pi pi-save"
       size="large"
       (click)="onSubmit()"
     />
-    <!-- } -->
+    }
   </div>
 </div>
 <p-toast />
+
+<p-dialog
+  [(visible)]="editHeaderDialog"
+  [style]="{ width: '650px' }"
+  header="Edytuj zestawienie"
+  [modal]="true"
+>
+  <ng-template #content>
+    <app-edit-header
+      [editHeader]="editHeaderProps"
+      (dataChanged)="onDataChange($event)"
+      (closeModal)="hideDialog()"
+    />
+  </ng-template>
+</p-dialog>
 <p-confirmDialog [style]="{ width: '750px' }" />
