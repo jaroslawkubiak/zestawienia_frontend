@@ -14,6 +14,11 @@ export const columnList: IColumnList[] = [
     type: 'string',
   },
   {
+    name: 'KOLEJNOSC',
+    key: 'kolejnosc',
+    type: 'number',
+  },
+  {
     name: 'PRODUKT',
     key: 'produkt',
     type: 'string',
@@ -74,13 +79,13 @@ export const columnList: IColumnList[] = [
     type: 'string',
   },
   {
-    name: 'LINK',
-    key: 'link',
-    type: 'string',
-  },
-  {
     name: 'ZDJĘCIE',
     key: 'image',
     type: 'image',
+  },
+  {
+    name: 'LINK',
+    key: 'link',
+    type: 'string',
   },
 ];

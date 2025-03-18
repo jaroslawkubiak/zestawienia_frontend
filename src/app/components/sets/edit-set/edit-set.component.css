@@ -1,6 +1,11 @@
 td {
   padding: 0 !important;
-  height: 40px;
+  height: 60px;
+  border: 0px solid rgb(188, 187, 187) !important;
+}
+
+th {
+  border: 1px solid rgb(188, 187, 187) !important;
 }
 
 .set-container {
@@ -68,8 +73,18 @@ td {
   padding-bottom: 0 !important;
 }
 
-.position-header {
+.position-header,
+.position-footer {
   background-color: rgb(235, 235, 235);
+  height: 50px;
+
+}
+
+.position-footer {
+  text-align: left;
+  padding: 8px;
+  height: 30px;
+
 }
 
 .viewMode {
@@ -107,4 +122,19 @@ td {
 
 .form-dirty {
   border: 1px solid var(--error-color) !important;
+}
+
+i {
+  font-size: 2rem;
+  margin: 6px;
+}
+
+i:hover {
+  color: var(--error-color);
+}
+
+::ng-deep .btn-xl .p-button-icon,
+::ng-deep .btn-xl {
+  font-size: 2rem !important;
+  gap: 14px !important;
 }

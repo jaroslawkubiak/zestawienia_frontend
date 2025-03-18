@@ -24,6 +24,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
+import { IFooterRow } from '../types/IFooterRow';
 
 @Component({
   selector: 'app-set',
@@ -66,6 +67,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   isEdited = false;
   columnList = columnList;
   editHeaderProps!: ISetHeader;
+  footerRow: IFooterRow[] = [
+    {
+      name: 'lp',
+      key: 'lp',
+      type: 'number',
+    },
+    ...columnList,
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -107,7 +116,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           if (this.set.bookmarks.length > 0) {
             this.updateBookmarks();
           }
-          this.isLoading = false;
         },
         error: (err) => console.error('Error getting set ', err),
       });
@@ -141,29 +149,81 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  // load positions for a given bookmark
+  // load positions for a given bookmarkID
   loadContent(bookmarkId: number) {
     this.updatePosition();
 
     this.selectedBookmark = bookmarkId;
     this.getColumnWidthToSelectedBookmark();
 
-    this.positionsFromBookmark = this.positions.filter(
-      (item) => item.bookmarkId.id === this.selectedBookmark
-    );
+    this.positionsFromBookmark = this.positions
+      .filter((item) => item.bookmarkId.id === this.selectedBookmark)
+      .map((item) => {
+        const brutto = obliczBrutto(item.netto);
+        const dostawca = item.supplierId.firma;
+        return {
+          ...item,
+          dostawca,
+          brutto,
+          wartoscNetto: obliczWartosc(item.ilosc, item.netto),
+          wartoscBrutto: obliczWartosc(item.ilosc, brutto),
+        };
+      });
 
     this.initializeForm();
   }
 
   initializeForm() {
+    //reset footer row
+    this.footerRow = this.footerRow.map((item) => ({ ...item, value: '' }));
+
     this.formData = this.positionsFromBookmark.map((position) => {
       let obj: any = {};
       this.columnList.forEach((column) => {
         obj[column.key] = position[column.key as keyof IPosition];
       });
 
+      // fill footer row data
+      this.footerRow = this.footerRow.map((item) => {
+        switch (item.key) {
+          case 'ilosc':
+            item.value = (
+              Math.round((Number(item.value) + Number(obj.ilosc)) * 100) / 100
+            ).toFixed(2);
+            break;
+          case 'netto':
+            item.value = (
+              Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
+            ).toFixed(2);
+            break;
+          case 'brutto':
+            item.value = (
+              Math.round((Number(item.value) + Number(obj.brutto)) * 100) / 100
+            ).toFixed(2);
+            break;
+          case 'wartoscNetto':
+            item.value = (
+              Math.round(
+                (Number(item.value) + Number(obj.wartoscNetto)) * 100
+              ) / 100
+            ).toFixed(2);
+            break;
+          case 'wartoscBrutto':
+            item.value = (
+              Math.round(
+                (Number(item.value) + Number(obj.wartoscBrutto)) * 100
+              ) / 100
+            ).toFixed(2);
+            break;
+        }
+
+        return { ...item };
+      });
+
       return obj;
     });
+
+    this.isLoading = false;
   }
 
   // get column width from set object
@@ -342,4 +402,12 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.isEdited = true;
   }
+}
+
+function obliczBrutto(netto: number): number {
+  return Math.round(netto * 1.23 * 100) / 100;
+}
+
+function obliczWartosc(ilosc: number, cena: number): number {
+  return Math.round(ilosc * cena * 100) / 100;
 }

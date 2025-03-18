@@ -2,6 +2,14 @@ import { IBookmarksWidth } from './IBookmarksWidth';
 
 export const bookarksDefaultWidth: IBookmarksWidth[] = [
   {
+    name: 'id',
+    width: 10,
+  },
+  {
+    name: 'KOLEJNOSC',
+    width: 100,
+  },
+  {
     name: 'PRODUKT',
     width: 300,
   },

@@ -65,7 +65,12 @@
           >
             <ng-template pTemplate="header">
               <tr>
-                <th style="width: 3rem" class="position-header">LP</th>
+                <th style="width: 4rem" class="position-header">
+                  <div class="flex-center">
+                    <i class="pi pi-sort"></i>
+                  </div>
+                </th>
+                <th style="width: 8rem" class="position-header"></th>
                 <th
                   *ngFor="let column of columnList"
                   class="position-header"
@@ -87,6 +92,16 @@
                 <td>
                   <div class="lp">
                     {{ i + 1 }}
+                  </div>
+                </td>
+                <td>
+                  <div class="flex-center">
+                    <p-button severity="info" icon="pi pi-clone" class="p-4" />
+                    <p-button
+                      severity="danger"
+                      icon="pi pi-trash"
+                      class="p-4"
+                    />
                   </div>
                 </td>
                 <td
@@ -114,6 +129,17 @@
                 </td>
               </tr>
             </ng-template>
+            <ng-template pTemplate="footer">
+              <tr>
+                <th
+                  *ngFor="let column of footerRow; let i = index"
+                  class="position-footer"
+                  pResizableColumn
+                >
+                  {{ column.value }}
+                </th>
+              </tr>
+            </ng-template>
           </p-table>
         </div>
       </p-tabpanel>
@@ -126,6 +152,7 @@
       label="Zapisz"
       icon="pi pi-save"
       size="large"
+      styleClass="btn-xl"
       (click)="onSubmit()"
     />
     }
