@@ -33,6 +33,17 @@
           class="pi pi-pencil"
           style="font-size: 2.5rem"
           (click)="editHeader()"
+          alt="Edytuj nagłowek zestawienia"
+          title="Edytuj nagłowek zestawienia"
+        ></i>
+      </div>
+      <div class="cell-icon">
+        <i
+          class="pi pi-share-alt"
+          style="font-size: 2.5rem"
+          (click)="shareSet()"
+          alt="Udostępnij"
+          title="Udostępnij"
         ></i>
       </div>
     </div>
@@ -67,14 +78,14 @@
               <tr>
                 <th style="width: 4rem" class="position-header">
                   <div class="flex-center">
-                    <i class="pi pi-sort"></i>
+                    <i class="pi pi-sort" alt="Sortuj" title="Sortuj"></i>
                   </div>
                 </th>
                 <th style="width: 8rem" class="position-header"></th>
                 <th
                   *ngFor="let column of columnList"
                   class="position-header"
-                  [ngClass]="column.class"
+                  [ngClass]="column.classTh"
                   pResizableColumn
                   [ngStyle]="{ width: column?.width + 'px' }"
                 >
@@ -96,8 +107,16 @@
                 </td>
                 <td>
                   <div class="flex-center">
-                    <p-button severity="info" icon="pi pi-clone" class="p-4" />
                     <p-button
+                      severity="info"
+                      icon="pi pi-clone"
+                      class="p-4"
+                      alt="Klonuj pozycję"
+                      title="Klonuj pozycję"
+                    />
+                    <p-button
+                      alt="Usuń pozycję"
+                      title="Usuń pozycję"
                       severity="danger"
                       icon="pi pi-trash"
                       class="p-4"
@@ -108,21 +127,51 @@
                   *ngFor="let column of columnList"
                   pEditableColumn
                   [pEditableColumnField]="column.key"
-                  [ngClass]="column.class"
+                  [ngClass]="column.classTd"
                   [ngStyle]="{ width: column?.width + 'px' }"
                 >
                   <p-cellEditor>
-                    <ng-template pTemplate="input">
-                      <input
-                        pInputText
-                        type="text"
-                        [(ngModel)]="formData[i][column.key]"
-                        (ngModelChange)="markAsEdited()"
-                      />
+                    <ng-template pTemplate="input" [ngSwitch]="column.type">
+                      <ng-container *ngIf="!column.readOnly">
+                        <input
+                          *ngSwitchCase="'number'"
+                          pInputText
+                          type="number"
+                          class="no-arrows"
+                          [readonly]="column.readOnly"
+                          [(ngModel)]="formData[i][column.key]"
+                          (blur)="applyAction($event, i, column)"
+                          (keydown.enter)="applyAction($event, i, column)"
+                          (focus)="selectAll($event)"
+                        />
+                        <input
+                          *ngSwitchDefault
+                          pInputText
+                          type="text"
+                          [(ngModel)]="formData[i][column.key]"
+                          (blur)="applyAction($event, i, column)"
+                          (keydown.enter)="applyAction($event, i, column)"
+                          (focus)="selectAll($event)"
+                        />
+                      </ng-container>
+                      <!-- if field read only, wneh edited show viewMode -->
+                      <ng-container *ngIf="column.readOnly">
+                        <span class="viewMode">
+                          @if(column.type === 'number') {
+                          {{ formData[i][column.key] | number : "1.2-2" }}
+                          } @else {
+                          {{ formData[i][column.key] }}
+                          }
+                        </span>
+                      </ng-container>
                     </ng-template>
                     <ng-template pTemplate="output">
                       <span class="viewMode">
+                        @if(column.type === 'number') {
+                        {{ formData[i][column.key] | number : "1.2-2" }}
+                        } @else {
                         {{ formData[i][column.key] }}
+                        }
                       </span>
                     </ng-template>
                   </p-cellEditor>
@@ -134,10 +183,13 @@
                 <th
                   *ngFor="let column of footerRow; let i = index"
                   class="position-footer"
-                  pResizableColumn
-                >
-                  {{ column.value }}
-                </th>
+                  [innerHTML]="
+                    column.unit
+                      ? column.value + ' ' + column.unit
+                      : column.value
+                  "
+                  [ngClass]="column.class"
+                ></th>
               </tr>
             </ng-template>
           </p-table>

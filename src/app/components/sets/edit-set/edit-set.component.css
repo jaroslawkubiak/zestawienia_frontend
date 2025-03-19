@@ -73,18 +73,23 @@ th {
   padding-bottom: 0 !important;
 }
 
-.position-header,
-.position-footer {
+.position-header {
   background-color: rgb(235, 235, 235);
   height: 50px;
-
 }
 
 .position-footer {
+  background-color: rgb(235, 235, 235);
+  height: 30px;
+}
+
+.position-footer-number {
   text-align: left;
   padding: 8px;
-  height: 30px;
+}
 
+.position-footer-action {
+  text-align: center;
 }
 
 .viewMode {
@@ -137,4 +142,18 @@ i:hover {
 ::ng-deep .btn-xl {
   font-size: 2rem !important;
   gap: 14px !important;
+}
+
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-arrows {
+  -moz-appearance: textfield;
+}
+
+.read-only {
+  cursor: no-drop;
 }

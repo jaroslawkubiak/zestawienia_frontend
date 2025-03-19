@@ -1,6 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -14,17 +21,21 @@ import { ToastModule } from 'primeng/toast';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
 import { notificationLifeTime } from '../../../shared/constans';
+import {
+  calculateBrutto,
+  calculateWartosc,
+} from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { SetsService } from '../sets.service';
+import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
-import { IFooterRow } from '../types/IFooterRow';
 
 @Component({
   selector: 'app-set',
@@ -83,7 +94,10 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private setsService: SetsService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private sanitizer: DomSanitizer,
+    private el: ElementRef,
+    private renderer: Renderer2
   ) {
     this.authorizationToken = this.authService.authorizationToken;
     this.userId = this.authService.userId();
@@ -99,9 +113,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  // mark form as edited - dirty
-  markAsEdited() {
-    this.isEdited = true;
+  ngAfterViewInit() {
+    // Delegacja zdarzeń do dynamicznie wstawionych przycisków
+    this.renderer.listen(this.el.nativeElement, 'click', (event) => {
+      if (event.target.closest('.add-empty-position')) {
+        this.addEmptyPosition();
+      }
+    });
   }
 
   // request to get set data
@@ -159,23 +177,26 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.positionsFromBookmark = this.positions
       .filter((item) => item.bookmarkId.id === this.selectedBookmark)
       .map((item) => {
-        const brutto = obliczBrutto(item.netto);
+        const brutto = calculateBrutto(item.netto);
         const dostawca = item.supplierId.firma;
         return {
           ...item,
           dostawca,
           brutto,
-          wartoscNetto: obliczWartosc(item.ilosc, item.netto),
-          wartoscBrutto: obliczWartosc(item.ilosc, brutto),
+          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+          wartoscBrutto: calculateWartosc(item.ilosc, brutto),
         };
       });
 
     this.initializeForm();
   }
 
+  getFormattedValue(column: any): string {
+    return column.value + (column.unit ? ' ' + column.unit : '');
+  }
+
   initializeForm() {
-    //reset footer row
-    this.footerRow = this.footerRow.map((item) => ({ ...item, value: '' }));
+    this.resetFooter();
 
     this.formData = this.positionsFromBookmark.map((position) => {
       let obj: any = {};
@@ -183,42 +204,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         obj[column.key] = position[column.key as keyof IPosition];
       });
 
-      // fill footer row data
-      this.footerRow = this.footerRow.map((item) => {
-        switch (item.key) {
-          case 'ilosc':
-            item.value = (
-              Math.round((Number(item.value) + Number(obj.ilosc)) * 100) / 100
-            ).toFixed(2);
-            break;
-          case 'netto':
-            item.value = (
-              Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
-            ).toFixed(2);
-            break;
-          case 'brutto':
-            item.value = (
-              Math.round((Number(item.value) + Number(obj.brutto)) * 100) / 100
-            ).toFixed(2);
-            break;
-          case 'wartoscNetto':
-            item.value = (
-              Math.round(
-                (Number(item.value) + Number(obj.wartoscNetto)) * 100
-              ) / 100
-            ).toFixed(2);
-            break;
-          case 'wartoscBrutto':
-            item.value = (
-              Math.round(
-                (Number(item.value) + Number(obj.wartoscBrutto)) * 100
-              ) / 100
-            ).toFixed(2);
-            break;
-        }
-
-        return { ...item };
-      });
+      this.calculateFooterRow(obj);
 
       return obj;
     });
@@ -255,6 +241,120 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
 
     this.loadContent(this.selectedBookmark);
+  }
+
+  // action when cell is finish editing
+  applyAction(value: any, rowIndex: number, column: any): void {
+    this.isEdited = true;
+    const newValue = value.srcElement.value;
+
+    // if (column.action) {
+    //   this.formData[rowIndex][column.key] = column.action(
+    //     this.formData[rowIndex][column.key]
+    //   );
+    // }
+
+    // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
+    if (column.key === 'ilosc') {
+      const nowaWartoscNetto = calculateWartosc(
+        +newValue,
+        +this.formData[rowIndex]['netto']
+      );
+      this.formData[rowIndex]['wartoscNetto'] = nowaWartoscNetto;
+
+      const nowaWartoscrutto = calculateWartosc(
+        +newValue,
+        calculateBrutto(+this.formData[rowIndex]['netto'])
+      );
+      this.formData[rowIndex]['wartoscBrutto'] = nowaWartoscrutto;
+    }
+
+    // column netto has changed - calculate new brutto, wartoscNetto i wartoscBrutto columns
+    if (column.key === 'netto') {
+      this.formData[rowIndex]['brutto'] = calculateBrutto(+newValue);
+
+      const nowaWartoscNetto = calculateWartosc(
+        +this.formData[rowIndex]['ilosc'],
+        +this.formData[rowIndex]['netto']
+      );
+      this.formData[rowIndex]['wartoscNetto'] = nowaWartoscNetto;
+
+      const nowaWartoscrutto = calculateWartosc(
+        +this.formData[rowIndex]['ilosc'],
+        +this.formData[rowIndex]['brutto']
+      );
+      this.formData[rowIndex]['wartoscBrutto'] = nowaWartoscrutto;
+    }
+
+    this.resetFooter();
+    this.calculateFooterRow(this.formData[rowIndex]);
+  }
+
+  // for select content of input field when edit mode, need property (focus)="selectAll($event)" in HTML input
+  selectAll(event: FocusEvent): void {
+    setTimeout(() => {
+      (event.target as HTMLInputElement).select();
+    }, 0);
+  }
+
+  // reset footer row
+  resetFooter() {
+    this.footerRow = this.footerRow.map((item) => ({ ...item, value: '' }));
+  }
+
+  // calculate values for footer row
+  calculateFooterRow(obj: IPosition) {
+    this.footerRow = this.footerRow.map((item) => {
+      switch (item.key) {
+        case 'ilosc':
+          item.value = Number(item.value) + Number(obj.ilosc);
+          item.class = 'position-footer-number';
+          break;
+        case 'id':
+          item.value = this.sanitizeHtml(
+            `<button alt="Nowa pusta pozycja" title="Nowa pusta pozycja" class="add-empty-position p-button p-button-primary p-4"><i class="pi pi-plus"></i></button>`
+          );
+          item.class = 'position-footer-action';
+          break;
+        case 'netto':
+          item.value = (
+            Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
+          ).toFixed(2);
+          item.class = 'position-footer-number';
+          break;
+        case 'brutto':
+          item.value = (
+            Math.round((Number(item.value) + Number(obj.brutto)) * 100) / 100
+          ).toFixed(2);
+          item.class = 'position-footer-number';
+          break;
+        case 'wartoscNetto':
+          item.value = (
+            Math.round((Number(item.value) + Number(obj.wartoscNetto)) * 100) /
+            100
+          ).toFixed(2);
+          item.class = 'position-footer-number';
+          break;
+        case 'wartoscBrutto':
+          item.value = (
+            Math.round((Number(item.value) + Number(obj.wartoscBrutto)) * 100) /
+            100
+          ).toFixed(2);
+          item.class = 'position-footer-number';
+          break;
+      }
+
+      return { ...item };
+    });
+  }
+
+  shareSet() {
+    console.log(`##### shareSet #####`);
+  }
+
+  // add empty position
+  addEmptyPosition() {
+    console.log(`##### addEmptyPosition #####`);
   }
   // save data
   onSubmit() {
@@ -294,7 +394,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // resize column event - save new column width to this.set.bookmark property
   onColResize(event: TableColResizeEvent) {
-    this.markAsEdited();
+    this.isEdited = true;
+
     this.cd.markForCheck();
     const columnName = event.element.innerText;
     const oldSize: IColumnList | undefined = this.columnList.find(
@@ -402,12 +503,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.isEdited = true;
   }
-}
 
-function obliczBrutto(netto: number): number {
-  return Math.round(netto * 1.23 * 100) / 100;
-}
-
-function obliczWartosc(ilosc: number, cena: number): number {
-  return Math.round(ilosc * cena * 100) / 100;
+  sanitizeHtml(html: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 }

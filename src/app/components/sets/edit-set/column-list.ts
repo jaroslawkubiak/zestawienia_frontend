@@ -1,17 +1,22 @@
 export interface IColumnList {
   name: string;
   key: string;
-  type: string;
-  class?: string;
+  type: 'number' | 'text' | 'select' | 'image';
+  classTh?: string;
+  classTd?: string;
   width?: number;
+  unit?: string;
+  readOnly?: boolean;
+  // action?: (value: any) => any;
 }
 
 export const columnList: IColumnList[] = [
   {
     name: 'id',
     key: 'id',
-    class: 'hidden',
-    type: 'string',
+    classTh: 'hidden',
+    classTd: 'hidden',
+    type: 'text',
   },
   {
     name: 'KOLEJNOSC',
@@ -21,27 +26,27 @@ export const columnList: IColumnList[] = [
   {
     name: 'PRODUKT',
     key: 'produkt',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'PRODUCENT',
     key: 'producent',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'KOLOR',
     key: 'kolor',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'ILOŚĆ',
@@ -52,21 +57,31 @@ export const columnList: IColumnList[] = [
     name: 'CENA NETTO',
     key: 'netto',
     type: 'number',
+    unit: 'PLN',
   },
   {
     name: 'CENA BRUTTO',
     key: 'brutto',
     type: 'number',
+    unit: 'PLN',
+    readOnly: true,
+    classTd: 'read-only',
   },
   {
     name: 'WARTOŚĆ NETTO',
     key: 'wartoscNetto',
     type: 'number',
+    unit: 'PLN',
+    readOnly: true,
+    classTd: 'read-only',
   },
   {
     name: 'WARTOŚĆ BRUTTO',
     key: 'wartoscBrutto',
     type: 'number',
+    unit: 'PLN',
+    readOnly: true,
+    classTd: 'read-only',
   },
   {
     name: 'DOSTAWCA',
@@ -76,7 +91,7 @@ export const columnList: IColumnList[] = [
   {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
-    type: 'string',
+    type: 'text',
   },
   {
     name: 'ZDJĘCIE',
@@ -86,6 +101,6 @@ export const columnList: IColumnList[] = [
   {
     name: 'LINK',
     key: 'link',
-    type: 'string',
+    type: 'text',
   },
 ];
