@@ -130,7 +130,7 @@ th {
 }
 
 .form-dirty {
-  border: 1px solid var(--error-color) !important;
+  border: 2px solid var(--error-color) !important;
 }
 
 i {
@@ -165,6 +165,7 @@ i:hover {
 .view-mode-image {
   height: var(--row-height) !important;
   width: 100% !important;
+  cursor: pointer;
 }
 
 .edit-mode-image {

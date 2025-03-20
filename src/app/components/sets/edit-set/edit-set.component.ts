@@ -89,6 +89,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     ...columnList,
   ];
 
+  deletedPositions: number[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -364,8 +366,24 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     console.log(`##### clone position #####`);
   }
 
-  deletePosition() {
-    console.log(`##### delete position #####`);
+  deletePosition(positionId: number) {
+    this.isEdited = true;
+    this.resetFooter();
+
+    this.formData = this.formData
+      .filter((item) => item.id !== positionId)
+      .map((item) => {
+        this.calculateFooterRow(item);
+        return item;
+      });
+    this.updatePosition();
+    this.deletedPositions.push(positionId);
+    this.messageService.add({
+      severity: 'warn',
+      summary: 'Informacja',
+      detail: `Pozycja ID ${positionId} oznaczona do usunięcia.`,
+      life: notificationLifeTime,
+    });
   }
 
   // save data
@@ -380,11 +398,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         userId: this.userId,
         set: this.set,
         positions: this.positions,
+        positionToDelete: this.deletedPositions,
       };
 
       this.setsService.saveSet(this.authorizationToken, savedSet).subscribe({
         next: (response) => {
           this.isEdited = false;
+          this.deletedPositions = [];
           this.messageService.add({
             severity: 'success',
             summary: 'Sukces',
