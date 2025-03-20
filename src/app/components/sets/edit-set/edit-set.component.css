@@ -12,6 +12,10 @@ th {
   width: 1200px;
 }
 
+.spinner {
+  margin-top: 100px;
+}
+
 .set-header {
   font-size: 2.6rem;
   background-color: var(--accent-color-darker);
@@ -166,4 +170,9 @@ i:hover {
 .edit-mode-image {
   height: var(--row-height) !important;
   padding: 0 8px !important;
+  display: flex;
+  gap: 20px;
+  flex-direction: column;
+  justify-content: start;
+  background-color: var(--accent-color-lighter) !important;
 }

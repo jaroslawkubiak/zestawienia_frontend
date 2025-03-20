@@ -29,6 +29,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetsService } from '../sets.service';
 import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
@@ -36,7 +37,6 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
-import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 
 @Component({
   selector: 'app-set',
@@ -103,6 +103,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   ) {
     this.authorizationToken = this.authService.authorizationToken;
     this.userId = this.authService.userId();
+    this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   ngOnInit() {
@@ -292,7 +293,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.calculateFooterRow(this.formData[rowIndex]);
   }
 
-  // for select content of input field when edit mode, need property (focus)="selectAll($event)" in HTML input
+  // for select content (like ctrl+a) of input field when edit mode, need property (focus)="selectAll($event)" in HTML input
   selectAll(event: FocusEvent): void {
     setTimeout(() => {
       (event.target as HTMLInputElement).select();
@@ -514,7 +515,23 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.isEdited = true;
   }
+
+  // sanitize html - needed for paste html as string from ts (use in calculateFooterRow)
   sanitizeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }
+
+  // when upload image from clipboard
+  onImageUpload = (imageName: string, positionId: string) => {
+    this.isEdited = true;
+
+    // fill image in position where image was uploaded
+    this.formData = this.formData.map((item) => {
+      if (item.id === +positionId) {
+        return { ...item, image: imageName };
+      }
+
+      return item;
+    });
+  };
 }

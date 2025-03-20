@@ -5,6 +5,7 @@
     placeholder="Wklej obraz z schowka..."
     (paste)="onPaste($event)"
     class="input-field"
+    (blur)="blur.emit($event)"
   />
 
   <div *ngIf="imagePreview" class="image-preview-container">

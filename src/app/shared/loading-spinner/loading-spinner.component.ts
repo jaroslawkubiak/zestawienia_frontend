@@ -10,4 +10,5 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 })
 export class LoadingSpinnerComponent {
   @Input() isLoading: boolean = true;
+  @Input() size = 100;
 }

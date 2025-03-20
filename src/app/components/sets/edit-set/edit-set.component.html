@@ -1,9 +1,9 @@
-@if(isLoading) {
-<app-loading-spinner
-  *ngIf="isLoading"
-  [isLoading]="isLoading"
-></app-loading-spinner>
-}
+<div class="spinner" *ngIf="isLoading">
+  <app-loading-spinner
+    [isLoading]="isLoading"
+    [size]="200"
+  ></app-loading-spinner>
+</div>
 
 <div *ngIf="!isLoading" class="set-container">
   <div class="set-header flex-center" *ngIf="set">
@@ -136,7 +136,7 @@
                   <p-cellEditor>
                     <ng-template pTemplate="input" [ngSwitch]="column.type">
                       <ng-container *ngIf="!column.readOnly">
-                        <!-- edit mode - type=number  -->
+                        <!-- EDIT MODE -> type = number  -->
                         <input
                           *ngSwitchCase="'number'"
                           pInputText
@@ -148,14 +148,20 @@
                           (keydown.enter)="applyAction($event, i, column)"
                           (focus)="selectAll($event)"
                         />
-                        <!-- edit mode - type=image  -->
+                        <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">
                           <app-image-clipboard-input
                             [setId]="+setId"
                             [positionId]="formData[i].id"
+                            (blur)="applyAction($event, i, column)"
+                            [imageUpload]="onImageUpload"
                           />
+                          <app-loading-spinner
+                            [isLoading]="isLoading"
+                            [size]="70"
+                          ></app-loading-spinner>
                         </div>
-                        <!-- edit mode - type=text  -->
+                        <!-- EDIT MODE -> type = text  -->
                         <input
                           *ngSwitchDefault
                           pInputText
@@ -180,27 +186,30 @@
                     </ng-template>
                     <ng-template pTemplate="output">
                       <span class="view-mode" [ngSwitch]="column.type">
-                        <!-- view mode - type=number  -->
+                        <!-- VIEW MODE -> type = number  -->
                         <div *ngSwitchCase="'number'">
                           {{ formData[i][column.key] | number : "1.2-2" }}
                         </div>
 
-                        <!-- view mode - type=image  -->
+                        <!-- VIEW MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="view-mode-image">
                           <app-image-clipboard-input
                             [setId]="+setId"
                             [positionId]="formData[i].id"
                             [imagePreview]="
-                              'http://localhost:3005/uploads/sets/' +
-                              setId +
-                              '/' +
-                              formData[i].id +
-                              '/' +
                               formData[i][column.key]
+                                ? 'http://localhost:3005/uploads/sets/' +
+                                  setId +
+                                  '/' +
+                                  formData[i].id +
+                                  '/' +
+                                  formData[i][column.key]
+                                : ''
                             "
                           />
                         </div>
-                        <!-- view mode default - type=text  -->
+                        
+                        <!-- VIEW MODE default -> type = text  -->
                         <div *ngSwitchDefault>
                           {{ formData[i][column.key] }}
                         </div>
