@@ -36,6 +36,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
+import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 
 @Component({
   selector: 'app-set',
@@ -55,6 +56,7 @@ import { columnList, IColumnList } from './column-list';
     SelectModule,
     Dialog,
     EditHeaderComponent,
+    ImageClipboardInputComponent,
   ],
   providers: [SetsService, ConfirmationService, MessageService],
 })
@@ -356,6 +358,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   addEmptyPosition() {
     console.log(`##### addEmptyPosition #####`);
   }
+
+  clonePosition() {
+    console.log(`##### clone position #####`);
+  }
+
+  deletePosition() {
+    console.log(`##### delete position #####`);
+  }
+
   // save data
   onSubmit() {
     this.updatePosition();
@@ -503,7 +514,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.isEdited = true;
   }
-
   sanitizeHtml(html: string): SafeHtml {
     return this.sanitizer.bypassSecurityTrustHtml(html);
   }

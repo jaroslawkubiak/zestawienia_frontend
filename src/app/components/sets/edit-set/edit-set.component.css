@@ -1,7 +1,7 @@
 td {
   padding: 0 !important;
-  height: 60px;
-  border: 0px solid rgb(188, 187, 187) !important;
+  height: var(--row-height) !important;
+  border: 1px solid rgb(188, 187, 187) !important;
 }
 
 th {
@@ -92,8 +92,8 @@ th {
   text-align: center;
 }
 
-.viewMode {
-  display: flex;
+.view-mode {
+  display: block;
   align-items: center;
   padding: 0 8px !important;
 }
@@ -156,4 +156,14 @@ i:hover {
 
 .read-only {
   cursor: no-drop;
+}
+
+.view-mode-image {
+  height: var(--row-height) !important;
+  width: 100% !important;
+}
+
+.edit-mode-image {
+  height: var(--row-height) !important;
+  padding: 0 8px !important;
 }

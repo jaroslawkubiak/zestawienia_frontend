@@ -29,6 +29,11 @@ export const columnList: IColumnList[] = [
     type: 'text',
   },
   {
+    name: 'ZDJĘCIE',
+    key: 'image',
+    type: 'image',
+  },
+  {
     name: 'PRODUCENT',
     key: 'producent',
     type: 'text',
@@ -93,11 +98,7 @@ export const columnList: IColumnList[] = [
     key: 'pomieszczenie',
     type: 'text',
   },
-  {
-    name: 'ZDJĘCIE',
-    key: 'image',
-    type: 'image',
-  },
+
   {
     name: 'LINK',
     key: 'link',

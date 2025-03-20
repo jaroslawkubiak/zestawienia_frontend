@@ -113,6 +113,7 @@
                       class="p-4"
                       alt="Klonuj pozycję"
                       title="Klonuj pozycję"
+                      (click)="clonePosition()"
                     />
                     <p-button
                       alt="Usuń pozycję"
@@ -120,9 +121,11 @@
                       severity="danger"
                       icon="pi pi-trash"
                       class="p-4"
+                      (click)="deletePosition()"
                     />
                   </div>
                 </td>
+                <!-- main content  -->
                 <td
                   *ngFor="let column of columnList"
                   pEditableColumn
@@ -133,6 +136,7 @@
                   <p-cellEditor>
                     <ng-template pTemplate="input" [ngSwitch]="column.type">
                       <ng-container *ngIf="!column.readOnly">
+                        <!-- edit mode - type=number  -->
                         <input
                           *ngSwitchCase="'number'"
                           pInputText
@@ -144,19 +148,28 @@
                           (keydown.enter)="applyAction($event, i, column)"
                           (focus)="selectAll($event)"
                         />
+                        <!-- edit mode - type=image  -->
+                        <div *ngSwitchCase="'image'" class="edit-mode-image">
+                          <app-image-clipboard-input
+                            [setId]="+setId"
+                            [positionId]="formData[i].id"
+                          />
+                        </div>
+                        <!-- edit mode - type=text  -->
                         <input
                           *ngSwitchDefault
                           pInputText
                           type="text"
+                          [readonly]="column.readOnly"
                           [(ngModel)]="formData[i][column.key]"
                           (blur)="applyAction($event, i, column)"
                           (keydown.enter)="applyAction($event, i, column)"
                           (focus)="selectAll($event)"
                         />
                       </ng-container>
-                      <!-- if field read only, wneh edited show viewMode -->
+                      <!-- if field read only, wneh edited show view-mode -->
                       <ng-container *ngIf="column.readOnly">
-                        <span class="viewMode">
+                        <span class="view-mode">
                           @if(column.type === 'number') {
                           {{ formData[i][column.key] | number : "1.2-2" }}
                           } @else {
@@ -166,12 +179,31 @@
                       </ng-container>
                     </ng-template>
                     <ng-template pTemplate="output">
-                      <span class="viewMode">
-                        @if(column.type === 'number') {
-                        {{ formData[i][column.key] | number : "1.2-2" }}
-                        } @else {
-                        {{ formData[i][column.key] }}
-                        }
+                      <span class="view-mode" [ngSwitch]="column.type">
+                        <!-- view mode - type=number  -->
+                        <div *ngSwitchCase="'number'">
+                          {{ formData[i][column.key] | number : "1.2-2" }}
+                        </div>
+
+                        <!-- view mode - type=image  -->
+                        <div *ngSwitchCase="'image'" class="view-mode-image">
+                          <app-image-clipboard-input
+                            [setId]="+setId"
+                            [positionId]="formData[i].id"
+                            [imagePreview]="
+                              'http://localhost:3005/uploads/sets/' +
+                              setId +
+                              '/' +
+                              formData[i].id +
+                              '/' +
+                              formData[i][column.key]
+                            "
+                          />
+                        </div>
+                        <!-- view mode default - type=text  -->
+                        <div *ngSwitchDefault>
+                          {{ formData[i][column.key] }}
+                        </div>
                       </span>
                     </ng-template>
                   </p-cellEditor>

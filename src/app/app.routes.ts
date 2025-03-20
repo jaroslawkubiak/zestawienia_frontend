@@ -12,6 +12,7 @@ import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { UiCheckComponent } from './ui-check/ui-check.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
+import { ImageClipboardInputComponent } from './components/sets/image-clipboard-input/image-clipboard-input.component';
 
 //TODOauth add /login as default path
 export const routes: Routes = [
@@ -68,6 +69,10 @@ export const routes: Routes = [
   {
     path: 'settings/ui-check',
     component: UiCheckComponent,
+  },
+  {
+    path: 'settings/clipboard',
+    component: ImageClipboardInputComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

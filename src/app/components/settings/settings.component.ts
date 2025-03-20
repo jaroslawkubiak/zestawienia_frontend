@@ -18,5 +18,10 @@ export class SettingsComponent {
       route: '/settings/ui-check',
       icon: 'pi-sparkles',
     },
+    {
+      name: 'Image clipboard',
+      route: '/settings/clipboard',
+      icon: 'pi-image',
+    },
   ];
 }

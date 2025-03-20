@@ -1,0 +1,19 @@
+.input-container {
+  width: 100% !important;
+}
+
+.input-field {
+  all: unset !important;
+  width: 100% !important;
+  height: 25px !important;
+}
+
+.image-preview-container {
+  text-align: center;
+}
+
+.image-preview {
+  max-width: 100%;
+  object-fit: contain !important;
+  max-height: calc(var(--row-height) - 25px);
+}
