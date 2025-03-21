@@ -26,6 +26,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-clients',
@@ -49,6 +50,7 @@ import { IClient } from './IClient';
     ButtonModule,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
+    TooltipModule
   ],
   providers: [MessageService, ConfirmationService, ClientsService],
 })

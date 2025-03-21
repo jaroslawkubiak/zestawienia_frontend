@@ -4,7 +4,6 @@
 ></app-loading-spinner>
 
 <div *ngIf="!isLoading" class="card">
-
   <p-toast />
   <p-toolbar>
     <ng-template #start>
@@ -13,6 +12,8 @@
         label="Nowy"
         icon="pi pi-plus"
         size="large"
+        alt="Dodaj nowego dostawcę"
+        pTooltip="Dodaj nowego dostawcę"
         (onClick)="openNew()"
       />
       <p-button
@@ -21,6 +22,8 @@
         icon="pi pi-trash"
         class="m-6"
         size="large"
+        alt="Usuń zaznaczonych dostawców"
+        pTooltip="Usuń zaznaczonych dostawców"
         (onClick)="deleteSelectedSupplier()"
         [disabled]="!selected || !selected.length"
       />
@@ -50,6 +53,7 @@
             pInputText
             type="text"
             class="search-input"
+            pTooltip="Filtruj dostawców"
             (input)="onGlobalFilter($event)"
             placeholder="Firma, imię, nazwisko, email, telefon"
           />
@@ -59,8 +63,9 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
-          <p-tableHeaderCheckbox />
+          <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
         </th>
+        <th style="min-width: 6rem"></th>
         <th pSortableColumn="firma" style="min-width: 16rem">
           Firma
           <p-sortIcon field="firma" />
@@ -81,36 +86,41 @@
           Telefon
           <p-sortIcon field="telefon" />
         </th>
-        <th style="min-width: 6rem"></th>
       </tr>
     </ng-template>
     <ng-template #body let-supplier>
       <tr (click)="editSupplier(supplier)" class="row">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
-          <p-tableCheckbox [value]="supplier" />
+          <p-tableCheckbox [value]="supplier" pTooltip="Zaznacz dostawcę" />
+        </td>
+        <td (click)="$event.stopPropagation()">
+          <p-button
+            icon="pi pi-pencil"
+            class="p-4"
+            alt="Edytuj dostawcę"
+            pTooltip="Edytuj dostawcę"
+            (click)="editSupplier(supplier)"
+          />
+          <p-button
+            severity="danger"
+            icon="pi pi-trash"
+            class="p-4"
+            alt="Usuń dostawcę"
+            pTooltip="Usuń dostawcę"
+            (click)="deleteSupplier(supplier)"
+          />
         </td>
         <td style="min-width: 16rem">{{ supplier.firma }}</td>
         <td style="min-width: 10rem">{{ supplier.imie }}</td>
         <td style="min-width: 12rem">{{ supplier.nazwisko }}</td>
         <td style="min-width: 12rem">{{ supplier.email }}</td>
         <td style="min-width: 10rem">{{ supplier.telefon }}</td>
-        <td (click)="$event.stopPropagation()">
-          <p-button
-            icon="pi pi-pencil"
-            class="p-4"
-            (click)="editSupplier(supplier)"
-          />
-          <p-button
-            icon="pi pi-trash"
-            severity="danger"
-            class="p-4"
-            (click)="deleteSupplier(supplier)"
-          />
-        </td>
       </tr>
     </ng-template>
     <ng-template #summary>
-      <div class="total">Total {{ suppliers ? suppliers.length : 0 }}</div>
+      <div class="total">
+        Razem {{ suppliers ? suppliers.length : 0 }}
+      </div>
     </ng-template>
   </p-table>
 

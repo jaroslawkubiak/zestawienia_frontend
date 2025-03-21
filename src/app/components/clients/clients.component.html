@@ -12,6 +12,8 @@
         label="Nowy"
         icon="pi pi-plus"
         size="large"
+        alt="Dodaj nowego klienta"
+        pTooltip="Dodaj nowego klienta"
         (onClick)="openNew()"
       />
       <p-button
@@ -20,6 +22,8 @@
         icon="pi pi-trash"
         class="m-6"
         size="large"
+        alt="Usuń zaznaczonych klientów"
+        pTooltip="Usuń zaznaczonych klientów"
         (onClick)="deleteSelectedClient()"
         [disabled]="!selectedClient || !selectedClient.length"
       />
@@ -49,6 +53,7 @@
             pInputText
             type="text"
             class="search-input"
+            pTooltip="Filtruj klientów"
             (input)="onGlobalFilter($event)"
             placeholder="Firma, imię, nazwisko, email, telefon"
           />
@@ -58,7 +63,7 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
-          <p-tableHeaderCheckbox />
+          <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
         </th>
         <th style="min-width: 4rem"></th>
         <th pSortableColumn="firma" style="min-width: 16rem">
@@ -86,18 +91,22 @@
     <ng-template #body let-client let-index="rowIndex">
       <tr class="row" (click)="editClient(client)">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
-          <p-tableCheckbox [value]="client" />
+          <p-tableCheckbox [value]="client" pTooltip="Zaznacz klienta" />
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
             icon="pi pi-pencil"
             class="p-4"
+            alt="Edytuj klienta"
+            pTooltip="Edytuj klienta"
             (click)="editClient(client)"
           />
           <p-button
             icon="pi pi-trash"
             severity="danger"
             class="p-4"
+            alt="Usuń klienta"
+            pTooltip="Usuń klienta"
             (click)="deleteClient(client)"
           />
         </td>
@@ -119,7 +128,7 @@
       </tr>
     </ng-template>
     <ng-template #summary>
-      <div class="total">Total {{ clients ? clients.length : 0 }}</div>
+      <div class="total">Razem {{ clients ? clients.length : 0 }}</div>
     </ng-template>
   </p-table>
 

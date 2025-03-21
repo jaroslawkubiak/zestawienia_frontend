@@ -26,6 +26,7 @@ import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-suppliers',
@@ -49,6 +50,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
     ButtonModule,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
+    TooltipModule
   ],
   providers: [MessageService, ConfirmationService, SuppliersService],
 })
