@@ -28,8 +28,6 @@
 
   <p-table
     #dt
-    [reorderableColumns]="true"
-    (onRowReorder)="handleRowReorder($event)"
     [value]="clients"
     [rows]="10"
     [columns]="cols"
@@ -62,7 +60,7 @@
         <th style="width: 3rem">
           <p-tableHeaderCheckbox />
         </th>
-        <th style="width: 3rem"></th>
+        <th style="min-width: 4rem"></th>
         <th pSortableColumn="firma" style="min-width: 16rem">
           Firma
           <p-sortIcon field="firma" />
@@ -83,31 +81,12 @@
           Telefon
           <p-sortIcon field="telefon" />
         </th>
-        <th style="min-width: 6rem"></th>
       </tr>
     </ng-template>
     <ng-template #body let-client let-index="rowIndex">
-      <tr class="row" (click)="editClient(client)" [pReorderableRow]="index">
+      <tr class="row" (click)="editClient(client)">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
           <p-tableCheckbox [value]="client" />
-        </td>
-        <td style="width: 3rem" (click)="$event.stopPropagation()">
-          <span class="pi pi-bars" pReorderableRowHandle></span>
-        </td>
-        <td style="min-width: 16rem">
-          {{ client.firma }}
-        </td>
-        <td style="min-width: 8rem">
-          {{ index }}
-        </td>
-        <td style="min-width: 12rem">
-          {{ client.nazwisko }}
-        </td>
-        <td style="min-width: 12rem">
-          {{ client.email }}
-        </td>
-        <td style="min-width: 10rem">
-          {{ client.telefon }}
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
@@ -121,6 +100,21 @@
             class="p-4"
             (click)="deleteClient(client)"
           />
+        </td>
+        <td style="min-width: 16rem">
+          {{ client.firma }}
+        </td>
+        <td style="min-width: 8rem">
+          {{ client.imie }}
+        </td>
+        <td style="min-width: 12rem">
+          {{ client.nazwisko }}
+        </td>
+        <td style="min-width: 12rem">
+          {{ client.email }}
+        </td>
+        <td style="min-width: 10rem">
+          {{ client.telefon }}
         </td>
       </tr>
     </ng-template>

@@ -22,10 +22,10 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { AuthService } from '../../login/auth.service';
 import { notificationLifeTime } from '../../shared/constans';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-clients',
@@ -330,25 +330,5 @@ export class ClientsComponent implements OnInit {
     if (this.dt) {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
-  }
-
-  handleRowReorder(event: any) {
-    console.log(`##### event  #####`);
-    console.log(event);
-    // console.log('przed:');
-    console.log(this.clients);
-
-    // const { dragIndex, dropIndex } = event;
-
-    // if (dragIndex === dropIndex) return; // Jeśli indeksy są takie same, nie rób nic
-
-    // const updatedClients = [...this.clients]; // Tworzymy kopię listy
-    // const [movedItem] = updatedClients.splice(dragIndex, 1); // Usuwamy element z jego pierwotnej pozycji
-    // updatedClients.splice(dropIndex, 0, movedItem); // Wstawiamy element na nową pozycję
-
-    // this.clients = updatedClients; // Aktualizujemy listę klientów
-
-    // console.log('Nowa kolejność:');
-    // console.log(this.clients);
   }
 }
