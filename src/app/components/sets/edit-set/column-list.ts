@@ -45,6 +45,12 @@ export const columnList: IColumnList[] = [
     type: 'string',
   },
   {
+    name: 'DOSTAWCA',
+    key: 'supplierId',
+    type: 'select',
+    classTd: 'select-field'
+  },
+  {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
@@ -95,16 +101,10 @@ export const columnList: IColumnList[] = [
     classTd: 'read-only',
   },
   {
-    name: 'DOSTAWCA',
-    key: 'dostawca',
-    type: 'select',
-  },
-  {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
     type: 'string',
   },
-
   {
     name: 'LINK',
     key: 'link',

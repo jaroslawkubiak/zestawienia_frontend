@@ -136,7 +136,7 @@ th {
 }
 
 .form-dirty {
-  border: 2px solid var(--error-color) !important;
+  border: 1px solid var(--error-color) !important;
 }
 
 i {
@@ -182,4 +182,19 @@ i:hover {
   flex-direction: column;
   justify-content: start;
   background-color: var(--accent-color-lighter) !important;
+}
+
+.p-select {
+  all: unset !important;
+  padding: 0 4px !important;
+  font-size: 1.2rem !important;
+  border: 1px solid var(--accent-color-darker) !important;
+  background-color: var(--accent-color-lighter) !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+.select-field {
+  cursor: pointer;
 }

@@ -24,6 +24,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/ISupplier';
+import { SuppliersService } from '../../suppliers/suppliers.service';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetsService } from '../sets.service';
@@ -35,6 +36,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-set',
@@ -95,11 +97,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   positionToDelete: number[] = [];
 
+  allSuppliers: ISupplier[] = [];
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
     private setsService: SetsService,
+    private suppliersService: SuppliersService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
     private cd: ChangeDetectorRef
@@ -113,42 +118,37 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.route.paramMap.subscribe((params) => {
       this.setId = params.get('id') || '';
       if (this.setId) {
-        this.getPosition();
-        this.getSet();
+        this.loadData();
       }
     });
   }
 
-  // request to get set data
-  getSet(): void {
-    if (this.authorizationToken) {
-      this.setsService.getSet(this.authorizationToken, this.setId).subscribe({
-        next: (data) => {
-          this.set = data[0];
-          this.setName = this.set.name;
-          this.setStatus = this.set.status;
+  loadData(): void {
+    if (!this.authorizationToken) return;
 
-          if (this.set.bookmarks.length > 0) {
-            this.updateBookmarks();
-          }
-        },
-        error: (err) => console.error('Error getting set ', err),
-      });
-    }
-  }
+    forkJoin({
+      set: this.setsService.getSet(this.authorizationToken, this.setId),
+      positions: this.setsService.getPositions(
+        this.authorizationToken,
+        this.setId
+      ),
+      suppliers: this.suppliersService.getSuppliers(this.authorizationToken),
+    }).subscribe({
+      next: ({ set, positions, suppliers }) => {
+        this.set = set[0];
+        this.setName = this.set.name;
+        this.setStatus = this.set.status;
+        this.positions = positions;
+        this.allSuppliers = suppliers;
 
-  // request to get position data
-  getPosition(): void {
-    if (this.authorizationToken) {
-      this.setsService
-        .getPositions(this.authorizationToken, this.setId)
-        .subscribe({
-          next: (data) => {
-            this.positions = data;
-          },
-          error: (err) => console.error('Error getting positions ', err),
-        });
-    }
+        if (this.set.bookmarks.length > 0) {
+          this.updateBookmarks();
+        }
+
+        this.initializeForm();
+      },
+      error: (err) => console.error('Error loading data ', err),
+    });
   }
 
   // take edited data from form and update this.position array
@@ -204,9 +204,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.formData = this.positionsFromBookmark.map((position: IPosition) => {
       let obj: any = {};
       this.columnList.forEach((column) => {
-        obj[column.key] = position[column.key as keyof IPosition];
+        if (column.key === 'supplierId') {
+          obj[column.key] = position.supplierId
+            ? this.allSuppliers.find((s) => s.id === position.supplierId.id) ||
+              null
+            : null;
+        } else {
+          obj[column.key] = position[column.key as keyof IPosition];
+        }
       });
-
       this.calculateFooterRow(obj);
 
       return obj;
@@ -357,7 +363,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     const newPosition: INewEmptyPosition = {
       kolejnosc: kolejnosc,
       bookmarkId: bookmark[0],
-      supplierId: { id: 1 } as ISupplier, //TODO fix this later
       createdBy: { id: this.userId } as IUser,
       updatedBy: { id: this.userId } as IUser,
       setId: { id: +this.setId } as ISet,
@@ -413,7 +418,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     const newClonePosition: IClonePosition = {
       ...clonePosition,
       bookmarkId: bookmark[0],
-      supplierId: { id: 1 } as ISupplier, //TODO fix this later
       createdBy: { id: this.userId } as IUser,
       updatedBy: { id: this.userId } as IUser,
       setId: { id: +this.setId } as ISet,
@@ -666,7 +670,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   };
 
-  //TODO position reorder
+  // position reorder
   handleRowReorder(event: any) {
     this.isEdited = true;
     this.updateOrder();

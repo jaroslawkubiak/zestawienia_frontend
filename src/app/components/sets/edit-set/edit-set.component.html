@@ -80,6 +80,7 @@
             (onRowReorder)="handleRowReorder($event)"
             [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
           >
+            <!-- table header  -->
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 4rem" class="position-header">LP</th>
@@ -95,6 +96,7 @@
                 </th>
               </tr>
             </ng-template>
+            <!-- table body  -->
             <ng-template
               pTemplate="body"
               let-position
@@ -102,10 +104,8 @@
               let-i="rowIndex"
             >
               <tr [pReorderableRow]="i">
-                <td>
-                  <div class="lp">
-                    {{ i + 1 }}
-                  </div>
+                <td class="lp">
+                  {{ i + 1 }}
                 </td>
                 <td>
                   <div class="actions">
@@ -172,6 +172,21 @@
                           (keydown.enter)="applyAction($event, i, column)"
                           (focus)="selectAll($event)"
                         />
+                        <!-- EDIT MODE -> type = select  -->
+                        <p-select
+                          *ngSwitchCase="'select'"
+                          [options]="allSuppliers"
+                          [(ngModel)]="formData[i][column.key]"
+                          (onChange)="applyAction($event, i, column)"
+                          optionLabel="firma"
+                        />
+
+                        <!--                         
+                          
+                          (blur)="applyAction($event, i, column)"
+                          (keydown.enter)="applyAction($event, i, column)"
+                          (focus)="selectAll($event)"
+                                               -->
                         <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">
                           <app-image-clipboard-input
@@ -185,7 +200,7 @@
                             [size]="70"
                           ></app-loading-spinner>
                         </div>
-                        <!-- EDIT MODE -> type = text  -->
+                        <!-- EDIT MODE -> type = text DEFAULT -->
                         <input
                           *ngSwitchDefault
                           pInputText
@@ -214,7 +229,9 @@
                         <div *ngSwitchCase="'number'">
                           {{ formData[i][column.key] | number : "1.2-2" }}
                         </div>
-
+                        <div *ngSwitchCase="'select'">
+                          {{ formData[i][column.key]?.firma }}
+                        </div>
                         <!-- VIEW MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="view-mode-image">
                           <app-image-clipboard-input
@@ -243,6 +260,7 @@
                 </td>
               </tr>
             </ng-template>
+            <!-- table footer  -->
             <ng-template pTemplate="footer">
               <tr>
                 <th
