@@ -119,3 +119,12 @@
   border: 1px solid transparent !important;
   border-radius: 0 !important;
 }
+
+::ng-deep .p-dialog-title {
+  font-size: 2rem;
+  color: var(--accent-color-darker);
+}
+
+::ng-deep .p-checkbox {
+  display: flex;
+}

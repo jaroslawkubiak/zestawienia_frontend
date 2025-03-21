@@ -57,15 +57,6 @@ label {
   color: rgb(0, 0, 0) !important;
 }
 
-::ng-deep .p-checkbox {
-  display: flex;
-}
-
-::ng-deep .p-dialog-title {
-  font-size: 2rem !important;
-  color: var(--accent-color);
-}
-
 tr {
   cursor: pointer;
 }
