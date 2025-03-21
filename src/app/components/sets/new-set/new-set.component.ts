@@ -36,7 +36,7 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 export class NewSetComponent implements OnInit {
   name: string = '';
   userId: number | null;
-  allClients: IClient[] | undefined;
+  allClients: IClient[] = [];
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
   selectedBookmarks: IBookmark[] = [];
