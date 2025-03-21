@@ -1,4 +1,9 @@
 :root {
+  --p-tooltip-background: rgb(0, 0, 0) !important;
+  --p-tooltip-color: rgb(247, 247, 247) !important;
+  --p-tooltip-padding: 6px !important;
+  --p-tooltip-border-radius: 0 !important;
+
   --btn-primary-bg: #3bbfa1;
   --btn-primary-bg-hover: #42d6b4;
   --btn-primary-text: #ecf1f0;
@@ -98,4 +103,19 @@
   --p-button-contrast-color: var(--btn-contrast-text) !important;
   --p-button-contrast-hover-color: var(--btn-contrast-text) !important;
   --p-button-contrast-active-color: var(--p-button-contrast-color) !important;
+}
+
+/* primeNG custom elements style  */
+::ng-deep .p-tooltip {
+  font-size: 12px !important;
+}
+
+/* p-table  */
+.row:hover {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+.p-button {
+  border: 1px solid transparent !important;
+  border-radius: 0 !important;
 }

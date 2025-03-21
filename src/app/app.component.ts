@@ -10,8 +10,8 @@ import { MenuComponent } from './components/menu/menu.component';
   styleUrls: [
     './app.component.css',
     './shared/css/basic.css',
-    './shared/css/p-table.css',
     './shared/css/p-toast.css',
+    './shared/css/theme.css',
   ],
   standalone: true,
 })
