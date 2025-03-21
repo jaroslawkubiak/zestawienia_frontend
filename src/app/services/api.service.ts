@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ILoggedUser } from '../login/ILoggedUser';
-import { IUser } from '../login/User';
+import { ILoginUser } from '../login/ILoginUser';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class ApiService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  logUser(credentials: IUser): Observable<ILoggedUser> {
+  logUser(credentials: ILoginUser): Observable<ILoggedUser> {
     return this.http
       .post<ILoggedUser>(`${environment.API_URL}/auth/login`, credentials)
       .pipe(catchError(this.handleError));

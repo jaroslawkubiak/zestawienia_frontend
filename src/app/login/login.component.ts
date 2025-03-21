@@ -5,7 +5,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { IUser } from './User';
+import { ILoginUser } from './ILoginUser';
 import { AuthService } from './auth.service';
 import { InputTextModule } from 'primeng/inputtext';
 
@@ -51,7 +51,7 @@ export class LoginComponent {
       return;
     }
 
-    const enteredData: IUser = {
+    const enteredData: ILoginUser = {
       username: this.form.value.login as string,
       password: this.form.value.password as string,
     };
