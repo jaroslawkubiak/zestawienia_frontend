@@ -54,9 +54,11 @@
   <p-tabs [value]="selectedBookmark" scrollable>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
-      <p-tab [value]="bookmark.id" (click)="loadContent(bookmark.id)">{{
-        bookmark.name
-      }}</p-tab>
+      <p-tab
+        [value]="bookmark.id"
+        (click)="loadContentForBookmark(bookmark.id)"
+        >{{ bookmark.name }}</p-tab
+      >
       }
     </p-tablist>
     <p-tabpanels>
@@ -132,7 +134,7 @@
                         class="p-4"
                         alt="Klonuj pozycję"
                         pTooltip="Klonuj pozycję"
-                        (click)="clonePosition()"
+                        (click)="clonePosition(formData[i].id)"
                       />
                     </div>
                     <div class="flex-center">

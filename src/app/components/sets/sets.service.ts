@@ -11,6 +11,7 @@ import { IPosition } from './types/IPosition';
 import { ISet } from './types/ISet';
 import { IUpdateSet } from './types/IUpdateSet';
 import { INewEmptyPosition } from './types/INewEmptyPosition';
+import { IClonePosition } from './types/IClonePosition';
 
 @Injectable({
   providedIn: 'root',
@@ -102,13 +103,28 @@ export class SetsService {
   addPosition(
     authorizationToken: string | null,
     newPosition: INewEmptyPosition
-  ): Observable<INewSet> {
+  ): Observable<IPosition> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${authorizationToken}`,
     });
 
     return this.http
-      .post<INewSet>(`${environment.API_URL}/positions`, newPosition, {
+      .post<IPosition>(`${environment.API_URL}/positions/new`, newPosition, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  clonePosition(
+    authorizationToken: string | null,
+    clonePosition: IClonePosition
+  ): Observable<IPosition> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+
+    return this.http
+      .post<IPosition>(`${environment.API_URL}/positions/clone`, clonePosition, {
         headers,
       })
       .pipe(catchError(this.handleError));

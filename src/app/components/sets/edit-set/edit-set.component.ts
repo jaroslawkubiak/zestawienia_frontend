@@ -23,9 +23,11 @@ import {
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { ISupplier } from '../../suppliers/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetsService } from '../sets.service';
+import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { IPosition } from '../types/IPosition';
@@ -86,7 +88,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     ...columnList,
   ];
 
-  deletedPositions: number[] = [];
+  positionToDelete: number[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -158,14 +160,18 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // load positions for a given bookmarkID
-  loadContent(bookmarkId: number) {
+  loadContentForBookmark(bookmarkId: number) {
     this.updatePosition();
 
     this.selectedBookmark = bookmarkId;
     this.getColumnWidthToSelectedBookmark();
 
     this.positionsFromBookmark = this.positions
-      .filter((item) => item.bookmarkId.id === this.selectedBookmark)
+      .filter(
+        (item) =>
+          item.bookmarkId?.id === this.selectedBookmark &&
+          !this.positionToDelete.includes(item.id)
+      )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item, index) => {
         const brutto = calculateBrutto(item.netto);
@@ -200,8 +206,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
       return obj;
     });
-    console.log(`##### initializeForm #####`);
-    console.log(this.formData);
+
     this.isLoading = false;
   }
 
@@ -233,19 +238,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       return (item.default = true);
     });
 
-    this.loadContent(this.selectedBookmark);
+    this.loadContentForBookmark(this.selectedBookmark);
   }
 
   // action when cell is finish editing
   applyAction(value: any, rowIndex: number, column: any): void {
     this.isEdited = true;
     const newValue = value.srcElement.value;
-
-    // if (column.action) {
-    //   this.formData[rowIndex][column.key] = column.action(
-    //     this.formData[rowIndex][column.key]
-    //   );
-    // }
 
     // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
     if (column.key === 'ilosc') {
@@ -336,56 +335,127 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   shareSet() {
-    console.log(`##### shareSet #####`);
+    console.log(`shareSet`);
   }
 
   // add empty position
   addEmptyPosition(kolejnosc: number) {
-    console.log(`##### addEmptyPosition na pozycji=${kolejnosc} #####`);
     this.isEdited = true;
 
-    // const kolejnosc = 9999;
     const bookmark = this.set.bookmarks.filter(
       (item) => item.id === this.selectedBookmark
     );
 
     const newPosition: INewEmptyPosition = {
-      kolejnosc,
+      kolejnosc: kolejnosc,
       bookmarkId: bookmark[0],
+      supplierId: { id: 1 } as ISupplier, //TODO fix this later
       createdBy: { id: this.userId } as IUser,
       updatedBy: { id: this.userId } as IUser,
       setId: { id: +this.setId } as ISet,
     };
 
-    console.log(`##### newPosition #####`);
-    console.log(newPosition);
+    this.setsService
+      .addPosition(this.authorizationToken, newPosition)
+      .subscribe({
+        next: (response) => {
+          // put new position in place according to property kolejnosc
+          this.formData.splice(response.kolejnosc, 0, response);
 
-    // this.setsService
-    //   .addPosition(this.authorizationToken, newPosition)
-    //   .subscribe({
-    //     next: (response) => {
-    //       //TODO update positiona and form// przeliczanie kolejności do każdej bookmarks
-    //       this.isEdited = false;
-    //       this.messageService.add({
-    //         severity: 'success',
-    //         summary: 'Sukces',
-    //         detail: 'Pusta pozycja została dodana',
-    //         life: notificationLifeTime,
-    //       });
-    //     },
-    //     error: (error) => {
-    //       this.messageService.add({
-    //         severity: 'error',
-    //         summary: 'Błąd',
-    //         detail: error.message,
-    //         life: notificationLifeTime,
-    //       });
-    //     },
-    //   });
+          this.updateOrder();
+          this.updatePosition();
+          this.positions.push(response);
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sukces',
+            detail: 'Pusta pozycja została dodana',
+            life: notificationLifeTime,
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Błąd',
+            detail: error.message,
+            life: notificationLifeTime,
+          });
+        },
+      });
   }
 
-  clonePosition() {
-    console.log(`##### clone position #####`);
+  clonePosition(positionId: number) {
+    this.isEdited = true;
+
+    const originalPosition = this.formData.find(
+      (item) => item.id === positionId
+    );
+
+    if (!originalPosition) {
+      console.error(`Position with ID ${positionId} not found`);
+      return;
+    }
+
+    const bookmark = this.set.bookmarks.filter(
+      (item) => item.id === this.selectedBookmark
+    );
+
+    const { id, ...clonePosition } = originalPosition;
+
+    const newClonePosition: IClonePosition = {
+      ...clonePosition,
+      bookmarkId: bookmark[0],
+      supplierId: { id: 1 } as ISupplier, //TODO fix this later
+      createdBy: { id: this.userId } as IUser,
+      updatedBy: { id: this.userId } as IUser,
+      setId: { id: +this.setId } as ISet,
+    };
+
+    this.setsService
+      .clonePosition(this.authorizationToken, newClonePosition)
+      .subscribe({
+        next: (response) => {
+          this.resetFooter();
+
+          // put new position in place according to property kolejnosc
+          this.formData.splice(response.kolejnosc, 0, response);
+
+          this.formData = this.formData
+            .map((item) => {
+              const brutto = calculateBrutto(item.netto);
+
+              return {
+                ...item,
+                brutto,
+                wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+                wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+              };
+            })
+            .map((item) => {
+              this.calculateFooterRow(item);
+              return item;
+            });
+
+          this.updateOrder();
+          this.updatePosition();
+          this.positions.push(response);
+
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Sukces',
+            detail: 'Pozycja została sklonowana',
+            life: notificationLifeTime,
+          });
+        },
+        error: (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Błąd',
+            detail: error.message,
+            life: notificationLifeTime,
+          });
+        },
+      });
   }
 
   deletePosition(positionId: number) {
@@ -398,8 +468,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.calculateFooterRow(item);
         return item;
       });
+
+    this.updateOrder();
     this.updatePosition();
-    this.deletedPositions.push(positionId);
+
+    this.positionToDelete.push(positionId);
+    console.log(`##### deletePosition() = positionToDelete #####`);
+    console.log(this.positionToDelete);
     this.messageService.add({
       severity: 'warn',
       summary: 'Informacja',
@@ -420,13 +495,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         userId: this.userId,
         set: this.set,
         positions: this.positions,
-        positionToDelete: this.deletedPositions,
+        positionToDelete: this.positionToDelete,
       };
 
       this.setsService.saveSet(this.authorizationToken, savedSet).subscribe({
         next: (response) => {
           this.isEdited = false;
-          this.deletedPositions = [];
+          this.positionToDelete = [];
           this.messageService.add({
             severity: 'success',
             summary: 'Sukces',
@@ -575,21 +650,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   //TODO position reorder
   handleRowReorder(event: any) {
-    console.log(`##### event  #####`);
-    console.log(event);
-    // console.log('przed:');
+    this.isEdited = true;
+    this.updateOrder();
+  }
 
-    // const { dragIndex, dropIndex } = event;
-
-    // if (dragIndex === dropIndex) return; // Jeśli indeksy są takie same, nie rób nic
-
-    // const updatedClients = [...this.clients]; // Tworzymy kopię listy
-    // const [movedItem] = updatedClients.splice(dragIndex, 1); // Usuwamy element z jego pierwotnej pozycji
-    // updatedClients.splice(dropIndex, 0, movedItem); // Wstawiamy element na nową pozycję
-
-    // this.clients = updatedClients; // Aktualizujemy listę klientów
-
-    // console.log('Nowa kolejność:');
-    // console.log(this.clients);
+  // update kolejnosc proerty on selected bookmark
+  updateOrder() {
+    this.formData = this.formData.map((item, index) => {
+      return { ...item, kolejnosc: index + 1 };
+    });
   }
 }
