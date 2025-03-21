@@ -16,6 +16,12 @@ th {
   margin-top: 100px;
 }
 
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
 .set-header {
   font-size: 2.6rem;
   background-color: var(--accent-color-darker);

@@ -21,7 +21,7 @@ export const columnList: IColumnList[] = [
   {
     name: 'KOLEJNOSC',
     key: 'kolejnosc',
-    type: 'number',
+    type: 'text',
   },
   {
     name: 'PRODUKT',

@@ -34,7 +34,8 @@
           style="font-size: 2.5rem"
           (click)="editHeader()"
           alt="Edytuj nagłowek zestawienia"
-          title="Edytuj nagłowek zestawienia"
+          pTooltip="Edytuj nagłowek zestawienia"
+          tooltipPosition="left"
         ></i>
       </div>
       <div class="cell-icon">
@@ -43,7 +44,8 @@
           style="font-size: 2.5rem"
           (click)="shareSet()"
           alt="Udostępnij"
-          title="Udostępnij"
+          pTooltip="Udostępnij"
+          tooltipPosition="left"
         ></i>
       </div>
     </div>
@@ -72,16 +74,14 @@
             [scrollable]="true"
             [value]="formData"
             (onColResize)="onColResize($event)"
+            [reorderableColumns]="true"
+            (onRowReorder)="handleRowReorder($event)"
             [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
           >
             <ng-template pTemplate="header">
               <tr>
-                <th style="width: 4rem" class="position-header">
-                  <div class="flex-center">
-                    <i class="pi pi-sort" alt="Sortuj" title="Sortuj"></i>
-                  </div>
-                </th>
-                <th style="width: 8rem" class="position-header"></th>
+                <th style="width: 4rem" class="position-header">LP</th>
+                <th style="width: 5rem" class="position-header"></th>
                 <th
                   *ngFor="let column of columnList"
                   class="position-header"
@@ -99,30 +99,52 @@
               let-editing="editing"
               let-i="rowIndex"
             >
-              <tr>
+              <tr [pReorderableRow]="i">
                 <td>
                   <div class="lp">
                     {{ i + 1 }}
                   </div>
                 </td>
                 <td>
-                  <div class="flex-center">
-                    <p-button
-                      severity="info"
-                      icon="pi pi-clone"
-                      class="p-4"
-                      alt="Klonuj pozycję"
-                      title="Klonuj pozycję"
-                      (click)="clonePosition()"
-                    />
-                    <p-button
-                      alt="Usuń pozycję"
-                      title="Usuń pozycję"
-                      severity="danger"
-                      icon="pi pi-trash"
-                      class="p-4"
-                      (click)="deletePosition(formData[i].id)"
-                    />
+                  <div class="actions">
+                    <div class="flex-center">
+                      <span
+                        class="pi pi-bars"
+                        pReorderableRowHandle
+                        style="font-size: 20px"
+                        pTooltip="Przegiągnij, aby zmienić pozycję"
+                      ></span>
+                    </div>
+                    <div class="flex-center">
+                      <p-button
+                        severity="primary"
+                        icon="pi pi-plus"
+                        class="p-4"
+                        alt="Nowa pusta pozycja"
+                        pTooltip="Nowa pusta pozycja"
+                        (click)="addEmptyPosition(formData[i].kolejnosc)"
+                      />
+                    </div>
+                    <div class="flex-center">
+                      <p-button
+                        severity="info"
+                        icon="pi pi-clone"
+                        class="p-4"
+                        alt="Klonuj pozycję"
+                        pTooltip="Klonuj pozycję"
+                        (click)="clonePosition()"
+                      />
+                    </div>
+                    <div class="flex-center">
+                      <p-button
+                        severity="danger"
+                        class="p-4"
+                        icon="pi pi-trash"
+                        alt="Usuń pozycję"
+                        pTooltip="Usuń pozycję"
+                        (click)="deletePosition(formData[i].id)"
+                      />
+                    </div>
                   </div>
                 </td>
                 <!-- main content  -->
@@ -208,7 +230,7 @@
                             "
                           />
                         </div>
-                        
+
                         <!-- VIEW MODE default -> type = text  -->
                         <div *ngSwitchDefault>
                           {{ formData[i][column.key] }}

@@ -1,13 +1,6 @@
 import { CommonModule } from '@angular/common';
-import {
-  ChangeDetectorRef,
-  Component,
-  ElementRef,
-  OnInit,
-  Renderer2,
-} from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -18,8 +11,10 @@ import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
+import { IUser } from '../../../login/IUser';
 import { notificationLifeTime } from '../../../shared/constans';
 import {
   calculateBrutto,
@@ -32,6 +27,7 @@ import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetsService } from '../sets.service';
 import { IFooterRow } from '../types/IFooterRow';
+import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
@@ -57,6 +53,7 @@ import { columnList, IColumnList } from './column-list';
     Dialog,
     EditHeaderComponent,
     ImageClipboardInputComponent,
+    TooltipModule,
   ],
   providers: [SetsService, ConfirmationService, MessageService],
 })
@@ -98,10 +95,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private setsService: SetsService,
     private confirmationService: ConfirmationService,
     private messageService: MessageService,
-    private cd: ChangeDetectorRef,
-    private sanitizer: DomSanitizer,
-    private el: ElementRef,
-    private renderer: Renderer2
+    private cd: ChangeDetectorRef
   ) {
     this.authorizationToken = this.authService.authorizationToken;
     this.userId = this.authService.userId();
@@ -114,15 +108,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       if (this.setId) {
         this.getPosition();
         this.getSet();
-      }
-    });
-  }
-
-  ngAfterViewInit() {
-    // Delegacja zdarzeń do dynamicznie wstawionych przycisków
-    this.renderer.listen(this.el.nativeElement, 'click', (event) => {
-      if (event.target.closest('.add-empty-position')) {
-        this.addEmptyPosition();
       }
     });
   }
@@ -181,11 +166,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.positionsFromBookmark = this.positions
       .filter((item) => item.bookmarkId.id === this.selectedBookmark)
-      .map((item) => {
+      .sort((a, b) => a.kolejnosc - b.kolejnosc)
+      .map((item, index) => {
         const brutto = calculateBrutto(item.netto);
-        const dostawca = item.supplierId.firma;
+        const dostawca = item.supplierId?.firma;
         return {
           ...item,
+          kolejnosc: index + 1,
           dostawca,
           brutto,
           wartoscNetto: calculateWartosc(item.ilosc, item.netto),
@@ -213,7 +200,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
       return obj;
     });
-
+    console.log(`##### initializeForm #####`);
+    console.log(this.formData);
     this.isLoading = false;
   }
 
@@ -315,12 +303,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           item.value = Number(item.value) + Number(obj.ilosc);
           item.class = 'position-footer-number';
           break;
-        case 'id':
-          item.value = this.sanitizeHtml(
-            `<button alt="Nowa pusta pozycja" title="Nowa pusta pozycja" class="add-empty-position p-button p-button-primary p-4"><i class="pi pi-plus"></i></button>`
-          );
-          item.class = 'position-footer-action';
-          break;
         case 'netto':
           item.value = (
             Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
@@ -358,8 +340,48 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // add empty position
-  addEmptyPosition() {
-    console.log(`##### addEmptyPosition #####`);
+  addEmptyPosition(kolejnosc: number) {
+    console.log(`##### addEmptyPosition na pozycji=${kolejnosc} #####`);
+    this.isEdited = true;
+
+    // const kolejnosc = 9999;
+    const bookmark = this.set.bookmarks.filter(
+      (item) => item.id === this.selectedBookmark
+    );
+
+    const newPosition: INewEmptyPosition = {
+      kolejnosc,
+      bookmarkId: bookmark[0],
+      createdBy: { id: this.userId } as IUser,
+      updatedBy: { id: this.userId } as IUser,
+      setId: { id: +this.setId } as ISet,
+    };
+
+    console.log(`##### newPosition #####`);
+    console.log(newPosition);
+
+    // this.setsService
+    //   .addPosition(this.authorizationToken, newPosition)
+    //   .subscribe({
+    //     next: (response) => {
+    //       //TODO update positiona and form// przeliczanie kolejności do każdej bookmarks
+    //       this.isEdited = false;
+    //       this.messageService.add({
+    //         severity: 'success',
+    //         summary: 'Sukces',
+    //         detail: 'Pusta pozycja została dodana',
+    //         life: notificationLifeTime,
+    //       });
+    //     },
+    //     error: (error) => {
+    //       this.messageService.add({
+    //         severity: 'error',
+    //         summary: 'Błąd',
+    //         detail: error.message,
+    //         life: notificationLifeTime,
+    //       });
+    //     },
+    //   });
   }
 
   clonePosition() {
@@ -381,7 +403,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.messageService.add({
       severity: 'warn',
       summary: 'Informacja',
-      detail: `Pozycja ID ${positionId} oznaczona do usunięcia.`,
+      detail: `Pozycja o ID=${positionId} oznaczona do usunięcia.`,
       life: notificationLifeTime,
     });
   }
@@ -506,6 +528,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.editHeaderDialog = true;
   }
 
+  // hide dialog with edit header
   hideDialog() {
     this.editHeaderDialog = false;
     this.submitted = false;
@@ -536,11 +559,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.isEdited = true;
   }
 
-  // sanitize html - needed for paste html as string from ts (use in calculateFooterRow)
-  sanitizeHtml(html: string): SafeHtml {
-    return this.sanitizer.bypassSecurityTrustHtml(html);
-  }
-
   // when upload image from clipboard
   onImageUpload = (imageName: string, positionId: string) => {
     this.isEdited = true;
@@ -554,4 +572,24 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       return item;
     });
   };
+
+  //TODO position reorder
+  handleRowReorder(event: any) {
+    console.log(`##### event  #####`);
+    console.log(event);
+    // console.log('przed:');
+
+    // const { dragIndex, dropIndex } = event;
+
+    // if (dragIndex === dropIndex) return; // Jeśli indeksy są takie same, nie rób nic
+
+    // const updatedClients = [...this.clients]; // Tworzymy kopię listy
+    // const [movedItem] = updatedClients.splice(dragIndex, 1); // Usuwamy element z jego pierwotnej pozycji
+    // updatedClients.splice(dropIndex, 0, movedItem); // Wstawiamy element na nową pozycję
+
+    // this.clients = updatedClients; // Aktualizujemy listę klientów
+
+    // console.log('Nowa kolejność:');
+    // console.log(this.clients);
+  }
 }

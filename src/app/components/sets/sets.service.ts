@@ -10,6 +10,7 @@ import { INewSet } from './types/INewSet';
 import { IPosition } from './types/IPosition';
 import { ISet } from './types/ISet';
 import { IUpdateSet } from './types/IUpdateSet';
+import { INewEmptyPosition } from './types/INewEmptyPosition';
 
 @Injectable({
   providedIn: 'root',
@@ -95,6 +96,21 @@ export class SetsService {
           headers,
         }
       )
+      .pipe(catchError(this.handleError));
+  }
+
+  addPosition(
+    authorizationToken: string | null,
+    newPosition: INewEmptyPosition
+  ): Observable<INewSet> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${authorizationToken}`,
+    });
+
+    return this.http
+      .post<INewSet>(`${environment.API_URL}/positions`, newPosition, {
+        headers,
+      })
       .pipe(catchError(this.handleError));
   }
 }
