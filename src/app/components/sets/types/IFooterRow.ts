@@ -3,8 +3,10 @@ import { SafeHtml } from '@angular/platform-browser';
 export type IFooterRow = {
   name: string;
   key: string;
-  type: string;
-  class?: string;
-  value?: SafeHtml | number;
+  type: 'number' | 'string' | 'select' | 'image';
+  value?: number | string;
   unit?: string;
+  classTh?: string;
+  classTd?: string;
+  classFooter?: string;
 };

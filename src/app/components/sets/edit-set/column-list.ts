@@ -1,10 +1,12 @@
 export interface IColumnList {
   name: string;
   key: string;
-  type: 'number' | 'text' | 'select' | 'image';
+  type: 'number' | 'string' | 'select' | 'image';
   classTh?: string;
   classTd?: string;
+  classFooter?: string;
   width?: number;
+  value?: number | string;
   unit?: string;
   readOnly?: boolean;
   // action?: (value: any) => any;
@@ -14,19 +16,23 @@ export const columnList: IColumnList[] = [
   {
     name: 'id',
     key: 'id',
+    type: 'string',
     classTh: 'hidden',
     classTd: 'hidden',
-    type: 'text',
+    classFooter: 'hidden',
   },
   {
     name: 'KOLEJNOSC',
     key: 'kolejnosc',
-    type: 'text',
+    type: 'string',
+    classTh: 'hidden',
+    classTd: 'hidden',
+    classFooter: 'hidden',
   },
   {
     name: 'PRODUKT',
     key: 'produkt',
-    type: 'text',
+    type: 'string',
   },
   {
     name: 'ZDJĘCIE',
@@ -36,22 +42,22 @@ export const columnList: IColumnList[] = [
   {
     name: 'PRODUCENT',
     key: 'producent',
-    type: 'text',
+    type: 'string',
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
-    type: 'text',
+    type: 'string',
   },
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
-    type: 'text',
+    type: 'string',
   },
   {
     name: 'KOLOR',
     key: 'kolor',
-    type: 'text',
+    type: 'string',
   },
   {
     name: 'ILOŚĆ',
@@ -96,12 +102,12 @@ export const columnList: IColumnList[] = [
   {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
-    type: 'text',
+    type: 'string',
   },
 
   {
     name: 'LINK',
     key: 'link',
-    type: 'text',
+    type: 'string',
   },
 ];

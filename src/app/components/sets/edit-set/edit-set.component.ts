@@ -85,6 +85,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       key: 'lp',
       type: 'number',
     },
+    {
+      name: 'actions',
+      key: 'actions',
+      type: 'string',
+    },
     ...columnList,
   ];
 
@@ -173,7 +178,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           !this.positionToDelete.includes(item.id)
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
-      .map((item, index) => {
+      .map((item: IPosition, index: number) => {
         const brutto = calculateBrutto(item.netto);
         const dostawca = item.supplierId?.firma;
         return {
@@ -196,7 +201,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   initializeForm() {
     this.resetFooter();
 
-    this.formData = this.positionsFromBookmark.map((position) => {
+    this.formData = this.positionsFromBookmark.map((position: IPosition) => {
       let obj: any = {};
       this.columnList.forEach((column) => {
         obj[column.key] = position[column.key as keyof IPosition];
@@ -217,7 +222,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     )?.width;
 
     if (selectedBookmark && Array.isArray(selectedBookmark)) {
-      this.columnList = this.columnList.map((col) => {
+      this.columnList = this.columnList.map((col: IColumnList) => {
         const matchingWidth = selectedBookmark.find((w) => w.name === col.name);
 
         return matchingWidth ? { ...col, width: matchingWidth.width } : col;
@@ -291,42 +296,45 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // reset footer row
   resetFooter() {
-    this.footerRow = this.footerRow.map((item) => ({ ...item, value: '' }));
+    this.footerRow = this.footerRow.map((item: IFooterRow) => ({
+      ...item,
+      value: '',
+    }));
   }
 
   // calculate values for footer row
   calculateFooterRow(obj: IPosition) {
-    this.footerRow = this.footerRow.map((item) => {
+    this.footerRow = this.footerRow.map((item: IFooterRow) => {
       switch (item.key) {
         case 'ilosc':
           item.value = Number(item.value) + Number(obj.ilosc);
-          item.class = 'position-footer-number';
+          item.classFooter = 'position-footer-number';
           break;
         case 'netto':
           item.value = (
             Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
           ).toFixed(2);
-          item.class = 'position-footer-number';
+          item.classFooter = 'position-footer-number';
           break;
         case 'brutto':
           item.value = (
             Math.round((Number(item.value) + Number(obj.brutto)) * 100) / 100
           ).toFixed(2);
-          item.class = 'position-footer-number';
+          item.classFooter = 'position-footer-number';
           break;
         case 'wartoscNetto':
           item.value = (
             Math.round((Number(item.value) + Number(obj.wartoscNetto)) * 100) /
             100
           ).toFixed(2);
-          item.class = 'position-footer-number';
+          item.classFooter = 'position-footer-number';
           break;
         case 'wartoscBrutto':
           item.value = (
             Math.round((Number(item.value) + Number(obj.wartoscBrutto)) * 100) /
             100
           ).toFixed(2);
-          item.class = 'position-footer-number';
+          item.classFooter = 'position-footer-number';
           break;
       }
 
@@ -421,7 +429,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.formData.splice(response.kolejnosc, 0, response);
 
           this.formData = this.formData
-            .map((item) => {
+            .map((item: IPosition) => {
               const brutto = calculateBrutto(item.netto);
 
               return {
@@ -431,7 +439,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
                 wartoscBrutto: calculateWartosc(item.ilosc, brutto),
               };
             })
-            .map((item) => {
+            .map((item: IPosition) => {
               this.calculateFooterRow(item);
               return item;
             });
@@ -464,8 +472,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.formData = this.formData
       .filter((item) => item.id !== positionId)
-      .map((item) => {
+      .map((item: IPosition) => {
         this.calculateFooterRow(item);
+        return item;
+      });
+
+    this.positions = this.positions
+      .filter((item) => item.id !== positionId)
+      .map((item: IPosition) => {
         return item;
       });
 
@@ -473,8 +487,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.updatePosition();
 
     this.positionToDelete.push(positionId);
-    console.log(`##### deletePosition() = positionToDelete #####`);
-    console.log(this.positionToDelete);
+
     this.messageService.add({
       severity: 'warn',
       summary: 'Informacja',
@@ -536,16 +549,19 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       const newSize = oldSize.width + delta;
 
       // update current this.columnList
-      this.columnList = this.columnList.map((item) =>
+      this.columnList = this.columnList.map((item: IColumnList) =>
         item.name === columnName ? { ...item, width: newSize } : item
       );
 
       // update this.set.bookmarks
       const updatedColumnList = this.columnList
         .filter((item) => item.width !== undefined)
-        .map((item) => ({ name: item.name, width: item.width as number }));
+        .map((item: IColumnList) => ({
+          name: item.name,
+          width: item.width as number,
+        }));
 
-      this.set.bookmarks = this.set.bookmarks.map((item) =>
+      this.set.bookmarks = this.set.bookmarks.map((item: IBookmark) =>
         item.id === this.selectedBookmark
           ? { ...item, width: updatedColumnList }
           : item
@@ -612,13 +628,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   // set header data change
   onDataChange(headerData: ISetHeader) {
     const originalMap = new Map(
-      this.set.bookmarks.map((item) => [item.id, item])
+      this.set.bookmarks.map((item: IBookmark) => [item.id, item])
     );
 
-    this.set.bookmarks = headerData.selectedBookmarks.map((item) => ({
-      ...item,
-      width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
-    }));
+    this.set.bookmarks = headerData.selectedBookmarks.map(
+      (item: IBookmark) => ({
+        ...item,
+        width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
+      })
+    );
     this.updateBookmarks();
 
     this.setName = headerData.name;
@@ -639,7 +657,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.isEdited = true;
 
     // fill image in position where image was uploaded
-    this.formData = this.formData.map((item) => {
+    this.formData = this.formData.map((item: IPosition) => {
       if (item.id === +positionId) {
         return { ...item, image: imageName };
       }
@@ -656,7 +674,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // update kolejnosc proerty on selected bookmark
   updateOrder() {
-    this.formData = this.formData.map((item, index) => {
+    this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };
     });
   }
