@@ -9,6 +9,10 @@
   left: 0;
 }
 
+.spinner {
+  margin-top: 100px;
+}
+
 .wrapper {
   font-size: 3rem;
   padding: 0 10px;

@@ -8,6 +8,10 @@
   width: 1200px;
 }
 
+.spinner {
+  margin-top: 100px;
+}
+
 .total {
   position: absolute;
   font-size: 1.4rem;
