@@ -314,7 +314,7 @@
   <ng-template #content>
     <app-edit-header
       [editHeader]="editHeaderProps"
-      (dataChanged)="onDataChange($event)"
+      (dataChanged)="onSetHeaderChange($event)"
       (closeModal)="hideDialog()"
     />
   </ng-template>

@@ -15,7 +15,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
-import { notificationLifeTime } from '../../../shared/constans';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -37,6 +36,7 @@ import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
 import { forkJoin } from 'rxjs';
+import { EditSetService } from './edit-set.service';
 
 @Component({
   selector: 'app-set',
@@ -59,7 +59,14 @@ import { forkJoin } from 'rxjs';
     ImageClipboardInputComponent,
     TooltipModule,
   ],
-  providers: [SetsService, ConfirmationService, MessageService],
+  providers: [
+    SetsService,
+    ConfirmationService,
+    EditSetService,
+    SuppliersService,
+    AuthService,
+    MessageService,
+  ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
   private authorizationToken: string | null;
@@ -108,6 +115,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private setsService: SetsService,
     private suppliersService: SuppliersService,
     private confirmationService: ConfirmationService,
+    private editSetService: EditSetService,
     private messageService: MessageService,
     private cd: ChangeDetectorRef
   ) {
@@ -386,20 +394,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.updatePosition();
           this.positions.push(response);
 
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sukces',
-            detail: 'Pusta pozycja została dodana',
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification(
+            'success',
+            'Sukces',
+            'Pusta pozycja została dodana'
+          );
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Błąd',
-            detail: error.message,
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification('error', 'Błąd', error.message);
         },
       });
   }
@@ -460,20 +462,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.updatePosition();
           this.positions.push(response);
 
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sukces',
-            detail: 'Pozycja została sklonowana',
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification(
+            'success',
+            'Sukces',
+            'Pozycja została sklonowana'
+          );
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Błąd',
-            detail: error.message,
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification('error', 'Błąd', error.message);
         },
       });
   }
@@ -500,13 +496,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.updatePosition();
 
     this.positionToDelete.push(positionId);
-
-    this.messageService.add({
-      severity: 'warn',
-      summary: 'Informacja',
-      detail: `Pozycja o ID=${positionId} oznaczona do usunięcia.`,
-      life: notificationLifeTime,
-    });
+    this.editSetService.showNotification(
+      'warn',
+      'Informacja',
+      `Pozycja o ID=${positionId} oznaczona do usunięcia.`
+    );
   }
 
   // save data
@@ -531,22 +525,22 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           if (response.updatedAt) {
             this.set.updatedAt = response.updatedAt;
           }
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sukces',
-            detail: 'Dane zestawienia zostały zapisane',
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification(
+            'success',
+            'Sukces',
+            'Dane zestawienia zostały zapisane'
+          );
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Błąd',
-            detail: error.message,
-            life: notificationLifeTime,
-          });
+          this.editSetService.showNotification('error', 'Błąd', error.message);
         },
       });
+    } else {
+      this.editSetService.showNotification(
+        'error',
+        'Błąd',
+        'Brak autoryzacji.'
+      );
     }
   }
 
@@ -642,7 +636,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // set header data change
-  onDataChange(headerData: ISetHeader) {
+  onSetHeaderChange(headerData: ISetHeader) {
     const originalMap = new Map(
       this.set.bookmarks.map((item: IBookmark) => [item.id, item])
     );
@@ -657,13 +651,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.setName = headerData.name;
     this.setStatus = headerData.selectedStatus;
-
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Informacja',
-      detail: 'Nagłówek zestawienia został zmieniony',
-      life: notificationLifeTime,
-    });
+    this.editSetService.showNotification(
+      'info',
+      'Informacja',
+      'Nagłówek zestawienia został zmieniony'
+    );
 
     this.isEdited = true;
   }

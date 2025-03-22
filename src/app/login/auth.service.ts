@@ -10,7 +10,9 @@ import { ILoggedUser } from './ILoggedUser';
 })
 export class AuthService {
   user = signal<string | null>(null);
-  userId = signal<number | null>(null);
+  //TODOauth use for development, set to null for default
+  userId = signal<number | null>(1);
+
   //TODOauth remove temporary token TEMP_TOKEN
   authorizationToken: string | null = 'TEMP_TOKEN';
 
@@ -34,7 +36,6 @@ export class AuthService {
 
   isAuthenticated(): boolean {
     //TODOauth use for development
-    this.userId.set(1);
     return true;
 
     this.authorizationToken = localStorage.getItem('access_token');
