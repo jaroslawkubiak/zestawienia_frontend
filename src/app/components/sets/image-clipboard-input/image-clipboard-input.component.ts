@@ -21,6 +21,7 @@ export class ImageClipboardInputComponent {
     () => {};
   @Input() imagePreview: string | null = null;
   public imageFile: File | null = null;
+  @Input() onPasting = false;
   @Input() setId!: number;
   @Input() positionId!: number;
   @Output() blur = new EventEmitter<Event>();

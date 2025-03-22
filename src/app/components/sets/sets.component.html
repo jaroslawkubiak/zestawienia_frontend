@@ -1,7 +1,8 @@
-<app-loading-spinner
-  *ngIf="isLoading"
-  [isLoading]="isLoading"
-></app-loading-spinner>
+<div class="spinner" *ngIf="isLoading">
+  <app-loading-spinner
+    [size]="200"
+  ></app-loading-spinner>
+</div>
 
 <div *ngIf="!isLoading" class="card">
 

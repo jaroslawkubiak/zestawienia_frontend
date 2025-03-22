@@ -9,7 +9,12 @@
   />
   @if(imagePreview) {
   <div class="image-preview-container">
-    <img [src]="imagePreview" alt="Image Preview" class="image-preview" />
+    <img
+      [src]="imagePreview"
+      alt="Image Preview"
+      class="image-preview"
+      [ngClass]="{ 'image-overlay': onPasting }"
+    />
   </div>
   } @else {
   <div class="default-image">

@@ -24,10 +24,14 @@
   align-items: center;
   justify-content: center;
   width: 100% !important;
-  height: calc(100% - 25px) !important;
+  height: 125px !important;
 }
 
 .default-image i {
   font-size: 70px;
   color: var(--neutral-color-darker);
+}
+
+.image-overlay {
+  filter: blur(2px);
 }

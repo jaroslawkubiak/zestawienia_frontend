@@ -29,3 +29,7 @@
 tr {
   cursor: pointer;
 }
+
+.spinner {
+  margin-top: 100px;
+}

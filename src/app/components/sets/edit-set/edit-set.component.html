@@ -1,9 +1,6 @@
 <!-- spinner when loading data  -->
 <div class="spinner" *ngIf="isLoading">
-  <app-loading-spinner
-    [isLoading]="isLoading"
-    [size]="200"
-  ></app-loading-spinner>
+  <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
 <div *ngIf="!isLoading" class="set-container">
   <!-- set header  -->
@@ -85,7 +82,16 @@
             <ng-template pTemplate="header">
               <tr>
                 <th style="width: 4rem" class="position-header">LP</th>
-                <th style="width: 5rem" class="position-header"></th>
+                <th style="width: 5rem" class="position-header">
+                  <p-button
+                    severity="primary"
+                    icon="pi pi-plus"
+                    class="p-4"
+                    alt="Nowa pusta pozycja"
+                    pTooltip="Nowa pusta pozycja"
+                    (click)="addEmptyPosition(1)"
+                  />
+                </th>
                 <th
                   *ngFor="let column of columnList"
                   class="position-header"
@@ -184,13 +190,24 @@
                         <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">
                           <app-image-clipboard-input
+                            [onPasting]="true"
                             [setId]="+setId"
                             [positionId]="formData[i].id"
                             (blur)="applyAction($event, i, column)"
                             [imageUpload]="onImageUpload"
+                            [imagePreview]="
+                              formData[i][column.key]
+                                ? BASE_IMAGE_URL +
+                                  setId +
+                                  '/' +
+                                  formData[i].id +
+                                  '/' +
+                                  formData[i][column.key]
+                                : ''
+                            "
                           />
                           <app-loading-spinner
-                            [isLoading]="isLoading"
+                            class="image-spinner"
                             [size]="70"
                           ></app-loading-spinner>
                         </div>
