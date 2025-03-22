@@ -7,11 +7,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { INewSet } from './types/INewSet';
-import { IPosition } from './types/IPosition';
 import { ISet } from './types/ISet';
-import { IUpdateSet } from './types/IUpdateSet';
-import { INewEmptyPosition } from './types/INewEmptyPosition';
-import { IClonePosition } from './types/IClonePosition';
 
 @Injectable({
   providedIn: 'root',
@@ -39,33 +35,6 @@ export class SetsService {
       .pipe(catchError(this.handleError));
   }
 
-  getPositions(
-    authorizationToken: string,
-    setId: string
-  ): Observable<IPosition[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
-    });
-
-    return this.http
-      .get<IPosition[]>(`${environment.API_URL}/positions/${setId}`, {
-        headers,
-      })
-      .pipe(catchError(this.handleError));
-  }
-
-  getSet(authorizationToken: string, setId: string): Observable<ISet[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
-    });
-
-    return this.http
-      .get<ISet[]>(`${environment.API_URL}/sets/${setId}`, {
-        headers,
-      })
-      .pipe(catchError(this.handleError));
-  }
-
   addSet(
     authorizationToken: string | null,
     newSet: INewSet
@@ -76,55 +45,6 @@ export class SetsService {
 
     return this.http
       .post<INewSet>(`${environment.API_URL}/sets/new`, newSet, {
-        headers,
-      })
-      .pipe(catchError(this.handleError));
-  }
-
-  saveSet(
-    authorizationToken: string | null,
-    savedSet: IUpdateSet
-  ): Observable<INewSet> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
-    });
-
-    return this.http
-      .patch<INewSet>(
-        `${environment.API_URL}/sets/${savedSet.set.id}`,
-        savedSet,
-        {
-          headers,
-        }
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  addPosition(
-    authorizationToken: string | null,
-    newPosition: INewEmptyPosition
-  ): Observable<IPosition> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
-    });
-
-    return this.http
-      .post<IPosition>(`${environment.API_URL}/positions/new`, newPosition, {
-        headers,
-      })
-      .pipe(catchError(this.handleError));
-  }
-
-  clonePosition(
-    authorizationToken: string | null,
-    clonePosition: IClonePosition
-  ): Observable<IPosition> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
-    });
-
-    return this.http
-      .post<IPosition>(`${environment.API_URL}/positions/clone`, clonePosition, {
         headers,
       })
       .pipe(catchError(this.handleError));

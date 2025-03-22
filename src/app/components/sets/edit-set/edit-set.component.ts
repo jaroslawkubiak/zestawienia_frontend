@@ -12,6 +12,7 @@ import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { forkJoin } from 'rxjs';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
@@ -26,7 +27,6 @@ import { ISupplier } from '../../suppliers/ISupplier';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
-import { SetsService } from '../sets.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -35,7 +35,6 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
-import { forkJoin } from 'rxjs';
 import { EditSetService } from './edit-set.service';
 
 @Component({
@@ -60,7 +59,6 @@ import { EditSetService } from './edit-set.service';
     TooltipModule,
   ],
   providers: [
-    SetsService,
     ConfirmationService,
     EditSetService,
     SuppliersService,
@@ -112,11 +110,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private setsService: SetsService,
     private suppliersService: SuppliersService,
     private confirmationService: ConfirmationService,
     private editSetService: EditSetService,
-    private messageService: MessageService,
     private cd: ChangeDetectorRef
   ) {
     this.authorizationToken = this.authService.authorizationToken;
@@ -138,8 +134,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     if (!this.authorizationToken) return;
 
     forkJoin({
-      set: this.setsService.getSet(this.authorizationToken, this.setId),
-      positions: this.setsService.getPositions(
+      set: this.editSetService.getSet(this.authorizationToken, this.setId),
+      positions: this.editSetService.getPositions(
         this.authorizationToken,
         this.setId
       ),
@@ -383,7 +379,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       setId: { id: +this.setId } as ISet,
     };
 
-    this.setsService
+    this.editSetService
       .addPosition(this.authorizationToken, newPosition)
       .subscribe({
         next: (response) => {
@@ -433,7 +429,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       setId: { id: +this.setId } as ISet,
     };
 
-    this.setsService
+    this.editSetService
       .clonePosition(this.authorizationToken, newClonePosition)
       .subscribe({
         next: (response) => {
@@ -518,7 +514,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         positionToDelete: this.positionToDelete,
       };
 
-      this.setsService.saveSet(this.authorizationToken, savedSet).subscribe({
+      this.editSetService.saveSet(this.authorizationToken, savedSet).subscribe({
         next: (response) => {
           this.isEdited = false;
           this.positionToDelete = [];

@@ -1,5 +1,4 @@
 td {
-  position: relative;
   padding: 0 !important;
   height: var(--row-height) !important;
   border: 1px solid rgb(188, 187, 187) !important;
@@ -183,6 +182,7 @@ i:hover {
 }
 
 .edit-mode-image {
+  position: relative;
   height: var(--row-height) !important;
   padding: 0 8px !important;
   display: flex;
