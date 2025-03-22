@@ -1,5 +1,6 @@
 .input-container {
   width: 100% !important;
+  height: 100% !important;
 }
 
 .input-field {
@@ -16,4 +17,17 @@
   max-width: 100%;
   object-fit: contain !important;
   max-height: calc(var(--row-height) - 25px);
+}
+
+.default-image {
+  display: grid;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  height: calc(100% - 25px) !important;
+}
+
+.default-image i {
+  font-size: 70px;
+  color: var(--neutral-color-darker);
 }

@@ -99,6 +99,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   allSuppliers: ISupplier[] = [];
 
+  BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -123,6 +125,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
+  // load needed data from set
   loadData(): void {
     if (!this.authorizationToken) return;
 
@@ -194,10 +197,12 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.initializeForm();
   }
 
+  // if column.unit is provided = add it to display, ex: PLN
   getFormattedValue(column: any): string {
     return column.value + (column.unit ? ' ' + column.unit : '');
   }
 
+  // create formData
   initializeForm() {
     this.resetFooter();
 
@@ -236,6 +241,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
+  // update bookmarks after edit header
   updateBookmarks() {
     this.set.bookmarks.sort((a, b) => a.id - b.id);
 
@@ -255,7 +261,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   // action when cell is finish editing
   applyAction(value: any, rowIndex: number, column: any): void {
     this.isEdited = true;
-    const newValue = value.srcElement.value;
+    const newValue = value.srcElement?.value;
 
     // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
     if (column.key === 'ilosc') {
@@ -348,6 +354,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
+  // share set to client
   shareSet() {
     console.log(`shareSet`);
   }
@@ -397,6 +404,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       });
   }
 
+  // clone selected position
   clonePosition(positionId: number) {
     this.isEdited = true;
 
@@ -470,6 +478,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       });
   }
 
+  // mark position to be deleted after submit
   deletePosition(positionId: number) {
     this.isEdited = true;
     this.resetFooter();
@@ -519,6 +528,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         next: (response) => {
           this.isEdited = false;
           this.positionToDelete = [];
+          if (response.updatedAt) {
+            this.set.updatedAt = response.updatedAt;
+          }
           this.messageService.add({
             severity: 'success',
             summary: 'Sukces',
@@ -676,7 +688,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.updateOrder();
   }
 
-  // update kolejnosc proerty on selected bookmark
+  // update kolejnosc property on selected bookmark
   updateOrder() {
     this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };

@@ -1,11 +1,12 @@
+<!-- spinner when loading data  -->
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner
     [isLoading]="isLoading"
     [size]="200"
   ></app-loading-spinner>
 </div>
-
 <div *ngIf="!isLoading" class="set-container">
+  <!-- set header  -->
   <div class="set-header flex-center" *ngIf="set">
     <div class="cell">
       <div class="cell-title">Zestawienie</div>
@@ -180,13 +181,6 @@
                           (onChange)="applyAction($event, i, column)"
                           optionLabel="firma"
                         />
-
-                        <!--                         
-                          
-                          (blur)="applyAction($event, i, column)"
-                          (keydown.enter)="applyAction($event, i, column)"
-                          (focus)="selectAll($event)"
-                                               -->
                         <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">
                           <app-image-clipboard-input
@@ -202,7 +196,7 @@
                         </div>
                         <!-- EDIT MODE -> type = text DEFAULT -->
                         <input
-                          *ngSwitchDefault
+                          *ngSwitchCase="'string'"
                           pInputText
                           type="text"
                           [readonly]="column.readOnly"
@@ -239,7 +233,7 @@
                             [positionId]="formData[i].id"
                             [imagePreview]="
                               formData[i][column.key]
-                                ? 'http://localhost:3005/uploads/sets/' +
+                                ? BASE_IMAGE_URL +
                                   setId +
                                   '/' +
                                   formData[i].id +
@@ -249,9 +243,8 @@
                             "
                           />
                         </div>
-
                         <!-- VIEW MODE default -> type = text  -->
-                        <div *ngSwitchDefault>
+                        <div *ngSwitchCase="'string'">
                           {{ formData[i][column.key] }}
                         </div>
                       </span>

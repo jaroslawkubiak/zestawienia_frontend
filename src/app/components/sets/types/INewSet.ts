@@ -5,4 +5,5 @@ export interface INewSet {
   clientId: number;
   createdBy: number;
   bookmarks: IBookmark[];
+  updatedAt?: string;
 }

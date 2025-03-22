@@ -188,7 +188,6 @@ i:hover {
   all: unset !important;
   padding: 0 4px !important;
   font-size: 1.2rem !important;
-  border: 1px solid var(--accent-color-darker) !important;
   background-color: var(--accent-color-lighter) !important;
   height: 100% !important;
   display: flex !important;

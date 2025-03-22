@@ -7,8 +7,13 @@
     class="input-field"
     (blur)="blur.emit($event)"
   />
-
-  <div *ngIf="imagePreview" class="image-preview-container">
+  @if(imagePreview) {
+  <div class="image-preview-container">
     <img [src]="imagePreview" alt="Image Preview" class="image-preview" />
   </div>
+  } @else {
+  <div class="default-image">
+    <i class="pi pi-image"></i>
+  </div>
+  }
 </div>
