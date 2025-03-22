@@ -13,11 +13,12 @@ import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../login/auth.service';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-sets',
@@ -39,7 +40,8 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
     InputIconModule,
     MultiSelectModule,
     SelectModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
+    TooltipModule,
   ],
   providers: [SetsService],
 })
@@ -55,7 +57,7 @@ export class SetsComponent implements OnInit {
     private router: Router,
     private setsService: SetsService,
     private authService: AuthService,
-    private cd: ChangeDetectorRef,
+    private cd: ChangeDetectorRef
   ) {
     this.authorizationToken = this.authService.authorizationToken;
   }

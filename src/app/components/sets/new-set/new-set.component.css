@@ -65,7 +65,8 @@
 .p-inputtext:focus,
 .p-inputtext:hover,
 .p-inputtext:active,
-.p-select {
+.p-select,
+.p-select:hover {
   background-color: var(--accent-color-lighter) !important;
   height: 100% !important;
 }

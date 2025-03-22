@@ -89,6 +89,11 @@ th {
   height: 50px;
 }
 
+.add-position {
+  text-align: center;
+  padding: 0;
+}
+
 .position-footer {
   background-color: rgb(235, 235, 235);
   height: 30px;
@@ -115,6 +120,8 @@ th {
   justify-content: center;
   height: 100%;
   width: 100%;
+  font-size: 1.2rem;
+  font-weight: bold;
   background-color: rgb(235, 235, 235);
 }
 
@@ -209,4 +216,3 @@ i:hover {
   bottom: 0;
   left: 0;
 }
-
