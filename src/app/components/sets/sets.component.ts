@@ -42,7 +42,6 @@ import { ISet } from './types/ISet';
     LoadingSpinnerComponent,
     TooltipModule,
   ],
-  providers: [SetsService],
 })
 export class SetsComponent implements OnInit {
   isLoading = true;

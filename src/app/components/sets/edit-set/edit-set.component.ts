@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
@@ -13,7 +13,6 @@ import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
-import { AuthService } from '../../../login/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import {
   calculateBrutto,
@@ -23,7 +22,6 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/ISupplier';
-import { SuppliersService } from '../../suppliers/suppliers.service';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { IClonePosition } from '../types/IClonePosition';
@@ -56,14 +54,6 @@ import { EditSetService } from './edit-set.service';
     EditHeaderComponent,
     ImageClipboardInputComponent,
     TooltipModule,
-  ],
-  providers: [
-    ConfirmationService,
-    EditSetService,
-    SuppliersService,
-    AuthService,
-    NotificationService,
-    MessageService,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {

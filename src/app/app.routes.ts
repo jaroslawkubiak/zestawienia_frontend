@@ -11,7 +11,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { UiCheckComponent } from './ui-check/ui-check.component';
+import { UiCheckComponent } from './misc/ui-check/ui-check.component';
+import { NotificationComponent } from './misc/notification/notification.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -67,6 +68,10 @@ export const routes: Routes = [
   {
     path: 'settings/ui-check',
     component: UiCheckComponent,
+  },
+  {
+    path: 'settings/notification',
+    component: NotificationComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

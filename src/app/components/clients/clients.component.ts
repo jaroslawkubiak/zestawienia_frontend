@@ -7,7 +7,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
@@ -50,12 +50,6 @@ import { IClient } from './types/IClient';
     ReactiveFormsModule,
     LoadingSpinnerComponent,
     TooltipModule,
-  ],
-  providers: [
-    NotificationService,
-    MessageService,
-    ConfirmationService,
-    ClientsService,
   ],
 })
 export class ClientsComponent implements OnInit {

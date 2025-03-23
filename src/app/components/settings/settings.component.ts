@@ -17,6 +17,11 @@ export class SettingsComponent {
       name: 'UI Check',
       route: '/settings/ui-check',
       icon: 'pi-sparkles',
+    },
+    {
+      name: 'Notification',
+      route: '/settings/notification',
+      icon: 'pi-bell',
     }
   ];
 }

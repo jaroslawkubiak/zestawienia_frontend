@@ -11,7 +11,6 @@ import { ImageService } from './image.service';
   styleUrls: ['./image-clipboard-input.component.css'],
   standalone: true,
   imports: [CommonModule, ToastModule],
-  providers: [NotificationService],
 })
 export class ImageClipboardInputComponent {
   @Input() imageUpload: (imageName: string, positionId: string) => void =

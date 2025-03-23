@@ -6,7 +6,7 @@
 /out-tsc
 /bazel-out
 /help-files
-/src/app/ui-check
+/src/app/misc
 
 # Node
 /node_modules

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
@@ -30,7 +29,6 @@ import { INewSet } from '../types/INewSet';
     ButtonModule,
     InputTextModule,
   ],
-  providers: [NotificationService, MessageService],
 })
 export class NewSetComponent implements OnInit {
   name: string = '';
