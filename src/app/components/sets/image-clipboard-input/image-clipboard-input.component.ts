@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../login/auth.service';
-import { notificationLifeTime } from '../../../shared/constans';
+import { NotificationService } from '../../../services/notification.service';
 import { ImageService } from './image.service';
 
 @Component({
   selector: 'app-image-clipboard-input',
   templateUrl: './image-clipboard-input.component.html',
   styleUrls: ['./image-clipboard-input.component.css'],
+  standalone: true,
   imports: [CommonModule, ToastModule],
-  providers: [MessageService],
+  providers: [NotificationService],
 })
 export class ImageClipboardInputComponent {
   private authorizationToken: string | null;
@@ -27,7 +27,7 @@ export class ImageClipboardInputComponent {
   @Output() blur = new EventEmitter<Event>();
   constructor(
     private authService: AuthService,
-    private messageService: MessageService,
+    private notificationService: NotificationService,
     private imageService: ImageService
   ) {
     this.authorizationToken = this.authService.authorizationToken;
@@ -73,20 +73,13 @@ export class ImageClipboardInputComponent {
           this.imageUpload(response.filename, response.positionId);
         }
 
-        this.messageService.add({
-          severity: 'info',
-          summary: 'Sukces',
-          detail: response.message || 'Obraz został wysłany',
-          life: notificationLifeTime,
-        });
+        this.notificationService.showNotification(
+          'info',
+          response.message || 'Obraz został wysłany'
+        );
       },
       error: (error) => {
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Błąd',
-          detail: error.message,
-          life: notificationLifeTime,
-        });
+        this.notificationService.showNotification('error', error.message);
       },
     });
   }

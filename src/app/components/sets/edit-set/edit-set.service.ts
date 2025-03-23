@@ -1,28 +1,24 @@
-import { Injectable } from '@angular/core';
-import { MessageService } from 'primeng/api';
-import { notificationLifeTime } from '../../../shared/constans';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { IClonePosition } from '../types/IClonePosition';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
-import { IPosition } from '../types/IPosition';
 import { INewSet } from '../types/INewSet';
-import { IUpdateSet } from '../types/IUpdateSet';
+import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
+import { IUpdateSet } from '../types/IUpdateSet';
 
 @Injectable({
   providedIn: 'root',
 })
 export class EditSetService {
-  constructor(
-    private http: HttpClient,
-    private messageService: MessageService
-  ) {}
+  constructor(private http: HttpClient) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(
@@ -110,14 +106,5 @@ export class EditSetService {
         }
       )
       .pipe(catchError(this.handleError));
-  }
-
-  showNotification(severity: string, summary: string, detail: string) {
-    this.messageService.add({
-      severity,
-      summary,
-      detail,
-      life: notificationLifeTime,
-    });
   }
 }

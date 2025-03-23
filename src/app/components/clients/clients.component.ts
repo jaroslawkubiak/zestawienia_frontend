@@ -20,13 +20,13 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../login/auth.service';
-import { notificationLifeTime } from '../../shared/constans';
+import { NotificationService } from '../../services/notification.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './IClient';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-clients',
@@ -50,9 +50,14 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
-    TooltipModule
+    TooltipModule,
   ],
-  providers: [MessageService, ConfirmationService, ClientsService],
+  providers: [
+    NotificationService,
+    MessageService,
+    ConfirmationService,
+    ClientsService,
+  ],
 })
 export class ClientsComponent implements OnInit {
   isLoading = true;
@@ -69,8 +74,7 @@ export class ClientsComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private clientsService: ClientsService,
-
-    private messageService: MessageService,
+    private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
   ) {
@@ -175,20 +179,16 @@ export class ClientsComponent implements OnInit {
             .removeClients(this.authorizationToken, idList)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Klienci zostali usunięci',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Klienci zostali usunięci'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -216,20 +216,16 @@ export class ClientsComponent implements OnInit {
             .removeClients(this.authorizationToken, [client.id])
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Klient został usunięty',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Klient został usunięty'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -270,20 +266,16 @@ export class ClientsComponent implements OnInit {
             .saveClient(this.authorizationToken, editedClient)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Dane klienta zaktualizowane',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Dane klienta zaktualizowane'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -302,22 +294,18 @@ export class ClientsComponent implements OnInit {
             .addClient(this.authorizationToken, newClient)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Klient został dodany',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Klient został dodany'
+                );
                 this.clients.push(newClient as IClient);
                 this.cd.markForCheck();
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }

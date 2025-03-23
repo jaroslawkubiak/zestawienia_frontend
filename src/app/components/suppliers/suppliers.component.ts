@@ -20,13 +20,13 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { AuthService } from '../../login/auth.service';
-import { notificationLifeTime } from '../../shared/constans';
+import { NotificationService } from '../../services/notification.service';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ISupplier } from './ISupplier';
 import { SuppliersService } from './suppliers.service';
-import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-suppliers',
@@ -50,9 +50,14 @@ import { TooltipModule } from 'primeng/tooltip';
     ButtonModule,
     ReactiveFormsModule,
     LoadingSpinnerComponent,
-    TooltipModule
+    TooltipModule,
   ],
-  providers: [MessageService, ConfirmationService, SuppliersService],
+  providers: [
+    NotificationService,
+    MessageService,
+    ConfirmationService,
+    SuppliersService,
+  ],
 })
 export class SuppliersComponent implements OnInit {
   isLoading = true;
@@ -69,7 +74,7 @@ export class SuppliersComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private suppliersService: SuppliersService,
-    private messageService: MessageService,
+    private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
   ) {
@@ -173,20 +178,16 @@ export class SuppliersComponent implements OnInit {
             .removeSuppliers(this.authorizationToken, idList)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Dostawcy zostali usunięci',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Dostawcy zostali usunięci'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -216,20 +217,16 @@ export class SuppliersComponent implements OnInit {
             .removeSuppliers(this.authorizationToken, [supplier.id])
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Dostawca został usunięty',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Dostawca został usunięty'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -270,20 +267,16 @@ export class SuppliersComponent implements OnInit {
             .saveSupplier(this.authorizationToken, editedSupplier)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Dane dostawcy zaktualizowane',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Dane dostawcy zaktualizowane'
+                );
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }
@@ -302,22 +295,18 @@ export class SuppliersComponent implements OnInit {
             .addSupplier(this.authorizationToken, newSupplier)
             .subscribe({
               next: (response) => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Sukces',
-                  detail: 'Dostawca został dodany',
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'success',
+                  'Dostawca został dodany'
+                );
                 this.suppliers.push(newSupplier as ISupplier);
                 this.cd.markForCheck();
               },
               error: (error) => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Błąd',
-                  detail: error.message,
-                  life: notificationLifeTime,
-                });
+                this.notificationService.showNotification(
+                  'error',
+                  error.message
+                );
               },
             });
         }

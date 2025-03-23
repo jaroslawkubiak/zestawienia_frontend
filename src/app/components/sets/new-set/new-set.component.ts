@@ -8,14 +8,14 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
 import { AuthService } from '../../../login/auth.service';
-import { notificationLifeTime } from '../../../shared/constans';
+import { NotificationService } from '../../../services/notification.service';
+import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
-import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 
 @Component({
   selector: 'app-new-set',
@@ -31,7 +31,7 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
     ButtonModule,
     InputTextModule,
   ],
-  providers: [MessageService],
+  providers: [NotificationService, MessageService],
 })
 export class NewSetComponent implements OnInit {
   name: string = '';
@@ -47,7 +47,7 @@ export class NewSetComponent implements OnInit {
     private bookmarksService: BookmarksService,
     private setsService: SetsService,
     private clientsService: ClientsService,
-    private messageService: MessageService
+    private notificationService: NotificationService
   ) {
     this.authorizationToken = this.authService.authorizationToken;
     this.userId = this.authService.userId();
@@ -99,20 +99,13 @@ export class NewSetComponent implements OnInit {
 
       this.setsService.addSet(this.authorizationToken, newSet).subscribe({
         next: (response) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Sukces',
-            detail: 'Nowe zestawienie zostało dodane',
-            life: notificationLifeTime,
-          });
+          this.notificationService.showNotification(
+            'success',
+            'Nowe zestawienie zostało dodane'
+          );
         },
         error: (error) => {
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Błąd',
-            detail: error.message,
-            life: notificationLifeTime,
-          });
+          this.notificationService.showNotification('error', error.message);
         },
       });
     }

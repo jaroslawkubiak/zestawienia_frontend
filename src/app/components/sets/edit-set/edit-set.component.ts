@@ -36,6 +36,7 @@ import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-set',
@@ -63,6 +64,7 @@ import { EditSetService } from './edit-set.service';
     EditSetService,
     SuppliersService,
     AuthService,
+    NotificationService,
     MessageService,
   ],
 })
@@ -113,6 +115,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private suppliersService: SuppliersService,
     private confirmationService: ConfirmationService,
     private editSetService: EditSetService,
+    private notificationService: NotificationService,
     private cd: ChangeDetectorRef
   ) {
     this.authorizationToken = this.authService.authorizationToken;
@@ -390,14 +393,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.updatePosition();
           this.positions.push(response);
 
-          this.editSetService.showNotification(
+          this.notificationService.showNotification(
             'success',
-            'Sukces',
             'Pusta pozycja została dodana'
           );
         },
         error: (error) => {
-          this.editSetService.showNotification('error', 'Błąd', error.message);
+          this.notificationService.showNotification('error', error.message);
         },
       });
   }
@@ -458,14 +460,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.updatePosition();
           this.positions.push(response);
 
-          this.editSetService.showNotification(
+          this.notificationService.showNotification(
             'success',
-            'Sukces',
             'Pozycja została sklonowana'
           );
         },
         error: (error) => {
-          this.editSetService.showNotification('error', 'Błąd', error.message);
+          this.notificationService.showNotification('error', error.message);
         },
       });
   }
@@ -492,9 +493,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.updatePosition();
 
     this.positionToDelete.push(positionId);
-    this.editSetService.showNotification(
+    this.notificationService.showNotification(
       'warn',
-      'Informacja',
       `Pozycja o ID=${positionId} oznaczona do usunięcia.`
     );
   }
@@ -521,22 +521,17 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           if (response.updatedAt) {
             this.set.updatedAt = response.updatedAt;
           }
-          this.editSetService.showNotification(
+          this.notificationService.showNotification(
             'success',
-            'Sukces',
             'Dane zestawienia zostały zapisane'
           );
         },
         error: (error) => {
-          this.editSetService.showNotification('error', 'Błąd', error.message);
+          this.notificationService.showNotification('error', error.message);
         },
       });
     } else {
-      this.editSetService.showNotification(
-        'error',
-        'Błąd',
-        'Brak autoryzacji.'
-      );
+      this.notificationService.showNotification('error', 'Brak autoryzacji.');
     }
   }
 
@@ -647,9 +642,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.setName = headerData.name;
     this.setStatus = headerData.selectedStatus;
-    this.editSetService.showNotification(
+    this.notificationService.showNotification(
       'info',
-      'Informacja',
       'Nagłówek zestawienia został zmieniony'
     );
 
