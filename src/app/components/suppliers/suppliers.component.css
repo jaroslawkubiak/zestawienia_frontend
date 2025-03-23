@@ -19,18 +19,13 @@
   left: 0;
 }
 
-.wrapper {
-  font-size: 3rem;
-  padding: 0 10px;
-}
-
-.input {
-  font-size: 2rem;
-}
-
 .error {
   color: var(--error-color);
   font-size: 1.6rem;
+}
+
+.error-container {
+  height: 35px;
 }
 
 label {
@@ -47,16 +42,50 @@ label {
   display: flex;
 }
 
-.search-input {
-  display: flex;
-  font-size: 1rem;
-  font-weight: normal;
-  border: 1px solid rgb(0, 0, 0) !important;
-  border-radius: 0 !important;
-  width: 300px;
-  color: rgb(0, 0, 0) !important;
-}
-
 tr {
   cursor: pointer;
+}
+
+.new-supplier-wrapper {
+  font-size: 3rem;
+  padding: 0 10px;
+}
+
+.field {
+  position: relative;
+}
+
+i {
+  position: absolute;
+  cursor: default;
+  top: 10px;
+  right: -6px;
+  color: var(--error-color);
+  font-size: 16px;
+}
+
+.p-inputtext {
+  all: unset !important;
+  padding: 8px 16px !important;
+  font-size: 3rem !important;
+  border: 1px solid var(--accent-color-darker) !important;
+  width: 660px !important;
+}
+
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+.search-input {
+  display: flex !important;
+  font-size: 1rem !important;
+  padding: 8px 24px !important;
+
+  font-weight: normal !important;
+  border: 1px solid rgb(0, 0, 0) !important;
+  border-radius: 0 !important;
+  width: 300px !important;
+  color: rgb(0, 0, 0) !important;
 }

@@ -78,7 +78,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   destination: string | undefined;
   isLoading = true;
   editHeaderDialog = false;
-  submitted = false;
   isEdited = false;
   columnList = columnList;
   editHeaderProps!: ISetHeader;
@@ -579,7 +578,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   // hide dialog with edit header
   hideDialog() {
     this.editHeaderDialog = false;
-    this.submitted = false;
   }
 
   // set header data change

@@ -64,7 +64,6 @@ export class ClientsComponent implements OnInit {
   clients!: IClient[];
   client!: IClient;
   selectedClient!: IClient[] | null;
-  submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
@@ -129,7 +128,6 @@ export class ClientsComponent implements OnInit {
       email: null,
       telefon: null,
     });
-    this.submitted = false;
     this.clientDialog = true;
   }
 
@@ -181,7 +179,7 @@ export class ClientsComponent implements OnInit {
   }
   hideDialog() {
     this.clientDialog = false;
-    this.submitted = false;
+    this.form.reset();
   }
   deleteClient(client: IClient) {
     this.confirmationService.confirm({
@@ -224,8 +222,14 @@ export class ClientsComponent implements OnInit {
     return index;
   }
   saveClient() {
-    this.submitted = true;
-    if (this.form.valid) {
+    if (!this.form.valid) {
+      (
+        Object.keys(this.form.controls) as (keyof typeof this.form.controls)[]
+      ).forEach((control) => {
+        this.form.controls[control].markAsTouched();
+      });
+      return;
+    } else {
       // save client
       if (this.client.id) {
         const editedClient: IClient = {
@@ -276,6 +280,7 @@ export class ClientsComponent implements OnInit {
 
       this.clients = [...this.clients];
       this.clientDialog = false;
+      this.form.reset();
     }
   }
   onGlobalFilter(event: Event) {

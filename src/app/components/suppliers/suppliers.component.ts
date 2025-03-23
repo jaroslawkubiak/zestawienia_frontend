@@ -64,7 +64,6 @@ export class SuppliersComponent implements OnInit {
   suppliers!: ISupplier[];
   supplier!: ISupplier;
   selected!: ISupplier[] | null;
-  submitted: boolean = false;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
@@ -129,7 +128,6 @@ export class SuppliersComponent implements OnInit {
       email: null,
       telefon: null,
     });
-    this.submitted = false;
     this.supplierDialog = true;
   }
 
@@ -181,7 +179,7 @@ export class SuppliersComponent implements OnInit {
 
   hideDialog() {
     this.supplierDialog = false;
-    this.submitted = false;
+    this.form.reset();
   }
 
   deleteSupplier(supplier: ISupplier) {
@@ -226,8 +224,14 @@ export class SuppliersComponent implements OnInit {
   }
 
   saveSupplier() {
-    this.submitted = true;
-    if (this.form.valid) {
+    if (!this.form.valid) {
+      (
+        Object.keys(this.form.controls) as (keyof typeof this.form.controls)[]
+      ).forEach((control) => {
+        this.form.controls[control].markAsTouched();
+      });
+      return;
+    } else {
       // save supplier
       if (this.supplier.id) {
         const editedSupplier: ISupplier = {
@@ -278,6 +282,7 @@ export class SuppliersComponent implements OnInit {
 
       this.suppliers = [...this.suppliers];
       this.supplierDialog = false;
+      this.form.reset();
     }
   }
 

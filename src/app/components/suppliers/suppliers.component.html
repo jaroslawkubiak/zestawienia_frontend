@@ -1,7 +1,5 @@
 <div class="spinner" *ngIf="isLoading">
-  <app-loading-spinner
-    [size]="200"
-  ></app-loading-spinner>
+  <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
 
 <div *ngIf="!isLoading" class="card">
@@ -119,9 +117,7 @@
       </tr>
     </ng-template>
     <ng-template #summary>
-      <div class="total">
-        Razem {{ suppliers ? suppliers.length : 0 }}
-      </div>
+      <div class="total">Razem {{ suppliers ? suppliers.length : 0 }}</div>
     </ng-template>
   </p-table>
 
@@ -133,113 +129,118 @@
   >
     <ng-template #content>
       <form [formGroup]="form">
-        <div class="wrapper">
-          <div>
+        <div class="new-supplier-wrapper">
+          <div class="field">
+            <i class="pi pi-asterisk"></i>
             <label for="firma">Firma</label>
             <input
               type="text"
               pInputText
               id="firma"
               formControlName="firma"
-              class="input"
               fluid
             />
-            <div
-              *ngIf="
-                form.controls['firma'].invalid && form.controls['firma'].touched
-              "
-              class="error"
-            >
-              <span
-                class="error"
-                *ngIf="form.controls['firma'].errors?.['required']"
-                >Firma jest wymagana.</span
+            <div class="error-container">
+              <div
+                *ngIf="
+                  form.controls['firma'].invalid &&
+                  form.controls['firma'].touched
+                "
               >
+                <span
+                  class="error"
+                  *ngIf="form.controls['firma'].errors?.['required']"
+                  >Firma jest wymagana.</span
+                >
+              </div>
             </div>
           </div>
-          <div>
+          <div class="field">
+            <i class="pi pi-asterisk"></i>
             <label for="imie">Imię</label>
             <input
               type="text"
               pInputText
               id="imie"
               formControlName="imie"
-              class="input"
               fluid
             />
-            <div
-              *ngIf="
-                form.controls['imie'].invalid && form.controls['imie'].touched
-              "
-              class="error"
-            >
-              <span
-                class="error"
-                *ngIf="form.controls['imie'].errors?.['required']"
-                >Imię jest wymagane.</span
+            <div class="error-container">
+              <div
+                *ngIf="
+                  form.controls['imie'].invalid && form.controls['imie'].touched
+                "
               >
+                <span
+                  class="error"
+                  *ngIf="form.controls['imie'].errors?.['required']"
+                  >Imię jest wymagane.</span
+                >
+              </div>
             </div>
           </div>
-          <div>
+          <div class="field">
+            <i class="pi pi-asterisk"></i>
             <label for="nazwisko">Nazwisko</label>
             <input
               type="text"
               pInputText
               id="nazwisko"
               formControlName="nazwisko"
-              class="input"
               fluid
             />
-            <div
-              *ngIf="
-                form.controls['nazwisko'].invalid &&
-                form.controls['nazwisko'].touched
-              "
-              class="error"
-            >
-              <span
-                class="error"
-                *ngIf="form.controls['nazwisko'].errors?.['required']"
-                >Nazwisko jest wymagane.</span
+            <div class="error-container">
+              <div
+                *ngIf="
+                  form.controls['nazwisko'].invalid &&
+                  form.controls['nazwisko'].touched
+                "
               >
+                <span
+                  class="error"
+                  *ngIf="form.controls['nazwisko'].errors?.['required']"
+                  >Nazwisko jest wymagane.</span
+                >
+              </div>
             </div>
           </div>
-          <div>
+          <div class="field">
+            <i class="pi pi-asterisk"></i>
             <label for="email">E-mail</label>
             <input
               type="email"
               pInputText
               id="email"
               formControlName="email"
-              class="input"
               fluid
             />
-            <div
-              *ngIf="
-                form.controls['email'].invalid && form.controls['email'].touched
-              "
-              class="error"
-            >
-              <span
-                class="error"
-                *ngIf="form.controls['email'].errors?.['required']"
-                >E-mail jest wymagany.</span
+            <div class="error-container">
+              <div
+                *ngIf="
+                  form.controls['email'].invalid &&
+                  form.controls['email'].touched
+                "
               >
-              <span
-                class="error"
-                *ngIf="form.controls['email'].errors?.['email']"
-                >Niepoprawny format adresu e-mail.</span
-              >
+                <span
+                  class="error"
+                  *ngIf="form.controls['email'].errors?.['required']"
+                  >E-mail jest wymagany.</span
+                >
+                <span
+                  class="error"
+                  *ngIf="form.controls['email'].errors?.['email']"
+                  >Niepoprawny format adresu e-mail.</span
+                >
+              </div>
             </div>
           </div>
-          <div>
+          <div class="field">
             <label for="telefon">Telefon</label>
             <input
               type="text"
               pInputText
               id="telefon"
               formControlName="telefon"
-              class="input"
               fluid
             />
           </div>
