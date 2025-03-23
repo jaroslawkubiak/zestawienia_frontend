@@ -90,7 +90,11 @@
     <ng-template #body let-client let-index="rowIndex">
       <tr class="row" (click)="editClient(client)">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
-          <p-tableCheckbox [value]="client" pTooltip="Zaznacz klienta" />
+          <p-tableCheckbox
+            [value]="client"
+            pTooltip="Zaznacz klienta"
+            [disabled]="client.setCount"
+          />
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
@@ -105,8 +109,11 @@
             severity="danger"
             class="p-4"
             alt="Usuń klienta"
-            pTooltip="Usuń klienta"
+            pTooltip="{{
+              client.setCount ? 'Klient ma zestawienie' : 'Usuń klienta'
+            }}"
             (click)="deleteClient(client)"
+            [disabled]="client.setCount"
           />
         </td>
         <td style="min-width: 16rem">
