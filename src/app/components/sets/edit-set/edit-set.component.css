@@ -31,7 +31,7 @@ th {
   align-items: start;
   justify-content: space-between;
   gap: 40px;
-  border-bottom: 4px solid black;
+  border-bottom: 4px solid rgb(0, 0, 0);
 }
 
 .cell {
@@ -200,6 +200,18 @@ i:hover {
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
+}
+
+::ng-deep .p-select-label {
+  padding: 4px;
+}
+
+::ng-deep .p-select-option {
+  font-size: 1.2rem;
+}
+
+::ng-deep .p-select-option:hover {
+  background-color: var(--accent-color-lighter) !important;
 }
 
 .select-field {

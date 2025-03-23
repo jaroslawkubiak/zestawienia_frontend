@@ -58,7 +58,7 @@
 .p-inputtext {
   all: unset !important;
   padding: 8px 16px !important;
-  font-size: 3rem !important;
+  font-size: 2.2rem !important;
   border: 1px solid var(--accent-color-darker) !important;
   width: 527px !important;
 }
@@ -72,7 +72,7 @@
 .p-select {
   display: flex !important;
   padding: 0px 8px !important;
-  font-size: 3rem !important;
+  font-size: 2.2rem !important;
   font-weight: normal;
   border-radius: 0 !important;
   border: 1px solid var(--accent-color-darker) !important;
@@ -82,6 +82,10 @@
 
 .p-select:hover {
   background-color: var(--accent-color-lighter) !important;
+}
+
+::ng-deep .p-select-option {
+  font-size: 2.2rem;
 }
 
 .actions {

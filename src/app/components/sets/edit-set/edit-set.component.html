@@ -185,6 +185,7 @@
                           [options]="allSuppliers"
                           [(ngModel)]="formData[i][column.key]"
                           (onChange)="applyAction($event, i, column)"
+                          appendTo="body"
                           optionLabel="firma"
                         />
                         <!-- EDIT MODE -> type = image  -->

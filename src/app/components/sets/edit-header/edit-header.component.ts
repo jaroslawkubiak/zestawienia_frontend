@@ -11,6 +11,7 @@ import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
 import { IStatus, SetStatus } from '../types/status';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
   selector: 'app-edit-header',
@@ -25,6 +26,7 @@ import { IStatus, SetStatus } from '../types/status';
     CommonModule,
     ButtonModule,
     InputTextModule,
+    LoadingSpinnerComponent
   ],
   providers: [MessageService],
 })
@@ -35,6 +37,7 @@ export class EditHeaderComponent implements OnInit {
   selectedBookmarks: IBookmark[] = [];
   allBookmarks: IBookmark[] = [];
   setStatus: string = '';
+  isLoading = true;
   statuses: IStatus[] = Object.entries(SetStatus).map(([key, value]) => ({
     name: key,
     label: value,
@@ -57,6 +60,7 @@ export class EditHeaderComponent implements OnInit {
           ...bookmark,
           default: true,
         }));
+        this.isLoading = false;
       },
       error: (err) => console.error('Error getting bookmarks ', err),
     });

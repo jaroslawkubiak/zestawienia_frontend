@@ -8,7 +8,7 @@ import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -44,9 +44,7 @@ export class EditSetService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getPositions(
-    setId: string
-  ): Observable<IPosition[]> {
+  getPositions(setId: string): Observable<IPosition[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -84,17 +82,15 @@ export class EditSetService {
     );
   }
 
-  addPosition(
-    newPosition: INewEmptyPosition
-  ): Observable<IPosition> {
+  addPosition(newPosition: INewEmptyPosition): Observable<IPosition> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    const createPosition: INewEmptyPosition = { 
-      ...newPosition, 
-      createdBy: { id: this.userId() } as IUser, 
-      updatedBy: { id: this.userId() } as IUser 
+    const createPosition: INewEmptyPosition = {
+      ...newPosition,
+      createdBy: { id: this.userId() } as IUser,
+      updatedBy: { id: this.userId() } as IUser,
     };
 
     return this.http
@@ -104,17 +100,15 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  clonePosition(
-    clonePosition: IClonePosition
-  ): Observable<IPosition> {
+  clonePosition(clonePosition: IClonePosition): Observable<IPosition> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    const createClonePosition: INewEmptyPosition = { 
-      ...clonePosition, 
-      createdBy: { id: this.userId() } as IUser, 
-      updatedBy: { id: this.userId() } as IUser 
+    const createClonePosition: INewEmptyPosition = {
+      ...clonePosition,
+      createdBy: { id: this.userId() } as IUser,
+      updatedBy: { id: this.userId() } as IUser,
     };
 
     return this.http
@@ -128,16 +122,14 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  saveSet(
-    savedSet: IUpdateSet
-  ): Observable<INewSet> {
+  saveSet(savedSet: IUpdateSet): Observable<INewSet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    const createSavedSet: IUpdateSet = { 
-      ...savedSet, 
-      userId: this.userId(), 
+    const createSavedSet: IUpdateSet = {
+      ...savedSet,
+      userId: this.userId(),
     };
 
     return this.http

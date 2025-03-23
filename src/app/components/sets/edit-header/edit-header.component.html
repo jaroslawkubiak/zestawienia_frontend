@@ -28,6 +28,9 @@
     </div>
 
     <div class="field bookmarks-container">
+      @if(isLoading) {
+      <app-loading-spinner [size]="100"></app-loading-spinner>
+      } @else {
       <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
         <p-checkbox
           name="bookmarks"
@@ -42,6 +45,7 @@
           {{ bookmark.name }}
         </label>
       </div>
+      }
     </div>
 
     <div class="actions">

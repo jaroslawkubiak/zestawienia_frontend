@@ -1,6 +1,6 @@
 import { IUser } from '../../../login/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ISet } from './ISet';
 
 export interface IClonePosition {

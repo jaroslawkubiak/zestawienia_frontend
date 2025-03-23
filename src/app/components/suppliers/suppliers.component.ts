@@ -24,7 +24,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../services/notification.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
-import { ISupplier } from './ISupplier';
+import { ISupplier } from './types/ISupplier';
 import { SuppliersService } from './suppliers.service';
 
 @Component({
