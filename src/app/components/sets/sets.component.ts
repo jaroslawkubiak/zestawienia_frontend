@@ -14,7 +14,6 @@ import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { AuthService } from '../../login/auth.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SetsService } from './sets.service';
@@ -47,7 +46,6 @@ import { ISet } from './types/ISet';
 })
 export class SetsComponent implements OnInit {
   isLoading = true;
-  private authorizationToken: string | null;
   sets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
@@ -56,18 +54,15 @@ export class SetsComponent implements OnInit {
   constructor(
     private router: Router,
     private setsService: SetsService,
-    private authService: AuthService,
     private cd: ChangeDetectorRef
-  ) {
-    this.authorizationToken = this.authService.authorizationToken;
-  }
+  ) {}
 
   ngOnInit() {
     this.getSets();
   }
 
   getSets() {
-    this.setsService.getSets(this.authorizationToken).subscribe({
+    this.setsService.getSets().subscribe({
       next: (data) => {
         this.sets = data;
         this.isLoading = false;

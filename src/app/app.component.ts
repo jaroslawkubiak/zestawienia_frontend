@@ -1,7 +1,7 @@
-import { Component, computed } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AuthService } from './login/auth.service';
 import { MenuComponent } from './components/menu/menu.component';
+import { AuthService } from './login/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +16,7 @@ import { MenuComponent } from './components/menu/menu.component';
   standalone: true,
 })
 export class AppComponent {
-  user = computed(() => this.authService.user());
+  userName = () => this.authService.getUserName();
   auth = () => this.authService.isAuthenticated();
 
   constructor(private authService: AuthService) {}

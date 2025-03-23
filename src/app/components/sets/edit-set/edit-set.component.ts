@@ -14,7 +14,6 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
-import { IUser } from '../../../login/IUser';
 import { NotificationService } from '../../../services/notification.service';
 import {
   calculateBrutto,
@@ -68,10 +67,6 @@ import { EditSetService } from './edit-set.service';
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
-  private authorizationToken: string | null;
-  userId: number | null;
-  setName: string = '';
-  setStatus: string = '';
   setId!: string;
   set!: ISet;
   positions: IPosition[] = [];
@@ -102,22 +97,17 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   ];
 
   positionToDelete: number[] = [];
-
   allSuppliers: ISupplier[] = [];
-
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private authService: AuthService,
     private confirmationService: ConfirmationService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef
   ) {
-    this.authorizationToken = this.authService.authorizationToken;
-    this.userId = this.authService.userId();
     this.onImageUpload = this.onImageUpload.bind(this);
   }
 
@@ -132,39 +122,28 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // load needed data from set
   loadData(): void {
-    if (!this.authorizationToken) return;
+    this.editSetService.loadSetData(this.setId).subscribe({
+      next: ({ set, positions, suppliers }) => {
+        this.set = set;
+        this.positions = positions;
+        this.allSuppliers = suppliers;
 
-    this.editSetService
-      .loadSetData(this.authorizationToken, this.setId)
-      .subscribe({
-        next: ({ set, positions, suppliers }) => {
-          this.set = set;
-          this.setName = set.name;
-          this.setStatus = set.status;
-          this.positions = positions;
-          this.allSuppliers = suppliers;
+        if (set.bookmarks.length > 0) {
+          this.updateBookmarks();
+        }
 
-          if (set.bookmarks.length > 0) {
-            this.updateBookmarks();
-          }
-
-          this.initializeForm();
-        },
-        error: (err) => console.error('Error loading data', err),
-      });
+        this.initializeForm();
+      },
+      error: (err) => console.error('Error loading data', err),
+    });
   }
 
   // take edited data from form and update this.position array
   updatePosition(): void {
-    const formDataMap = new Map(
-      this.formData.map((form: IPosition) => [form.id, form])
+    this.positions = this.editSetService.updatePosition(
+      this.positions,
+      this.formData
     );
-
-    this.positions = this.positions.map((position: IPosition) => {
-      const form = formDataMap.get(position.id);
-
-      return form ? { ...position, ...form } : position;
-    });
   }
 
   // load positions for a given bookmarkID
@@ -370,31 +349,27 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     const newPosition: INewEmptyPosition = {
       kolejnosc: kolejnosc,
       bookmarkId: bookmark[0],
-      createdBy: { id: this.userId } as IUser,
-      updatedBy: { id: this.userId } as IUser,
       setId: { id: +this.setId } as ISet,
     };
 
-    this.editSetService
-      .addPosition(this.authorizationToken, newPosition)
-      .subscribe({
-        next: (response) => {
-          // put new position in place according to property kolejnosc
-          this.formData.splice(response.kolejnosc, 0, response);
+    this.editSetService.addPosition(newPosition).subscribe({
+      next: (response) => {
+        // put new position in place according to property kolejnosc
+        this.formData.splice(response.kolejnosc, 0, response);
 
-          this.updateOrder();
-          this.updatePosition();
-          this.positions.push(response);
+        this.updateOrder();
+        this.updatePosition();
+        this.positions.push(response);
 
-          this.notificationService.showNotification(
-            'success',
-            'Pusta pozycja została dodana'
-          );
-        },
-        error: (error) => {
-          this.notificationService.showNotification('error', error.message);
-        },
-      });
+        this.notificationService.showNotification(
+          'success',
+          'Pusta pozycja została dodana'
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 
   // clone selected position
@@ -419,49 +394,45 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     const newClonePosition: IClonePosition = {
       ...clonePosition,
       bookmarkId: bookmark[0],
-      createdBy: { id: this.userId } as IUser,
-      updatedBy: { id: this.userId } as IUser,
       setId: { id: +this.setId } as ISet,
     };
 
-    this.editSetService
-      .clonePosition(this.authorizationToken, newClonePosition)
-      .subscribe({
-        next: (response) => {
-          this.resetFooter();
+    this.editSetService.clonePosition(newClonePosition).subscribe({
+      next: (response) => {
+        this.resetFooter();
 
-          // put new position in place according to property kolejnosc
-          this.formData.splice(response.kolejnosc, 0, response);
+        // put new position in place according to property kolejnosc
+        this.formData.splice(response.kolejnosc, 0, response);
 
-          this.formData = this.formData
-            .map((item: IPosition) => {
-              const brutto = calculateBrutto(item.netto);
+        this.formData = this.formData
+          .map((item: IPosition) => {
+            const brutto = calculateBrutto(item.netto);
 
-              return {
-                ...item,
-                brutto,
-                wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-                wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-              };
-            })
-            .map((item: IPosition) => {
-              this.calculateFooterRow(item);
-              return item;
-            });
+            return {
+              ...item,
+              brutto,
+              wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+              wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+            };
+          })
+          .map((item: IPosition) => {
+            this.calculateFooterRow(item);
+            return item;
+          });
 
-          this.updateOrder();
-          this.updatePosition();
-          this.positions.push(response);
+        this.updateOrder();
+        this.updatePosition();
+        this.positions.push(response);
 
-          this.notificationService.showNotification(
-            'success',
-            'Pozycja została sklonowana'
-          );
-        },
-        error: (error) => {
-          this.notificationService.showNotification('error', error.message);
-        },
-      });
+        this.notificationService.showNotification(
+          'success',
+          'Pozycja została sklonowana'
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 
   // mark position to be deleted after submit
@@ -496,36 +467,28 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   onSubmit() {
     this.updatePosition();
 
-    this.set.status = this.setStatus;
-    this.set.name = this.setName;
+    const savedSet: IUpdateSet = {
+      set: this.set,
+      positions: this.positions,
+      positionToDelete: this.positionToDelete,
+    };
 
-    if (this.authorizationToken && this.userId) {
-      const savedSet: IUpdateSet = {
-        userId: this.userId,
-        set: this.set,
-        positions: this.positions,
-        positionToDelete: this.positionToDelete,
-      };
-
-      this.editSetService.saveSet(this.authorizationToken, savedSet).subscribe({
-        next: (response) => {
-          this.isEdited = false;
-          this.positionToDelete = [];
-          if (response.updatedAt) {
-            this.set.updatedAt = response.updatedAt;
-          }
-          this.notificationService.showNotification(
-            'success',
-            'Dane zestawienia zostały zapisane'
-          );
-        },
-        error: (error) => {
-          this.notificationService.showNotification('error', error.message);
-        },
-      });
-    } else {
-      this.notificationService.showNotification('error', 'Brak autoryzacji.');
-    }
+    this.editSetService.saveSet(savedSet).subscribe({
+      next: (response) => {
+        this.isEdited = false;
+        this.positionToDelete = [];
+        if (response.updatedAt) {
+          this.set.updatedAt = response.updatedAt;
+        }
+        this.notificationService.showNotification(
+          'success',
+          'Dane zestawienia zostały zapisane'
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 
   // resize column event - save new column width to this.set.bookmark property
@@ -605,8 +568,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   // edit set header
   editHeader() {
     this.editHeaderProps = {
-      name: this.setName,
-      selectedStatus: this.setStatus,
+      name: this.set.name,
+      selectedStatus: this.set.status,
       selectedBookmarks: this.selectedBookmarks,
     };
 
@@ -633,8 +596,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     );
     this.updateBookmarks();
 
-    this.setName = headerData.name;
-    this.setStatus = headerData.selectedStatus;
+    this.set.name = headerData.name;
+    this.set.status = headerData.selectedStatus;
+
     this.notificationService.showNotification(
       'info',
       'Nagłówek zestawienia został zmieniony'

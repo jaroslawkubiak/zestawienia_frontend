@@ -6,6 +6,7 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../login/auth.service';
 import { INewSet } from './types/INewSet';
 import { ISet } from './types/ISet';
 
@@ -13,7 +14,10 @@ import { ISet } from './types/ISet';
   providedIn: 'root',
 })
 export class SetsService {
-  constructor(private http: HttpClient) {}
+  authorizationToken = () => this.authService.getAuthorizationToken();
+  userId = () => this.authService.getUserId();
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(
@@ -23,9 +27,9 @@ export class SetsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getSets(authorizationToken: string | null): Observable<ISet[]> {
+  getSets(): Observable<ISet[]> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http
@@ -35,16 +39,15 @@ export class SetsService {
       .pipe(catchError(this.handleError));
   }
 
-  addSet(
-    authorizationToken: string | null,
-    newSet: INewSet
-  ): Observable<INewSet> {
+  addSet(newSet: INewSet): Observable<INewSet> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
+    const createSet: INewSet = { ...newSet, createdBy: Number(this.userId()) };
+
     return this.http
-      .post<INewSet>(`${environment.API_URL}/sets/new`, newSet, {
+      .post<INewSet>(`${environment.API_URL}/sets/new`, createSet, {
         headers,
       })
       .pipe(catchError(this.handleError));

@@ -1,7 +1,7 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IMenu } from '../menu/Menu';
-import { CommonModule } from '@angular/common';
+import { IMenu } from '../menu/types/IMenu';
 
 @Component({
   selector: 'app-settings',
@@ -17,11 +17,6 @@ export class SettingsComponent {
       name: 'UI Check',
       route: '/settings/ui-check',
       icon: 'pi-sparkles',
-    },
-    {
-      name: 'Image clipboard',
-      route: '/settings/clipboard',
-      icon: 'pi-image',
-    },
+    }
   ];
 }

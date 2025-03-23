@@ -6,13 +6,16 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { IClient } from './IClient';
+import { AuthService } from '../../login/auth.service';
+import { IClient } from './types/IClient';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientsService {
-  constructor(private http: HttpClient) {}
+  authorizationToken = () => this.authService.getAuthorizationToken();
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
@@ -23,9 +26,9 @@ export class ClientsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getClients(authorizationToken: string | null): Observable<IClient[]> {
+  getClients(): Observable<IClient[]> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http
@@ -35,12 +38,9 @@ export class ClientsService {
       .pipe(catchError(this.handleError));
   }
 
-  addClient(
-    authorizationToken: string | null,
-    client: Partial<IClient>
-  ): Observable<IClient> {
+  addClient(client: Partial<IClient>): Observable<IClient> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     const { id, ...newClient } = client as Partial<IClient>;
@@ -52,12 +52,9 @@ export class ClientsService {
       .pipe(catchError(this.handleError));
   }
 
-  saveClient(
-    authorizationToken: string | null,
-    client: Partial<IClient>
-  ): Observable<IClient> {
+  saveClient(client: Partial<IClient>): Observable<IClient> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
     const { id, ...updatedClient } = client as Partial<IClient>;
 
@@ -68,12 +65,9 @@ export class ClientsService {
       .pipe(catchError(this.handleError));
   }
 
-  removeClients(
-    authorizationToken: string | null,
-    ids: number[]
-  ): Observable<any> {
+  removeClients(ids: number[]): Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http

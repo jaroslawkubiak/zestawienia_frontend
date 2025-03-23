@@ -21,7 +21,6 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { AuthService } from '../../login/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
@@ -69,17 +68,13 @@ export class SuppliersComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
-  private authorizationToken: string | null;
 
   constructor(
-    private authService: AuthService,
     private suppliersService: SuppliersService,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
-  ) {
-    this.authorizationToken = this.authService.authorizationToken;
-  }
+  ) {}
 
   form = new FormGroup({
     firma: new FormControl('', {
@@ -102,18 +97,14 @@ export class SuppliersComponent implements OnInit {
   }
 
   getSuppliers() {
-    if (this.authorizationToken) {
-      this.suppliersService.getSuppliers(this.authorizationToken).subscribe({
-        next: (data) => {
-          this.suppliers = data;
-          this.isLoading = false;
-          this.cd.markForCheck();
-        },
-        error: (err) => console.error('Error getting suppliers ', err),
-      });
-    } else {
-      console.error('Authorization token is missing');
-    }
+    this.suppliersService.getSuppliers().subscribe({
+      next: (data) => {
+        this.suppliers = data;
+        this.isLoading = false;
+        this.cd.markForCheck();
+      },
+      error: (err) => console.error('Error getting suppliers ', err),
+    });
 
     this.cols = [
       { field: 'firma', header: 'Firma' },
@@ -173,24 +164,17 @@ export class SuppliersComponent implements OnInit {
         const idList = this.selected?.map((val) => val.id) ?? [];
         this.selected = null;
 
-        if (this.authorizationToken) {
-          this.suppliersService
-            .removeSuppliers(this.authorizationToken, idList)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Dostawcy zostali usunięci'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.suppliersService.removeSuppliers(idList).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Dostawcy zostali usunięci'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       },
     });
   }
@@ -212,24 +196,18 @@ export class SuppliersComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        if (this.authorizationToken) {
-          this.suppliersService
-            .removeSuppliers(this.authorizationToken, [supplier.id])
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Dostawca został usunięty'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.suppliersService.removeSuppliers([supplier.id]).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Dostawca został usunięty'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
+
         this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
       },
     });
@@ -262,24 +240,17 @@ export class SuppliersComponent implements OnInit {
         };
         this.suppliers[this.findIndexById(this.supplier.id)] = editedSupplier;
 
-        if (this.authorizationToken) {
-          this.suppliersService
-            .saveSupplier(this.authorizationToken, editedSupplier)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Dane dostawcy zaktualizowane'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.suppliersService.saveSupplier(editedSupplier).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Dane dostawcy zaktualizowane'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       } else {
         // add supplier
         const newSupplier: Partial<ISupplier> = {
@@ -290,26 +261,19 @@ export class SuppliersComponent implements OnInit {
           email: this.form.value.email || undefined,
         };
 
-        if (this.authorizationToken) {
-          this.suppliersService
-            .addSupplier(this.authorizationToken, newSupplier)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Dostawca został dodany'
-                );
-                this.suppliers.push(newSupplier as ISupplier);
-                this.cd.markForCheck();
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.suppliersService.addSupplier(newSupplier).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Dostawca został dodany'
+            );
+            this.suppliers.push(newSupplier as ISupplier);
+            this.cd.markForCheck();
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       }
 
       this.suppliers = [...this.suppliers];

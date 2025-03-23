@@ -4,6 +4,6 @@ import { ISet } from './ISet';
 export interface IUpdateSet {
   set: Partial<ISet>;
   positions: Partial<IPosition[]>;
-  userId: number;
+  userId?: number;
   positionToDelete: number[];
 }

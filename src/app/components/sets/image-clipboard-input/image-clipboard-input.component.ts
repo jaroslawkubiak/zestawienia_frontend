@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../login/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { ImageService } from './image.service';
 
@@ -15,8 +14,6 @@ import { ImageService } from './image.service';
   providers: [NotificationService],
 })
 export class ImageClipboardInputComponent {
-  private authorizationToken: string | null;
-  userId: number;
   @Input() imageUpload: (imageName: string, positionId: string) => void =
     () => {};
   @Input() imagePreview: string | null = null;
@@ -26,12 +23,9 @@ export class ImageClipboardInputComponent {
   @Input() positionId!: number;
   @Output() blur = new EventEmitter<Event>();
   constructor(
-    private authService: AuthService,
     private notificationService: NotificationService,
     private imageService: ImageService
   ) {
-    this.authorizationToken = this.authService.authorizationToken;
-    this.userId = this.authService.userId() || 1;
   }
 
   onPaste(event: ClipboardEvent): void {
@@ -58,8 +52,6 @@ export class ImageClipboardInputComponent {
     }
 
     return this.imageService.saveImage(
-      this.userId,
-      this.authorizationToken,
       this.setId,
       this.positionId,
       formData

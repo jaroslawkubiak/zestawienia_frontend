@@ -39,7 +39,7 @@ export class EditHeaderComponent implements OnInit {
     name: key,
     label: value,
   }));
-  @Output() dataChanged = new EventEmitter<ISetHeader>();
+  @Output() setHeaderChange = new EventEmitter<ISetHeader>();
   @Output() closeModal = new EventEmitter<void>();
 
   constructor(private bookmarksService: BookmarksService) {}
@@ -62,12 +62,13 @@ export class EditHeaderComponent implements OnInit {
     });
   }
   save() {
-    const data: ISetHeader = {
+    const newHeader: ISetHeader = {
       name: this.name,
       selectedStatus: this.selectedStatus,
       selectedBookmarks: this.selectedBookmarks,
     };
-    this.dataChanged.emit(data);
+
+    this.setHeaderChange.emit(newHeader);
     this.closeModal.emit();
   }
 }

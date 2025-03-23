@@ -2,21 +2,19 @@ import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductsComponent } from './components/products/products.component';
-import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
+import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { UiCheckComponent } from './ui-check/ui-check.component';
-import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
-import { ImageClipboardInputComponent } from './components/sets/image-clipboard-input/image-clipboard-input.component';
 
-//TODOauth add /login as default path
 export const routes: Routes = [
-  { path: '', redirectTo: '/sets', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,
@@ -69,10 +67,6 @@ export const routes: Routes = [
   {
     path: 'settings/ui-check',
     component: UiCheckComponent,
-  },
-  {
-    path: 'settings/clipboard',
-    component: ImageClipboardInputComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

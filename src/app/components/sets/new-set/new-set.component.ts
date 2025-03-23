@@ -7,13 +7,12 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { ToastModule } from 'primeng/toast';
-import { AuthService } from '../../../login/auth.service';
 import { NotificationService } from '../../../services/notification.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
-import { IClient } from '../../clients/IClient';
+import { IClient } from '../../clients/types/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
 
@@ -35,23 +34,17 @@ import { INewSet } from '../types/INewSet';
 })
 export class NewSetComponent implements OnInit {
   name: string = '';
-  userId: number | null;
   allClients: IClient[] = [];
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
   selectedBookmarks: IBookmark[] = [];
-  private authorizationToken: string | null;
 
   constructor(
-    private authService: AuthService,
     private bookmarksService: BookmarksService,
     private setsService: SetsService,
     private clientsService: ClientsService,
     private notificationService: NotificationService
-  ) {
-    this.authorizationToken = this.authService.authorizationToken;
-    this.userId = this.authService.userId();
-  }
+  ) {}
 
   ngOnInit() {
     this.getClients();
@@ -59,7 +52,7 @@ export class NewSetComponent implements OnInit {
   }
 
   getClients() {
-    this.clientsService.getClients(this.authorizationToken).subscribe({
+    this.clientsService.getClients().subscribe({
       next: (data) => {
         this.allClients = data;
       },
@@ -89,25 +82,23 @@ export class NewSetComponent implements OnInit {
       delete item.default;
     });
 
-    if (this.authorizationToken && this.userId) {
-      const newSet: INewSet = {
-        name: this.name,
-        clientId: client.id,
-        createdBy: this.userId,
-        bookmarks,
-      };
+    const newSet: INewSet = {
+      name: this.name,
+      clientId: client.id,
+      createdBy: 0,
+      bookmarks,
+    };
 
-      this.setsService.addSet(this.authorizationToken, newSet).subscribe({
-        next: (response) => {
-          this.notificationService.showNotification(
-            'success',
-            'Nowe zestawienie zostało dodane'
-          );
-        },
-        error: (error) => {
-          this.notificationService.showNotification('error', error.message);
-        },
-      });
-    }
+    this.setsService.addSet(newSet).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'success',
+          'Nowe zestawienie zostało dodane'
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 }

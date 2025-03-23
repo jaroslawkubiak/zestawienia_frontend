@@ -6,13 +6,16 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../login/auth.service';
 import { ISupplier } from './ISupplier';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SuppliersService {
-  constructor(private http: HttpClient) {}
+  authorizationToken = () => this.authService.getAuthorizationToken();
+
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
@@ -23,9 +26,9 @@ export class SuppliersService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getSuppliers(authorizationToken: string | null): Observable<ISupplier[]> {
+  getSuppliers(): Observable<ISupplier[]> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http
@@ -35,12 +38,9 @@ export class SuppliersService {
       .pipe(catchError(this.handleError));
   }
 
-  addSupplier(
-    authorizationToken: string | null,
-    supplier: Partial<ISupplier>
-  ): Observable<ISupplier> {
+  addSupplier(supplier: Partial<ISupplier>): Observable<ISupplier> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     const { id, ...newSupplier } = supplier as Partial<ISupplier>;
@@ -52,12 +52,9 @@ export class SuppliersService {
       .pipe(catchError(this.handleError));
   }
 
-  removeSuppliers(
-    authorizationToken: string | null,
-    ids: number[]
-  ): Observable<any> {
+  removeSuppliers(ids: number[]): Observable<any> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http
@@ -68,12 +65,9 @@ export class SuppliersService {
       .pipe(catchError(this.handleError));
   }
 
-  saveSupplier(
-    authorizationToken: string | null,
-    supplier: Partial<ISupplier>
-  ): Observable<ISupplier> {
+  saveSupplier(supplier: Partial<ISupplier>): Observable<ISupplier> {
     const headers = new HttpHeaders({
-      Authorization: `Bearer ${authorizationToken}`,
+      Authorization: `Bearer ${this.authorizationToken()}`,
     });
     const { id, ...updatedSupplier } = supplier as Partial<ISupplier>;
 

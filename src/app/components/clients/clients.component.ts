@@ -21,12 +21,11 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { AuthService } from '../../login/auth.service';
 import { NotificationService } from '../../services/notification.service';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
-import { IClient } from './IClient';
+import { IClient } from './types/IClient';
 
 @Component({
   selector: 'app-clients',
@@ -69,17 +68,13 @@ export class ClientsComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
-  private authorizationToken: string | null;
 
   constructor(
-    private authService: AuthService,
     private clientsService: ClientsService,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService,
     private cd: ChangeDetectorRef
-  ) {
-    this.authorizationToken = this.authService.authorizationToken;
-  }
+  ) {}
 
   form = new FormGroup({
     firma: new FormControl('', {
@@ -102,18 +97,14 @@ export class ClientsComponent implements OnInit {
   }
 
   getClients() {
-    if (this.authorizationToken) {
-      this.clientsService.getClients(this.authorizationToken).subscribe({
-        next: (data) => {
-          this.clients = data;
-          this.isLoading = false;
-          this.cd.markForCheck();
-        },
-        error: (err) => console.error('Error getting clients ', err),
-      });
-    } else {
-      console.error('Authorization token is missing');
-    }
+    this.clientsService.getClients().subscribe({
+      next: (data) => {
+        this.clients = data;
+        this.isLoading = false;
+        this.cd.markForCheck();
+      },
+      error: (err) => console.error('Error getting clients ', err),
+    });
 
     this.cols = [
       { field: 'firma', header: 'Firma' },
@@ -174,24 +165,17 @@ export class ClientsComponent implements OnInit {
         const idList = this.selectedClient?.map((client) => client.id) ?? [];
         this.selectedClient = null;
 
-        if (this.authorizationToken) {
-          this.clientsService
-            .removeClients(this.authorizationToken, idList)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Klienci zostali usunięci'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.clientsService.removeClients(idList).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Klienci zostali usunięci'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       },
     });
   }
@@ -211,24 +195,17 @@ export class ClientsComponent implements OnInit {
       acceptButtonStyleClass: 'p-button-danger',
       rejectButtonStyleClass: 'p-button-secondary',
       accept: () => {
-        if (this.authorizationToken) {
-          this.clientsService
-            .removeClients(this.authorizationToken, [client.id])
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Klient został usunięty'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.clientsService.removeClients([client.id]).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Klient został usunięty'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
 
         this.clients = this.clients.filter((val) => val.id !== client.id);
       },
@@ -261,24 +238,17 @@ export class ClientsComponent implements OnInit {
         };
         this.clients[this.findIndexById(this.client.id)] = editedClient;
 
-        if (this.authorizationToken) {
-          this.clientsService
-            .saveClient(this.authorizationToken, editedClient)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Dane klienta zaktualizowane'
-                );
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.clientsService.saveClient(editedClient).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Dane klienta zaktualizowane'
+            );
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       } else {
         // add client
         const newClient: Partial<IClient> = {
@@ -289,26 +259,19 @@ export class ClientsComponent implements OnInit {
           telefon: this.form.value.telefon || undefined,
         };
 
-        if (this.authorizationToken) {
-          this.clientsService
-            .addClient(this.authorizationToken, newClient)
-            .subscribe({
-              next: (response) => {
-                this.notificationService.showNotification(
-                  'success',
-                  'Klient został dodany'
-                );
-                this.clients.push(newClient as IClient);
-                this.cd.markForCheck();
-              },
-              error: (error) => {
-                this.notificationService.showNotification(
-                  'error',
-                  error.message
-                );
-              },
-            });
-        }
+        this.clientsService.addClient(newClient).subscribe({
+          next: (response) => {
+            this.notificationService.showNotification(
+              'success',
+              'Klient został dodany'
+            );
+            this.clients.push(newClient as IClient);
+            this.cd.markForCheck();
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
       }
 
       this.clients = [...this.clients];

@@ -7,7 +7,7 @@
   <div class="set-header flex-center" *ngIf="set">
     <div class="cell">
       <div class="cell-title">Zestawienie</div>
-      <div class="cell-value">{{ setName }}</div>
+      <div class="cell-value">{{ set.name }}</div>
     </div>
     <div class="cell">
       <div class="cell-title">Klient</div>
@@ -15,7 +15,7 @@
     </div>
     <div class="cell">
       <div class="cell-title">Status</div>
-      <div class="cell-value">{{ setStatus }}</div>
+      <div class="cell-value">{{ set.status }}</div>
     </div>
     <div class="cell">
       <div class="cell-title">Utworzone</div>
@@ -314,7 +314,7 @@
   <ng-template #content>
     <app-edit-header
       [editHeader]="editHeaderProps"
-      (dataChanged)="onSetHeaderChange($event)"
+      (setHeaderChange)="onSetHeaderChange($event)"
       (closeModal)="hideDialog()"
     />
   </ng-template>

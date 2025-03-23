@@ -1,9 +1,9 @@
-import { Component, computed } from '@angular/core';
-import { AuthService } from '../../login/auth.service';
 import { CommonModule } from '@angular/common';
-import { IMenu } from './Menu';
-import { ButtonModule } from 'primeng/button';
+import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
+import { AuthService } from '../../login/auth.service';
+import { IMenu } from './types/IMenu';
 
 @Component({
   selector: 'app-menu',
@@ -13,6 +13,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   imports: [CommonModule, ButtonModule, RouterLink, RouterLinkActive],
 })
 export class MenuComponent {
+  userName = () => this.authService.getUserName();
   menuItems: IMenu[] = [
     {
       name: 'Zestawienia',
@@ -42,8 +43,6 @@ export class MenuComponent {
   ];
 
   constructor(private authService: AuthService) {}
-  user = computed(() => this.authService.user());
-  userName = localStorage.getItem('user_name');
   logout() {
     this.authService.logout();
   }

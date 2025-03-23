@@ -6,6 +6,6 @@ export interface INewEmptyPosition {
   kolejnosc: number;
   setId: ISet;
   bookmarkId: IBookmark;
-  createdBy: IUser;
-  updatedBy: IUser;
+  createdBy?: IUser;
+  updatedBy?: IUser;
 }

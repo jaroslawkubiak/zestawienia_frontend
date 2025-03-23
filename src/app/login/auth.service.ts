@@ -1,31 +1,52 @@
 import { Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { ApiService } from '../services/api.service';
-import { ILoginUser } from './ILoginUser';
-import { Router } from '@angular/router';
 import { ILoggedUser } from './ILoggedUser';
+import { ILoginUser } from './ILoginUser';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user = signal<string | null>(null);
-  //TODOauth use for development, set to null for default
-  userId = signal<number | null>(1);
-
-  //TODOauth remove temporary token TEMP_TOKEN
-  authorizationToken: string | null = 'TEMP_TOKEN';
+  userId = signal<number | undefined>(undefined);
+  authorizationToken = signal<string | null>(null);
 
   constructor(private apiService: ApiService, private router: Router) {}
+
+  getAuthorizationToken(): string | null {
+    return this.authorizationToken() || sessionStorage.getItem('access_token');
+  }
+
+  getUserId(): number | undefined {
+    if (this.userId()) {
+      return Number(this.userId());
+    }
+    if (sessionStorage.getItem('user_id')) {
+      return Number(sessionStorage.getItem('user_id'));
+    }
+
+    return undefined;
+  }
+
+  getUserName(): string | null {
+    return this.user() || sessionStorage.getItem('user_name');
+  }
 
   login(enteredData: ILoginUser): Observable<ILoggedUser> {
     return this.apiService.logUser(enteredData).pipe(
       tap((response) => {
-        localStorage.setItem('access_token', response.accessToken);
-        localStorage.setItem('user_name', response.name);
-        localStorage.setItem('user_id', String(response.id));
-        this.user.set(response.name); // Set user name
-        this.userId.set(response.id); // Set userId
+        // Store the response data in signals and sessionStorage
+        this.authorizationToken.set(response.accessToken);
+        this.user.set(response.name);
+        this.userId.set(response.id);
+
+        sessionStorage.setItem('access_token', response.accessToken);
+        sessionStorage.setItem('user_name', response.name);
+        sessionStorage.setItem('user_id', String(response.id));
+
+        // Navigate to the welcome page after successful login
         this.router.navigate(['/welcome']);
       }),
       catchError((error) => {
@@ -35,22 +56,23 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    //TODOauth use for development
-    return true;
-
-    this.authorizationToken = localStorage.getItem('access_token');
-    if (this.user() && !!this.authorizationToken) {
-      return true;
-    }
-
-    return false;
+    const token =
+      this.authorizationToken() || sessionStorage.getItem('access_token');
+    const user = this.user() || sessionStorage.getItem('user_name');
+    return !!user && !!token;
   }
 
   logout(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('user_name');
-    localStorage.removeItem('user_id');
+    // Clear all signals and sessionStorage items
     this.user.set(null);
+    this.userId.set(undefined);
+    this.authorizationToken.set(null);
+
+    sessionStorage.removeItem('access_token');
+    sessionStorage.removeItem('user_name');
+    sessionStorage.removeItem('user_id');
+
+    // Navigate to the login page after logout
     this.router.navigate(['/login']);
   }
 }

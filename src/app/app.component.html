@@ -1,7 +1,6 @@
-<!-- //TODOauth remove this -->
-<!-- @if(auth() && user()) { -->
+@if(auth() && userName()) {
 <app-menu />
-<!-- } -->
+}
 <div class="content-container">
   <router-outlet></router-outlet>
 </div>

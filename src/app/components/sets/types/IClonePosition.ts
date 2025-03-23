@@ -17,6 +17,6 @@ export interface IClonePosition {
   setId: ISet;
   supplierId: ISupplier;
   bookmarkId: IBookmark;
-  createdBy: IUser;
-  updatedBy: IUser;
+  createdBy?: IUser;
+  updatedBy?: IUser;
 }
