@@ -11,22 +11,19 @@ export class NotificationService {
   constructor(private messageService: MessageService) {}
 
   showNotification(severity: ISeverity, detail: string) {
-    console.log(`##### notyfikacja #####`);
-    console.log(severity);
-    console.log(detail);
     let summary = '';
     switch (severity) {
       case 'success':
-        summary = 'Sukces!!!';
+        summary = 'Sukces';
         break;
       case 'error':
-        summary = 'Błąd!!!';
+        summary = 'Błąd';
         break;
       case 'info':
-        summary = 'Informacja!!!';
+        summary = 'Informacja';
         break;
       case 'warn':
-        summary = 'Ostrzeżenie!!!';
+        summary = 'Ostrzeżenie';
         break;
     }
 
