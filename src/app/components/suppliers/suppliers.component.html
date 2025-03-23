@@ -90,7 +90,11 @@
     <ng-template #body let-supplier>
       <tr (click)="editSupplier(supplier)" class="row">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
-          <p-tableCheckbox [value]="supplier" pTooltip="Zaznacz dostawcę" />
+          <p-tableCheckbox
+            [value]="supplier"
+            pTooltip="Zaznacz dostawcę"
+            [disabled]="supplier.positionCount"
+          />
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
@@ -105,7 +109,12 @@
             icon="pi pi-trash"
             class="p-4"
             alt="Usuń dostawcę"
-            pTooltip="Usuń dostawcę"
+            pTooltip="{{
+              supplier.positionCount
+                ? 'Dostawca widnieje w zestawieniach'
+                : 'Usuń dostawcę'
+            }}"
+            [disabled]="supplier.positionCount"
             (click)="deleteSupplier(supplier)"
           />
         </td>

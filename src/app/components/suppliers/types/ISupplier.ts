@@ -6,4 +6,5 @@ export interface ISupplier {
   email: string;
   telefon?: string;
   hash?: string;
+  positionCount?: number;
 }
