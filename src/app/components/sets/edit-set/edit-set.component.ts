@@ -12,10 +12,10 @@ import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { forkJoin } from 'rxjs';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
+import { NotificationService } from '../../../services/notification.service';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -36,7 +36,6 @@ import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
-import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-set',
@@ -112,7 +111,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
-    private suppliersService: SuppliersService,
     private confirmationService: ConfirmationService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
@@ -136,29 +134,24 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   loadData(): void {
     if (!this.authorizationToken) return;
 
-    forkJoin({
-      set: this.editSetService.getSet(this.authorizationToken, this.setId),
-      positions: this.editSetService.getPositions(
-        this.authorizationToken,
-        this.setId
-      ),
-      suppliers: this.suppliersService.getSuppliers(this.authorizationToken),
-    }).subscribe({
-      next: ({ set, positions, suppliers }) => {
-        this.set = set[0];
-        this.setName = this.set.name;
-        this.setStatus = this.set.status;
-        this.positions = positions;
-        this.allSuppliers = suppliers;
+    this.editSetService
+      .loadSetData(this.authorizationToken, this.setId)
+      .subscribe({
+        next: ({ set, positions, suppliers }) => {
+          this.set = set;
+          this.setName = set.name;
+          this.setStatus = set.status;
+          this.positions = positions;
+          this.allSuppliers = suppliers;
 
-        if (this.set.bookmarks.length > 0) {
-          this.updateBookmarks();
-        }
+          if (set.bookmarks.length > 0) {
+            this.updateBookmarks();
+          }
 
-        this.initializeForm();
-      },
-      error: (err) => console.error('Error loading data ', err),
-    });
+          this.initializeForm();
+        },
+        error: (err) => console.error('Error loading data', err),
+      });
   }
 
   // take edited data from form and update this.position array
