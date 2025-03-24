@@ -14,6 +14,7 @@ import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/types/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-set',
@@ -39,6 +40,7 @@ export class NewSetComponent implements OnInit {
 
   constructor(
     private bookmarksService: BookmarksService,
+    private router: Router,
     private setsService: SetsService,
     private clientsService: ClientsService,
     private notificationService: NotificationService
@@ -93,6 +95,7 @@ export class NewSetComponent implements OnInit {
           'success',
           'Nowe zestawienie zostało dodane'
         );
+        this.router.navigate([`/sets/${response.id}`]);
       },
       error: (error) => {
         this.notificationService.showNotification('error', error.message);
