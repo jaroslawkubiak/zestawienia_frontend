@@ -259,7 +259,7 @@ export class SuppliersComponent implements OnInit {
               'success',
               'Dostawca został dodany'
             );
-            this.suppliers.push(newSupplier as ISupplier);
+            this.suppliers.unshift(newSupplier as ISupplier);
             this.cd.markForCheck();
           },
           error: (error) => {

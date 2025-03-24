@@ -258,7 +258,7 @@ export class ClientsComponent implements OnInit {
               'success',
               'Klient został dodany'
             );
-            this.clients.push(newClient as IClient);
+            this.clients.unshift(newClient as IClient);
             this.cd.markForCheck();
           },
           error: (error) => {

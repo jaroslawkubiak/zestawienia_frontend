@@ -100,7 +100,11 @@
             severity="danger"
             class="p-4"
             alt="Usuń Zestawienie"
-            pTooltip="Usuń Zestawienie"
+            pTooltip="{{
+              set.status !== statusesList.new
+                ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
+                : 'Usuń Zestawienie'
+            }}"
             [disabled]="set.status !== statusesList.new"
             (click)="deleteSet(set.id)"
           />
@@ -111,11 +115,11 @@
         <td>{{ set.status }}</td>
         <td>
           {{ set.createdAt }}
-          ({{ set.createdBy.name }})
+          {{ set.createdBy?.name ? "(" + set.createdBy?.name + ")" : "" }}
         </td>
         <td style="min-width: 10rem">
           {{ set.updatedAt }}
-          ({{ set.updatedBy.name }})
+          {{ set.updatedBy?.name ? "(" + set.updatedBy?.name + ")" : "" }}
         </td>
       </tr>
     </ng-template>
