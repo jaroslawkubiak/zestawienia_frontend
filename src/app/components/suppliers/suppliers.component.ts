@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
@@ -21,11 +20,13 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
-import { ISupplier } from './types/ISupplier';
 import { SuppliersService } from './suppliers.service';
+import { ISupplier } from './types/ISupplier';
 
 @Component({
   selector: 'app-suppliers',
@@ -65,7 +66,7 @@ export class SuppliersComponent implements OnInit {
   constructor(
     private suppliersService: SuppliersService,
     private notificationService: NotificationService,
-    private confirmationService: ConfirmationService,
+    private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -139,36 +140,32 @@ export class SuppliersComponent implements OnInit {
   }
 
   deleteSelectedSupplier() {
-    this.confirmationService.confirm({
+    const accept = () => {
+      this.suppliers = this.suppliers.filter(
+        (val) => !this.selected?.includes(val)
+      );
+      const idList = this.selected?.map((val) => val.id) ?? [];
+      this.selected = null;
+      this.suppliersService.removeSuppliers(idList).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'success',
+            'Dostawcy zostali usunięci'
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
+    };
+
+    const confirmMessage: IConfirmationMessage = {
       message: 'Czy na pewno usunąć zaznaczonych dostawców?',
       header: 'Potwierdź usunięcie dostawców',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      acceptIcon: 'pi pi-trash',
-      rejectLabel: 'Nie',
-      rejectIcon: 'pi pi-times',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        this.suppliers = this.suppliers.filter(
-          (val) => !this.selected?.includes(val)
-        );
-        const idList = this.selected?.map((val) => val.id) ?? [];
-        this.selected = null;
+      accept,
+    };
 
-        this.suppliersService.removeSuppliers(idList).subscribe({
-          next: (response) => {
-            this.notificationService.showNotification(
-              'success',
-              'Dostawcy zostali usunięci'
-            );
-          },
-          error: (error) => {
-            this.notificationService.showNotification('error', error.message);
-          },
-        });
-      },
-    });
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
   hideDialog() {
@@ -177,32 +174,29 @@ export class SuppliersComponent implements OnInit {
   }
 
   deleteSupplier(supplier: ISupplier) {
-    this.confirmationService.confirm({
-      message: 'Czy na pewno usunąć dostawcę ' + supplier.firma + ' ?',
-      header: 'Potwierdź usunięcie dostawcy',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      acceptIcon: 'pi pi-trash',
-      rejectLabel: 'Nie',
-      rejectIcon: 'pi pi-times',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        this.suppliersService.removeSuppliers([supplier.id]).subscribe({
-          next: (response) => {
-            this.notificationService.showNotification(
-              'success',
-              'Dostawca został usunięty'
-            );
-          },
-          error: (error) => {
-            this.notificationService.showNotification('error', error.message);
-          },
-        });
+    const accept = () => {
+      this.suppliersService.removeSuppliers([supplier.id]).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'success',
+            'Dostawca został usunięty'
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
 
-        this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
-      },
-    });
+      this.suppliers = this.suppliers.filter((val) => val.id !== supplier.id);
+    };
+
+    const confirmMessage: IConfirmationMessage = {
+      message: 'Czy na pewno usunąć dostawcę ' + supplier.firma + '?',
+      header: 'Potwierdź usunięcie dostawcy',
+      accept,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
   findIndexById(id: number): number {

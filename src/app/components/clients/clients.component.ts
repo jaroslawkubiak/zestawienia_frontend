@@ -7,7 +7,6 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
@@ -21,7 +20,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
@@ -65,7 +66,7 @@ export class ClientsComponent implements OnInit {
   constructor(
     private clientsService: ClientsService,
     private notificationService: NotificationService,
-    private confirmationService: ConfirmationService,
+    private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -139,69 +140,63 @@ export class ClientsComponent implements OnInit {
   }
 
   deleteSelectedClient() {
-    this.confirmationService.confirm({
+    const accept = () => {
+      this.clients = this.clients.filter(
+        (val) => !this.selectedClient?.includes(val)
+      );
+
+      const idList = this.selectedClient?.map((client) => client.id) ?? [];
+      this.selectedClient = null;
+
+      this.clientsService.removeClients(idList).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'success',
+            'Klienci zostali usunięci'
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
+    };
+
+    const confirmMessage: IConfirmationMessage = {
       message: 'Czy na pewno usunąć zaznaczonych klientów?',
       header: 'Potwierdź usunięcie klientów',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      acceptIcon: 'pi pi-trash',
-      rejectLabel: 'Nie',
-      rejectIcon: 'pi pi-times',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        this.clients = this.clients.filter(
-          (val) => !this.selectedClient?.includes(val)
-        );
+      accept,
+    };
 
-        const idList = this.selectedClient?.map((client) => client.id) ?? [];
-        this.selectedClient = null;
-
-        this.clientsService.removeClients(idList).subscribe({
-          next: (response) => {
-            this.notificationService.showNotification(
-              'success',
-              'Klienci zostali usunięci'
-            );
-          },
-          error: (error) => {
-            this.notificationService.showNotification('error', error.message);
-          },
-        });
-      },
-    });
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
   hideDialog() {
     this.clientDialog = false;
     this.form.reset();
   }
   deleteClient(client: IClient) {
-    this.confirmationService.confirm({
-      message: 'Czy na pewno usunąć klienta ' + client.firma + ' ?',
-      header: 'Potwierdź usunięcie klienta',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      acceptIcon: 'pi pi-trash',
-      rejectLabel: 'Nie',
-      rejectIcon: 'pi pi-times',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        this.clientsService.removeClients([client.id]).subscribe({
-          next: (response) => {
-            this.notificationService.showNotification(
-              'success',
-              'Klient został usunięty'
-            );
-          },
-          error: (error) => {
-            this.notificationService.showNotification('error', error.message);
-          },
-        });
+    const accept = () => {
+      this.clientsService.removeClients([client.id]).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'success',
+            'Klient został usunięty'
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
 
-        this.clients = this.clients.filter((val) => val.id !== client.id);
-      },
-    });
+      this.clients = this.clients.filter((val) => val.id !== client.id);
+    };
+
+    const confirmMessage: IConfirmationMessage = {
+      message: 'Czy na pewno usunąć klienta ' + client.firma + '?',
+      header: 'Potwierdź usunięcie klienta',
+      accept,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
   findIndexById(id: number): number {

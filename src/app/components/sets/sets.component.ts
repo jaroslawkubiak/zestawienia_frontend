@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
@@ -17,7 +16,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SetsService } from './sets.service';
@@ -49,7 +50,7 @@ import { SetStatus } from './types/status';
     TooltipModule,
     ConfirmDialog,
   ],
-  providers: [NotificationService, ConfirmationService],
+  providers: [NotificationService, ConfirmationModalService],
 })
 export class SetsComponent implements OnInit {
   isLoading = true;
@@ -63,7 +64,7 @@ export class SetsComponent implements OnInit {
     private router: Router,
     private setsService: SetsService,
     private notificationService: NotificationService,
-    private confirmationService: ConfirmationService,
+    private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
   ) {}
 
@@ -107,7 +108,20 @@ export class SetsComponent implements OnInit {
   deleteSet(id: number) {
     const setToDelete = this.sets.find((item) => item.id === id);
 
-    this.confirmationService.confirm({
+    const accept = () => {
+      this.setsService.remove(id).subscribe({
+        next: (data) => {
+          this.notificationService.showNotification(
+            'success',
+            'Zestawienie zostało usunięte'
+          );
+          this.sets = this.sets.filter((val) => val.id !== id);
+        },
+        error: (err) => console.error('Error getting sets ', err),
+      });
+    };
+
+    const confirmMessage: IConfirmationMessage = {
       message:
         'Czy na pewno chcesz usunąć zestawienie ' +
         setToDelete?.name +
@@ -115,28 +129,10 @@ export class SetsComponent implements OnInit {
         setToDelete?.clientId.firma +
         ' ?<br />Spowoduje to usunięcie również wszystkich przesłynych zdjęć do zestawienia.',
       header: 'Potwierdź usunięcie zestawienia',
-      icon: 'pi pi-exclamation-triangle',
-      acceptLabel: 'Tak',
-      acceptIcon: 'pi pi-trash',
-      rejectLabel: 'Nie',
-      rejectIcon: 'pi pi-times',
-      acceptButtonStyleClass: 'p-button-danger',
-      rejectButtonStyleClass: 'p-button-secondary',
-      acceptButtonProps: { size: 'large' },
-      rejectButtonProps: { size: 'large' },
-      accept: () => {
-        this.setsService.remove(id).subscribe({
-          next: (data) => {
-            this.notificationService.showNotification(
-              'success',
-              'Zestawienie zostało usunięte'
-            );
-            this.sets = this.sets.filter((val) => val.id !== id);
-          },
-          error: (err) => console.error('Error getting sets ', err),
-        });
-      },
-    });
+      accept,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
   onGlobalFilter(event: Event) {

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ConfirmationService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
@@ -13,7 +12,9 @@ import { TabsModule } from 'primeng/tabs';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
+import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
+import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -92,7 +93,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private confirmationService: ConfirmationService,
+    private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef
@@ -530,28 +531,27 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // confirmation window when form was edited and not saved
   exitPage(resolve: (value: boolean) => void) {
-    this.confirmationService.confirm({
+    const accept = () => {
+      resolve(true);
+      setTimeout(() => {
+        if (this.destination) {
+          this.router.navigate([this.destination]);
+        }
+      }, 100);
+    };
+
+    const reject = () => resolve(false);
+
+    const confirmMessage: IConfirmationMessage = {
       message: 'Masz niezapisane zmiany na stronie!',
       header: 'Czy na pewno chcesz opuścić stronę bez zapisywania?',
-      icon: 'pi pi-exclamation-triangle',
       acceptLabel: 'Tak, opuść',
-      acceptIcon: 'pi pi-check',
-      acceptButtonStyleClass: 'p-button-danger',
       rejectLabel: 'Nie, zostań',
-      rejectIcon: 'pi pi-times',
-      rejectButtonStyleClass: 'p-button-secondary',
-      accept: () => {
-        resolve(true);
-        setTimeout(() => {
-          if (this.destination) {
-            this.router.navigate([this.destination]);
-          }
-        }, 100);
-      },
-      reject: () => {
-        resolve(false);
-      },
-    });
+      accept,
+      reject,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
   // edit set header

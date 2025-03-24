@@ -26,7 +26,7 @@ export class NotificationService {
         summary = 'Ostrzeżenie';
         break;
     }
-    
+
     this.messageService.add({
       severity,
       summary,
