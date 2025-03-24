@@ -20,11 +20,4 @@ export class AppComponent {
   auth = () => this.authService.isAuthenticated();
 
   constructor(private authService: AuthService) {}
-
-  ngOnInit() {
-    console.log(`##### auth() #####`);
-    console.log(this.auth());
-    console.log(`##### userName() #####`);
-    console.log(this.userName());
-  }
 }

@@ -9,6 +9,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { INewSet } from './types/INewSet';
 import { ISet } from './types/ISet';
+import { ISavedSet } from './types/ISavedSet';
 
 @Injectable({
   providedIn: 'root',
@@ -39,7 +40,7 @@ export class SetsService {
       .pipe(catchError(this.handleError));
   }
 
-  addSet(newSet: INewSet): Observable<INewSet> {
+  addSet(newSet: INewSet): Observable<ISavedSet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -47,7 +48,19 @@ export class SetsService {
     const createSet: INewSet = { ...newSet, createdBy: Number(this.userId()) };
 
     return this.http
-      .post<INewSet>(`${environment.API_URL}/sets/new`, createSet, {
+      .post<ISavedSet>(`${environment.API_URL}/sets/new`, createSet, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  remove(id: number): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
+    return this.http
+      .delete<any>(`${environment.API_URL}/sets/${id}`, {
         headers,
       })
       .pipe(catchError(this.handleError));

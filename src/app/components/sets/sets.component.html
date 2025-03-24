@@ -1,6 +1,7 @@
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
+<p-toast />
 
 <div *ngIf="!isLoading" class="card">
   <p-toolbar>
@@ -52,7 +53,7 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">LP</th>
-        <th></th>
+        <th style="width: 10rem"></th>
         <th pSortableColumn="clientId.firma">
           Firma
           <p-sortIcon field="clientId.firma" />
@@ -86,13 +87,22 @@
             {{ i + 1 }}
           </div>
         </td>
-        <td>
+        <td (click)="$event.stopPropagation()">
           <p-button
             icon="pi pi-pencil"
             class="p-4"
             (click)="editSet(set.id)"
             alt="Edytuj zestawienie"
             pTooltip="Edytuj zestawienie"
+          />
+          <p-button
+            icon="pi pi-trash"
+            severity="danger"
+            class="p-4"
+            alt="Usuń Zestawienie"
+            pTooltip="Usuń Zestawienie"
+            [disabled]="set.status !== statusesList.new"
+            (click)="deleteSet(set.id)"
           />
         </td>
         <td>{{ set.clientId.firma }}</td>
@@ -114,3 +124,4 @@
     </ng-template>
   </p-table>
 </div>
+<p-confirmDialog [style]="{ width: '950px' }" />
