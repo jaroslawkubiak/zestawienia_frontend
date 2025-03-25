@@ -15,7 +15,7 @@
 
 .search-wrapper {
   position: absolute;
-  top: -44px;
+  top: -41px;
   left: 120px;
   display: flex;
 }
@@ -24,12 +24,4 @@
   position: absolute;
   bottom: 0;
   left: 0;
-}
-
-tr {
-  cursor: pointer;
-}
-
-.spinner {
-  margin-top: 100px;
 }

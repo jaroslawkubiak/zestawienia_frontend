@@ -111,8 +111,22 @@
 }
 
 /* p-table  */
+.row {
+  font-size: 1.4rem;
+}
+
 .row:hover {
   background-color: var(--accent-color-lighter) !important;
+}
+
+tr {
+  cursor: pointer;
+  font-size: 1.8rem;
+}
+
+::ng-deep .p-iconwrapper svg {
+  width: 16px !important;
+  height: 16px !important;
 }
 
 .p-button {
@@ -131,4 +145,9 @@
 
 ::ng-deep .p-checkbox {
   display: flex;
+}
+
+/* shared  */
+.spinner {
+  margin-top: 100px;
 }

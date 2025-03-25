@@ -8,10 +8,6 @@
   width: 1200px;
 }
 
-.spinner {
-  margin-top: 100px;
-}
-
 .total {
   position: absolute;
   font-size: 1.4rem;
@@ -37,13 +33,9 @@ label {
 
 .search-wrapper {
   position: absolute;
-  top: -50px;
+  top: -47px;
   left: 200px;
   display: flex;
-}
-
-tr {
-  cursor: pointer;
 }
 
 .new-supplier-wrapper {
@@ -84,7 +76,6 @@ i {
   display: flex !important;
   font-size: 1rem !important;
   padding: 8px 24px !important;
-
   font-weight: normal !important;
   border: 1px solid rgb(0, 0, 0) !important;
   border-radius: 0 !important;

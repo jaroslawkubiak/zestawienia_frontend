@@ -12,10 +12,6 @@ th {
   width: 1200px;
 }
 
-.spinner {
-  margin-top: 100px;
-}
-
 .actions {
   display: flex;
   flex-direction: column;
