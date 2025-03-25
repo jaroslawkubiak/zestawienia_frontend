@@ -93,7 +93,7 @@
           <p-tableCheckbox
             [value]="client"
             pTooltip="Zaznacz klienta"
-            [disabled]="client.setCount"
+            [disabled]="client.setCount !== 0"
           />
         </td>
         <td (click)="$event.stopPropagation()">
@@ -110,10 +110,10 @@
             class="p-4"
             alt="Usuń klienta"
             pTooltip="{{
-              client.setCount ? 'Klient ma zestawienie' : 'Usuń klienta'
+              client.setCount !== 0 ? 'Klient ma zestawienie' : 'Usuń klienta'
             }}"
             (click)="deleteClient(client)"
-            [disabled]="client.setCount"
+            [disabled]="client.setCount !== 0"
           />
         </td>
         <td style="min-width: 16rem">

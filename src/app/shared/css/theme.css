@@ -112,16 +112,11 @@
 
 /* p-table  */
 .row {
-  font-size: 1.4rem;
+  font-size: 1.4rem !important;
 }
 
 .row:hover {
   background-color: var(--accent-color-lighter) !important;
-}
-
-tr {
-  cursor: pointer;
-  font-size: 1.8rem;
 }
 
 ::ng-deep .p-iconwrapper svg {

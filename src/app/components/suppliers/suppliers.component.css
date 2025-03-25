@@ -1,11 +1,10 @@
-:host ::ng-deep .p-dialog .product-image {
-  width: 150px;
-  margin: 0 auto 2rem auto;
-  display: block;
-}
-
 .card {
   width: 1200px;
+}
+
+tr {
+  cursor: pointer;
+  font-size: 1.8rem;
 }
 
 .total {

@@ -93,7 +93,7 @@
           <p-tableCheckbox
             [value]="supplier"
             pTooltip="Zaznacz dostawcę"
-            [disabled]="supplier.positionCount"
+            [disabled]="supplier.positionCount !== 0"
           />
         </td>
         <td (click)="$event.stopPropagation()">
@@ -110,11 +110,11 @@
             class="p-4"
             alt="Usuń dostawcę"
             pTooltip="{{
-              supplier.positionCount
+              supplier.positionCount !== 0
                 ? 'Dostawca widnieje w zestawieniach'
                 : 'Usuń dostawcę'
             }}"
-            [disabled]="supplier.positionCount"
+            [disabled]="supplier.positionCount !== 0"
             (click)="deleteSupplier(supplier)"
           />
         </td>
