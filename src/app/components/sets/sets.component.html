@@ -1,7 +1,6 @@
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
-<p-toast />
 
 <div *ngIf="!isLoading" class="card">
   <p-toolbar>
@@ -128,4 +127,3 @@
     </ng-template>
   </p-table>
 </div>
-<p-confirmDialog [style]="{ width: '950px' }" />

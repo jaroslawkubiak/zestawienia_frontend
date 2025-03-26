@@ -5,7 +5,6 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { ToastModule } from 'primeng/toast';
 import { NotificationService } from '../../../services/notification.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
@@ -22,7 +21,6 @@ import { Router } from '@angular/router';
   styleUrls: ['./new-set.component.css', '../../../shared/css/basic.css'],
   standalone: true,
   imports: [
-    ToastModule,
     FormsModule,
     SelectModule,
     CheckboxModule,

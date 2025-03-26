@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ToastModule } from 'primeng/toast';
 import { Observable } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
 import { ImageService } from './image.service';
@@ -10,7 +9,7 @@ import { ImageService } from './image.service';
   templateUrl: './image-clipboard-input.component.html',
   styleUrls: ['./image-clipboard-input.component.css'],
   standalone: true,
-  imports: [CommonModule, ToastModule],
+  imports: [CommonModule],
 })
 export class ImageClipboardInputComponent {
   @Input() imageUpload: (imageName: string, positionId: string) => void =

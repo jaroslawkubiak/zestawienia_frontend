@@ -8,7 +8,6 @@ import {
   Validators,
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -17,7 +16,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
@@ -37,9 +35,7 @@ import { ISupplier } from './types/ISupplier';
     TableModule,
     Dialog,
     SelectModule,
-    ToastModule,
     ToolbarModule,
-    ConfirmDialog,
     TextareaModule,
     CommonModule,
     DropdownModule,

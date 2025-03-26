@@ -6,7 +6,6 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { ToastModule } from 'primeng/toast';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
@@ -19,7 +18,6 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
   styleUrls: ['./edit-header.component.css', '../../../shared/css/basic.css'],
   standalone: true,
   imports: [
-    ToastModule,
     FormsModule,
     SelectModule,
     CheckboxModule,

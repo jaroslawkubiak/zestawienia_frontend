@@ -3,7 +3,6 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -13,7 +12,6 @@ import { SelectModule } from 'primeng/select';
 import { Table, TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { TextareaModule } from 'primeng/textarea';
-import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
@@ -33,7 +31,6 @@ import { SetStatus } from './types/status';
   imports: [
     ToolbarModule,
     TableModule,
-    ToastModule,
     InputTextModule,
     TextareaModule,
     CommonModule,
@@ -48,7 +45,6 @@ import { SetStatus } from './types/status';
     SelectModule,
     LoadingSpinnerComponent,
     TooltipModule,
-    ConfirmDialog,
   ],
   providers: [NotificationService, ConfirmationModalService],
 })

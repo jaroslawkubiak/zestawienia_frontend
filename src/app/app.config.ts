@@ -1,4 +1,4 @@
-import { provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -12,9 +12,16 @@ import { SetsService } from './components/sets/sets.service';
 import { SuppliersService } from './components/suppliers/suppliers.service';
 import { AuthService } from './login/auth.service';
 import { NotificationService } from './services/notification.service';
+import { AuthInterceptor } from './interceptors/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     MessageService,
     ConfirmationService,
     NotificationService,

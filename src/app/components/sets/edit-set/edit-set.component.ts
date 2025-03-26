@@ -3,13 +3,11 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { ConfirmDialog } from 'primeng/confirmdialog';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
-import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
@@ -41,14 +39,12 @@ import { EditSetService } from './edit-set.service';
   styleUrl: './edit-set.component.css',
   standalone: true,
   imports: [
-    ToastModule,
     TabsModule,
     ButtonModule,
     CommonModule,
     FormsModule,
     TableModule,
     InputTextModule,
-    ConfirmDialog,
     LoadingSpinnerComponent,
     SelectModule,
     Dialog,

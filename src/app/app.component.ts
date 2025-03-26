@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { ConfirmDialog } from 'primeng/confirmdialog';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './login/auth.service';
+import { ConfirmationModalService } from './services/confirmation.service';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
-  imports: [MenuComponent, RouterOutlet],
+  imports: [MenuComponent, RouterOutlet, ConfirmDialog, ToastModule],
   templateUrl: './app.component.html',
   styleUrls: [
     './app.component.css',
@@ -14,6 +17,7 @@ import { AuthService } from './login/auth.service';
     './shared/css/theme.css',
   ],
   standalone: true,
+  providers: [ConfirmationModalService],
 })
 export class AppComponent {
   userName = () => this.authService.getUserName();
