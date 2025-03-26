@@ -9,12 +9,13 @@ tr {
 }
 
 .search-input {
-  display: flex;
-  font-size: 1rem;
-  font-weight: normal;
+  display: flex !important;
+  font-size: 1rem !important;
+  padding: 8px 24px !important;
+  font-weight: normal !important;
   border: 1px solid rgb(0, 0, 0) !important;
   border-radius: 0 !important;
-  width: 300px;
+  width: 300px !important;
   color: rgb(0, 0, 0) !important;
 }
 
@@ -29,4 +30,10 @@ tr {
   position: absolute;
   bottom: 0;
   left: 0;
+}
+
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active {
+  background-color: var(--accent-color-lighter) !important;
 }

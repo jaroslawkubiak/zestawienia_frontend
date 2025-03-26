@@ -11,6 +11,7 @@ import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
+import { EmailService } from '../../../services/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import {
@@ -92,6 +93,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
+    private emailService: EmailService,
     private cd: ChangeDetectorRef
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
@@ -319,9 +321,22 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
-  // share set to client
-  shareSet() {
-    console.log(`shareSet`);
+  // send set link to client
+  sendViaEmail() {
+    this.emailService.sendEmail(this.setId).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'success',
+          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
+        );
+      },
+      error: (error) => {
+        const sendigError = error?.error?.message
+          ? `${error.error.message} : ${error.error?.error}`
+          : 'Nie udało się wysłać emaila.';
+        this.notificationService.showNotification('error', sendigError);
+      },
+    });
   }
 
   // add empty position
