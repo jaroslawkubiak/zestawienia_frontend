@@ -35,11 +35,6 @@ export const columnList: IColumnList[] = [
     type: 'string',
   },
   {
-    name: 'ZDJĘCIE',
-    key: 'image',
-    type: 'image',
-  },
-  {
     name: 'PRODUCENT',
     key: 'producent',
     type: 'string',
@@ -54,6 +49,11 @@ export const columnList: IColumnList[] = [
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
+  },
+  {
+    name: 'ZDJĘCIE',
+    key: 'image',
+    type: 'image',
   },
   {
     name: 'NR KATALOGOWY',

@@ -31,9 +31,10 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
+import { SetStatus } from '../types/SetStatus';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
-import { SetStatus } from '../types/SetStatus';
+import { PdfService } from '../../../services/pdf.service';
 
 @Component({
   selector: 'app-set',
@@ -95,6 +96,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private editSetService: EditSetService,
     private notificationService: NotificationService,
     private emailService: EmailService,
+    private pdfService: PdfService,
     private cd: ChangeDetectorRef
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
@@ -634,5 +636,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };
     });
+  }
+
+  generatePDF() {
+    this.pdfService.generatePDF(this.set, this.positions);
   }
 }
