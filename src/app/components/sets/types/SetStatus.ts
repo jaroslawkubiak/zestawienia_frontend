@@ -1,7 +1,7 @@
 export enum SetStatus {
   new = 'Nowe',
   inPreparation = 'W przygotowaniu',
-  ready = 'Gotowe',
+  sended = 'Wysłane',
   readed = 'Odczytane',
   inProgress = 'W realizacji',
   archive = 'Zamknięte',

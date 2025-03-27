@@ -28,6 +28,9 @@ th {
   justify-content: space-between;
   gap: 40px;
   border-bottom: 4px solid rgb(0, 0, 0);
+  -webkit-box-shadow: inset 0px 0px 16px 6px rgba(35, 99, 84, 1);
+  -moz-box-shadow: inset 0px 0px 16px 6px rgba(35, 99, 84, 1);
+  box-shadow: inset 0px 0px 16px 6px rgba(35, 99, 84, 1);
 }
 
 .cell {

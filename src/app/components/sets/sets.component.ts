@@ -21,7 +21,7 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
-import { SetStatus } from './types/status';
+import { SetStatus } from './types/SetStatus';
 
 @Component({
   selector: 'app-sets',

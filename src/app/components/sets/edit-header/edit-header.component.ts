@@ -9,7 +9,7 @@ import { SelectModule } from 'primeng/select';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
-import { IStatus, SetStatus } from '../types/status';
+import { IStatus, SetStatus } from '../types/SetStatus';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
 @Component({
@@ -24,7 +24,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
     CommonModule,
     ButtonModule,
     InputTextModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
   ],
   providers: [MessageService],
 })

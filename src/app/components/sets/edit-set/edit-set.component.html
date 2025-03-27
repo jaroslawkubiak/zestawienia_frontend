@@ -6,26 +6,6 @@
   <!-- set header  -->
   <div class="set-header flex-center" *ngIf="set">
     <div class="cell">
-      <div class="cell-title">Zestawienie</div>
-      <div class="cell-value">{{ set.name }}</div>
-    </div>
-    <div class="cell">
-      <div class="cell-title">Klient</div>
-      <div class="cell-value">{{ set.clientId.firma }}</div>
-    </div>
-    <div class="cell">
-      <div class="cell-title">Status</div>
-      <div class="cell-value">{{ set.status }}</div>
-    </div>
-    <div class="cell">
-      <div class="cell-title">Utworzone</div>
-      <div class="cell-value">{{ set.createdAt }}</div>
-    </div>
-    <div class="cell">
-      <div class="cell-title">Zaktualizowane</div>
-      <div class="cell-value">{{ set.updatedAt }}</div>
-    </div>
-    <div class="cell">
       <div class="cell-icon">
         <i
           class="pi pi-pencil"
@@ -46,6 +26,26 @@
           tooltipPosition="left"
         ></i>
       </div>
+    </div>
+    <div class="cell">
+      <div class="cell-title">Zestawienie</div>
+      <div class="cell-value">{{ set.name }}</div>
+    </div>
+    <div class="cell">
+      <div class="cell-title">Klient</div>
+      <div class="cell-value">{{ set.clientId.firma }}</div>
+    </div>
+    <div class="cell">
+      <div class="cell-title">Status</div>
+      <div class="cell-value">{{ set.status }}</div>
+    </div>
+    <div class="cell">
+      <div class="cell-title">Utworzone</div>
+      <div class="cell-value">{{ set.createdAt }}</div>
+    </div>
+    <div class="cell">
+      <div class="cell-title">Zaktualizowane</div>
+      <div class="cell-value">{{ set.updatedAt }}</div>
     </div>
   </div>
 

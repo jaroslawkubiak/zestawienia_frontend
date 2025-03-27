@@ -33,6 +33,7 @@ import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
+import { SetStatus } from '../types/SetStatus';
 
 @Component({
   selector: 'app-set',
@@ -325,6 +326,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   sendViaEmail() {
     this.emailService.sendEmail(this.setId).subscribe({
       next: (response) => {
+        this.isEdited = true;
+        this.set.status = SetStatus.sended;
         this.notificationService.showNotification(
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
