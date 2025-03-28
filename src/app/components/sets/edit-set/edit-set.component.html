@@ -22,21 +22,26 @@
           pTooltip="Wyślij email"
         ></i>
       </div>
-      <div class="cell-icon">
-        @if(!isEdited) {
+      <div class="cell-icon" [ngClass]="{ 'cell-disabled': isEdited }">
         <i
           class="pi pi-file-pdf"
-          (click)="generatePDF()"
+          (click)="isEdited ? '' : generatePDF()"
           alt="Stwórz PDF"
           pTooltip="Stwórz PDF"
         ></i>
-        }
+      </div>
+      <div
+        class="cell-icon"
+        [ngClass]="{ 'cell-disabled': set.files?.length === 0 }"
+        (click)="set.files?.length !== 0 ? showFiles() : null"
+      >
+        <i class="pi pi-paperclip" alt="Załączniki" pTooltip="Załączniki"></i>
       </div>
       <div class="cell-icon">
         <i
-          class="pi pi-paperclip"
-          alt="Załączniki"
-          pTooltip="Załączniki"
+          class="pi pi-upload"
+          alt="Prześlij pliki"
+          pTooltip="Prześlij pliki"
         ></i>
       </div>
     </div>

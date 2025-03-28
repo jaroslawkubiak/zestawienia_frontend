@@ -641,4 +641,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   generatePDF() {
     this.pdfService.generatePDF(this.set, this.positions);
   }
+
+  showFiles() {
+    console.log(this.set.files);
+  }
 }

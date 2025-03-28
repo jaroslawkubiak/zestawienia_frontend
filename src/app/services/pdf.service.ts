@@ -82,7 +82,7 @@ export class PdfService {
     );
 
     // create doc 'p' = portret, 'l' = landscape
-    const doc = new jsPDF('l', 'mm', 'a4');
+    const doc = new jsPDF('l', 'mm', 'a3');
     this.pageWidth = Math.floor(doc.internal.pageSize.width);
     this.pageHeight = Math.floor(doc.internal.pageSize.height);
 

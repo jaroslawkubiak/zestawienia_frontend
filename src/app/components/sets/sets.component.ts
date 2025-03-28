@@ -97,8 +97,12 @@ export class SetsComponent implements OnInit {
     this.router.navigate(['/sets/new']);
   }
 
-  editSet(id: number) {
-    this.router.navigate([`/sets/${id}`]);
+  editSet(setId: number) {
+    this.router.navigate([`/sets/${setId}`]);
+  }
+
+  showFiles(setId: number) {
+    console.log(`##### files #####`);
   }
 
   deleteSet(id: number) {

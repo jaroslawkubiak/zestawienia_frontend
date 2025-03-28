@@ -10,6 +10,7 @@ export interface ISet {
   updatedAtTimestamp: number;
   hash: string;
   bookmarks: IBookmark[];
+  files?: string[];
   clientId: {
     id: number;
     firma: string;
