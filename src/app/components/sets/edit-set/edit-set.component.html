@@ -5,70 +5,85 @@
 <div *ngIf="!isLoading" class="set-container">
   <!-- set header  -->
   <div class="set-header-wrapper flex-center" *ngIf="set">
-    <div class="set-menu">
-      <div class="cell-icon">
-        <i
-          class="pi pi-file-edit"
-          (click)="editHeader()"
+    <div class="set-header-menu">
+      <div>
+        <p-button
+          severity="contrast"
+          icon="pi pi-file-edit"
           alt="Edytuj nagłowek zestawienia"
           pTooltip="Edytuj nagłowek zestawienia"
-        ></i>
+          tooltipPosition="bottom"
+          (click)="editHeader()"
+        />
       </div>
-      <div class="cell-icon">
-        <i
-          class="pi pi-envelope"
-          (click)="sendViaEmail()"
+      <div>
+        <p-button
+          severity="contrast"
+          icon="pi pi-envelope"
           alt="Wyślij email"
           pTooltip="Wyślij email"
-        ></i>
+          tooltipPosition="bottom"
+          (click)="sendViaEmail()"
+        />
       </div>
-      <div class="cell-icon" [ngClass]="{ 'cell-disabled': isEdited }">
-        <i
-          class="pi pi-file-pdf"
-          (click)="isEdited ? '' : generatePDF()"
+      <div>
+        <p-button
+          severity="contrast"
+          icon="pi pi-file-pdf"
           alt="Stwórz PDF"
-          pTooltip="Stwórz PDF"
-        ></i>
+          pTooltip="{{ isEdited ? 'Najpierw zapisz zmiany' : 'Stwórz PDF' }}"
+          tooltipPosition="bottom"
+          [disabled]="isEdited"
+          (click)="isEdited ? '' : generatePDF()"
+        />
       </div>
-      <div
-        class="cell-icon"
-        [ngClass]="{ 'cell-disabled': set.files?.length === 0 }"
-        (click)="set.files?.length !== 0 ? showFiles() : null"
-      >
-        <i class="pi pi-paperclip" alt="Załączniki" pTooltip="Załączniki"></i>
+      <div>
+        <p-button
+          severity="contrast"
+          icon="pi pi-paperclip"
+          alt="Załączniki"
+          pTooltip="{{
+            set.files?.length === 0 ? 'Brak załączników' : 'Pokaż załączniki'
+          }}"
+          tooltipPosition="bottom"
+          (click)="set.files?.length !== 0 ? showFiles() : null"
+          [disabled]="set.files?.length === 0"
+        />
       </div>
-      <div class="cell-icon">
-        <i
-          class="pi pi-upload"
+      <div>
+        <p-button
+          severity="contrast"
+          icon="pi pi-upload"
           alt="Prześlij pliki"
           pTooltip="Prześlij pliki"
-        ></i>
+          tooltipPosition="bottom"
+          (click)="sendFiles()"
+        />
       </div>
     </div>
     <div class="set-header">
-      <div class="cell">
-        <div class="cell-title">Zestawienie</div>
-        <div class="cell-value">{{ set.name }}</div>
+      <div class="set-header-cell">
+        <div class="set-header-title">Zestawienie</div>
+        <div class="set-header-value">{{ set.name }}</div>
       </div>
-      <div class="cell">
-        <div class="cell-title">Klient</div>
-        <div class="cell-value">{{ set.clientId.firma }}</div>
+      <div class="set-header-cell">
+        <div class="set-header-title">Klient</div>
+        <div class="set-header-value">{{ set.clientId.firma }}</div>
       </div>
-      <div class="cell">
-        <div class="cell-title">Status</div>
-        <div class="cell-value">{{ set.status }}</div>
+      <div class="set-header-cell">
+        <div class="set-header-title">Status</div>
+        <div class="set-header-value">{{ set.status }}</div>
       </div>
-      <div class="cell">
-        <div class="cell-title">Utworzone</div>
-        <div class="cell-value">{{ set.createdAt }}</div>
+      <div class="set-header-cell">
+        <div class="set-header-title">Utworzone</div>
+        <div class="set-header-value">{{ set.createdAt }}</div>
       </div>
-      <div class="cell">
-        <div class="cell-title">Zaktualizowane</div>
-        <div class="cell-value">{{ set.updatedAt }}</div>
+      <div class="set-header-cell">
+        <div class="set-header-title">Zaktualizowane</div>
+        <div class="set-header-value">{{ set.updatedAt }}</div>
       </div>
     </div>
   </div>
-
   <p-tabs [value]="selectedBookmark" scrollable>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
@@ -135,14 +150,16 @@
                   {{ i + 1 }}
                 </td>
                 <td>
-                  <div class="actions">
+                  <div class="position-actions">
                     <div class="flex-center">
-                      <span
-                        class="pi pi-bars"
-                        pReorderableRowHandle
-                        style="font-size: 20px"
+                      <p-button
+                        severity="contrast"
+                        icon="pi pi-bars"
+                        class="m-4"
+                        alt="Przegiągnij, aby zmienić pozycję"
                         pTooltip="Przegiągnij, aby zmienić pozycję"
-                      ></span>
+                        pReorderableRowHandle
+                      />
                     </div>
                     <div class="flex-center">
                       <p-button

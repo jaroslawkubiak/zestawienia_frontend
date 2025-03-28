@@ -643,6 +643,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   showFiles() {
+    console.log(`##### show files #####`);
     console.log(this.set.files);
+  }
+
+  sendFiles() {
+    console.log(`##### send files #####`);
   }
 }
