@@ -1,4 +1,8 @@
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
@@ -10,9 +14,9 @@ import { ClientsService } from './components/clients/clients.service';
 import { EditSetService } from './components/sets/edit-set/edit-set.service';
 import { SetsService } from './components/sets/sets.service';
 import { SuppliersService } from './components/suppliers/suppliers.service';
+import { AuthInterceptor } from './interceptors/auth.service';
 import { AuthService } from './login/auth.service';
 import { NotificationService } from './services/notification.service';
-import { AuthInterceptor } from './interceptors/auth.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -39,6 +43,11 @@ export const appConfig: ApplicationConfig = {
       inputVariant: 'filled',
       theme: {
         preset: Material,
+        options: {
+          prefix: 'p',
+          darkModeSelector: '',
+          cssLayer: false,
+        },
       },
       ripple: true,
     }),

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ConfirmDialog } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 import { MenuComponent } from './components/menu/menu.component';
 import { AuthService } from './login/auth.service';
 import { ConfirmationModalService } from './services/confirmation.service';
-import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
