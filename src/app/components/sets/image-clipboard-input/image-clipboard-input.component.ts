@@ -23,8 +23,7 @@ export class ImageClipboardInputComponent {
   constructor(
     private notificationService: NotificationService,
     private imageService: ImageService
-  ) {
-  }
+  ) {}
 
   onPaste(event: ClipboardEvent): void {
     const clipboardItem = event.clipboardData?.items[0];
@@ -49,11 +48,7 @@ export class ImageClipboardInputComponent {
       formData.append('image', this.imageFile, this.imageFile.name);
     }
 
-    return this.imageService.saveImage(
-      this.setId,
-      this.positionId,
-      formData
-    );
+    return this.imageService.saveImage(this.setId, this.positionId, formData);
   }
 
   onSubmit() {

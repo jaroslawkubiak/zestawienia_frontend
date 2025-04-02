@@ -2,8 +2,8 @@ export interface IColumnList {
   name: string;
   key: string;
   type: 'number' | 'string' | 'select' | 'image';
-  classTh?: string;
-  classTd?: string;
+  classHeader?: string;
+  classRow?: string;
   classFooter?: string;
   width?: number;
   value?: number | string;
@@ -17,17 +17,22 @@ export const columnList: IColumnList[] = [
     name: 'id',
     key: 'id',
     type: 'string',
-    classTh: 'hidden',
-    classTd: 'hidden',
+    classHeader: 'hidden',
+    classRow: 'hidden',
     classFooter: 'hidden',
   },
   {
     name: 'KOLEJNOSC',
     key: 'kolejnosc',
     type: 'string',
-    classTh: 'hidden',
-    classTd: 'hidden',
+    classHeader: 'hidden',
+    classRow: 'hidden',
     classFooter: 'hidden',
+  },
+  {
+    name: 'ZDJĘCIE',
+    key: 'image',
+    type: 'image',
   },
   {
     name: 'PRODUKT',
@@ -43,18 +48,14 @@ export const columnList: IColumnList[] = [
     name: 'DOSTAWCA',
     key: 'supplierId',
     type: 'select',
-    classTd: 'select-field'
+    classRow: 'select-field',
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
   },
-  {
-    name: 'ZDJĘCIE',
-    key: 'image',
-    type: 'image',
-  },
+
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
@@ -82,7 +83,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classTd: 'read-only',
+    classRow: 'read-only',
   },
   {
     name: 'WARTOŚĆ NETTO',
@@ -90,7 +91,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classTd: 'read-only',
+    classRow: 'read-only',
   },
   {
     name: 'WARTOŚĆ BRUTTO',
@@ -98,7 +99,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classTd: 'read-only',
+    classRow: 'read-only',
   },
   {
     name: 'POMIESZCZENIE',

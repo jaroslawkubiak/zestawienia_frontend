@@ -6,7 +6,7 @@ export type IFooterRow = {
   type: 'number' | 'string' | 'select' | 'image';
   value?: number | string;
   unit?: string;
-  classTh?: string;
-  classTd?: string;
+  classHeader?: string;
+  classRow?: string;
   classFooter?: string;
 };

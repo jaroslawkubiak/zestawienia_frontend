@@ -130,7 +130,7 @@
                 <th
                   *ngFor="let column of columnList"
                   class="position-header"
-                  [ngClass]="column.classTh"
+                  [ngClass]="column.classHeader"
                   pResizableColumn
                   [ngStyle]="{ width: column?.width + 'px' }"
                 >
@@ -198,7 +198,7 @@
                   *ngFor="let column of columnList"
                   pEditableColumn
                   [pEditableColumnField]="column.key"
-                  [ngClass]="column.classTd"
+                  [ngClass]="column.classRow"
                   [ngStyle]="{ width: column?.width + 'px' }"
                 >
                   <p-cellEditor>
@@ -237,7 +237,7 @@
                               formData[i][column.key]
                                 ? BASE_IMAGE_URL +
                                   setId +
-                                  '/' +
+                                  '/positions/' +
                                   formData[i].id +
                                   '/' +
                                   formData[i][column.key]
@@ -290,7 +290,7 @@
                               formData[i][column.key]
                                 ? BASE_IMAGE_URL +
                                   setId +
-                                  '/' +
+                                  '/positions/' +
                                   formData[i].id +
                                   '/' +
                                   formData[i][column.key]
