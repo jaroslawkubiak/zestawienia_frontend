@@ -52,6 +52,7 @@ import { ISupplier } from './types/ISupplier';
 export class SuppliersComponent implements OnInit {
   isLoading = true;
   supplierDialog: boolean = false;
+  supplierDialogHeader: string = '';
   suppliers!: ISupplier[];
   supplier!: ISupplier;
   selected!: ISupplier[] | null;
@@ -119,7 +120,9 @@ export class SuppliersComponent implements OnInit {
       email: null,
       telefon: null,
     });
+
     this.supplierDialog = true;
+    this.supplierDialogHeader = 'Nowy dostawca';
   }
 
   editSupplier(supplier: ISupplier) {
@@ -133,6 +136,7 @@ export class SuppliersComponent implements OnInit {
     });
 
     this.supplierDialog = true;
+    this.supplierDialogHeader = 'Edytuj dostawcę';
   }
 
   deleteSelectedSupplier() {

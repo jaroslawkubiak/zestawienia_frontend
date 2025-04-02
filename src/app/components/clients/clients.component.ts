@@ -52,6 +52,7 @@ import { IClient } from './types/IClient';
 export class ClientsComponent implements OnInit {
   isLoading = true;
   clientDialog: boolean = false;
+  clientDialogHeader: string = '';
   clients!: IClient[];
   client!: IClient;
   selectedClient!: IClient[] | null;
@@ -119,7 +120,9 @@ export class ClientsComponent implements OnInit {
       email: null,
       telefon: null,
     });
+
     this.clientDialog = true;
+    this.clientDialogHeader = 'Nowy klient';
   }
 
   editClient(client: IClient) {
@@ -133,6 +136,7 @@ export class ClientsComponent implements OnInit {
     });
 
     this.clientDialog = true;
+    this.clientDialogHeader = 'Edytuj klienta';
   }
 
   deleteSelectedClient() {
