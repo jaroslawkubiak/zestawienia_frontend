@@ -113,36 +113,63 @@ export class PdfService {
           })
         );
 
+        const footer: any = [['', '', '', '', '', '', 'kolor']];
+        let totals = {
+          ilosc: 0,
+          netto: 0,
+          brutto: 0,
+          wartoscNetto: 0,
+          wartoscBrutto: 0,
+        };
+
         // prepare data to display
         const data = await Promise.all(
           sortPositions.map(async (row: IPosition) => {
-            const brutto = row.netto ? calculateBrutto(row.netto) : '';
+            const brutto = row.netto ? calculateBrutto(row.netto) : 0;
+            const wartoscNetto = row.ilosc
+              ? calculateWartosc(row.ilosc, row.netto)
+              : 0;
+            const wartoscBrutto = brutto
+              ? calculateWartosc(row.ilosc, brutto)
+              : 0;
+
+            totals.ilosc += row.ilosc;
+            totals.netto += row.netto;
+            totals.brutto += brutto;
+            totals.wartoscNetto += wartoscNetto;
+            totals.wartoscBrutto += wartoscBrutto;
 
             return [
-              row.id + '/' + row.image,
+              `${row.id}/${row.image}`,
               row.produkt,
               row.producent,
-              row.supplierId ? row.supplierId.firma : '',
+              row.supplierId?.firma || '',
               row.kolekcja,
               row.nrKatalogowy,
               row.kolor,
               row.ilosc,
               row.netto,
               brutto,
-              row.ilosc ? calculateWartosc(row.ilosc, row.netto) : '',
-              brutto ? calculateWartosc(row.ilosc, brutto) : '',
+              wartoscNetto,
+              wartoscBrutto,
               row.pomieszczenie,
               row.link,
             ];
           })
         );
 
+        footer[0].push(totals.ilosc);
+        footer[0].push(`${totals.netto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.brutto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.wartoscNetto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.wartoscBrutto.toFixed(2)} PLN`);
         this.drawBookmarkName(doc, bookmark.name);
 
         // table
         autoTable(doc, {
           head: headers,
           body: data,
+          foot: footer,
           margin: 0,
           startY: 20,
           didParseCell: (data) => {
@@ -232,6 +259,12 @@ export class PdfService {
               right: 3,
               left: 3,
             },
+          },
+          footStyles: {
+            font: 'Roboto',
+            fontStyle: 'bold',
+            halign: 'center',
+            fillColor: '#2f9880',
           },
           theme: 'grid',
           columnStyles: {
