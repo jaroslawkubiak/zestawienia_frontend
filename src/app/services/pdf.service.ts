@@ -1,11 +1,10 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { ISet } from '../components/sets/types/ISet';
-import { IPosition } from '../components/sets/types/IPosition';
 import { columnList } from '../components/sets/edit-set/column-list';
+import { IPosition } from '../components/sets/types/IPosition';
+import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
-import { Observable } from 'rxjs';
 
 interface IImage {
   base64: string;
@@ -30,6 +29,9 @@ export class PdfService {
     black: '#000',
     gray: '#888',
     white: '#fff',
+    red: '#F00',
+    green: '#0f0',
+    blue: '#00f',
   };
 
   COLUMN_HEIGHT = 50;
@@ -53,31 +55,6 @@ export class PdfService {
       return;
     }
 
-    const sortPositions = positions.sort(
-      (a, b) => a.bookmarkId.id - b.bookmarkId.id
-    );
-
-    // get all image before creating PDF
-    const imageMap = new Map<string, IImage>();
-    await Promise.all(
-      sortPositions.map(async (row) => {
-        const imageUrl = `${this.BASE_URL}${set.id}/positions/${row.id}/${row.image}`;
-        try {
-          const base64Image = await this.getBase64Image(imageUrl);
-          const { width, height } = await this.getImageSize(
-            base64Image as string
-          );
-          imageMap.set(row.id + '/' + row.image, {
-            base64: base64Image as string,
-            width,
-            height,
-          });
-        } catch (error) {
-          console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
-        }
-      })
-    );
-
     // create doc 'p' = portret, 'l' = landscape
     const doc = new jsPDF('l', 'mm', 'a2');
     this.pageWidth = Math.floor(doc.internal.pageSize.width);
@@ -88,7 +65,7 @@ export class PdfService {
     doc.addFileToVFS('Roboto-Bold.ttf', this.robotoBoldBase64);
     doc.addFont('Roboto-Regular.ttf', 'Roboto', 'normal');
     doc.addFont('Roboto-Bold.ttf', 'Roboto', 'bold');
-    doc.setFont('Roboto', 'normal');
+    doc.setFont('Roboto', 'bold');
     // set default font and text color
     doc.setFontSize(10);
     doc.setTextColor(this.colors.black);
@@ -97,140 +74,207 @@ export class PdfService {
       this.columnList.filter((col) => !col.classHeader).map((col) => col.name),
     ];
 
-    const data = await Promise.all(
-      sortPositions.map(async (row: IPosition) => {
-        const brutto = row.netto ? calculateBrutto(row.netto) : '';
+    const countsBookmarks = positions.map((pos) => {
+      return pos.bookmarkId.id;
+    });
 
-        return [
-          row.id + '/' + row.image,
-          row.produkt,
-          row.producent,
-          row.supplierId ? row.supplierId.firma : '',
-          row.kolekcja,
-          row.nrKatalogowy,
-          row.kolor,
-          row.ilosc,
-          row.netto,
-          brutto,
-          row.ilosc ? calculateWartosc(row.ilosc, row.netto) : '',
-          brutto ? calculateWartosc(row.ilosc, brutto) : '',
-          row.pomieszczenie,
-          row.link,
-        ];
-      })
-    );
+    const uniqueBookmarksCount = new Set(countsBookmarks).size;
 
-    // table
-    autoTable(doc, {
-      head: headers,
-      body: data,
-      margin: 0,
-      didParseCell: (data) => {
-        if (
-          data.cell.raw &&
-          data.row.section === 'body' &&
-          data.column.index === 13
-        ) {
-          data.cell.text = ['LINK'];
-          data.cell.styles.textColor = '#2f9880';
-          (data.cell as any).link = data.cell.raw;
+    // main loop for every bookmark in set
+    await Promise.all(
+      set.bookmarks.map(async (bookmark, index) => {
+        const sortPositions = positions
+          .filter((pos) => pos.bookmarkId.id === bookmark.id)
+          .sort((a, b) => a.kolejnosc - b.kolejnosc);
+
+        // return if no position in current bookmark
+        if (sortPositions.length === 0) {
+          return;
         }
-      },
 
-      didDrawCell: (data) => {
-        if (
-          data.row.section === 'body' &&
-          data.column.index === 0 &&
-          data.row.index >= 0
-        ) {
-          console.log(data.cell.raw);
-          const imageKey = data.cell.raw as string;
-          const imageInfo = imageMap.get(imageKey);
-          data.cell.text = [];
-          data.cell.raw = '';
+        // get all image before creating PDF
+        const imageMap = new Map<string, IImage>();
+        await Promise.all(
+          sortPositions.map(async (row) => {
+            const imageUrl = `${this.BASE_URL}${set.id}/positions/${row.id}/${row.image}`;
+            try {
+              const base64Image = await this.getBase64Image(imageUrl);
+              const { width, height } = await this.getImageSize(
+                base64Image as string
+              );
+              imageMap.set(row.id + '/' + row.image, {
+                base64: base64Image as string,
+                width,
+                height,
+              });
+            } catch (error) {
+              console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
+            }
+          })
+        );
 
-          if (imageInfo) {
-            let imgWidth = this.COLUMN_HEIGHT; // max width
-            let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
+        // prepare data to display
+        const data = await Promise.all(
+          sortPositions.map(async (row: IPosition) => {
+            const brutto = row.netto ? calculateBrutto(row.netto) : '';
 
-            if (imgHeight > this.COLUMN_HEIGHT) {
-              imgHeight = this.COLUMN_HEIGHT;
-              imgWidth = (imageInfo.width / imageInfo.height) * imgHeight;
+            return [
+              row.id + '/' + row.image,
+              row.produkt,
+              row.producent,
+              row.supplierId ? row.supplierId.firma : '',
+              row.kolekcja,
+              row.nrKatalogowy,
+              row.kolor,
+              row.ilosc,
+              row.netto,
+              brutto,
+              row.ilosc ? calculateWartosc(row.ilosc, row.netto) : '',
+              brutto ? calculateWartosc(row.ilosc, brutto) : '',
+              row.pomieszczenie,
+              row.link,
+            ];
+          })
+        );
+
+        this.drawBookmarkName(doc, bookmark.name);
+
+        // table
+        autoTable(doc, {
+          head: headers,
+          body: data,
+          margin: 0,
+          startY: 20,
+          didParseCell: (data) => {
+            // change link text to actual link
+            if (
+              data.cell.raw &&
+              data.row.section === 'body' &&
+              data.column.index === 13
+            ) {
+              data.cell.text = ['LINK'];
+              data.cell.styles.textColor = '#2f9880';
+              data.cell.styles.fontSize = 12;
+              data.cell.styles.fontStyle = 'bold';
+              (data.cell as any).link = data.cell.raw;
             }
 
-            // count align center position for image
-            const xCenter = data.cell.x + (data.cell.width - imgWidth) / 2;
-            const yCenter = data.cell.y + (data.cell.height - imgHeight) / 2;
+            // remove image name from cell
+            if (
+              data.cell.raw &&
+              data.row.section === 'body' &&
+              data.column.index === 0
+            ) {
+              data.cell.text = [''];
+            }
+          },
+          didDrawCell: (data) => {
+            // for image type column
+            if (
+              data.row.section === 'body' &&
+              data.column.index === 0 &&
+              data.row.index >= 0
+            ) {
+              const imageKey = data.cell.raw as string;
+              const imageInfo = imageMap.get(imageKey);
 
-            doc.addImage(
-              imageInfo.base64,
-              'PNG',
-              xCenter,
-              yCenter,
-              imgWidth,
-              imgHeight
-            );
-          }
+              if (imageInfo) {
+                let imgWidth = this.COLUMN_HEIGHT; // max width
+                let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
+
+                if (imgHeight > this.COLUMN_HEIGHT) {
+                  imgHeight = this.COLUMN_HEIGHT;
+                  imgWidth = (imageInfo.width / imageInfo.height) * imgHeight;
+                }
+
+                // count align center position for image
+                const xCenter = data.cell.x + (data.cell.width - imgWidth) / 2;
+                const yCenter =
+                  data.cell.y + (data.cell.height - imgHeight) / 2;
+
+                doc.addImage(
+                  imageInfo.base64,
+                  'PNG',
+                  xCenter,
+                  yCenter,
+                  imgWidth,
+                  imgHeight
+                );
+              }
+            }
+
+            // for links in column Link
+            if (data.column.index === 13 && data.cell.raw) {
+              const url = data.cell.raw as string;
+
+              doc.link(
+                data.cell.x,
+                data.cell.y,
+                data.cell.width,
+                data.cell.height,
+                { url }
+              );
+            }
+          },
+          headStyles: {
+            font: 'Roboto',
+            fontStyle: 'bold',
+            halign: 'center',
+            fillColor: '#2f9880',
+          },
+          bodyStyles: {
+            font: 'Roboto',
+            fontStyle: 'normal',
+            fillColor: this.colors.white,
+            cellPadding: {
+              top: Math.floor(this.COLUMN_HEIGHT / 2),
+              bottom: Math.floor(this.COLUMN_HEIGHT / 2),
+              right: 3,
+              left: 3,
+            },
+          },
+          theme: 'grid',
+          columnStyles: {
+            0: { cellWidth: this.COLUMN_HEIGHT }, // set width first column
+            1: { cellWidth: 70 }, // set width second column
+          },
+        });
+
+        if (index !== uniqueBookmarksCount) {
+          doc.addPage();
         }
-
-        // for links in column Link
-        if (data.column.index === 13 && data.cell.raw) {
-          const url = data.cell.raw as string;
-
-          doc.link(
-            data.cell.x,
-            data.cell.y,
-            data.cell.width,
-            data.cell.height,
-            { url }
-          );
-        }
-      },
-      headStyles: {
-        font: 'Roboto',
-        fontStyle: 'bold',
-        halign: 'center',
-        fillColor: '#2f9880',
-      },
-      bodyStyles: {
-        font: 'Roboto',
-        fontStyle: 'normal',
-        fillColor: '#e5fff9',
-        cellPadding: {
-          top: 22,
-          bottom: 22,
-          right: 3,
-          left: 3,
-        },
-      },
-
-      // theme: 'striped',
-      columnStyles: {
-        0: { cellWidth: this.COLUMN_HEIGHT }, // set width first column
-        1: { cellWidth: 70 }, // set width second column
-      },
-    });
+      })
+    );
 
     // draw header and footer for every page
     const totalPages = doc.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
 
-      this.drawRectLeft(doc, 0, 10, 10, `Zestawienie : ${set.name}`);
-      this.drawRectRight(doc, 0, 10, 10, set.clientId.firma);
+      this.drawRectLeft(
+        doc,
+        0,
+        14,
+        14,
+        this.colors.red,
+        `Zestawienie : ${set.name}`
+      );
+      this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.firma);
 
       this.drawRectFull(
         doc,
-        this.pageHeight - 14,
-        8,
-        8,
+        this.pageHeight - 20,
+        10,
+        12,
+        this.colors.white,
         `Strona ${i} z ${totalPages}`
       );
       this.drawRectFull(
         doc,
-        this.pageHeight - 6,
-        8,
-        8,
+        this.pageHeight - 10,
+        10,
+        12,
+        this.colors.white,
         'Copyright @2025 Żurawicki Design'
       );
     }
@@ -249,15 +293,18 @@ export class PdfService {
     posY: number,
     rectHeight: number,
     font: number,
+    color: string,
     text: string
   ) {
     doc.setFontSize(font);
-    doc.setFillColor(this.colors.gray);
+    // doc.setFont('Roboto', 'bold');
+    doc.setFillColor(color);
+    doc.setTextColor(this.colors.black);
 
     const rectWidth = this.pageWidth / 2;
     const posX = 0;
 
-    doc.rect(posX, posY, rectWidth, rectHeight, 'F');
+    // doc.rect(posX, posY, rectWidth, rectHeight, 'F');
 
     const textWidth = doc.getTextWidth(text);
     const textX = posX + (rectWidth - textWidth) / 2;
@@ -265,20 +312,23 @@ export class PdfService {
 
     doc.text(text, textX, textY);
   }
+
   drawRectRight(
     doc: jsPDF,
     posY: number,
     rectHeight: number,
     font: number,
+    color: string,
     text: string
   ) {
     doc.setFontSize(font);
-    doc.setFillColor(this.colors.gray);
+    doc.setFillColor(color);
+    doc.setTextColor(this.colors.black);
 
     const rectWidth = this.pageWidth / 2;
     const posX = this.pageWidth / 2;
 
-    doc.rect(posX, posY, rectWidth, rectHeight, 'F');
+    // doc.rect(posX, posY, rectWidth, rectHeight, 'F');
 
     const textWidth = doc.getTextWidth(text);
     const textX = posX + (rectWidth - textWidth) / 2;
@@ -286,25 +336,54 @@ export class PdfService {
 
     doc.text(text, textX, textY);
   }
+
   drawRectFull(
     doc: jsPDF,
     posY: number,
     rectHeight: number,
     font: number,
+    color: string,
     text: string
   ) {
     doc.setFontSize(font);
-    doc.setFillColor(this.colors.gray);
+    doc.setFillColor(color);
+    doc.setTextColor(this.colors.black);
 
     const rectWidth = this.pageWidth;
-    const posX = 0;
 
-    doc.rect(posX, posY, rectWidth, rectHeight, 'F');
+    // doc.rect(0, posY, rectWidth, rectHeight, 'F');
 
     const textWidth = doc.getTextWidth(text);
-    const textX = posX + (rectWidth - textWidth) / 2;
+    const textX = (rectWidth - textWidth) / 2;
     const textY = posY + rectHeight / 1.5;
 
+    doc.text(text, textX, textY);
+  }
+
+  drawBookmarkName(doc: jsPDF, text: string) {
+    doc.setFontSize(20);
+    doc.setFillColor(this.colors.accentLighter);
+    doc.setTextColor(this.colors.black);
+
+    const rectHeight = 20;
+    const posY = 0;
+    const padding = 30;
+    const textWidth = doc.getTextWidth(text);
+    const textX = (this.pageWidth - textWidth) / 2;
+
+    // draw rectangle ajdusted to text width + padding
+    // doc.rect(
+    //   textX - padding,
+    //   posY,
+    //   textWidth + padding + padding,
+    //   rectHeight,
+    //   'F'
+    // );
+
+    //draw full width rectangle
+    // doc.rect(0, posY, this.pageWidth, rectHeight, 'F');
+
+    const textY = posY + rectHeight / 1.5;
     doc.text(text, textX, textY);
   }
 
