@@ -5,6 +5,9 @@ import { columnList } from '../components/sets/edit-set/column-list';
 import { IPosition } from '../components/sets/types/IPosition';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
+import { FilesService } from './files.service';
+import { NotificationService } from './notification.service';
+import { getFormatedDate } from '../shared/helpers/getFormatedDate';
 
 interface IImage {
   base64: string;
@@ -37,7 +40,10 @@ export class PdfService {
   COLUMN_HEIGHT = 50;
   BASE_URL = 'http://localhost:3005/uploads/sets/';
 
-  constructor() {
+  constructor(
+    private filesService: FilesService,
+    private notificationService: NotificationService
+  ) {
     this.loadFont();
   }
 
@@ -113,7 +119,7 @@ export class PdfService {
           })
         );
 
-        const footer: any = [['', '', '', '', '', '', 'kolor']];
+        const footer: any = [['', '', '', '', '', '', '']];
         let totals = {
           ilosc: 0,
           netto: 0,
@@ -312,13 +318,29 @@ export class PdfService {
       );
     }
 
-    // save PDF file
-    //TODO send file to backend
-    // doc.save('tabelaimage.pdf');
+    // option 1 save PDF file
+    // doc.save(`zestawienie-${set.id}-${getFormatedDate()}.pdf`);
 
-    // open in new window, file dont download
-    const pdfUrl = doc.output('bloburl'); // Generuje URL do PDF
-    window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
+    // option 2 open in new window, file dont download
+    // const pdfUrl = doc.output('bloburl'); // Generuje URL do PDF
+    // window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
+
+    // option 3 send file to backend
+    const pdfBlob = doc.output('blob');
+    const formData = new FormData();
+    formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
+
+    this.filesService.savePdf(set.id, formData).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'success',
+          'Zestawienie w PDF zostało poprawnie wysłane na serwer'
+        );
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 
   drawRectLeft(
@@ -396,7 +418,7 @@ export class PdfService {
   drawBookmarkName(doc: jsPDF, text: string) {
     doc.setFontSize(20);
     doc.setFillColor(this.colors.accentLighter);
-    doc.setTextColor(this.colors.black);
+    doc.setTextColor(this.colors.accentDarker);
 
     const rectHeight = 20;
     const posY = 0;
