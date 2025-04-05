@@ -38,7 +38,9 @@ export class FilesService {
     return this.http.post<any>(
       `${environment.API_URL}/files/upload/${setId}/files`,
       formData,
-      {
+     {
+        reportProgress: true,
+        observe: 'events',
         headers,
       }
     );

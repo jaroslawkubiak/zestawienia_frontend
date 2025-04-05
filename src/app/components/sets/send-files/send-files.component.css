@@ -1,0 +1,13 @@
+.send-files-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.send-files-wrapper i {
+  font-size: 50px;
+}
+
+.send-files-wrapper i:hover {
+  color: var(--error-color);
+}

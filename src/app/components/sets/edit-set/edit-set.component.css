@@ -152,15 +152,6 @@ th {
   border: 1px solid var(--error-color) !important;
 }
 
-i {
-  font-size: 2rem;
-  margin: 6px;
-}
-
-i:hover {
-  color: var(--error-color);
-}
-
 ::ng-deep .btn-xl .p-button-icon,
 ::ng-deep .btn-xl {
   font-size: 2rem !important;
@@ -233,15 +224,5 @@ i:hover {
   height: calc(100% - 25px) !important;
   bottom: 0;
   left: 0;
-}
-
-.send-files-wrapper {
-  display: flex;
-  justify-content: center;
-  padding: 50px 0;
-}
-
-.send-files-wrapper i {
-  font-size: 50px;
 }
 

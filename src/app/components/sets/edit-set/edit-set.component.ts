@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
-import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
@@ -13,7 +12,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { EmailService } from '../../../services/email.service';
-import { FilesService } from '../../../services/files.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
@@ -27,6 +25,7 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
+import { SendFilesComponent } from '../send-files/send-files.component';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -56,7 +55,7 @@ import { EditSetService } from './edit-set.service';
     EditHeaderComponent,
     ImageClipboardInputComponent,
     TooltipModule,
-    FileUpload,
+    SendFilesComponent,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
@@ -91,9 +90,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   allSuppliers: ISupplier[] = [];
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
   hasAttachments = false;
-  @ViewChild('fileUploader') fileUploader: any;
-  showSendFilesDialog = false;
-  uploadedFiles: any[] = [];
+  @ViewChild(SendFilesComponent, { static: false })
+  dialogComponent!: SendFilesComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -103,7 +101,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private notificationService: NotificationService,
     private emailService: EmailService,
     private pdfService: PdfService,
-    private filesService: FilesService,
     private cd: ChangeDetectorRef
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
@@ -117,7 +114,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       }
     });
   }
-
+  
   // load needed data from set
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
@@ -651,42 +648,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.pdfService.generatePDF(this.set, this.positions);
   }
 
+  // show attached files to set
   showAttachedFiles() {
     console.log(`##### showAttachedFiles #####`);
     console.log(this.set.files);
   }
 
+  // open send files dialog
   openSendFilesDialog() {
-    this.showSendFilesDialog = true;
-  }
-
-  openFileDialogManually() {
-    const nativeInput =
-      this.fileUploader?.el?.nativeElement?.querySelector('input[type="file"]');
-    if (nativeInput) {
-      nativeInput.click();
-    }
-  }
-
-  uploadFiles(event: FileUploadHandlerEvent) {
-    const files = event.files;
-    const formData = new FormData();
-
-    for (let file of files) {
-      formData.append('files', file, file.name);
-    }
-
-    this.filesService.saveFile(+this.setId, formData).subscribe({
-      next: (response) => {
-        this.notificationService.showNotification(
-          'success',
-          'Pliki zostały przesłane na serwer'
-        );
-        this.fileUploader.clear();
-      },
-      error: (error) => {
-        this.notificationService.showNotification('error', error.message);
-      },
-    });
+    this.dialogComponent.openSendFilesDialog();
   }
 }

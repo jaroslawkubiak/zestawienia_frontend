@@ -146,3 +146,26 @@
 .spinner {
   margin-top: 100px;
 }
+
+/* file upload class  */
+::ng-deep .p-fileupload-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+::ng-deep .p-fileupload .p-fileupload-highlight {
+  background-color: var(--accent-color-lighter) !important;
+  border: 1px dashed var(--accent-color-darker) !important;
+}
+
+.p-fileupload-file-list {
+  font-size: 2rem !important;
+}
+
+::ng-deep .p-fileupload .p-progressbar {
+  display: none !important;
+}
+
+.p-fileupload {
+  margin-top: 20px !important;
+}
