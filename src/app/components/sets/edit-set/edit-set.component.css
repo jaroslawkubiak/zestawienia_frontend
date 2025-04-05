@@ -12,7 +12,6 @@ th {
   width: 1200px;
 }
 
-
 .set-header-wrapper {
   font-size: 2.6rem;
   background-color: var(--accent-color-darker);
@@ -235,3 +234,14 @@ i:hover {
   bottom: 0;
   left: 0;
 }
+
+.send-files-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.send-files-wrapper i {
+  font-size: 50px;
+}
+

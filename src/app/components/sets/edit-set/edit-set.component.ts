@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
+import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
@@ -12,7 +13,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { EmailService } from '../../../services/email.service';
+import { FilesService } from '../../../services/files.service';
 import { NotificationService } from '../../../services/notification.service';
+import { PdfService } from '../../../services/pdf.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import {
   calculateBrutto,
@@ -34,7 +37,6 @@ import { IUpdateSet } from '../types/IUpdateSet';
 import { SetStatus } from '../types/SetStatus';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
-import { PdfService } from '../../../services/pdf.service';
 
 @Component({
   selector: 'app-set',
@@ -54,6 +56,7 @@ import { PdfService } from '../../../services/pdf.service';
     EditHeaderComponent,
     ImageClipboardInputComponent,
     TooltipModule,
+    FileUpload,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
@@ -84,10 +87,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     },
     ...columnList,
   ];
-
   positionToDelete: number[] = [];
   allSuppliers: ISupplier[] = [];
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
+  hasAttachments = false;
+  @ViewChild('fileUploader') fileUploader: any;
+  showSendFilesDialog = false;
+  uploadedFiles: any[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -97,6 +103,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private notificationService: NotificationService,
     private emailService: EmailService,
     private pdfService: PdfService,
+    private filesService: FilesService,
     private cd: ChangeDetectorRef
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
@@ -118,6 +125,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.set = set;
         this.positions = positions;
         this.allSuppliers = suppliers;
+        this.hasAttachments =
+          set?.files?.files?.length !== 0 || set?.files?.pdf?.length !== 0;
 
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();
@@ -642,12 +651,42 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.pdfService.generatePDF(this.set, this.positions);
   }
 
-  showFiles() {
-    console.log(`##### show files #####`);
+  showAttachedFiles() {
+    console.log(`##### showAttachedFiles #####`);
     console.log(this.set.files);
   }
 
-  sendFiles() {
-    console.log(`##### send files #####`);
+  openSendFilesDialog() {
+    this.showSendFilesDialog = true;
+  }
+
+  openFileDialogManually() {
+    const nativeInput =
+      this.fileUploader?.el?.nativeElement?.querySelector('input[type="file"]');
+    if (nativeInput) {
+      nativeInput.click();
+    }
+  }
+
+  uploadFiles(event: FileUploadHandlerEvent) {
+    const files = event.files;
+    const formData = new FormData();
+
+    for (let file of files) {
+      formData.append('files', file, file.name);
+    }
+
+    this.filesService.saveFile(+this.setId, formData).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'success',
+          'Pliki zostały przesłane na serwer'
+        );
+        this.fileUploader.clear();
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 }

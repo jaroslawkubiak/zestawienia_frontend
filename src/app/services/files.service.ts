@@ -1,6 +1,5 @@
 import {
   HttpClient,
-  HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -24,6 +23,20 @@ export class FilesService {
 
     return this.http.post<any>(
       `${environment.API_URL}/files/upload/${setId}/pdf`,
+      formData,
+      {
+        headers,
+      }
+    );
+  }
+
+  saveFile(setId: number, formData: FormData): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
+    return this.http.post<any>(
+      `${environment.API_URL}/files/upload/${setId}/files`,
       formData,
       {
         headers,

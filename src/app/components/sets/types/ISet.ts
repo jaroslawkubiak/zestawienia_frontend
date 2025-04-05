@@ -1,3 +1,4 @@
+import { IFileList } from '../../../services/types/IFileList';
 import { IBookmark } from '../../bookmarks/IBookmark';
 
 export interface ISet {
@@ -10,7 +11,7 @@ export interface ISet {
   updatedAtTimestamp: number;
   hash: string;
   bookmarks: IBookmark[];
-  files?: string[];
+  files?: IFileList;
   clientId: {
     id: number;
     firma: string;
