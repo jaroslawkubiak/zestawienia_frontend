@@ -36,6 +36,7 @@ import { IUpdateSet } from '../types/IUpdateSet';
 import { SetStatus } from '../types/SetStatus';
 import { columnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
+import { FooterService } from './footer.service';
 
 @Component({
   selector: 'app-set',
@@ -101,6 +102,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private notificationService: NotificationService,
     private emailService: EmailService,
     private pdfService: PdfService,
+    private footerService: FooterService,
     private cd: ChangeDetectorRef
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
@@ -114,7 +116,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       }
     });
   }
-  
+
   // load needed data from set
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
@@ -283,51 +285,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // reset footer row
-  resetFooter() {
-    this.footerRow = this.footerRow.map((item: IFooterRow) => ({
-      ...item,
-      value: '',
-    }));
+  resetFooter(): void {
+    this.footerRow = this.footerService.resetFooter(this.footerRow);
   }
 
   // calculate values for footer row
-  calculateFooterRow(obj: IPosition) {
-    this.footerRow = this.footerRow.map((item: IFooterRow) => {
-      switch (item.key) {
-        case 'ilosc':
-          item.value = Number(item.value) + Number(obj.ilosc);
-          item.classFooter = 'position-footer-number';
-          break;
-        case 'netto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.netto)) * 100) / 100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
-        case 'brutto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.brutto)) * 100) / 100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
-        case 'wartoscNetto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.wartoscNetto)) * 100) /
-            100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
-        case 'wartoscBrutto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.wartoscBrutto)) * 100) /
-            100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
-      }
-
-      return { ...item };
-    });
+  calculateFooterRow(obj: IPosition): void {
+    this.footerRow = this.footerService.calculateFooterRow(this.footerRow, obj);
   }
 
   // send set link to client
