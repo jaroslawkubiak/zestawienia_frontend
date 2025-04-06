@@ -84,7 +84,13 @@ export class SetsComponent implements OnInit {
   getSets() {
     this.setsService.getSets().subscribe({
       next: (data) => {
-        this.sets = data;
+        this.sets = data.map((set) => ({
+          ...set,
+          hasFiles:
+            !!set.files &&
+            (set.files?.files.length !== 0 || set.files.pdf.length !== 0),
+        }));
+
         this.isLoading = false;
         this.cd.markForCheck();
       },

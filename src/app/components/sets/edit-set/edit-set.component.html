@@ -42,10 +42,10 @@
           severity="contrast"
           icon="pi pi-paperclip"
           alt="Załączniki"
-          pTooltip="{{ set.files ? 'Pokaż załączniki' : 'Brak załączników' }}"
+          pTooltip="{{ hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
           tooltipPosition="bottom"
           (click)="showAttachedFiles()"
-          [disabled]="!set.files"
+          [disabled]="!hasFiles"
         />
       </div>
       <div>
@@ -61,7 +61,7 @@
     </div>
 
     <app-send-files />
-    <app-files *ngIf="set.files" />
+    <app-show-files />
 
     <div class="set-header">
       <div class="set-header-cell">

@@ -19,12 +19,13 @@
       size: 'large'
     }"
     mode="advanced"
-    fileLimit="10"
+    [fileLimit]="fileLimit"
     maxFileSize="1000000000"
   >
     <ng-template #empty>
       <div class="send-files-wrapper">
         <i class="pi pi-cloud-upload" (click)="openFileDialogManually()"></i>
+        <span class="file-limit">Maksymalnie {{fileLimit}} plików</span>
       </div>
     </ng-template>
     <ng-template #content>

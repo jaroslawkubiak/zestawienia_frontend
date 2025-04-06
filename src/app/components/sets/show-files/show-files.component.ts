@@ -14,7 +14,7 @@ import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component'
 import { IFileDetails } from './types/IFileDetails';
 
 @Component({
-  selector: 'app-files',
+  selector: 'app-show-files',
   imports: [
     CommonModule,
     Dialog,

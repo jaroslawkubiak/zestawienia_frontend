@@ -100,6 +100,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
 
+  hasFiles = false;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -130,6 +132,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.positions = positions;
         this.allSuppliers = suppliers;
         this.set = set;
+        this.hasFiles =
+          !!set.files &&
+          (set.files?.files.length !== 0 || set.files.pdf.length !== 0);
 
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();

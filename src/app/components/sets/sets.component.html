@@ -81,7 +81,7 @@
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
       <app-send-files />
-      <app-files *ngIf="set.files" />
+      <app-show-files />
 
       <tr (click)="editSet(set.id)" class="row">
         <td>
@@ -116,8 +116,8 @@
             class="m-4"
             severity="warn"
             alt="Załączniki"
-            pTooltip="{{ set.files ? 'Pokaż załączniki' : 'Brak załączników' }}"
-            [disabled]="!set.files"
+            pTooltip="{{ set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
+            [disabled]="!set.hasFiles"
             (click)="showAttachedFiles(set.id, set.name)"
           />
           <p-button
