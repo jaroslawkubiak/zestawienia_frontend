@@ -52,7 +52,7 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">LP</th>
-        <th style="width: 10rem"></th>
+        <th style="width: 20rem"></th>
         <th pSortableColumn="clientId.firma">
           Firma
           <p-sortIcon field="clientId.firma" />
@@ -80,6 +80,9 @@
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
+      <app-send-files />
+      <app-files *ngIf="set.files" />
+
       <tr (click)="editSet(set.id)" class="row">
         <td>
           <div class="flex-center">
@@ -90,14 +93,15 @@
           <p-button
             icon="pi pi-pencil"
             class="m-4"
-            (click)="editSet(set.id)"
+            severity="primary"
             alt="Edytuj zestawienie"
             pTooltip="Edytuj zestawienie"
+            (click)="editSet(set.id)"
           />
           <p-button
             icon="pi pi-trash"
-            severity="danger"
             class="m-4"
+            severity="danger"
             alt="Usuń Zestawienie"
             pTooltip="{{
               set.status !== statusesList.new
@@ -106,6 +110,23 @@
             }}"
             [disabled]="set.status !== statusesList.new"
             (click)="deleteSet(set.id)"
+          />
+          <p-button
+            icon="pi pi-paperclip"
+            class="m-4"
+            severity="warn"
+            alt="Załączniki"
+            pTooltip="{{ set.files ? 'Pokaż załączniki' : 'Brak załączników' }}"
+            [disabled]="!set.files"
+            (click)="showAttachedFiles(set.id, set.name)"
+          />
+          <p-button
+            icon="pi pi-upload"
+            class="m-4"
+            severity="info"
+            alt="Prześlij pliki"
+            pTooltip="Prześlij pliki"
+            (click)="openSendFilesDialog(set.id, set.name)"
           />
         </td>
         <td>{{ set.clientId.firma }}</td>

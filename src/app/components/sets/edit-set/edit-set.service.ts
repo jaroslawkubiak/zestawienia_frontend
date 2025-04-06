@@ -3,21 +3,20 @@ import {
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Injectable, ViewChild } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
-import { ISupplier } from '../../suppliers/types/ISupplier';
+import { IFileList } from '../../../services/types/IFileList';
 import { SuppliersService } from '../../suppliers/suppliers.service';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { IClonePosition } from '../types/IClonePosition';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { INewSet } from '../types/INewSet';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { IFileList } from '../../../services/types/IFileList';
-import { FilesComponent } from '../files/files.component';
 
 interface ICompleteSet {
   set: ISet;

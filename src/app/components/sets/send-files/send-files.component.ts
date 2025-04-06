@@ -1,11 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
-import {
-  Component,
-  Input,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Dialog } from 'primeng/dialog';
 import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
@@ -24,11 +19,14 @@ export class SendFilesComponent {
     private notificationService: NotificationService
   ) {}
   showSendFilesDialog = false;
-  @Input() setId = '';
+  setId: string = '';
+  setName: string = '';
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
   uploadProgress = 0;
-  openSendFilesDialog() {
+  openSendFilesDialog(setId: number, setName: string) {
+    this.setId = setId.toString();
+    this.setName = setName;
     this.showSendFilesDialog = true;
   }
 

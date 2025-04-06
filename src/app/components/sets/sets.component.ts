@@ -17,9 +17,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
+import { IFileList } from '../../services/types/IFileList';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
+import { EditSetService } from './edit-set/edit-set.service';
+import { SendFilesComponent } from './send-files/send-files.component';
 import { SetsService } from './sets.service';
+import { ShowFilesComponent } from './show-files/show-files.component';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/SetStatus';
 
@@ -45,6 +49,8 @@ import { SetStatus } from './types/SetStatus';
     SelectModule,
     LoadingSpinnerComponent,
     TooltipModule,
+    SendFilesComponent,
+    ShowFilesComponent,
   ],
   providers: [NotificationService, ConfirmationModalService],
 })
@@ -55,10 +61,17 @@ export class SetsComponent implements OnInit {
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
   statusesList = SetStatus;
-  hasAttachments = false;
+
+  @ViewChild(SendFilesComponent, { static: false })
+  dialogSendFilesComponent!: SendFilesComponent;
+
+  @ViewChild(ShowFilesComponent, { static: false })
+  dialogShowFilesComponent!: ShowFilesComponent;
+
   constructor(
     private router: Router,
     private setsService: SetsService,
+    private editSetService: EditSetService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
@@ -136,5 +149,17 @@ export class SetsComponent implements OnInit {
     if (this.dt) {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
+  }
+
+  openSendFilesDialog(setId: number, setName: string) {
+    this.dialogSendFilesComponent.openSendFilesDialog(setId, setName);
+  }
+
+  showAttachedFiles(setId: string, setName: string) {
+    this.editSetService.getSetFiles(setId).subscribe({
+      next: (response: IFileList) => {
+        this.dialogShowFilesComponent.showDialog(setId, setName, response);
+      },
+    });
   }
 }

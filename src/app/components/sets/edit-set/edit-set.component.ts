@@ -25,9 +25,9 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
-import { FilesComponent } from '../files/files.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SendFilesComponent } from '../send-files/send-files.component';
+import { ShowFilesComponent } from '../show-files/show-files.component';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -59,7 +59,7 @@ import { FooterService } from './footer.service';
     ImageClipboardInputComponent,
     TooltipModule,
     SendFilesComponent,
-    FilesComponent,
+    ShowFilesComponent,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
@@ -95,10 +95,10 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
 
   @ViewChild(SendFilesComponent, { static: false })
-  dialogComponent!: SendFilesComponent;
+  dialogSendFilesComponent!: SendFilesComponent;
 
-  @ViewChild(FilesComponent, { static: false })
-  dialogFilesComponent!: FilesComponent;
+  @ViewChild(ShowFilesComponent, { static: false })
+  dialogShowFilesComponent!: ShowFilesComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -620,13 +620,20 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   showAttachedFiles() {
     this.editSetService.getSetFiles(this.setId).subscribe({
       next: (response: IFileList) => {
-        this.dialogFilesComponent.showDialog(response);
+        this.dialogShowFilesComponent.showDialog(
+          this.setId,
+          this.set.name,
+          response
+        );
       },
     });
   }
 
   // open send files dialog
   openSendFilesDialog() {
-    this.dialogComponent.openSendFilesDialog();
+    this.dialogSendFilesComponent.openSendFilesDialog(
+      +this.setId,
+      this.set.name
+    );
   }
 }

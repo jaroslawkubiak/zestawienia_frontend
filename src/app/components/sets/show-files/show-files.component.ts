@@ -1,23 +1,17 @@
 import { CommonModule } from '@angular/common';
-import {
-  Component,
-  Input,
-  QueryList,
-  ViewChildren,
-  ViewEncapsulation,
-} from '@angular/core';
-import { Dialog, DialogModule } from 'primeng/dialog';
-import { IFileList } from '../../../services/types/IFileList';
-import { ButtonModule } from 'primeng/button';
-import { TooltipModule } from 'primeng/tooltip';
-import { FilesService } from '../../../services/files.service';
-import { IFileDetails } from './types/IFileDetails';
-import { ConfirmationModalService } from '../../../services/confirmation.service';
-import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
-import { NotificationService } from '../../../services/notification.service';
-import { Image } from 'primeng/image';
-import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { ButtonModule } from 'primeng/button';
+import { Dialog, DialogModule } from 'primeng/dialog';
+import { Image } from 'primeng/image';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationModalService } from '../../../services/confirmation.service';
+import { FilesService } from '../../../services/files.service';
+import { NotificationService } from '../../../services/notification.service';
+import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
+import { IFileList } from '../../../services/types/IFileList';
+import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
+import { IFileDetails } from './types/IFileDetails';
 
 @Component({
   selector: 'app-files',
@@ -30,18 +24,19 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
     Image,
     PdfThumbnailComponent,
   ],
-  templateUrl: './files.component.html',
-  styleUrl: './files.component.css',
+  templateUrl: './show-files.component.html',
+  styleUrl: './show-files.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class FilesComponent {
+export class ShowFilesComponent {
   constructor(
     private sanitizer: DomSanitizer,
     private filesService: FilesService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService
   ) {}
-  @Input() setId: string = '';
+  setId: string = '';
+  setName: string = '';
   displayPdf = false;
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
@@ -50,7 +45,9 @@ export class FilesComponent {
   attachmentsPdf: IFileDetails[] = [];
   showFilesDialog = false;
 
-  showDialog(filesList: IFileList) {
+  showDialog(setId: string, setName: string, filesList: IFileList) {
+    this.setId = setId;
+    this.setName = setName;
     this.showFilesDialog = true;
     this.attachments = filesList.files.map((file) => {
       const fileParts = file.split('.');

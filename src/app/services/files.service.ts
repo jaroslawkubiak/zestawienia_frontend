@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { IFileDetails } from '../components/sets/files/types/IFileDetails';
 import { AuthService } from '../login/auth.service';
+import { IFileDetails } from '../components/sets/show-files/types/IFileDetails';
 
 @Injectable({
   providedIn: 'root',
