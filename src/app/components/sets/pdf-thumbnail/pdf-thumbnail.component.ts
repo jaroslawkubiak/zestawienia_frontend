@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as pdfjsLib from 'pdfjs-dist';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 
@@ -7,15 +7,20 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
   selector: 'app-pdf-thumbnail',
   imports: [CommonModule, LoadingSpinnerComponent],
   templateUrl: './pdf-thumbnail.component.html',
+  styleUrl: './pdf-thumbnail.component.css',
 })
 export class PdfThumbnailComponent implements OnInit {
   @Input() pdfUrl: string = '';
+  @Output() pdfClick = new EventEmitter<string>();
+
+  handleClick() {
+    this.pdfClick.emit(this.pdfUrl);
+  }
   thumbnail: string = '';
   isLoading: boolean = true;
 
   ngOnInit(): void {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/pdfjs/pdf.worker.min.mjs';
-
     this.generateThumbnail();
   }
 

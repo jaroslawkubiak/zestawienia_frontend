@@ -7,7 +7,7 @@
   <div class="file-wrapper">
     <div class="title">Załączniki</div>
     <ul *ngIf="attachments.length > 0">
-      <li *ngFor="let file of attachments">
+      <li *ngFor="let file of attachments; let i = index">
         @if(file.extension === 'JPEG' || file.extension === 'JPG' ||
         file.extension === 'PNG') {
         <!-- show image files -->
@@ -41,9 +41,10 @@
         } @else if(file.extension === 'PDF') {
         <!-- show PDF files -->
         <div class="file-pdf">
-          <!-- <i class="pi pi-file-pdf"></i> -->
-          <app-pdf-thumbnail [pdfUrl]="file.path"></app-pdf-thumbnail>
-
+          <app-pdf-thumbnail
+            [pdfUrl]="file.path"
+            (pdfClick)="openPdf($event, file.name)"
+          ></app-pdf-thumbnail>
         </div>
         } @else {
         <!-- show other files -->
@@ -78,8 +79,10 @@
     <ul *ngIf="attachments.length > 0">
       <li *ngFor="let file of attachmentsPdf">
         <div class="file-pdf">
-          <!-- <i class="pi pi-file-pdf"></i> -->
-          <app-pdf-thumbnail [pdfUrl]="file.path"></app-pdf-thumbnail>
+          <app-pdf-thumbnail
+            [pdfUrl]="file.path"
+            (pdfClick)="openPdf($event, file.name)"
+          ></app-pdf-thumbnail>
         </div>
         <p>{{ file.name }}</p>
         <div class="action-btns">
@@ -105,4 +108,20 @@
       </li>
     </ul>
   </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="displayPdf"
+  [style]="{ width: '80vw' }"
+  [modal]="true"
+  [closable]="true"
+  [header]="'Podgląd PDF - ' + displayPdfHeader"
+>
+  <iframe
+    *ngIf="pdfUrl"
+    [src]="pdfUrl"
+    width="100%"
+    height="600px"
+    style="border: none"
+  ></iframe>
 </p-dialog>

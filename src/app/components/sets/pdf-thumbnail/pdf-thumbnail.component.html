@@ -1,13 +1,11 @@
 <div *ngIf="isLoading">
   <app-loading-spinner [size]="80"></app-loading-spinner>
 </div>
-<div class="pdf-thumbnail-container">
-  <img
-    *ngIf="!isLoading"
-    [src]="thumbnail"
-    alt="Miniatura PDF"
-    class="pdf-thumbnail"
-    [style.max-width.px]="200"
-    [style.max-height.px]="200"
-  />
+<div *ngIf="!isLoading" class="thumbnail-wrapper" (click)="handleClick()">
+  <img [src]="thumbnail" alt="Miniatura PDF" class="thumbnail-image" />
+
+  <div class="overlay-wrapper">
+    <div class="hover-overlay"></div>
+    <i class="pi pi-search-plus icon-overlay"></i>
+  </div>
 </div>

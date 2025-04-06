@@ -1,6 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
-import { Dialog } from 'primeng/dialog';
+import {
+  Component,
+  Input,
+  QueryList,
+  ViewChildren,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Dialog, DialogModule } from 'primeng/dialog';
 import { IFileList } from '../../../services/types/IFileList';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
@@ -11,6 +17,7 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { NotificationService } from '../../../services/notification.service';
 import { Image } from 'primeng/image';
 import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-files',
@@ -18,6 +25,7 @@ import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component'
     CommonModule,
     Dialog,
     TooltipModule,
+    DialogModule,
     ButtonModule,
     Image,
     PdfThumbnailComponent,
@@ -28,12 +36,15 @@ import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component'
 })
 export class FilesComponent {
   constructor(
+    private sanitizer: DomSanitizer,
     private filesService: FilesService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService
   ) {}
   @Input() setId: string = '';
-
+  displayPdf = false;
+  displayPdfHeader: string = ''; 
+  pdfUrl: SafeResourceUrl = '';
   BASE_URL = 'http://localhost:3005/uploads/sets/';
   attachments: IFileDetails[] = [];
   attachmentsPdf: IFileDetails[] = [];
@@ -118,5 +129,12 @@ export class FilesComponent {
     };
 
     this.confirmationModalService.showConfirmation(confirmMessage);
+  }
+
+  // open pdf preview
+  openPdf(path: string, fileName: string) {
+    this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(path);
+    this.displayPdfHeader = fileName;
+    this.displayPdf = true;
   }
 }

@@ -39,12 +39,12 @@ ul li {
   -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
   box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
 }
-
+/* 
 ul li:hover {
   -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
   -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
   box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-}
+} */
 
 ul li i {
   font-size: 80px !important;
@@ -73,7 +73,7 @@ ul li i {
   align-items: center;
   justify-content: center;
   height: var(--img-height);
-  overflow: hidden;;
+  overflow: hidden;
 }
 
 p {
@@ -113,3 +113,8 @@ p {
 .p-image-mask {
   background-color: rgba(0, 0, 0, 0.747) !important;
 }
+
+app-pdf-thumbnail {
+  cursor: pointer;
+}
+
