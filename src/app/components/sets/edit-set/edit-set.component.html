@@ -59,8 +59,11 @@
         />
       </div>
     </div>
-    
+
     <app-send-files [setId]="setId" />
+    @if(hasAttachments) {
+    <app-files [setId]="setId"/>
+    }
 
     <div class="set-header">
       <div class="set-header-cell">

@@ -15,6 +15,7 @@ import { EmailService } from '../../../services/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
+import { IFileList } from '../../../services/types/IFileList';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -24,6 +25,7 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { FilesComponent } from '../files/files.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SendFilesComponent } from '../send-files/send-files.component';
 import { IClonePosition } from '../types/IClonePosition';
@@ -57,6 +59,7 @@ import { FooterService } from './footer.service';
     ImageClipboardInputComponent,
     TooltipModule,
     SendFilesComponent,
+    FilesComponent,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
@@ -93,6 +96,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   hasAttachments = false;
   @ViewChild(SendFilesComponent, { static: false })
   dialogComponent!: SendFilesComponent;
+
+  @ViewChild(FilesComponent, { static: false })
+  dialogFilesComponent!: FilesComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -614,8 +620,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // show attached files to set
   showAttachedFiles() {
-    console.log(`##### showAttachedFiles #####`);
-    console.log(this.set.files);
+    this.editSetService.getSetFiles(this.setId).subscribe({
+      next: (response: IFileList) => {
+        this.dialogFilesComponent.showDialog(response);
+      },
+    });
   }
 
   // open send files dialog

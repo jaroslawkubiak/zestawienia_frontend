@@ -1,0 +1,114 @@
+:root {
+  --img-height: 200px;
+  --img-container-width: 200px;
+}
+
+.file-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.title {
+  font-size: 2.4rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--accent-color-darker);
+}
+
+ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 auto;
+  max-width: 940px;
+}
+
+ul li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: var(--img-container-width);
+  height: 280px;
+  margin: 10px;
+  padding: 10px 5px;
+  border-radius: 5px;
+  background-color: var(--accent-color-lighter) !important;
+  -webkit-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+  -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+  box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+}
+
+ul li:hover {
+  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+  box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+}
+
+ul li i {
+  font-size: 80px !important;
+  color: var(--accent-color);
+  cursor: default;
+}
+
+.p-image img {
+  width: 100%;
+  height: var(--img-height);
+  object-fit: cover;
+  display: block;
+}
+
+.p-image-mask img {
+  width: 1000px !important;
+  height: 1000px !important;
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+}
+
+.file-pdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: var(--img-height);
+}
+
+p {
+  all: unset;
+  font-size: 1rem;
+  text-align: center;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.action-btns {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.p-image-toolbar {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+.p-image-action {
+  color: var(--accent-color-darker) !important;
+}
+
+.p-image-rotate-right-button,
+.p-image-rotate-left-button {
+  display: none !important;
+}
+
+.p-dialog {
+  border: 0px solid transparent !important;
+}
+
+.p-overlay-mask,
+.p-image-mask {
+  background-color: rgba(0, 0, 0, 0.747) !important;
+}

@@ -16,6 +16,7 @@ import { INewSet } from '../types/INewSet';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
+import { IFileList } from '../../../services/types/IFileList';
 
 interface ICompleteSet {
   set: ISet;
@@ -63,6 +64,18 @@ export class EditSetService {
 
     return this.http
       .get<ISet>(`${environment.API_URL}/sets/${setId}`, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  getSetFiles(setId: string): Observable<IFileList> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
+    return this.http
+      .get<IFileList>(`${environment.API_URL}/files/${setId}`, {
         headers,
       })
       .pipe(catchError(this.handleError));

@@ -113,9 +113,9 @@
             class="m-4"
             alt="Pokaż załączniki"
             pTooltip="{{
-              set?.files.length === 0 ? 'Brak załączników' : 'Pokaż załączniki'
+              set?.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
             }}"
-            [disabled]="set?.files.length === 0"
+            [disabled]="!set?.hasFiles"
             (click)="showFiles(set.id)"
           />
         </td>

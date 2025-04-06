@@ -102,6 +102,10 @@ export class PdfService {
         const imageMap = new Map<string, IImage>();
         await Promise.all(
           sortPositions.map(async (row) => {
+            if(!row.image) {
+              return;
+            }
+
             const imageUrl = `${this.BASE_URL}${set.id}/positions/${row.id}/${row.image}`;
             try {
               const base64Image = await this.getBase64Image(imageUrl);
