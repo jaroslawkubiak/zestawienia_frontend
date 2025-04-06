@@ -43,7 +43,7 @@ export class FilesComponent {
   ) {}
   @Input() setId: string = '';
   displayPdf = false;
-  displayPdfHeader: string = ''; 
+  displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
   BASE_URL = 'http://localhost:3005/uploads/sets/';
   attachments: IFileDetails[] = [];

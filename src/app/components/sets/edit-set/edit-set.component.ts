@@ -93,7 +93,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   positionToDelete: number[] = [];
   allSuppliers: ISupplier[] = [];
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
-  hasAttachments = false;
+
   @ViewChild(SendFilesComponent, { static: false })
   dialogComponent!: SendFilesComponent;
 
@@ -127,11 +127,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
       next: ({ set, positions, suppliers }) => {
-        this.set = set;
         this.positions = positions;
         this.allSuppliers = suppliers;
-        this.hasAttachments =
-          set?.files?.files?.length !== 0 || set?.files?.pdf?.length !== 0;
+        this.set = set;
 
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();

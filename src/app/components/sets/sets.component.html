@@ -52,7 +52,7 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">LP</th>
-        <th style="width: 15rem"></th>
+        <th style="width: 10rem"></th>
         <th pSortableColumn="clientId.firma">
           Firma
           <p-sortIcon field="clientId.firma" />
@@ -106,17 +106,6 @@
             }}"
             [disabled]="set.status !== statusesList.new"
             (click)="deleteSet(set.id)"
-          />
-          <p-button
-            icon="pi pi-paperclip"
-            severity="info"
-            class="m-4"
-            alt="Pokaż załączniki"
-            pTooltip="{{
-              set?.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
-            }}"
-            [disabled]="!set?.hasFiles"
-            (click)="showFiles(set.id)"
           />
         </td>
         <td>{{ set.clientId.firma }}</td>
