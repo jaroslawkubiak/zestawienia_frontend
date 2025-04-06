@@ -41,7 +41,9 @@
         } @else if(file.extension === 'PDF') {
         <!-- show PDF files -->
         <div class="file-pdf">
-          <i class="pi pi-file-pdf"></i>
+          <!-- <i class="pi pi-file-pdf"></i> -->
+          <app-pdf-thumbnail [pdfUrl]="file.path"></app-pdf-thumbnail>
+
         </div>
         } @else {
         <!-- show other files -->
@@ -76,7 +78,8 @@
     <ul *ngIf="attachments.length > 0">
       <li *ngFor="let file of attachmentsPdf">
         <div class="file-pdf">
-          <i class="pi pi-file-pdf"></i>
+          <!-- <i class="pi pi-file-pdf"></i> -->
+          <app-pdf-thumbnail [pdfUrl]="file.path"></app-pdf-thumbnail>
         </div>
         <p>{{ file.name }}</p>
         <div class="action-btns">

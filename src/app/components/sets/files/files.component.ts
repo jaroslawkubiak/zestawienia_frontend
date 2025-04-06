@@ -10,10 +10,18 @@ import { ConfirmationModalService } from '../../../services/confirmation.service
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { NotificationService } from '../../../services/notification.service';
 import { Image } from 'primeng/image';
+import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
 
 @Component({
   selector: 'app-files',
-  imports: [CommonModule, Dialog, TooltipModule, ButtonModule, Image],
+  imports: [
+    CommonModule,
+    Dialog,
+    TooltipModule,
+    ButtonModule,
+    Image,
+    PdfThumbnailComponent,
+  ],
   templateUrl: './files.component.html',
   styleUrl: './files.component.css',
   encapsulation: ViewEncapsulation.None,
@@ -58,7 +66,7 @@ export class FilesComponent {
         name: file,
         shortName: fileParts[0],
         extension: extension,
-        path: `${this.BASE_URL}${this.setId}/files/${file}`,
+        path: `${this.BASE_URL}${this.setId}/pdf/${file}`,
         dir: 'pdf',
       } as IFileDetails;
     });
@@ -66,7 +74,9 @@ export class FilesComponent {
 
   // download file to client
   downloadFile(id: number) {
-    const file = [...this.attachments, ...this.attachmentsPdf].find((file) => file.id === id);
+    const file = [...this.attachments, ...this.attachmentsPdf].find(
+      (file) => file.id === id
+    );
     if (!file) {
       return;
     }
@@ -76,7 +86,9 @@ export class FilesComponent {
 
   // delete file form server and remove from list
   deleteFile(id: number) {
-    const file = [...this.attachments, ...this.attachmentsPdf].find((file) => file.id === id);
+    const file = [...this.attachments, ...this.attachmentsPdf].find(
+      (file) => file.id === id
+    );
     if (!file) {
       return;
     }
@@ -89,7 +101,9 @@ export class FilesComponent {
             response.message
           );
           this.attachments = this.attachments.filter((file) => file.id !== id);
-          this.attachmentsPdf = this.attachmentsPdf.filter((file) => file.id !== id);
+          this.attachmentsPdf = this.attachmentsPdf.filter(
+            (file) => file.id !== id
+          );
         },
         error: (error) => {
           this.notificationService.showNotification('error', error.message);

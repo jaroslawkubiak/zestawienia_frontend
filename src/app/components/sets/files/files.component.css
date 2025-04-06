@@ -73,6 +73,7 @@ ul li i {
   align-items: center;
   justify-content: center;
   height: var(--img-height);
+  overflow: hidden;;
 }
 
 p {

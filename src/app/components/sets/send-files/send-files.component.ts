@@ -59,6 +59,7 @@ export class SendFilesComponent {
         );
         this.fileUploader.clear();
         this.uploadProgress = 0;
+        this.showSendFilesDialog = false;
       }
     });
   }
