@@ -196,7 +196,7 @@ th {
 }
 
 ::ng-deep .p-select-label {
-  padding: 4px;
+  padding: 4px !important;
 }
 
 ::ng-deep .p-select-option {
@@ -222,3 +222,14 @@ th {
   left: 0;
 }
 
+.row-pink {
+  background-color: #e91e6240 !important;
+}
+
+.row-green {
+  background-color: #45bd3240 !important;
+}
+
+.row-red {
+  background-color: #e82d1840 !important;
+}

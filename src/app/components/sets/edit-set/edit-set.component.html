@@ -1,3 +1,6 @@
+<app-send-files />
+<app-show-files />
+
 <!-- spinner when loading data  -->
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
@@ -6,63 +9,49 @@
   <!-- set header  -->
   <div class="set-header-wrapper flex-center" *ngIf="set">
     <div class="set-header-menu">
-      <div>
-        <p-button
-          severity="contrast"
-          icon="pi pi-file-edit"
-          alt="Edytuj nagłowek zestawienia"
-          pTooltip="Edytuj nagłowek zestawienia"
-          tooltipPosition="bottom"
-          (click)="editHeader()"
-        />
-      </div>
-      <div>
-        <p-button
-          severity="contrast"
-          icon="pi pi-envelope"
-          alt="Wyślij email"
-          pTooltip="Wyślij email"
-          tooltipPosition="bottom"
-          (click)="sendViaEmail()"
-        />
-      </div>
-      <div>
-        <p-button
-          severity="contrast"
-          icon="pi pi-file-pdf"
-          alt="Stwórz PDF"
-          pTooltip="{{ isEdited ? 'Najpierw zapisz zmiany' : 'Stwórz PDF' }}"
-          tooltipPosition="bottom"
-          [disabled]="isEdited"
-          (click)="isEdited ? '' : generatePDF()"
-        />
-      </div>
-      <div>
-        <p-button
-          severity="contrast"
-          icon="pi pi-paperclip"
-          alt="Załączniki"
-          pTooltip="{{ hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
-          tooltipPosition="bottom"
-          (click)="showAttachedFiles()"
-          [disabled]="!hasFiles"
-        />
-      </div>
-      <div>
-        <p-button
-          severity="contrast"
-          icon="pi pi-upload"
-          alt="Prześlij pliki"
-          pTooltip="Prześlij pliki"
-          tooltipPosition="bottom"
-          (click)="openSendFilesDialog()"
-        />
-      </div>
+      <p-button
+        severity="contrast"
+        icon="pi pi-file-edit"
+        alt="Edytuj nagłowek zestawienia"
+        pTooltip="Edytuj nagłowek zestawienia"
+        tooltipPosition="bottom"
+        (click)="editHeader()"
+      />
+      <p-button
+        severity="contrast"
+        icon="pi pi-envelope"
+        alt="Wyślij email"
+        pTooltip="Wyślij email"
+        tooltipPosition="bottom"
+        (click)="sendViaEmail()"
+      />
+      <p-button
+        severity="contrast"
+        icon="pi pi-file-pdf"
+        alt="Stwórz PDF"
+        pTooltip="{{ isEdited ? 'Najpierw zapisz zmiany' : 'Stwórz PDF' }}"
+        tooltipPosition="bottom"
+        [disabled]="isEdited"
+        (click)="isEdited ? '' : generatePDF()"
+      />
+      <p-button
+        severity="contrast"
+        icon="pi pi-paperclip"
+        alt="Załączniki"
+        pTooltip="{{ hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
+        tooltipPosition="bottom"
+        (click)="showAttachedFiles()"
+        [disabled]="!hasFiles"
+      />
+      <p-button
+        severity="contrast"
+        icon="pi pi-upload"
+        alt="Prześlij pliki"
+        pTooltip="Prześlij pliki"
+        tooltipPosition="bottom"
+        (click)="openSendFilesDialog()"
+      />
     </div>
-
-    <app-send-files />
-    <app-show-files />
-
     <div class="set-header">
       <div class="set-header-cell">
         <div class="set-header-title">Zestawienie</div>
@@ -147,52 +136,45 @@
               let-editing="editing"
               let-i="rowIndex"
             >
-              <tr [pReorderableRow]="i">
+              <tr [ngClass]="getRowClass(position)" [pReorderableRow]="i">
                 <td class="lp">
                   {{ i + 1 }}
                 </td>
                 <td>
-                  <div class="position-actions">
-                    <div class="flex-center">
-                      <p-button
-                        severity="contrast"
-                        icon="pi pi-bars"
-                        class="m-4"
-                        alt="Przegiągnij, aby zmienić pozycję"
-                        pTooltip="Przegiągnij, aby zmienić pozycję"
-                        pReorderableRowHandle
-                      />
-                    </div>
-                    <div class="flex-center">
-                      <p-button
-                        severity="primary"
-                        icon="pi pi-plus"
-                        class="m-4"
-                        alt="Nowa pusta pozycja"
-                        pTooltip="Nowa pusta pozycja"
-                        (click)="addEmptyPosition(formData[i].kolejnosc)"
-                      />
-                    </div>
-                    <div class="flex-center">
-                      <p-button
-                        severity="info"
-                        icon="pi pi-clone"
-                        class="m-4"
-                        alt="Klonuj pozycję"
-                        pTooltip="Klonuj pozycję"
-                        (click)="clonePosition(formData[i].id)"
-                      />
-                    </div>
-                    <div class="flex-center">
-                      <p-button
-                        severity="danger"
-                        class="m-4"
-                        icon="pi pi-trash"
-                        alt="Usuń pozycję"
-                        pTooltip="Usuń pozycję"
-                        (click)="deletePosition(formData[i].id)"
-                      />
-                    </div>
+                  <!-- position action buttons  -->
+                  <div class="position-actions flex-center">
+                    <p-button
+                      severity="contrast"
+                      icon="pi pi-bars"
+                      class="m-4"
+                      alt="Przegiągnij, aby zmienić pozycję"
+                      pTooltip="Przegiągnij, aby zmienić pozycję"
+                      pReorderableRowHandle
+                    />
+                    <p-button
+                      severity="primary"
+                      icon="pi pi-plus"
+                      class="m-4"
+                      alt="Nowa pusta pozycja"
+                      pTooltip="Nowa pusta pozycja"
+                      (click)="addEmptyPosition(formData[i].kolejnosc)"
+                    />
+                    <p-button
+                      severity="info"
+                      icon="pi pi-clone"
+                      class="m-4"
+                      alt="Klonuj pozycję"
+                      pTooltip="Klonuj pozycję"
+                      (click)="clonePosition(formData[i].id)"
+                    />
+                    <p-button
+                      severity="danger"
+                      class="m-4"
+                      icon="pi pi-trash"
+                      alt="Usuń pozycję"
+                      pTooltip="Usuń pozycję"
+                      (click)="deletePosition(formData[i].id)"
+                    />
                   </div>
                 </td>
                 <!-- main content  -->
@@ -200,10 +182,11 @@
                   *ngFor="let column of columnList"
                   pEditableColumn
                   [pEditableColumnField]="column.key"
-                  [ngClass]="column.classRow"
+                  [ngClass]="column.classColumn"
                   [ngStyle]="{ width: column?.width + 'px' }"
                 >
                   <p-cellEditor>
+                    <!-- EDIT MODE  -->
                     <ng-template pTemplate="input" [ngSwitch]="column.type">
                       <ng-container *ngIf="!column.readOnly">
                         <!-- EDIT MODE -> type = number  -->
@@ -221,11 +204,11 @@
                         <!-- EDIT MODE -> type = select  -->
                         <p-select
                           *ngSwitchCase="'select'"
-                          [options]="allSuppliers"
+                          [options]="columnOptions[column.optionList]"
                           [(ngModel)]="formData[i][column.key]"
                           (onChange)="applyAction($event, i, column)"
                           appendTo="body"
-                          optionLabel="firma"
+                          [optionLabel]="column.optionLabel"
                         />
                         <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">
@@ -274,6 +257,7 @@
                         </span>
                       </ng-container>
                     </ng-template>
+                    <!-- VIEW MODE  -->
                     <ng-template pTemplate="output">
                       <span class="view-mode" [ngSwitch]="column.type">
                         <!-- VIEW MODE -> type = number  -->
@@ -281,7 +265,7 @@
                           {{ formData[i][column.key] | number : "1.2-2" }}
                         </div>
                         <div *ngSwitchCase="'select'">
-                          {{ formData[i][column.key]?.firma }}
+                          {{ column.optionLabel ? formData[i][column.key]?.[column.optionLabel] : formData[i][column.key] }}
                         </div>
                         <!-- VIEW MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="view-mode-image">

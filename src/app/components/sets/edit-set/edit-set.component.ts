@@ -36,9 +36,10 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { SetStatus } from '../types/SetStatus';
-import { columnList, IColumnList } from './column-list';
+import { ColumnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
+import { PositionStatus } from './PositionStatus';
 
 @Component({
   selector: 'app-set',
@@ -75,7 +76,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   isLoading = true;
   editHeaderDialog = false;
   isEdited = false;
-  columnList = columnList;
+  columnList = ColumnList;
   editHeaderProps!: ISetHeader;
   footerRow: IFooterRow[] = [
     {
@@ -88,11 +89,14 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       key: 'actions',
       type: 'string',
     },
-    ...columnList,
+    ...ColumnList,
   ];
   positionToDelete: number[] = [];
   allSuppliers: ISupplier[] = [];
+  positionStatus = PositionStatus;
+  columnOptions: { [key: string]: any[] } = {};
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
+  DEFAULT_COLUMN_WIDTH = 200;
 
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
@@ -131,6 +135,13 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       next: ({ set, positions, suppliers }) => {
         this.positions = positions;
         this.allSuppliers = suppliers;
+
+        // map option list for select fields
+        this.columnOptions = {
+          allSuppliers: this.allSuppliers,
+          positionStatus: this.positionStatus,
+        };
+
         this.set = set;
         this.hasFiles =
           !!set.files &&
@@ -222,8 +233,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     if (selectedBookmark && Array.isArray(selectedBookmark)) {
       this.columnList = this.columnList.map((col: IColumnList) => {
         const matchingWidth = selectedBookmark.find((w) => w.name === col.name);
-
-        return matchingWidth ? { ...col, width: matchingWidth.width } : col;
+        return matchingWidth
+          ? { ...col, width: matchingWidth.width }
+          : { ...col, width: this.DEFAULT_COLUMN_WIDTH };
       });
     }
   }
@@ -640,5 +652,18 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       +this.setId,
       this.set.name
     );
+  }
+
+  getRowClass(position: any): string {
+    switch (position.status) {
+      case 'zapłacony':
+        return 'row-green';
+      case 'różowy':
+        return 'row-pink';
+      case 'w trakcie wyceny':
+        return 'row-red';
+      default:
+        return '';
+    }
   }
 }

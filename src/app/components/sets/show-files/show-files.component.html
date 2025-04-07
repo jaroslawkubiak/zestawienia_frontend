@@ -6,8 +6,8 @@
 >
   <div class="file-wrapper">
     <div class="title">Załączniki</div>
-    <ul *ngIf="attachments.length > 0">
-      <li *ngFor="let file of attachments; let i = index">
+    <ul class="file-container" *ngIf="attachments.length > 0">
+      <li class="file-item" *ngFor="let file of attachments; let i = index">
         @if(file.extension === 'JPEG' || file.extension === 'JPG' ||
         file.extension === 'PNG') {
         <!-- show image files -->
@@ -76,8 +76,8 @@
       </li>
     </ul>
     <div class="title">Zestawienia w PDF</div>
-    <ul *ngIf="attachments.length > 0">
-      <li *ngFor="let file of attachmentsPdf">
+    <ul class="file-container" *ngIf="attachments.length > 0">
+      <li class="file-item" *ngFor="let file of attachmentsPdf">
         <div class="file-pdf">
           <app-pdf-thumbnail
             [pdfUrl]="file.path"

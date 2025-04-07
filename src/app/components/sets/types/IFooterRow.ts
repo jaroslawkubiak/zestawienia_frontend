@@ -1,5 +1,3 @@
-import { SafeHtml } from '@angular/platform-browser';
-
 export type IFooterRow = {
   name: string;
   key: string;
@@ -7,6 +5,7 @@ export type IFooterRow = {
   value?: number | string;
   unit?: string;
   classHeader?: string;
+  classColumn?: string;
   classRow?: string;
   classFooter?: string;
 };

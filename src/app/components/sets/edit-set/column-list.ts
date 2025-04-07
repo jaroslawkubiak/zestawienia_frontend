@@ -2,23 +2,25 @@ export interface IColumnList {
   name: string;
   key: string;
   type: 'number' | 'string' | 'select' | 'image';
-  classHeader?: string;
-  classRow?: string;
-  classFooter?: string;
-  width?: number;
   value?: number | string;
   unit?: string;
+  width?: number;
   readOnly?: boolean;
+  classHeader?: string;
+  classColumn?: string;
+  classFooter?: string;
+  optionList?: any;
+  optionLabel?: string;
   // action?: (value: any) => any;
 }
 
-export const columnList: IColumnList[] = [
+export const ColumnList: IColumnList[] = [
   {
     name: 'id',
     key: 'id',
     type: 'string',
     classHeader: 'hidden',
-    classRow: 'hidden',
+    classColumn: 'hidden',
     classFooter: 'hidden',
   },
   {
@@ -26,13 +28,20 @@ export const columnList: IColumnList[] = [
     key: 'kolejnosc',
     type: 'string',
     classHeader: 'hidden',
-    classRow: 'hidden',
+    classColumn: 'hidden',
     classFooter: 'hidden',
   },
   {
     name: 'ZDJĘCIE',
     key: 'image',
     type: 'image',
+  },
+  {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
   },
   {
     name: 'PRODUKT',
@@ -48,7 +57,9 @@ export const columnList: IColumnList[] = [
     name: 'DOSTAWCA',
     key: 'supplierId',
     type: 'select',
-    classRow: 'select-field',
+    classColumn: 'select-field',
+    optionList: 'allSuppliers',
+    optionLabel: 'firma',
   },
   {
     name: 'KOLEKCJA/SERIA',
@@ -83,7 +94,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classRow: 'read-only',
+    classColumn: 'read-only',
   },
   {
     name: 'WARTOŚĆ NETTO',
@@ -91,7 +102,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classRow: 'read-only',
+    classColumn: 'read-only',
   },
   {
     name: 'WARTOŚĆ BRUTTO',
@@ -99,7 +110,7 @@ export const columnList: IColumnList[] = [
     type: 'number',
     unit: 'PLN',
     readOnly: true,
-    classRow: 'read-only',
+    classColumn: 'read-only',
   },
   {
     name: 'POMIESZCZENIE',

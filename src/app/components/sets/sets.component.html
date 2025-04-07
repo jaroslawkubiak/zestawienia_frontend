@@ -1,3 +1,6 @@
+<app-send-files />
+<app-show-files />
+
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
@@ -80,9 +83,6 @@
       </tr>
     </ng-template>
     <ng-template #body let-set let-i="rowIndex">
-      <app-send-files />
-      <app-show-files />
-
       <tr (click)="editSet(set.id)" class="row">
         <td>
           <div class="flex-center">
@@ -116,7 +116,9 @@
             class="m-4"
             severity="warn"
             alt="Załączniki"
-            pTooltip="{{ set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
+            pTooltip="{{
+              set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
+            }}"
             [disabled]="!set.hasFiles"
             (click)="showAttachedFiles(set.id, set.name)"
           />

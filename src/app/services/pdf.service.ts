@@ -1,13 +1,12 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { columnList } from '../components/sets/edit-set/column-list';
+import { ColumnList } from '../components/sets/edit-set/column-list';
 import { IPosition } from '../components/sets/types/IPosition';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { FilesService } from './files.service';
 import { NotificationService } from './notification.service';
-import { getFormatedDate } from '../shared/helpers/getFormatedDate';
 
 interface IImage {
   base64: string;
@@ -24,7 +23,7 @@ export class PdfService {
   robotoBoldBase64: string = '';
   pageWidth: number = 0;
   pageHeight: number = 0;
-  columnList = columnList;
+  columnList = ColumnList;
   colors = {
     accent: '#3bbfa1',
     accentLighter: '#e5fff9',
@@ -102,7 +101,7 @@ export class PdfService {
         const imageMap = new Map<string, IImage>();
         await Promise.all(
           sortPositions.map(async (row) => {
-            if(!row.image) {
+            if (!row.image) {
               return;
             }
 
