@@ -39,7 +39,7 @@ import { SetStatus } from '../types/SetStatus';
 import { ColumnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
-import { PositionStatus } from './PositionStatus';
+import { IPositionStatus, PositionStatusList } from './PositionStatus';
 
 @Component({
   selector: 'app-set',
@@ -93,8 +93,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   ];
   positionToDelete: number[] = [];
   allSuppliers: ISupplier[] = [];
-  positionStatus = PositionStatus;
-  columnOptions: { [key: string]: any[] } = {};
+  positionStatus: IPositionStatus[] = PositionStatusList;
+  dropwownColumnOptions: { [key: string]: any[] } = {};
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
   DEFAULT_COLUMN_WIDTH = 200;
 
@@ -137,7 +137,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.allSuppliers = suppliers;
 
         // map option list for select fields
-        this.columnOptions = {
+        this.dropwownColumnOptions = {
           allSuppliers: this.allSuppliers,
           positionStatus: this.positionStatus,
         };
@@ -207,7 +207,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.formData = this.positionsFromBookmark.map((position: IPosition) => {
       let obj: any = {};
       this.columnList.forEach((column) => {
-        if (column.key === 'supplierId') {
+        if (position.status && column.key === 'status') {
+          obj[column.key] =
+            this.positionStatus.find((s) => s.label === position.status) ||
+            null;
+        } else if (column.key === 'supplierId') {
           obj[column.key] = position.supplierId
             ? this.allSuppliers.find((s) => s.id === position.supplierId.id) ||
               null
@@ -464,9 +468,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   onSubmit() {
     this.updatePosition();
 
+    // need extract status.label from status object to save in DB
+    const updatedPositions = this.positions.map((item: any) => ({
+      ...item,
+      status: item.status?.label || item.status,
+    }));
+
     const savedSet: IUpdateSet = {
       set: this.set,
-      positions: this.positions,
+      positions: updatedPositions,
       positionToDelete: this.positionToDelete,
     };
 
@@ -654,16 +664,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     );
   }
 
+  // get css class for row based on column status
   getRowClass(position: any): string {
-    switch (position.status) {
-      case 'zapłacony':
-        return 'row-green';
-      case 'różowy':
-        return 'row-pink';
-      case 'w trakcie wyceny':
-        return 'row-red';
-      default:
-        return '';
-    }
+    return position.status?.cssClass || '';
   }
 }

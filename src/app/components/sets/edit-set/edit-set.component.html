@@ -204,11 +204,12 @@
                         <!-- EDIT MODE -> type = select  -->
                         <p-select
                           *ngSwitchCase="'select'"
-                          [options]="columnOptions[column.optionList]"
+                          [options]="dropwownColumnOptions[column.optionList]"
                           [(ngModel)]="formData[i][column.key]"
                           (onChange)="applyAction($event, i, column)"
                           appendTo="body"
                           [optionLabel]="column.optionLabel"
+                          [showClear]="true"
                         />
                         <!-- EDIT MODE -> type = image  -->
                         <div *ngSwitchCase="'image'" class="edit-mode-image">

@@ -42,6 +42,7 @@ export const ColumnList: IColumnList[] = [
     type: 'select',
     classColumn: 'select-field',
     optionList: 'positionStatus',
+    optionLabel: 'label',
   },
   {
     name: 'PRODUKT',

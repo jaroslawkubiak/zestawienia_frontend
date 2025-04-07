@@ -161,6 +161,7 @@ th {
 }
 
 .no-arrows {
+  appearance: textfield;
   -moz-appearance: textfield;
 }
 
@@ -187,6 +188,7 @@ th {
 
 .p-select {
   all: unset !important;
+  position: relative !important;
   padding: 0 4px !important;
   font-size: 1.2rem !important;
   background-color: var(--accent-color-lighter) !important;
@@ -205,6 +207,16 @@ th {
 
 ::ng-deep .p-select-option:hover {
   background-color: var(--accent-color-lighter) !important;
+}
+
+::ng-deep .p-select-clear-icon {
+  margin-right: 10px !important;
+  color: var(--accent-color-darker) !important;
+  top: 72px !important;
+}
+
+::ng-deep .p-iconwrapper {
+  color: var(--accent-color-darker) !important;
 }
 
 .select-field {
