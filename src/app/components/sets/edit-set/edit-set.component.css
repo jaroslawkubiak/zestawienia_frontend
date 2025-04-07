@@ -215,7 +215,7 @@ th {
   top: 72px !important;
 }
 
-::ng-deep .p-iconwrapper {
+::ng-deep .p-select-dropdown .p-iconwrapper {
   color: var(--accent-color-darker) !important;
 }
 

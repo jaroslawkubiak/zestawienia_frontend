@@ -57,7 +57,7 @@ export class ShowFilesComponent {
         | 'JPG'
         | 'PDF';
       return {
-        id: Math.floor(Math.random() * 99),
+        id: Math.floor(Math.random() * 9999),
         name: file,
         shortName: fileParts[0],
         extension: extension,
@@ -70,7 +70,7 @@ export class ShowFilesComponent {
       const fileParts = file.split('.');
       const extension = fileParts[fileParts.length - 1].toUpperCase() as 'PDF';
       return {
-        id: Math.floor(Math.random() * 99),
+        id: Math.floor(Math.random() * 9999),
         name: file,
         shortName: fileParts[0],
         extension: extension,

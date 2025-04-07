@@ -88,8 +88,9 @@ p {
 
 .action-btns {
   display: flex;
-  width: 100%;
+  align-items: center;
   justify-content: space-between;
+  width: 100%;
 }
 
 .p-image-toolbar {
@@ -114,6 +115,8 @@ p {
   background-color: rgba(0, 0, 0, 0.747) !important;
 }
 
-app-pdf-thumbnail {
-  cursor: pointer;
+#file-icon i,
+#file-icons i {
+  color: var(--neutral-color-darker) !important;
+  font-size: 2.4rem !important;
 }
