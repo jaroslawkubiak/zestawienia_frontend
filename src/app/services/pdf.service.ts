@@ -1,12 +1,20 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { ColumnList } from '../components/sets/edit-set/column-list';
+import {
+  ColumnList,
+  IColumnList,
+} from '../components/sets/edit-set/column-list';
 import { IPosition } from '../components/sets/types/IPosition';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { FilesService } from './files.service';
 import { NotificationService } from './notification.service';
+type ColumnStyles = {
+  [key: number]: {
+    cellWidth: number | 'auto';
+  };
+};
 
 interface IImage {
   base64: string;
@@ -36,8 +44,12 @@ export class PdfService {
     blue: '#00f',
   };
 
-  COLUMN_HEIGHT = 50;
+  COLUMN_HEIGHT = 60;
+  IMAGE_HORIZONTAL_PADDING = 3;
   BASE_URL = 'http://localhost:3005/uploads/sets/';
+  headers: string[][] = [];
+  visibleColumns: IColumnList[] = [];
+  columnStyles: ColumnStyles = {};
 
   constructor(
     private filesService: FilesService,
@@ -61,7 +73,7 @@ export class PdfService {
     }
 
     // create doc 'p' = portret, 'l' = landscape
-    const doc = new jsPDF('l', 'mm', 'a2');
+    const doc = new jsPDF('l', 'mm', 'a1');
     this.pageWidth = Math.floor(doc.internal.pageSize.width);
     this.pageHeight = Math.floor(doc.internal.pageSize.height);
 
@@ -75,9 +87,24 @@ export class PdfService {
     doc.setFontSize(10);
     doc.setTextColor(this.colors.black);
 
-    const headers = [
-      this.columnList.filter((col) => !col.classHeader).map((col) => col.name),
-    ];
+    this.visibleColumns = this.columnList.filter(
+      (col) => col.classHeader !== 'hidden'
+    );
+
+    console.log(this.visibleColumns);
+    let tableWidth = 0;
+    this.columnStyles = this.visibleColumns.reduce((styles, col, index) => {
+      tableWidth += col.pdfWidth || 0;
+      styles[index] = { cellWidth: col.pdfWidth || 'auto' };
+      return styles;
+    }, {} as { [key: number]: { cellWidth: number | 'auto' } });
+
+    console.log(`##### tableWidth=${tableWidth} #####`);
+    this.headers = [this.visibleColumns.map((col) => col.name)];
+
+    // find index of column needed in didDrawCell
+    const columnImageIndex = this.getColumnIndex('image');
+    const columnLinkIndex = this.getColumnIndex('link');
 
     const countsBookmarks = positions.map((pos) => {
       return pos.bookmarkId.id;
@@ -122,7 +149,7 @@ export class PdfService {
           })
         );
 
-        const footer: any = [['', '', '', '', '', '', '']];
+        const footer: any = [['', '', '', '', '', '', '', '']];
         let totals = {
           ilosc: 0,
           netto: 0,
@@ -154,6 +181,7 @@ export class PdfService {
               row.producent,
               row.supplierId?.firma || '',
               row.kolekcja,
+              row.status,
               row.nrKatalogowy,
               row.kolor,
               row.ilosc,
@@ -167,26 +195,21 @@ export class PdfService {
           })
         );
 
-        footer[0].push(totals.ilosc);
-        footer[0].push(`${totals.netto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.brutto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.wartoscNetto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.wartoscBrutto.toFixed(2)} PLN`);
         this.drawBookmarkName(doc, bookmark.name);
 
         // table
         autoTable(doc, {
-          head: headers,
+          head: this.headers,
           body: data,
-          foot: footer,
           margin: 0,
           startY: 20,
+          tableWidth: 'wrap',
           didParseCell: (data) => {
             // change link text to actual link
             if (
               data.cell.raw &&
               data.row.section === 'body' &&
-              data.column.index === 13
+              data.column.index === columnLinkIndex
             ) {
               data.cell.text = ['LINK'];
               data.cell.styles.textColor = '#2f9880';
@@ -199,7 +222,7 @@ export class PdfService {
             if (
               data.cell.raw &&
               data.row.section === 'body' &&
-              data.column.index === 0
+              data.column.index === columnImageIndex
             ) {
               data.cell.text = [''];
             }
@@ -208,14 +231,15 @@ export class PdfService {
             // for image type column
             if (
               data.row.section === 'body' &&
-              data.column.index === 0 &&
+              data.column.index === columnImageIndex &&
               data.row.index >= 0
             ) {
               const imageKey = data.cell.raw as string;
               const imageInfo = imageMap.get(imageKey);
 
               if (imageInfo) {
-                let imgWidth = this.COLUMN_HEIGHT; // max width
+                let imgWidth =
+                  this.COLUMN_HEIGHT - this.IMAGE_HORIZONTAL_PADDING; // max width
                 let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
 
                 if (imgHeight > this.COLUMN_HEIGHT) {
@@ -240,9 +264,8 @@ export class PdfService {
             }
 
             // for links in column Link
-            if (data.column.index === 13 && data.cell.raw) {
+            if (data.column.index === columnLinkIndex && data.cell.raw) {
               const url = data.cell.raw as string;
-
               doc.link(
                 data.cell.x,
                 data.cell.y,
@@ -276,10 +299,33 @@ export class PdfService {
             fillColor: '#2f9880',
           },
           theme: 'grid',
-          columnStyles: {
-            0: { cellWidth: this.COLUMN_HEIGHT }, // set width first column
-            1: { cellWidth: 70 }, // set width second column
+          columnStyles: this.columnStyles,
+        });
+
+        footer[0].push(totals.ilosc);
+        footer[0].push(`${totals.netto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.brutto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.wartoscNetto.toFixed(2)} PLN`);
+        footer[0].push(`${totals.wartoscBrutto.toFixed(2)} PLN`);
+        footer[0].push(``);
+        footer[0].push(``);
+
+        // draw footer
+        const finalY = (doc as any).lastAutoTable?.finalY || 20;
+
+        autoTable(doc, {
+          body: footer,
+          margin: 0,
+          startY: finalY,
+          bodyStyles: {
+            font: 'Roboto',
+            fontStyle: 'bold',
+            halign: 'center',
+            fillColor: '#2f9880',
+            textColor: '#fff',
           },
+          theme: 'grid',
+          columnStyles: this.columnStyles,
         });
 
         if (index !== uniqueBookmarksCount) {
@@ -292,6 +338,7 @@ export class PdfService {
     const totalPages = doc.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
+      const yyyy = new Date().getFullYear();
 
       this.drawRectLeft(
         doc,
@@ -301,6 +348,7 @@ export class PdfService {
         this.colors.red,
         `Zestawienie : ${set.name}`
       );
+
       this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.firma);
 
       this.drawRectFull(
@@ -317,7 +365,7 @@ export class PdfService {
         10,
         12,
         this.colors.white,
-        'Copyright @2025 Żurawicki Design'
+        `Copyright @${yyyy} Żurawicki Design`
       );
     }
 
@@ -329,21 +377,21 @@ export class PdfService {
     // window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
 
     // option 3 send file to backend
-    const pdfBlob = doc.output('blob');
-    const formData = new FormData();
-    formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
+    // const pdfBlob = doc.output('blob');
+    // const formData = new FormData();
+    // formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
 
-    this.filesService.savePdf(set.id, formData).subscribe({
-      next: (response) => {
-        this.notificationService.showNotification(
-          'success',
-          'Zestawienie w PDF zostało poprawnie wysłane na serwer'
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification('error', error.message);
-      },
-    });
+    // this.filesService.savePdf(set.id, formData).subscribe({
+    //   next: (response) => {
+    //     this.notificationService.showNotification(
+    //       'success',
+    //       'Zestawienie w PDF zostało poprawnie wysłane na serwer'
+    //     );
+    //   },
+    //   error: (error) => {
+    //     this.notificationService.showNotification('error', error.message);
+    //   },
+    // });
   }
 
   drawRectLeft(
@@ -466,5 +514,12 @@ export class PdfService {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
+  }
+
+  getColumnIndex(key: string) {
+    return this.headers[0].findIndex(
+      (name) =>
+        name === this.visibleColumns.find((col) => col.key === key)?.name
+    );
   }
 }

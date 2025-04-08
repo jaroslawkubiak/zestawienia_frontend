@@ -11,6 +11,7 @@ export interface IColumnList {
   classFooter?: string;
   optionList?: any;
   optionLabel?: string;
+  pdfWidth?: number | 50;
   // action?: (value: any) => any;
 }
 
@@ -35,24 +36,20 @@ export const ColumnList: IColumnList[] = [
     name: 'ZDJĘCIE',
     key: 'image',
     type: 'image',
+    pdfWidth: 60,
   },
-  {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-  },
+
   {
     name: 'PRODUKT',
     key: 'produkt',
     type: 'string',
+    pdfWidth: 50,
   },
   {
     name: 'PRODUCENT',
     key: 'producent',
     type: 'string',
+    pdfWidth: 50,
   },
   {
     name: 'DOSTAWCA',
@@ -61,33 +58,47 @@ export const ColumnList: IColumnList[] = [
     classColumn: 'select-field',
     optionList: 'allSuppliers',
     optionLabel: 'firma',
+    pdfWidth: 50,
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
+    pdfWidth: 100,
   },
-
+  {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
+    optionLabel: 'label',
+    pdfWidth: 50,
+  },
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
     type: 'string',
+    pdfWidth: 100,
   },
   {
     name: 'KOLOR',
     key: 'kolor',
     type: 'string',
+    pdfWidth: 50,
   },
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
     type: 'number',
+    pdfWidth: 30,
   },
   {
     name: 'CENA NETTO',
     key: 'netto',
     type: 'number',
     unit: 'PLN',
+    pdfWidth: 40,
   },
   {
     name: 'CENA BRUTTO',
@@ -96,6 +107,7 @@ export const ColumnList: IColumnList[] = [
     unit: 'PLN',
     readOnly: true,
     classColumn: 'read-only',
+    pdfWidth: 40,
   },
   {
     name: 'WARTOŚĆ NETTO',
@@ -104,6 +116,7 @@ export const ColumnList: IColumnList[] = [
     unit: 'PLN',
     readOnly: true,
     classColumn: 'read-only',
+    pdfWidth: 40,
   },
   {
     name: 'WARTOŚĆ BRUTTO',
@@ -112,15 +125,18 @@ export const ColumnList: IColumnList[] = [
     unit: 'PLN',
     readOnly: true,
     classColumn: 'read-only',
+    pdfWidth: 40,
   },
   {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
     type: 'string',
+    pdfWidth: 80,
   },
   {
     name: 'LINK',
     key: 'link',
     type: 'string',
+    pdfWidth: 30,
   },
 ];
