@@ -8,6 +8,7 @@ import {
 import { IPosition } from '../components/sets/types/IPosition';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
+import { getFormatedDate } from '../shared/helpers/getFormatedDate';
 import { FilesService } from './files.service';
 import { NotificationService } from './notification.service';
 type ColumnStyles = {
@@ -27,11 +28,19 @@ interface IImage {
 })
 export class PdfService {
   @ViewChild('tabela', { static: false }) tabela!: ElementRef;
-  robotoRegularBase64: string = '';
-  robotoBoldBase64: string = '';
-  pageWidth: number = 0;
-  pageHeight: number = 0;
-  columnList = ColumnList;
+  private robotoRegularBase64 = '';
+  private robotoBoldBase64 = '';
+  private pageWidth = 0;
+  private pageHeight = 0;
+  columnList: IColumnList[] = [
+    {
+      name: 'LP',
+      key: 'lp',
+      type: 'string',
+      pdfWidth: 10,
+    },
+    ...ColumnList,
+  ];
   colors = {
     accent: '#3bbfa1',
     accentLighter: '#e5fff9',
@@ -43,12 +52,14 @@ export class PdfService {
     green: '#0f0',
     blue: '#00f',
   };
-
-  COLUMN_HEIGHT = 60;
+  ROW_HEIGHT = 60;
   IMAGE_HORIZONTAL_PADDING = 3;
   BASE_URL = 'http://localhost:3005/uploads/sets/';
-  headers: string[][] = [];
-  visibleColumns: IColumnList[] = [];
+  visibleColumns = this.columnList.filter(
+    (col) => col.classHeader !== 'hidden'
+  );
+
+  headers: string[][] = [this.visibleColumns.map((col) => col.name)];
   columnStyles: ColumnStyles = {};
 
   constructor(
@@ -87,24 +98,23 @@ export class PdfService {
     doc.setFontSize(10);
     doc.setTextColor(this.colors.black);
 
-    this.visibleColumns = this.columnList.filter(
-      (col) => col.classHeader !== 'hidden'
-    );
-
-    console.log(this.visibleColumns);
-    let tableWidth = 0;
     this.columnStyles = this.visibleColumns.reduce((styles, col, index) => {
-      tableWidth += col.pdfWidth || 0;
       styles[index] = { cellWidth: col.pdfWidth || 'auto' };
       return styles;
     }, {} as { [key: number]: { cellWidth: number | 'auto' } });
 
-    console.log(`##### tableWidth=${tableWidth} #####`);
-    this.headers = [this.visibleColumns.map((col) => col.name)];
-
     // find index of column needed in didDrawCell
-    const columnImageIndex = this.getColumnIndex('image');
-    const columnLinkIndex = this.getColumnIndex('link');
+    const columnIndexes = this.visibleColumns.reduce<{ [key: string]: number }>(
+      (acc, col) => {
+        const key = col.key;
+        acc[col.key] = this.headers[0].findIndex(
+          (name) =>
+            name === this.visibleColumns.find((col) => col.key === key)?.name
+        );
+        return acc;
+      },
+      {}
+    );
 
     const countsBookmarks = positions.map((pos) => {
       return pos.bookmarkId.id;
@@ -149,7 +159,7 @@ export class PdfService {
           })
         );
 
-        const footer: any = [['', '', '', '', '', '', '', '']];
+        // totals for footer
         let totals = {
           ilosc: 0,
           netto: 0,
@@ -158,9 +168,10 @@ export class PdfService {
           wartoscBrutto: 0,
         };
 
-        // prepare data to display
+        // prepare main body data to display
         const data = await Promise.all(
-          sortPositions.map(async (row: IPosition) => {
+          sortPositions.map(async (row: IPosition, i: number) => {
+            const netto = row.netto ? row.netto : 0;
             const brutto = row.netto ? calculateBrutto(row.netto) : 0;
             const wartoscNetto = row.ilosc
               ? calculateWartosc(row.ilosc, row.netto)
@@ -175,23 +186,34 @@ export class PdfService {
             totals.wartoscNetto += wartoscNetto;
             totals.wartoscBrutto += wartoscBrutto;
 
-            return [
-              `${row.id}/${row.image}`,
-              row.produkt,
-              row.producent,
-              row.supplierId?.firma || '',
-              row.kolekcja,
-              row.status,
-              row.nrKatalogowy,
-              row.kolor,
-              row.ilosc,
-              row.netto,
-              brutto,
-              wartoscNetto,
-              wartoscBrutto,
-              row.pomieszczenie,
-              row.link,
-            ];
+            // prepare row in order according to visibleColumns
+            const formatRow = (row: any) => {
+              return this.visibleColumns.map((col) => {
+                const key = col.key;
+
+                // special case for couple columns ike image and supplier
+                switch (key) {
+                  case 'image':
+                    return `${row.id}/${row.image}`;
+                  case 'lp':
+                    return i + 1;
+                  case 'supplierId':
+                    return row.supplierId?.firma || '';
+                  case 'netto':
+                    return netto.toFixed(2) + ' PLN';
+                  case 'brutto':
+                    return brutto.toFixed(2) + ' PLN';
+                  case 'wartoscNetto':
+                    return wartoscNetto.toFixed(2) + ' PLN';
+                  case 'wartoscBrutto':
+                    return wartoscBrutto.toFixed(2) + ' PLN';
+                  default:
+                    return row[key];
+                }
+              });
+            };
+
+            return formatRow(row);
           })
         );
 
@@ -205,16 +227,24 @@ export class PdfService {
           startY: 20,
           tableWidth: 'wrap',
           didParseCell: (data) => {
+            // change style for column LP
+            if (data.column.index === 0) {
+              data.cell.styles.fillColor = '#2f9880';
+              data.cell.styles.textColor = '#fff';
+              data.cell.styles.fontSize = 12;
+              data.cell.styles.fontStyle = 'bold';
+            }
             // change link text to actual link
             if (
               data.cell.raw &&
               data.row.section === 'body' &&
-              data.column.index === columnLinkIndex
+              data.column.index === columnIndexes['link']
             ) {
               data.cell.text = ['LINK'];
               data.cell.styles.textColor = '#2f9880';
               data.cell.styles.fontSize = 12;
               data.cell.styles.fontStyle = 'bold';
+              data.cell.styles.halign = 'center';
               (data.cell as any).link = data.cell.raw;
             }
 
@@ -222,28 +252,38 @@ export class PdfService {
             if (
               data.cell.raw &&
               data.row.section === 'body' &&
-              data.column.index === columnImageIndex
+              data.column.index === columnIndexes['image']
             ) {
               data.cell.text = [''];
+            }
+
+            // align cell center
+            if (
+              data.column.index === columnIndexes['ilosc'] ||
+              data.column.index === columnIndexes['netto'] ||
+              data.column.index === columnIndexes['brutto'] ||
+              data.column.index === columnIndexes['wartoscNetto'] ||
+              data.column.index === columnIndexes['wartoscBrutto']
+            ) {
+              data.cell.styles.halign = 'center';
             }
           },
           didDrawCell: (data) => {
             // for image type column
             if (
               data.row.section === 'body' &&
-              data.column.index === columnImageIndex &&
+              data.column.index === columnIndexes['image'] &&
               data.row.index >= 0
             ) {
               const imageKey = data.cell.raw as string;
               const imageInfo = imageMap.get(imageKey);
 
               if (imageInfo) {
-                let imgWidth =
-                  this.COLUMN_HEIGHT - this.IMAGE_HORIZONTAL_PADDING; // max width
+                let imgWidth = this.ROW_HEIGHT - this.IMAGE_HORIZONTAL_PADDING; // max width
                 let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
 
-                if (imgHeight > this.COLUMN_HEIGHT) {
-                  imgHeight = this.COLUMN_HEIGHT;
+                if (imgHeight > this.ROW_HEIGHT) {
+                  imgHeight = this.ROW_HEIGHT;
                   imgWidth = (imageInfo.width / imageInfo.height) * imgHeight;
                 }
 
@@ -264,7 +304,7 @@ export class PdfService {
             }
 
             // for links in column Link
-            if (data.column.index === columnLinkIndex && data.cell.raw) {
+            if (data.column.index === columnIndexes['link'] && data.cell.raw) {
               const url = data.cell.raw as string;
               doc.link(
                 data.cell.x,
@@ -286,8 +326,8 @@ export class PdfService {
             fontStyle: 'normal',
             fillColor: this.colors.white,
             cellPadding: {
-              top: Math.floor(this.COLUMN_HEIGHT / 2),
-              bottom: Math.floor(this.COLUMN_HEIGHT / 2),
+              top: Math.floor(this.ROW_HEIGHT / 2),
+              bottom: Math.floor(this.ROW_HEIGHT / 2),
               right: 3,
               left: 3,
             },
@@ -302,13 +342,16 @@ export class PdfService {
           columnStyles: this.columnStyles,
         });
 
-        footer[0].push(totals.ilosc);
-        footer[0].push(`${totals.netto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.brutto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.wartoscNetto.toFixed(2)} PLN`);
-        footer[0].push(`${totals.wartoscBrutto.toFixed(2)} PLN`);
-        footer[0].push(``);
-        footer[0].push(``);
+        // calculate footer
+        const footerRow = this.visibleColumns.map(({ key }) => {
+          if (key === 'ilosc') return totals.ilosc;
+
+          const value = totals[key as keyof typeof totals];
+          return value !== undefined && typeof value === 'number'
+            ? `${value.toFixed(2)} PLN`
+            : '';
+        });
+        const footer = [footerRow];
 
         // draw footer
         const finalY = (doc as any).lastAutoTable?.finalY || 20;
@@ -338,7 +381,6 @@ export class PdfService {
     const totalPages = doc.getNumberOfPages();
     for (let i = 1; i <= totalPages; i++) {
       doc.setPage(i);
-      const yyyy = new Date().getFullYear();
 
       this.drawRectLeft(
         doc,
@@ -348,9 +390,7 @@ export class PdfService {
         this.colors.red,
         `Zestawienie : ${set.name}`
       );
-
       this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.firma);
-
       this.drawRectFull(
         doc,
         this.pageHeight - 20,
@@ -365,33 +405,45 @@ export class PdfService {
         10,
         12,
         this.colors.white,
-        `Copyright @${yyyy} Żurawicki Design`
+        `Copyright @${new Date().getFullYear()} Żurawicki Design`
       );
     }
 
-    // option 1 save PDF file
-    // doc.save(`zestawienie-${set.id}-${getFormatedDate()}.pdf`);
+    const finalAction: Array<'save' | 'open' | 'send'> = [
+      // 'save',
+      'open',
+      // 'send',
+    ];
 
-    // option 2 open in new window, file dont download
-    // const pdfUrl = doc.output('bloburl'); // Generuje URL do PDF
-    // window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
+    // execute final actions
+    finalAction.forEach((action) => {
+      switch (action) {
+        case 'save':
+          doc.save(`zestawienie-${set.id}-${getFormatedDate()}.pdf`);
+          break;
+        case 'open':
+          const pdfUrl = doc.output('bloburl'); // Generuje URL do PDF
+          window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
+          break;
+        case 'send':
+          const pdfBlob = doc.output('blob');
+          const formData = new FormData();
+          formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
 
-    // option 3 send file to backend
-    // const pdfBlob = doc.output('blob');
-    // const formData = new FormData();
-    // formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
-
-    // this.filesService.savePdf(set.id, formData).subscribe({
-    //   next: (response) => {
-    //     this.notificationService.showNotification(
-    //       'success',
-    //       'Zestawienie w PDF zostało poprawnie wysłane na serwer'
-    //     );
-    //   },
-    //   error: (error) => {
-    //     this.notificationService.showNotification('error', error.message);
-    //   },
-    // });
+          this.filesService.savePdf(set.id, formData).subscribe({
+            next: (response) => {
+              this.notificationService.showNotification(
+                'success',
+                'Zestawienie w PDF zostało poprawnie wysłane na serwer'
+              );
+            },
+            error: (error) => {
+              this.notificationService.showNotification('error', error.message);
+            },
+          });
+          break;
+      }
+    });
   }
 
   drawRectLeft(
@@ -514,12 +566,5 @@ export class PdfService {
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
-  }
-
-  getColumnIndex(key: string) {
-    return this.headers[0].findIndex(
-      (name) =>
-        name === this.visibleColumns.find((col) => col.key === key)?.name
-    );
   }
 }

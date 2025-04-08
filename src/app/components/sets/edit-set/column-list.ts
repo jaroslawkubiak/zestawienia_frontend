@@ -2,7 +2,6 @@ export interface IColumnList {
   name: string;
   key: string;
   type: 'number' | 'string' | 'select' | 'image';
-  value?: number | string;
   unit?: string;
   width?: number;
   readOnly?: boolean;
@@ -38,7 +37,6 @@ export const ColumnList: IColumnList[] = [
     type: 'image',
     pdfWidth: 60,
   },
-
   {
     name: 'PRODUKT',
     key: 'produkt',
@@ -52,34 +50,16 @@ export const ColumnList: IColumnList[] = [
     pdfWidth: 50,
   },
   {
-    name: 'DOSTAWCA',
-    key: 'supplierId',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'allSuppliers',
-    optionLabel: 'firma',
-    pdfWidth: 50,
-  },
-  {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
     pdfWidth: 100,
   },
   {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-    pdfWidth: 50,
-  },
-  {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
     type: 'string',
-    pdfWidth: 100,
+    pdfWidth: 90,
   },
   {
     name: 'KOLOR',
@@ -132,6 +112,24 @@ export const ColumnList: IColumnList[] = [
     key: 'pomieszczenie',
     type: 'string',
     pdfWidth: 80,
+  },
+  {
+    name: 'DOSTAWCA',
+    key: 'supplierId',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'allSuppliers',
+    optionLabel: 'firma',
+    pdfWidth: 50,
+  },
+  {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
+    optionLabel: 'label',
+    pdfWidth: 50,
   },
   {
     name: 'LINK',
