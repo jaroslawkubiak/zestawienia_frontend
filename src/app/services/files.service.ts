@@ -50,7 +50,7 @@ export class FilesService {
 
   // download file as blob
   downloadFile(
-    setId: string,
+    setId: number,
     innerPath: string,
     fileName: string
   ): Observable<Blob> {
@@ -63,7 +63,7 @@ export class FilesService {
   }
 
   // download file and save on client
-  downloadAndSaveFile(setId: string, file: IFileDetails): void {
+  downloadAndSaveFile(setId: number, file: IFileDetails): void {
     this.downloadFile(setId, file.dir, file.name).subscribe(
       (fileBlob: Blob) => {
         saveAs(fileBlob, file.name);
@@ -71,7 +71,7 @@ export class FilesService {
     );
   }
 
-  deleteFile(setId: string, file: IFileDetails): Observable<any> {
+  deleteFile(setId: number, file: IFileDetails): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });

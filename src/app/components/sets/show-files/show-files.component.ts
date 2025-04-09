@@ -35,7 +35,7 @@ export class ShowFilesComponent {
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService
   ) {}
-  setId: string = '';
+  setId!: number;
   setName: string = '';
   displayPdf = false;
   displayPdfHeader: string = '';
@@ -45,7 +45,7 @@ export class ShowFilesComponent {
   attachmentsPdf: IFileDetails[] = [];
   showFilesDialog = false;
 
-  showDialog(setId: string, setName: string, filesList: IFileList) {
+  showDialog(setId: number, setName: string, filesList: IFileList) {
     this.setId = setId;
     this.setName = setName;
     this.showFilesDialog = true;

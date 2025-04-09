@@ -1,6 +1,3 @@
-<app-send-files />
-<app-show-files />
-
 <!-- spinner when loading data  -->
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
@@ -42,7 +39,7 @@
         [disabled]="isEdited"
         (click)="isEdited ? '' : generatePDF()"
       />
-      <p-button
+      <!-- <p-button
         severity="contrast"
         icon="pi pi-paperclip"
         alt="Załączniki"
@@ -50,15 +47,15 @@
         tooltipPosition="bottom"
         (click)="showAttachedFiles()"
         [disabled]="!hasFiles"
-      />
-      <p-button
+      /> -->
+      <!-- <p-button
         severity="contrast"
         icon="pi pi-upload"
         alt="Prześlij pliki"
         pTooltip="Prześlij pliki"
         tooltipPosition="bottom"
         (click)="openSendFilesDialog()"
-      />
+      /> -->
     </div>
     <div class="set-header">
       <div class="set-header-cell">
@@ -336,4 +333,3 @@
     }
   </div>
 </div>
-

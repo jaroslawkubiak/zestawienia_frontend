@@ -4,6 +4,7 @@ import {
   Input,
   OnInit,
   Output,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
@@ -15,10 +16,21 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
 import { ISet } from '../types/ISet';
 import { NotificationService } from '../../../services/notification.service';
+import { SendFilesComponent } from '../send-files/send-files.component';
+import { ShowFilesComponent } from '../show-files/show-files.component';
+import { EditSetService } from '../edit-set/edit-set.service';
+import { IFileList } from '../../../services/types/IFileList';
 
 @Component({
   selector: 'app-set-menu',
-  imports: [MenubarModule, Menubar, Dialog, EditHeaderComponent],
+  imports: [
+    MenubarModule,
+    Menubar,
+    Dialog,
+    EditHeaderComponent,
+    SendFilesComponent,
+    ShowFilesComponent,
+  ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
 })
@@ -28,12 +40,21 @@ export class SetMenuComponent implements OnInit {
   @Input() selectedBookmarks!: IBookmark[];
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
+  @ViewChild(SendFilesComponent, { static: false })
+  dialogSendFilesComponent!: SendFilesComponent;
+  @ViewChild(ShowFilesComponent, { static: false })
+  dialogShowFilesComponent!: ShowFilesComponent;
+
   editHeaderDialog = false;
   editHeaderProps: any;
-  constructor(private notificationService: NotificationService) {}
+  constructor(
+    private notificationService: NotificationService,
+    private editSetService: EditSetService
+  ) {}
 
   ngOnInit() {}
 
+  // open edit set header dialog
   editHeader() {
     this.editHeaderProps = {
       name: this.set.name,
@@ -43,10 +64,12 @@ export class SetMenuComponent implements OnInit {
     this.editHeaderDialog = true;
   }
 
+  // close edit set header dialog
   hideDialog() {
     this.editHeaderDialog = false;
   }
 
+  // change data after set header
   onSetHeaderChange(headerData: ISetHeader) {
     const originalMap = new Map(
       this.set.bookmarks.map((item: IBookmark) => [item.id, item])
@@ -68,5 +91,26 @@ export class SetMenuComponent implements OnInit {
       'Nagłówek zestawienia został zmieniony'
     );
     this.editStarted.emit();
+  }
+
+  // open send files dialog
+  openSendFilesDialog() {
+    this.dialogSendFilesComponent.openSendFilesDialog(
+      this.set.id,
+      this.set.name
+    );
+  }
+
+  // show attached files to set
+  showAttachedFiles() {
+    this.editSetService.getSetFiles(this.set.id).subscribe({
+      next: (response: IFileList) => {
+        this.dialogShowFilesComponent.showDialog(
+          this.set.id,
+          this.set.name,
+          response
+        );
+      },
+    });
   }
 }

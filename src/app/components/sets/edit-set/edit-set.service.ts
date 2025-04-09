@@ -47,7 +47,7 @@ export class EditSetService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getPositions(setId: string): Observable<IPosition[]> {
+  getPositions(setId: number): Observable<IPosition[]> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -59,7 +59,7 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  getSet(setId: string): Observable<ISet> {
+  getSet(setId: number): Observable<ISet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -71,7 +71,7 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  getSetFiles(setId: string): Observable<IFileList> {
+  getSetFiles(setId: number): Observable<IFileList> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -83,7 +83,7 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  loadSetData(setId: string): Observable<ICompleteSet> {
+  loadSetData(setId: number): Observable<ICompleteSet> {
     return forkJoin({
       set: this.getSet(setId),
       positions: this.getPositions(setId),
@@ -93,7 +93,9 @@ export class EditSetService {
         const updatedPositions = positions.map((position) => ({
           ...position,
           status: position.status
-            ? this.positionStatus.find((item) => position.status === item.label) || ''
+            ? this.positionStatus.find(
+                (item) => position.status === item.label
+              ) || ''
             : position.status,
         }));
 

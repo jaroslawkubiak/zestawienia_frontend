@@ -18,7 +18,7 @@ export class EmailService {
     private editSetService: EditSetService
   ) {}
 
-  sendEmail(setId: string): Observable<any> {
+  sendEmail(setId: number): Observable<any> {
     return this.editSetService.getSet(setId).pipe(
       switchMap((set) => {
         const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}`;

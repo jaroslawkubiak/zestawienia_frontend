@@ -161,7 +161,7 @@ export class SetsComponent implements OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setName);
   }
 
-  showAttachedFiles(setId: string, setName: string) {
+  showAttachedFiles(setId: number, setName: string) {
     this.editSetService.getSetFiles(setId).subscribe({
       next: (response: IFileList) => {
         this.dialogShowFilesComponent.showDialog(setId, setName, response);

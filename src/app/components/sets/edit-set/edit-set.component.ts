@@ -24,7 +24,6 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
-import { SendFilesComponent } from '../send-files/send-files.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { ShowFilesComponent } from '../show-files/show-files.component';
 import { IClonePosition } from '../types/IClonePosition';
@@ -56,13 +55,11 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
     SelectModule,
     ImageClipboardInputComponent,
     TooltipModule,
-    SendFilesComponent,
-    ShowFilesComponent,
     SetMenuComponent,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
-  setId!: string;
+  setId!: number;
   set!: ISet;
   positions: IPosition[] = [];
   positionsFromBookmark: IPosition[] = [];
@@ -95,11 +92,11 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
   DEFAULT_COLUMN_WIDTH = 200;
 
-  @ViewChild(SendFilesComponent, { static: false })
-  dialogSendFilesComponent!: SendFilesComponent;
+  // @ViewChild(SendFilesComponent, { static: false })
+  // dialogSendFilesComponent!: SendFilesComponent;
 
-  @ViewChild(ShowFilesComponent, { static: false })
-  dialogShowFilesComponent!: ShowFilesComponent;
+  // @ViewChild(ShowFilesComponent, { static: false })
+  // dialogShowFilesComponent!: ShowFilesComponent;
 
   hasFiles = false;
 
@@ -122,7 +119,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.setId = params.get('id') || '';
+      this.setId = Number(params.get('id'));
       if (this.setId) {
         this.loadData();
       }
@@ -166,10 +163,12 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       {
         label: 'Załączniki',
         icon: 'pi pi-paperclip',
+        command: () => this.setMenuComponent.showAttachedFiles(),
       },
       {
         label: 'Prześlij pliki',
         icon: 'pi pi-upload',
+        command: () => this.setMenuComponent.openSendFilesDialog(),
       },
     ];
   }
@@ -664,25 +663,25 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // show attached files to set
-  showAttachedFiles() {
-    this.editSetService.getSetFiles(this.setId).subscribe({
-      next: (response: IFileList) => {
-        this.dialogShowFilesComponent.showDialog(
-          this.setId,
-          this.set.name,
-          response
-        );
-      },
-    });
-  }
+  // showAttachedFiles() {
+  //   this.editSetService.getSetFiles(this.setId).subscribe({
+  //     next: (response: IFileList) => {
+  //       this.dialogShowFilesComponent.showDialog(
+  //         this.setId,
+  //         this.set.name,
+  //         response
+  //       );
+  //     },
+  //   });
+  // }
 
-  // open send files dialog
-  openSendFilesDialog() {
-    this.dialogSendFilesComponent.openSendFilesDialog(
-      +this.setId,
-      this.set.name
-    );
-  }
+  // // open send files dialog
+  // openSendFilesDialog() {
+  //   this.dialogSendFilesComponent.openSendFilesDialog(
+  //     +this.setId,
+  //     this.set.name
+  //   );
+  // }
 
   // get css class for row based on column status
   getRowClass(position: any): string {

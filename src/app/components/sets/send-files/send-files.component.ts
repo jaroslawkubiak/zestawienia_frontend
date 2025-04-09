@@ -19,14 +19,14 @@ export class SendFilesComponent {
     private notificationService: NotificationService
   ) {}
   showSendFilesDialog = false;
-  setId: string = '';
+  setId!: number;
   setName: string = '';
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
   uploadProgress = 0;
   fileLimit = 10;
   openSendFilesDialog(setId: number, setName: string) {
-    this.setId = setId.toString();
+    this.setId = setId;
     this.setName = setName;
     this.showSendFilesDialog = true;
   }
