@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
@@ -21,12 +21,11 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
-import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SendFilesComponent } from '../send-files/send-files.component';
+import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { ShowFilesComponent } from '../show-files/show-files.component';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
@@ -55,12 +54,11 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
     InputTextModule,
     LoadingSpinnerComponent,
     SelectModule,
-    Dialog,
-    EditHeaderComponent,
     ImageClipboardInputComponent,
     TooltipModule,
     SendFilesComponent,
     ShowFilesComponent,
+    SetMenuComponent,
   ],
 })
 export class EditSetComponent implements OnInit, CanComponentDeactivate {
@@ -74,7 +72,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   pendingNavigation: Function | null = null;
   destination: string | undefined;
   isLoading = true;
-  editHeaderDialog = false;
   isEdited = false;
   columnList = ColumnList;
   editHeaderProps!: ISetHeader;
@@ -106,6 +103,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   hasFiles = false;
 
+  menuItems: MenuItem[] = [];
+  @ViewChild(SetMenuComponent) setMenuComponent!: SetMenuComponent;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -127,6 +127,51 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.loadData();
       }
     });
+
+    // create set menu
+    this.menuItems = [
+      {
+        label: 'Edytuj nagłówek',
+        icon: 'pi pi-file-edit',
+        command: () => this.setMenuComponent.editHeader(),
+      },
+      {
+        label: 'Wyślij email',
+        icon: 'pi pi-envelope',
+        items: [
+          {
+            label: 'Do klienta',
+            icon: 'pi pi-user',
+          },
+          {
+            label: 'Do dostawcy',
+            icon: 'pi pi-users',
+            items: [
+              {
+                label: 'dostawca 1',
+                icon: 'pi pi-truck',
+              },
+              {
+                label: 'dostawca 2',
+                icon: 'pi pi-truck',
+              },
+            ],
+          },
+        ],
+      },
+      {
+        label: 'Stwórz PDF',
+        icon: 'pi pi-file-pdf',
+      },
+      {
+        label: 'Załączniki',
+        icon: 'pi pi-paperclip',
+      },
+      {
+        label: 'Prześlij pliki',
+        icon: 'pi pi-upload',
+      },
+    ];
   }
 
   // load needed data from set
@@ -583,43 +628,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   }
 
   // edit set header
-  editHeader() {
-    this.editHeaderProps = {
-      name: this.set.name,
-      selectedStatus: this.set.status,
-      selectedBookmarks: this.selectedBookmarks,
-    };
-
-    this.editHeaderDialog = true;
-  }
-
-  // hide dialog with edit header
-  hideDialog() {
-    this.editHeaderDialog = false;
-  }
-
-  // set header data change
-  onSetHeaderChange(headerData: ISetHeader) {
-    const originalMap = new Map(
-      this.set.bookmarks.map((item: IBookmark) => [item.id, item])
-    );
-
-    this.set.bookmarks = headerData.selectedBookmarks.map(
-      (item: IBookmark) => ({
-        ...item,
-        width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
-      })
-    );
-    this.updateBookmarks();
-
-    this.set.name = headerData.name;
-    this.set.status = headerData.selectedStatus;
-
-    this.notificationService.showNotification(
-      'info',
-      'Nagłówek zestawienia został zmieniony'
-    );
-
+  onEditStarted() {
     this.isEdited = true;
   }
 

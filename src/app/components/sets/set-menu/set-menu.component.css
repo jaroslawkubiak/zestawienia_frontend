@@ -1,0 +1,48 @@
+::ng-deep .p-menubar-item-label,
+::ng-deep .p-menubar-item-icon {
+  font-size: 1.6rem !important;
+  color: var(--color-primary) !important;
+}
+
+::ng-deep .p-menubar-item-icon {
+  color: var(--accent-color-darker) !important;
+}
+
+::ng-deep .p-menubar {
+  /* background-color: var(--accent-color-darker) !important;  */
+  border: 2px solid var(--accent-color-darker) !important;
+  border-radius: 0 !important;
+  padding: 0 !important;
+}
+
+::ng-deep .p-menubar-root-list {
+  gap: 0px !important;
+}
+
+::ng-deep .p-menubar-item {
+  margin: 0 !important;
+}
+
+::ng-deep .p-menubar-item-content {
+  padding: 4px 12px !important;
+}
+
+::ng-deep .p-menubar-item-content:hover {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+::ng-deep .p-menubar-item-content.p-focus {
+  background-color: crimson !important;
+}
+
+::ng-deep .p-menubar-item-content {
+  border-radius: 0 !important;
+}
+
+::ng-deep .p-menubar-submenu {
+  border-radius: 0 !important;
+  min-width: 20rem !important;
+}
+::ng-deep .p-menubar-item-link {
+  gap: 8px !important;
+}

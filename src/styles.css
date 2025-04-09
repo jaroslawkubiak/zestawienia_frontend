@@ -10,6 +10,8 @@ html {
   --neutral-color: #e9efed;
   --neutral-color-darker: #c9cfcd;
 
+  --table-header-bc: #ebebeb;
+
   --accent-color: #3bbfa1;
   --accent-color-lighter: #e5fff9;
   --accent-color-darker: #2f9880;

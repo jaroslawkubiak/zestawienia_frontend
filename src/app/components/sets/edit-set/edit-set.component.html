@@ -7,16 +7,24 @@
 </div>
 <div *ngIf="!isLoading" class="set-container">
   <!-- set header  -->
+  <app-set-menu
+    [menuItems]="menuItems"
+    [set]="set"
+    [selectedBookmarks]="selectedBookmarks"
+    (editStarted)="onEditStarted()"
+    (updateBookmarks)="updateBookmarks()"
+  />
   <div class="set-header-wrapper flex-center" *ngIf="set">
+    <div class="set-header-menu"></div>
     <div class="set-header-menu">
-      <p-button
+      <!-- <p-button
         severity="contrast"
         icon="pi pi-file-edit"
         alt="Edytuj nagłowek zestawienia"
         pTooltip="Edytuj nagłowek zestawienia"
         tooltipPosition="bottom"
         (click)="editHeader()"
-      />
+      /> -->
       <p-button
         severity="contrast"
         icon="pi pi-envelope"
@@ -329,17 +337,3 @@
   </div>
 </div>
 
-<p-dialog
-  [(visible)]="editHeaderDialog"
-  [style]="{ width: '650px' }"
-  header="Edytuj zestawienie"
-  [modal]="true"
->
-  <ng-template #content>
-    <app-edit-header
-      [editHeader]="editHeaderProps"
-      (setHeaderChange)="onSetHeaderChange($event)"
-      (closeModal)="hideDialog()"
-    />
-  </ng-template>
-</p-dialog>
