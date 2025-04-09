@@ -53,7 +53,7 @@ export const ColumnList: IColumnList[] = [
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
     type: 'string',
-    pdfWidth: 100,
+    pdfWidth: 95,
   },
   {
     name: 'NR KATALOGOWY',

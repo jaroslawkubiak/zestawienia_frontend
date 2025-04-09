@@ -5,12 +5,18 @@ import {
   ColumnList,
   IColumnList,
 } from '../components/sets/edit-set/column-list';
+import {
+  IPositionStatus,
+  PositionStatusList,
+} from '../components/sets/edit-set/PositionStatus';
 import { IPosition } from '../components/sets/types/IPosition';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
+import { getCssVariable } from '../shared/helpers/getCssVariable';
 import { getFormatedDate } from '../shared/helpers/getFormatedDate';
 import { FilesService } from './files.service';
 import { NotificationService } from './notification.service';
+
 type ColumnStyles = {
   [key: number]: {
     cellWidth: number | 'auto';
@@ -37,31 +43,31 @@ export class PdfService {
       name: 'LP',
       key: 'lp',
       type: 'string',
-      pdfWidth: 10,
+      pdfWidth: 15,
     },
     ...ColumnList,
   ];
+
+  // get colors from css variables
   colors = {
-    accent: '#3bbfa1',
-    accentLighter: '#e5fff9',
-    accentDarker: '#2f9880',
-    black: '#000',
-    gray: '#888',
-    white: '#fff',
-    red: '#F00',
-    green: '#0f0',
-    blue: '#00f',
+    accent: getCssVariable('--accent-color'),
+    accentLighter: getCssVariable('--accent-color-lighter'),
+    accentDarker: getCssVariable('--accent-color-darker'),
+    black: getCssVariable('--black-color'),
+    neutral: getCssVariable('--neutral-color'),
+    neutralDarker: getCssVariable('--neutral-color-darker'),
+    white: getCssVariable('--white-color'),
   };
+
   ROW_HEIGHT = 60;
   IMAGE_HORIZONTAL_PADDING = 3;
   BASE_URL = 'http://localhost:3005/uploads/sets/';
   visibleColumns = this.columnList.filter(
     (col) => col.classHeader !== 'hidden'
   );
-
   headers: string[][] = [this.visibleColumns.map((col) => col.name)];
   columnStyles: ColumnStyles = {};
-
+  positionStatus: IPositionStatus[] = PositionStatusList;
   constructor(
     private filesService: FilesService,
     private notificationService: NotificationService
@@ -219,7 +225,7 @@ export class PdfService {
 
         this.drawBookmarkName(doc, bookmark.name);
 
-        // table
+        // main table
         autoTable(doc, {
           head: this.headers,
           body: data,
@@ -227,13 +233,29 @@ export class PdfService {
           startY: 20,
           tableWidth: 'wrap',
           didParseCell: (data) => {
+            // change row background according to status cell
+            const statusColumnIndex = columnIndexes['status'];
+            const rowArray = data.row.raw as any[];
+            const status = rowArray[statusColumnIndex];
+            if (status) {
+              const statusObj = this.positionStatus.find(
+                (s) => s.label === status
+              );
+
+              if (statusObj) {
+                const kolor = getCssVariable(statusObj.color);
+                data.cell.styles.fillColor = blendHexWithBackground(kolor);
+              }
+            }
+
             // change style for column LP
-            if (data.column.index === 0) {
-              data.cell.styles.fillColor = '#2f9880';
-              data.cell.styles.textColor = '#fff';
+            if (data.column.index === columnIndexes['lp']) {
+              data.cell.styles.fillColor = this.colors.accentDarker;
+              data.cell.styles.textColor = this.colors.white;
               data.cell.styles.fontSize = 12;
               data.cell.styles.fontStyle = 'bold';
             }
+
             // change link text to actual link
             if (
               data.cell.raw &&
@@ -241,7 +263,7 @@ export class PdfService {
               data.column.index === columnIndexes['link']
             ) {
               data.cell.text = ['LINK'];
-              data.cell.styles.textColor = '#2f9880';
+              data.cell.styles.textColor = this.colors.accentDarker;
               data.cell.styles.fontSize = 12;
               data.cell.styles.fontStyle = 'bold';
               data.cell.styles.halign = 'center';
@@ -257,14 +279,17 @@ export class PdfService {
               data.cell.text = [''];
             }
 
-            // align cell center
-            if (
-              data.column.index === columnIndexes['ilosc'] ||
-              data.column.index === columnIndexes['netto'] ||
-              data.column.index === columnIndexes['brutto'] ||
-              data.column.index === columnIndexes['wartoscNetto'] ||
-              data.column.index === columnIndexes['wartoscBrutto']
-            ) {
+            // align cell to center
+            const centeredColumns = [
+              'lp',
+              'ilosc',
+              'netto',
+              'brutto',
+              'wartoscNetto',
+              'wartoscBrutto',
+            ];
+
+            if (centeredColumns.includes(this.visibleColumns[data.column.index]?.key)) {
               data.cell.styles.halign = 'center';
             }
           },
@@ -319,24 +344,22 @@ export class PdfService {
             font: 'Roboto',
             fontStyle: 'bold',
             halign: 'center',
-            fillColor: '#2f9880',
+            valign: 'middle',
+            fillColor: this.colors.accentDarker,
+            textColor: this.colors.white,
+            minCellHeight: 15,
           },
           bodyStyles: {
             font: 'Roboto',
             fontStyle: 'normal',
             fillColor: this.colors.white,
+            textColor: this.colors.black,
             cellPadding: {
               top: Math.floor(this.ROW_HEIGHT / 2),
               bottom: Math.floor(this.ROW_HEIGHT / 2),
               right: 3,
               left: 3,
             },
-          },
-          footStyles: {
-            font: 'Roboto',
-            fontStyle: 'bold',
-            halign: 'center',
-            fillColor: '#2f9880',
           },
           theme: 'grid',
           columnStyles: this.columnStyles,
@@ -363,9 +386,11 @@ export class PdfService {
           bodyStyles: {
             font: 'Roboto',
             fontStyle: 'bold',
+            fillColor: this.colors.accentDarker,
+            textColor: this.colors.white,
             halign: 'center',
-            fillColor: '#2f9880',
-            textColor: '#fff',
+            valign: 'middle',
+            minCellHeight: 15,
           },
           theme: 'grid',
           columnStyles: this.columnStyles,
@@ -387,7 +412,7 @@ export class PdfService {
         0,
         14,
         14,
-        this.colors.red,
+        this.colors.white,
         `Zestawienie : ${set.name}`
       );
       this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.firma);
@@ -567,4 +592,27 @@ export class PdfService {
       reader.readAsDataURL(blob);
     });
   }
+}
+
+// blend alpha channel with white background - jsPDF doesn't support alpha channel
+function blendHexWithBackground(
+  hexWithAlpha: string,
+  background: [number, number, number] = [255, 255, 255]
+): [number, number, number] {
+  const hex = hexWithAlpha.replace('#', '');
+  const hasAlpha = hex.length === 8;
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+  const a = hasAlpha ? parseInt(hex.substring(6, 8), 16) / 255 : 1;
+
+  const blend = (channel: number, bg: number) =>
+    Math.round(channel * a + bg * (1 - a));
+
+  return [
+    blend(r, background[0]),
+    blend(g, background[1]),
+    blend(b, background[2]),
+  ];
 }

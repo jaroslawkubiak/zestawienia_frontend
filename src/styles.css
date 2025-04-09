@@ -16,6 +16,9 @@ html {
 
   --error-color: #e91e63;
 
+  --white-color: #fff;
+  --black-color: #000;
+
   --primary-bg-color: #f4f3f3;
   --secondary-bg-color: #212121;
   --neutral-bg-color: #e9efed;
@@ -30,10 +33,15 @@ html {
   --main-color-800: #841736;
   --main-color-900: #600a20;
 
+  /* position status color  */
+  --status-pink-color: #ffd1d640;
+  --status-green-color: #00ff3c40;
+  --status-red-color: #fb050540;
+
   /* position row height  */
   --row-height: 150px;
 
-  /* nadpisuje domyślny kolor Material */
+  /* nadpisuje domyślny kolor Primeng - Material Theme*/
   /* --p-primary-color: #600a20 !important; */
 }
 

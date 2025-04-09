@@ -235,13 +235,13 @@ th {
 }
 
 .row-pink {
-  background-color: #e91e6240 !important;
+  background-color: var(--status-pink-color) !important;
 }
 
 .row-green {
-  background-color: #45bd3240 !important;
+  background-color: var(--status-green-color) !important;
 }
 
 .row-red {
-  background-color: #e82d1840 !important;
+  background-color: var(--status-red-color) !important;
 }
