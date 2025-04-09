@@ -11,11 +11,8 @@ import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
-import { EmailService } from '../../../services/email.service';
 import { NotificationService } from '../../../services/notification.service';
-import { PdfService } from '../../../services/pdf.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
-import { IFileList } from '../../../services/types/IFileList';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -25,15 +22,12 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
-import { ShowFilesComponent } from '../show-files/show-files.component';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
-import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { SetStatus } from '../types/SetStatus';
 import { ColumnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
@@ -69,9 +63,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   pendingNavigation: Function | null = null;
   destination: string | undefined;
   isLoading = true;
-  isEdited = false;
+  setIsEdited = false;
   columnList = ColumnList;
-  editHeaderProps!: ISetHeader;
   footerRow: IFooterRow[] = [
     {
       name: 'lp',
@@ -91,15 +84,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   dropwownColumnOptions: { [key: string]: any[] } = {};
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
   DEFAULT_COLUMN_WIDTH = 200;
-
-  // @ViewChild(SendFilesComponent, { static: false })
-  // dialogSendFilesComponent!: SendFilesComponent;
-
-  // @ViewChild(ShowFilesComponent, { static: false })
-  // dialogShowFilesComponent!: ShowFilesComponent;
-
   hasFiles = false;
-
   menuItems: MenuItem[] = [];
   @ViewChild(SetMenuComponent) setMenuComponent!: SetMenuComponent;
 
@@ -109,8 +94,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
-    private emailService: EmailService,
-    private pdfService: PdfService,
     private footerService: FooterService,
     private cd: ChangeDetectorRef
   ) {
@@ -125,7 +108,17 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       }
     });
 
-    // create set menu
+    this.updateMenuItems();
+  }
+
+  // change state of set - mark as edited or not edited
+  isEdited(state: boolean) {
+    this.setIsEdited = state;
+    this.updateMenuItems();
+  }
+
+  // create menu items
+  updateMenuItems() {
     this.menuItems = [
       {
         label: 'Edytuj nagłówek',
@@ -139,6 +132,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           {
             label: 'Do klienta',
             icon: 'pi pi-user',
+            command: () => this.setMenuComponent.sendSetToClientViaEmail(),
           },
           {
             label: 'Do dostawcy',
@@ -159,6 +153,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       {
         label: 'Stwórz PDF',
         icon: 'pi pi-file-pdf',
+        disabled: this.setIsEdited,
+        command: () => this.setMenuComponent.generatePDF(),
       },
       {
         label: 'Załączniki',
@@ -303,7 +299,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // action when cell is finish editing
   applyAction(value: any, rowIndex: number, column: any): void {
-    this.isEdited = true;
+    this.isEdited(true);
     const newValue = value.srcElement?.value;
 
     // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
@@ -359,29 +355,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.footerRow = this.footerService.calculateFooterRow(this.footerRow, obj);
   }
 
-  // send set link to client
-  sendViaEmail() {
-    this.emailService.sendEmail(this.setId).subscribe({
-      next: (response) => {
-        this.isEdited = true;
-        this.set.status = SetStatus.sended;
-        this.notificationService.showNotification(
-          'success',
-          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
-        );
-      },
-      error: (error) => {
-        const sendigError = error?.error?.message
-          ? `${error.error.message} : ${error.error?.error}`
-          : 'Nie udało się wysłać emaila.';
-        this.notificationService.showNotification('error', sendigError);
-      },
-    });
-  }
-
   // add empty position
   addEmptyPosition(kolejnosc: number) {
-    this.isEdited = true;
+    this.isEdited(true);
 
     const bookmark = this.set.bookmarks.filter(
       (item) => item.id === this.selectedBookmark
@@ -415,7 +391,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // clone selected position
   clonePosition(positionId: number) {
-    this.isEdited = true;
+    this.isEdited(true);
 
     const originalPosition = this.formData.find(
       (item) => item.id === positionId
@@ -493,7 +469,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // mark position to be deleted after submit
   deletePosition(positionId: number) {
-    this.isEdited = true;
+    this.isEdited(true);
     this.resetFooter();
 
     this.formData = this.formData
@@ -537,7 +513,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
     this.editSetService.saveSet(savedSet).subscribe({
       next: (response) => {
-        this.isEdited = false;
+        this.isEdited(false);
         this.positionToDelete = [];
         if (response.updatedAt) {
           this.set.updatedAt = response.updatedAt;
@@ -555,7 +531,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // resize column event - save new column width to this.set.bookmark property
   onColResize(event: TableColResizeEvent) {
-    this.isEdited = true;
+    this.isEdited(true);
 
     this.cd.markForCheck();
     const columnName = event.element.innerText;
@@ -590,7 +566,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // prevent from exit when form was edited
   canDeactivate(destination?: string): Promise<boolean> {
-    if (this.isEdited) {
+    if (this.setIsEdited) {
       this.destination = destination;
       return new Promise((resolve) => {
         this.pendingNavigation = () => resolve(true);
@@ -626,14 +602,9 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
-  // edit set header
-  onEditStarted() {
-    this.isEdited = true;
-  }
-
   // when upload image from clipboard
   onImageUpload = (imageName: string, positionId: string) => {
-    this.isEdited = true;
+    this.setIsEdited = true;
 
     // fill image in position where image was uploaded
     this.formData = this.formData.map((item: IPosition) => {
@@ -647,7 +618,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // position reorder
   handleRowReorder(event: any) {
-    this.isEdited = true;
+    this.isEdited(true);
     this.updateOrder();
   }
 
@@ -657,31 +628,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       return { ...item, kolejnosc: index + 1 };
     });
   }
-
-  generatePDF() {
-    this.pdfService.generatePDF(this.set, this.positions);
-  }
-
-  // show attached files to set
-  // showAttachedFiles() {
-  //   this.editSetService.getSetFiles(this.setId).subscribe({
-  //     next: (response: IFileList) => {
-  //       this.dialogShowFilesComponent.showDialog(
-  //         this.setId,
-  //         this.set.name,
-  //         response
-  //       );
-  //     },
-  //   });
-  // }
-
-  // // open send files dialog
-  // openSendFilesDialog() {
-  //   this.dialogSendFilesComponent.openSendFilesDialog(
-  //     +this.setId,
-  //     this.set.name
-  //   );
-  // }
 
   // get css class for row based on column status
   getRowClass(position: any): string {

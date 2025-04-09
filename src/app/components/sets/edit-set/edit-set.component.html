@@ -3,81 +3,36 @@
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
 <div *ngIf="!isLoading" class="set-container">
-  <!-- set header  -->
+  <!-- set header menu -->
   <app-set-menu
     [menuItems]="menuItems"
     [set]="set"
+    [positions]="positions"
     [selectedBookmarks]="selectedBookmarks"
-    (editStarted)="onEditStarted()"
+    (editStarted)="isEdited(true)"
     (updateBookmarks)="updateBookmarks()"
   />
+  <!-- set header  -->
   <div class="set-header-wrapper flex-center" *ngIf="set">
-    <div class="set-header-menu"></div>
-    <div class="set-header-menu">
-      <!-- <p-button
-        severity="contrast"
-        icon="pi pi-file-edit"
-        alt="Edytuj nagłowek zestawienia"
-        pTooltip="Edytuj nagłowek zestawienia"
-        tooltipPosition="bottom"
-        (click)="editHeader()"
-      /> -->
-      <p-button
-        severity="contrast"
-        icon="pi pi-envelope"
-        alt="Wyślij email"
-        pTooltip="Wyślij email"
-        tooltipPosition="bottom"
-        (click)="sendViaEmail()"
-      />
-      <p-button
-        severity="contrast"
-        icon="pi pi-file-pdf"
-        alt="Stwórz PDF"
-        pTooltip="{{ isEdited ? 'Najpierw zapisz zmiany' : 'Stwórz PDF' }}"
-        tooltipPosition="bottom"
-        [disabled]="isEdited"
-        (click)="isEdited ? '' : generatePDF()"
-      />
-      <!-- <p-button
-        severity="contrast"
-        icon="pi pi-paperclip"
-        alt="Załączniki"
-        pTooltip="{{ hasFiles ? 'Pokaż załączniki' : 'Brak załączników' }}"
-        tooltipPosition="bottom"
-        (click)="showAttachedFiles()"
-        [disabled]="!hasFiles"
-      /> -->
-      <!-- <p-button
-        severity="contrast"
-        icon="pi pi-upload"
-        alt="Prześlij pliki"
-        pTooltip="Prześlij pliki"
-        tooltipPosition="bottom"
-        (click)="openSendFilesDialog()"
-      /> -->
+    <div class="set-header-cell">
+      <div class="set-header-title">Zestawienie</div>
+      <div class="set-header-value">{{ set.name }}</div>
     </div>
-    <div class="set-header">
-      <div class="set-header-cell">
-        <div class="set-header-title">Zestawienie</div>
-        <div class="set-header-value">{{ set.name }}</div>
-      </div>
-      <div class="set-header-cell">
-        <div class="set-header-title">Klient</div>
-        <div class="set-header-value">{{ set.clientId.firma }}</div>
-      </div>
-      <div class="set-header-cell">
-        <div class="set-header-title">Status</div>
-        <div class="set-header-value">{{ set.status }}</div>
-      </div>
-      <div class="set-header-cell">
-        <div class="set-header-title">Utworzone</div>
-        <div class="set-header-value">{{ set.createdAt }}</div>
-      </div>
-      <div class="set-header-cell">
-        <div class="set-header-title">Zaktualizowane</div>
-        <div class="set-header-value">{{ set.updatedAt }}</div>
-      </div>
+    <div class="set-header-cell">
+      <div class="set-header-title">Klient</div>
+      <div class="set-header-value">{{ set.clientId.firma }}</div>
+    </div>
+    <div class="set-header-cell">
+      <div class="set-header-title">Status</div>
+      <div class="set-header-value">{{ set.status }}</div>
+    </div>
+    <div class="set-header-cell">
+      <div class="set-header-title">Utworzone</div>
+      <div class="set-header-value">{{ set.createdAt }}</div>
+    </div>
+    <div class="set-header-cell">
+      <div class="set-header-title">Zaktualizowane</div>
+      <div class="set-header-value">{{ set.updatedAt }}</div>
     </div>
   </div>
   <p-tabs [value]="selectedBookmark" scrollable>
@@ -93,7 +48,10 @@
     <p-tabpanels>
       @for (bookmark of set.bookmarks; track bookmark.id) {
       <p-tabpanel [value]="bookmark.id">
-        <div [ngClass]="{ 'form-dirty': isEdited }" class="position-container">
+        <div
+          [ngClass]="{ 'form-dirty': setIsEdited }"
+          class="position-container"
+        >
           <p-table
             pEditableTable
             stripedRows
@@ -322,7 +280,7 @@
     </p-tabpanels>
   </p-tabs>
   <div class="m-10 flex-center">
-    @if(isEdited) {
+    @if(setIsEdited) {
     <p-button
       label="Zapisz"
       icon="pi pi-save"

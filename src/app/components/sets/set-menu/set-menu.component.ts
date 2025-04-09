@@ -2,24 +2,26 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { Dialog } from 'primeng/dialog';
-import { MenubarModule, Menubar } from 'primeng/menubar';
-import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { Menubar, MenubarModule } from 'primeng/menubar';
+import { EmailService } from '../../../services/email.service';
+import { NotificationService } from '../../../services/notification.service';
+import { PdfService } from '../../../services/pdf.service';
+import { IFileList } from '../../../services/types/IFileList';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { ISetHeader } from '../types/ISetHeader';
-import { ISet } from '../types/ISet';
-import { NotificationService } from '../../../services/notification.service';
+import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { EditSetService } from '../edit-set/edit-set.service';
 import { SendFilesComponent } from '../send-files/send-files.component';
 import { ShowFilesComponent } from '../show-files/show-files.component';
-import { EditSetService } from '../edit-set/edit-set.service';
-import { IFileList } from '../../../services/types/IFileList';
+import { IPosition } from '../types/IPosition';
+import { ISet } from '../types/ISet';
+import { ISetHeader } from '../types/ISetHeader';
+import { SetStatus } from '../types/SetStatus';
 
 @Component({
   selector: 'app-set-menu',
@@ -34,9 +36,10 @@ import { IFileList } from '../../../services/types/IFileList';
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
 })
-export class SetMenuComponent implements OnInit {
+export class SetMenuComponent {
   @Input() menuItems: MenuItem[] = [];
   @Input() set!: ISet;
+  @Input() positions!: IPosition[];
   @Input() selectedBookmarks!: IBookmark[];
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
@@ -44,15 +47,14 @@ export class SetMenuComponent implements OnInit {
   dialogSendFilesComponent!: SendFilesComponent;
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
-
   editHeaderDialog = false;
-  editHeaderProps: any;
+  editHeaderProps!: ISetHeader;
   constructor(
     private notificationService: NotificationService,
-    private editSetService: EditSetService
+    private editSetService: EditSetService,
+    private emailService: EmailService,
+    private pdfService: PdfService
   ) {}
-
-  ngOnInit() {}
 
   // open edit set header dialog
   editHeader() {
@@ -110,6 +112,29 @@ export class SetMenuComponent implements OnInit {
           this.set.name,
           response
         );
+      },
+    });
+  }
+
+  generatePDF() {
+    this.pdfService.generatePDF(this.set, this.positions);
+  }
+
+  // send set link to client
+  sendSetToClientViaEmail() {
+    this.emailService.sendEmail(this.set.id).subscribe({
+      next: (response) => {
+        this.set.status = SetStatus.sended;
+        this.notificationService.showNotification(
+          'success',
+          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
+        );
+      },
+      error: (error) => {
+        const sendigError = error?.error?.message
+          ? `${error.error.message} : ${error.error?.error}`
+          : 'Nie udało się wysłać emaila.';
+        this.notificationService.showNotification('error', sendigError);
       },
     });
   }

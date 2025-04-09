@@ -205,6 +205,8 @@ export class PdfService {
                     return i + 1;
                   case 'supplierId':
                     return row.supplierId?.firma || '';
+                  case 'status':
+                    return row.status?.label || '';
                   case 'netto':
                     return netto.toFixed(2) + ' PLN';
                   case 'brutto':
@@ -289,7 +291,11 @@ export class PdfService {
               'wartoscBrutto',
             ];
 
-            if (centeredColumns.includes(this.visibleColumns[data.column.index]?.key)) {
+            if (
+              centeredColumns.includes(
+                this.visibleColumns[data.column.index]?.key
+              )
+            ) {
               data.cell.styles.halign = 'center';
             }
           },
