@@ -1,6 +1,7 @@
 import { IUser } from '../../../login/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
+import { IPositionStatus } from '../edit-set/PositionStatus';
 import { ISet } from './ISet';
 
 export interface IPosition {
@@ -19,7 +20,7 @@ export interface IPosition {
   pomieszczenie: string;
   link: string;
   image: string;
-  status: string;
+  status: IPositionStatus | string;
   acceptedAt: string;
   acceptedAtTimestamp: number;
   acceptedStatus: string;

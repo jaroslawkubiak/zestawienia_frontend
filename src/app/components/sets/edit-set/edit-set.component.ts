@@ -395,12 +395,27 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     const newClonePosition: IClonePosition = {
       ...clonePosition,
       bookmarkId: bookmark[0],
+      status:
+        clonePosition.status &&
+        typeof clonePosition.status === 'object' &&
+        'label' in clonePosition.status
+          ? clonePosition.status.label
+          : clonePosition.status,
       setId: { id: +this.setId } as ISet,
     };
 
     this.editSetService.clonePosition(newClonePosition).subscribe({
       next: (response) => {
         this.resetFooter();
+
+        // create a status object from status.label
+        if (response.status) {
+          const statusObj = this.positionStatus.find(
+            (item) => response.status === item.label
+          );
+
+          response.status = statusObj ? statusObj : '';
+        }
 
         // put new position in place according to property kolejnosc
         this.formData.splice(response.kolejnosc, 0, response);
