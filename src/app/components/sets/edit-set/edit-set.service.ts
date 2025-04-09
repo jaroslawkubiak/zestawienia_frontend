@@ -17,6 +17,7 @@ import { INewSet } from '../types/INewSet';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
+import { IPositionStatus, PositionStatusList } from './PositionStatus';
 
 interface ICompleteSet {
   set: ISet;
@@ -30,6 +31,7 @@ interface ICompleteSet {
 export class EditSetService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
+  positionStatus: IPositionStatus[] = PositionStatusList;
 
   constructor(
     private http: HttpClient,
@@ -87,11 +89,16 @@ export class EditSetService {
       positions: this.getPositions(setId),
       suppliers: this.supplierService.getSuppliers(),
     }).pipe(
-      map(({ set, positions, suppliers }) => ({
-        set: set,
-        positions,
-        suppliers,
-      }))
+      map(({ set, positions, suppliers }) => {
+        const updatedPositions = positions.map((position) => ({
+          ...position,
+          status: position.status
+            ? this.positionStatus.find((item) => position.status === item.label) || ''
+            : position.status,
+        }));
+
+        return { set, positions: updatedPositions, suppliers };
+      })
     );
   }
 

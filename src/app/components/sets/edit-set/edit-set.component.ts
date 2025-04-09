@@ -207,11 +207,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.formData = this.positionsFromBookmark.map((position: IPosition) => {
       let obj: any = {};
       this.columnList.forEach((column) => {
-        if (position.status && column.key === 'status') {
-          obj[column.key] =
-            this.positionStatus.find((s) => s.label === position.status) ||
-            null;
-        } else if (column.key === 'supplierId') {
+        if (column.key === 'supplierId') {
           obj[column.key] = position.supplierId
             ? this.allSuppliers.find((s) => s.id === position.supplierId.id) ||
               null
