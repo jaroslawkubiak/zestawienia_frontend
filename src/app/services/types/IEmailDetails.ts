@@ -4,6 +4,7 @@ export interface IEmailDetails {
   content: string;
   setId?: number;
   clientId?: number;
+  supplierId?: number;
   userId?: number;
   link: string;
 }

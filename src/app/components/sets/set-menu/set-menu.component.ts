@@ -91,13 +91,13 @@ export class SetMenuComponent {
   }
 
   updateMenuItems() {
-    const suppliersList: { label: string; icon: string }[] =
-      this.suppliersFromSet.map((supplier) => {
-        return {
-          label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
-          icon: 'pi pi-truck',
-        };
-      });
+    const suppliersList: MenuItem[] = this.suppliersFromSet.map((supplier) => {
+      return {
+        label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
+        icon: 'pi pi-truck',
+        command: () => this.sendSetToSupplierViaEmail(supplier),
+      };
+    });
 
     this.menuItems = [
       {
@@ -108,7 +108,6 @@ export class SetMenuComponent {
       {
         label: 'Wyślij email',
         icon: 'pi pi-envelope',
-        subtitle: '7 nieprzeczytanych',
         items: [
           {
             label: `Do klienta - <strong>${this.set.clientId.email}</strong>`,
@@ -209,6 +208,25 @@ export class SetMenuComponent {
   // send set link to client
   sendSetToClientViaEmail() {
     this.emailService.sendEmail(this.set.id).subscribe({
+      next: (response) => {
+        this.set.status = SetStatus.sended;
+        this.notificationService.showNotification(
+          'success',
+          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
+        );
+      },
+      error: (error) => {
+        const sendigError = error?.error?.message
+          ? `${error.error.message} : ${error.error?.error}`
+          : 'Nie udało się wysłać emaila.';
+        this.notificationService.showNotification('error', sendigError);
+      },
+    });
+  }
+
+  // send set link to supplier
+  sendSetToSupplierViaEmail(supplierId: ISupplier) {
+    this.emailService.sendEmailToSupplier(this.set.id, supplierId).subscribe({
       next: (response) => {
         this.set.status = SetStatus.sended;
         this.notificationService.showNotification(
