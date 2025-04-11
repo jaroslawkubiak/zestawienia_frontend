@@ -1,7 +1,33 @@
 <app-send-files />
 <app-show-files />
 
-<p-menubar [model]="menuItems"></p-menubar>
+<p-menubar [model]="menuItems">
+  <ng-template #item let-item let-root="root">
+    <a pRipple class="menu-item">
+      <i class="menu-icon m-4 {{ item.icon }}"></i>
+      <div class="menu-label-wrapper">
+        <span class="menu-label">
+          {{ item.label }}
+        </span>
+        <span class="menu-label-email" *ngIf="item.email">
+          {{item.email}}
+        </span>
+      </div>
+      <p-badge
+        *ngIf="item.badge"
+        [ngClass]="{ 'm-4': !root, 'm-2': root }"
+        [value]="item.badge"
+      />
+      <i
+        *ngIf="item.items"
+        [ngClass]="[
+          'menu-icon-arrow m-4 pi',
+          root ? 'pi-angle-down' : 'pi-angle-right'
+        ]"
+      ></i>
+    </a>
+  </ng-template>
+</p-menubar>
 
 <p-dialog
   [(visible)]="editHeaderDialog"

@@ -74,6 +74,21 @@ export class SetMenuComponent {
       this.updateMenuItems();
     }
   }
+  // Wykonaj po załadowaniu widoku
+  ngAfterViewInit() {
+    // Po załadowaniu widoku odwołujemy się do każdego elementu menu, aby przypisać tooltip
+    setTimeout(() => {
+      // Przechodzimy po wszystkich elementach `menuItems`
+      this.menuItems.forEach((item, index) => {
+        // Zastosuj tooltip do elementu na podstawie indeksu
+        const element = document.getElementById(`pn_id_${index}`);
+        if (element && item.tooltip) {
+          // Wstawienie tooltipu (używamy Angulara 'pTooltip')
+          element.setAttribute('pTooltip', item.tooltip);
+        }
+      });
+    });
+  }
 
   findUniqueSuppliers() {
     const uniqueSupplierIds: number[] = [];
@@ -93,14 +108,16 @@ export class SetMenuComponent {
   updateMenuItems() {
     const suppliersList: MenuItem[] = this.suppliersFromSet.map((supplier) => {
       return {
-        label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
+        label: `${supplier.firma}`,
         icon: 'pi pi-truck',
+        email: supplier.email,
         command: () => this.sendSetToSupplierViaEmail(supplier),
       };
     });
 
     this.menuItems = [
       {
+        description: 'To jest opis edytowania nagłówka',
         label: 'Edytuj nagłówek',
         icon: 'pi pi-file-edit',
         command: () => this.editHeader(),
@@ -108,10 +125,12 @@ export class SetMenuComponent {
       {
         label: 'Wyślij email',
         icon: 'pi pi-envelope',
+        disabled: this.isEdited,
         items: [
           {
-            label: `Do klienta - <strong>${this.set.clientId.email}</strong>`,
+            label: `Do klienta`,
             icon: 'pi pi-user',
+            email: this.set.clientId.email,
             command: () => this.sendSetToClientViaEmail(),
           },
           {
