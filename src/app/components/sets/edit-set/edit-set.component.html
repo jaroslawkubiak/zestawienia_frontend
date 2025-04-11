@@ -5,10 +5,11 @@
 <div *ngIf="!isLoading" class="set-container">
   <!-- set header menu -->
   <app-set-menu
-    [menuItems]="menuItems"
+    [allSuppliers]="allSuppliers"
     [set]="set"
     [positions]="positions"
     [selectedBookmarks]="selectedBookmarks"
+    [isEdited]="setIsEdited"
     (editStarted)="isEdited(true)"
     (updateBookmarks)="updateBookmarks()"
   />

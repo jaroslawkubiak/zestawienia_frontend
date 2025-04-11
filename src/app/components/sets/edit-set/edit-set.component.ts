@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
@@ -52,7 +58,9 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
     SetMenuComponent,
   ],
 })
-export class EditSetComponent implements OnInit, CanComponentDeactivate {
+export class EditSetComponent
+  implements OnInit, CanComponentDeactivate, AfterViewInit
+{
   setId!: number;
   set!: ISet;
   positions: IPosition[] = [];
@@ -110,63 +118,15 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     });
   }
 
+  ngAfterViewInit() {
+    if (this.setMenuComponent) {
+      this.setMenuComponent.updateMenuItems();
+    }
+  }
   // change state of set - mark as edited or not edited
   isEdited(state: boolean) {
     this.setIsEdited = state;
-    this.updateMenuItems();
-  }
-
-  // create and update menu items
-  updateMenuItems() {
-    const suppleirsList: { label: string; icon: string }[] =
-      this.suppliersFromSet.map((supplier) => {
-        return {
-          label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
-          icon: 'pi pi-truck',
-        };
-      });
-
-    this.menuItems = [
-      {
-        label: 'Edytuj nagłówek',
-        icon: 'pi pi-file-edit',
-        command: () => this.setMenuComponent.editHeader(),
-      },
-      {
-        label: 'Wyślij email',
-        icon: 'pi pi-envelope',
-        subtitle: '7 nieprzeczytanych',
-        items: [
-          {
-            label: `Do klienta - <strong>${this.set.clientId.email}</strong>`,
-            icon: 'pi pi-user',
-            command: () => this.setMenuComponent.sendSetToClientViaEmail(),
-          },
-          {
-            label: 'Do dostawców',
-            icon: 'pi pi-users',
-            badge: String(suppleirsList.length),
-            items: suppleirsList,
-          },
-        ],
-      },
-      {
-        label: 'Stwórz PDF',
-        icon: 'pi pi-file-pdf',
-        disabled: this.setIsEdited,
-        command: () => this.setMenuComponent.generatePDF(),
-      },
-      {
-        label: 'Załączniki',
-        icon: 'pi pi-paperclip',
-        command: () => this.setMenuComponent.showAttachedFiles(),
-      },
-      {
-        label: 'Prześlij pliki',
-        icon: 'pi pi-upload',
-        command: () => this.setMenuComponent.openSendFilesDialog(),
-      },
-    ];
+    this.setMenuComponent.updateMenuItems();
   }
 
   // load needed data from set
@@ -191,8 +151,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           this.updateBookmarks();
         }
 
-        this.updateMenuItems();
-
         this.initializeForm();
       },
       error: (err) => console.error('Error loading data', err),
@@ -205,24 +163,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.positions = this.editSetService.updatePosition(
       this.positions,
       this.formData
-    );
-
-    this.findUniqueSuppliers();
-  }
-
-  // find unique supplier from every set
-  findUniqueSuppliers() {
-    // find all suppliers from all positions
-    const uniqueSupplierIds: number[] = [];
-    this.positions.forEach((pos) => {
-      const supplier = pos.supplierId;
-      if (supplier && !uniqueSupplierIds.includes(supplier.id)) {
-        uniqueSupplierIds.push(supplier.id);
-      }
-    });
-
-    this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
-      uniqueSupplierIds.includes(supplier.id)
     );
   }
 

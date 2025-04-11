@@ -4,6 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
@@ -17,6 +18,7 @@ import { PdfService } from '../../../services/pdf.service';
 import { IFileList } from '../../../services/types/IFileList';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { EditSetService } from '../edit-set/edit-set.service';
 import { SendFilesComponent } from '../send-files/send-files.component';
@@ -42,24 +44,103 @@ import { SetStatus } from '../types/SetStatus';
   styleUrl: './set-menu.component.css',
 })
 export class SetMenuComponent {
-  @Input() menuItems: MenuItem[] = [];
   @Input() set!: ISet;
   @Input() positions!: IPosition[];
+  @Input() allSuppliers: ISupplier[] = [];
   @Input() selectedBookmarks!: IBookmark[];
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
+
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
   editHeaderDialog = false;
   editHeaderProps!: ISetHeader;
+  menuItems: MenuItem[] = [];
+  suppliersFromSet: ISupplier[] = [];
+  @Input() isEdited: boolean = false;
+
   constructor(
     private notificationService: NotificationService,
     private editSetService: EditSetService,
     private emailService: EmailService,
     private pdfService: PdfService
   ) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.set && this.positions?.length && this.allSuppliers?.length) {
+      this.findUniqueSuppliers();
+      this.updateMenuItems();
+    }
+  }
+
+  findUniqueSuppliers() {
+    const uniqueSupplierIds: number[] = [];
+
+    this.positions.forEach((pos) => {
+      const supplier = pos.supplierId;
+      if (supplier && !uniqueSupplierIds.includes(supplier.id)) {
+        uniqueSupplierIds.push(supplier.id);
+      }
+    });
+
+    this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
+      uniqueSupplierIds.includes(supplier.id)
+    );
+  }
+
+  updateMenuItems() {
+    const suppliersList: { label: string; icon: string }[] =
+      this.suppliersFromSet.map((supplier) => {
+        return {
+          label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
+          icon: 'pi pi-truck',
+        };
+      });
+
+    this.menuItems = [
+      {
+        label: 'Edytuj nagłówek',
+        icon: 'pi pi-file-edit',
+        command: () => this.editHeader(),
+      },
+      {
+        label: 'Wyślij email',
+        icon: 'pi pi-envelope',
+        subtitle: '7 nieprzeczytanych',
+        items: [
+          {
+            label: `Do klienta - <strong>${this.set.clientId.email}</strong>`,
+            icon: 'pi pi-user',
+            command: () => this.sendSetToClientViaEmail(),
+          },
+          {
+            label: 'Do dostawców',
+            icon: 'pi pi-users',
+            badge: String(suppliersList.length),
+            items: suppliersList,
+          },
+        ],
+      },
+      {
+        label: 'Stwórz PDF',
+        icon: 'pi pi-file-pdf',
+        disabled: this.isEdited,
+        command: () => this.generatePDF(),
+      },
+      {
+        label: 'Załączniki',
+        icon: 'pi pi-paperclip',
+        command: () => this.showAttachedFiles(),
+      },
+      {
+        label: 'Prześlij pliki',
+        icon: 'pi pi-upload',
+        command: () => this.openSendFilesDialog(),
+      },
+    ];
+  }
 
   // open edit set header dialog
   editHeader() {
