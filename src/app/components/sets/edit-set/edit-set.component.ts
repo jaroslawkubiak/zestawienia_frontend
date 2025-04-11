@@ -80,6 +80,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   ];
   positionToDelete: number[] = [];
   allSuppliers: ISupplier[] = [];
+  suppliersFromSet: ISupplier[] = [];
   positionStatus: IPositionStatus[] = PositionStatusList;
   dropwownColumnOptions: { [key: string]: any[] } = {};
   BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
@@ -107,8 +108,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         this.loadData();
       }
     });
-
-    this.updateMenuItems();
   }
 
   // change state of set - mark as edited or not edited
@@ -117,8 +116,16 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
     this.updateMenuItems();
   }
 
-  // create menu items
+  // create and update menu items
   updateMenuItems() {
+    const suppleirsList: { label: string; icon: string }[] =
+      this.suppliersFromSet.map((supplier) => {
+        return {
+          label: `${supplier.firma}<br/><strong>${supplier.email}</strong>`,
+          icon: 'pi pi-truck',
+        };
+      });
+
     this.menuItems = [
       {
         label: 'Edytuj nagłówek',
@@ -128,25 +135,18 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
       {
         label: 'Wyślij email',
         icon: 'pi pi-envelope',
+        subtitle: '7 nieprzeczytanych',
         items: [
           {
-            label: 'Do klienta',
+            label: `Do klienta - <strong>${this.set.clientId.email}</strong>`,
             icon: 'pi pi-user',
             command: () => this.setMenuComponent.sendSetToClientViaEmail(),
           },
           {
-            label: 'Do dostawcy',
+            label: 'Do dostawców',
             icon: 'pi pi-users',
-            items: [
-              {
-                label: 'dostawca 1',
-                icon: 'pi pi-truck',
-              },
-              {
-                label: 'dostawca 2',
-                icon: 'pi pi-truck',
-              },
-            ],
+            badge: String(suppleirsList.length),
+            items: suppleirsList,
           },
         ],
       },
@@ -173,6 +173,7 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
       next: ({ set, positions, suppliers }) => {
+        this.set = set;
         this.positions = positions;
         this.allSuppliers = suppliers;
 
@@ -182,7 +183,6 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
           positionStatus: this.positionStatus,
         };
 
-        this.set = set;
         this.hasFiles =
           !!set.files &&
           (set.files?.files.length !== 0 || set.files.pdf.length !== 0);
@@ -190,6 +190,8 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();
         }
+
+        this.updateMenuItems();
 
         this.initializeForm();
       },
@@ -199,9 +201,28 @@ export class EditSetComponent implements OnInit, CanComponentDeactivate {
 
   // take edited data from form and update this.position array
   updatePosition(): void {
+    // find all suppliers for this set
     this.positions = this.editSetService.updatePosition(
       this.positions,
       this.formData
+    );
+
+    this.findUniqueSuppliers();
+  }
+
+  // find unique supplier from every set
+  findUniqueSuppliers() {
+    // find all suppliers from all positions
+    const uniqueSupplierIds: number[] = [];
+    this.positions.forEach((pos) => {
+      const supplier = pos.supplierId;
+      if (supplier && !uniqueSupplierIds.includes(supplier.id)) {
+        uniqueSupplierIds.push(supplier.id);
+      }
+    });
+
+    this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
+      uniqueSupplierIds.includes(supplier.id)
     );
   }
 

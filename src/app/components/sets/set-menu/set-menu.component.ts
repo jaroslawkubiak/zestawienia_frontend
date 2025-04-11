@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -6,8 +7,10 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
-import { Menubar, MenubarModule } from 'primeng/menubar';
+import { MenubarModule } from 'primeng/menubar';
+import { TooltipModule } from 'primeng/tooltip';
 import { EmailService } from '../../../services/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
@@ -26,12 +29,14 @@ import { SetStatus } from '../types/SetStatus';
 @Component({
   selector: 'app-set-menu',
   imports: [
+    CommonModule,
     MenubarModule,
-    Menubar,
     Dialog,
     EditHeaderComponent,
     SendFilesComponent,
     ShowFilesComponent,
+    TooltipModule,
+    BadgeModule,
   ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',

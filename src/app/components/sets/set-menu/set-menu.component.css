@@ -42,6 +42,7 @@
 ::ng-deep .p-menubar-submenu {
   border-radius: 0 !important;
   min-width: 20rem !important;
+  z-index: 9999 !important;
 }
 ::ng-deep .p-menubar-item-link {
   gap: 8px !important;
