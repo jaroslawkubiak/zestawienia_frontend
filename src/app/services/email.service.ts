@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { EditSetService } from '../components/sets/edit-set/edit-set.service';
-import { AuthService } from '../login/auth.service';
-import { catchError, Observable, switchMap } from 'rxjs';
-import { IEmailDetails } from './types/IEmailDetails';
+import { ISet } from '../components/sets/types/ISet';
 import { ISupplier } from '../components/suppliers/types/ISupplier';
+import { AuthService } from '../login/auth.service';
+import { IEmailDetails } from './types/IEmailDetails';
+import { IEmailsList } from './types/IEmailsList';
 
 @Injectable({
   providedIn: 'root',
@@ -13,64 +14,53 @@ import { ISupplier } from '../components/suppliers/types/ISupplier';
 export class EmailService {
   userId = () => this.authService.getUserId();
 
-  constructor(
-    private http: HttpClient,
-    private authService: AuthService,
-    private editSetService: EditSetService
-  ) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
-  sendEmail(setId: number): Observable<any> {
-    return this.editSetService.getSet(setId).pipe(
-      switchMap((set) => {
-        const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}`;
-        const content = contentBodyClient1 + linkToSet + contentBodyClient2;
-
-        const newEmail: IEmailDetails = {
-          to: set.clientId.email,
-          subject: `Zestawienie ${set.name} utworzone w dniu ${set.createdAt}`,
-          content,
-          setId: +setId,
-          userId: this.userId(),
-          clientId: set.clientId.id,
-          link: linkToSet,
-        };
-
-        return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }),
-      catchError((error) => {
-        console.error('Error while getting set or sending email:', error);
-        throw error;
-      })
+  getEmailBySetId(setId: number): Observable<IEmailsList[]> {
+    return this.http.get<IEmailsList[]>(
+      `${environment.API_URL}/email/${setId}`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
     );
   }
 
-  sendEmailToSupplier(setId: number, supplierId: ISupplier): Observable<any> {
-    return this.editSetService.getSet(setId).pipe(
-      switchMap((set) => {
-        const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
-        const content = contentBodySupplier1 + linkToSet + contentBodySupplier2;
+  sendEmail(set: ISet): Observable<any> {
+    const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}`;
+    const content = contentBodyClient1 + linkToSet + contentBodyClient2;
 
-        const newEmail: IEmailDetails = {
-          to: supplierId.email,
-          subject: `Zamówienie do zestawienia ${set.name}`,
-          content,
-          setId: +setId,
-          userId: this.userId(),
-          supplierId: supplierId.id,
-          link: linkToSet,
-        };
+    const newEmail: IEmailDetails = {
+      to: set.clientId.email,
+      subject: `Zestawienie ${set.name} utworzone w dniu ${set.createdAt}`,
+      content,
+      setId: set.id,
+      userId: this.userId(),
+      clientId: set.clientId.id,
+      link: linkToSet,
+    };
 
-        return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
-          headers: { 'Content-Type': 'application/json' },
-        });
-      }),
-      catchError((error) => {
-        console.error('Error while getting set or sending email:', error);
-        throw error;
-      })
-    );
+    return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
+  sendEmailToSupplier(set: ISet, supplierId: ISupplier): Observable<any> {
+    const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
+    const content = contentBodySupplier1 + linkToSet + contentBodySupplier2;
+
+    const newEmail: IEmailDetails = {
+      to: supplierId.email,
+      subject: `Zamówienie do zestawienia ${set.name}`,
+      content,
+      setId: set.id,
+      userId: this.userId(),
+      supplierId: supplierId.id,
+      link: linkToSet,
+    };
+
+    return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
 

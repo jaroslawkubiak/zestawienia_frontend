@@ -10,20 +10,14 @@ import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/IUser';
 import { IFileList } from '../../../services/types/IFileList';
 import { SuppliersService } from '../../suppliers/suppliers.service';
-import { ISupplier } from '../../suppliers/types/ISupplier';
 import { IClonePosition } from '../types/IClonePosition';
+import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { INewSet } from '../types/INewSet';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
-
-interface ICompleteSet {
-  set: ISet;
-  positions: IPosition[];
-  suppliers: ISupplier[];
-}
 
 @Injectable({
   providedIn: 'root',

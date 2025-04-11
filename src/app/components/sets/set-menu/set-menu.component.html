@@ -10,7 +10,10 @@
           {{ item.label }}
         </span>
         <span class="menu-label-email" *ngIf="item.email">
-          {{item.email}}
+          {{ item.email }}
+        </span>
+        <span class="menu-label-send-at" *ngIf="item.sendAt">
+          {{ item.sendAt}}
         </span>
       </div>
       <p-badge

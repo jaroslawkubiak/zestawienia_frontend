@@ -15,6 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { EmailService } from '../../../services/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
+import { IEmailsList } from '../../../services/types/IEmailsList';
 import { IFileList } from '../../../services/types/IFileList';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
@@ -48,6 +49,7 @@ export class SetMenuComponent {
   @Input() positions!: IPosition[];
   @Input() allSuppliers: ISupplier[] = [];
   @Input() selectedBookmarks!: IBookmark[];
+  @Input() isEdited: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
 
@@ -55,11 +57,12 @@ export class SetMenuComponent {
   dialogSendFilesComponent!: SendFilesComponent;
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
+
   editHeaderDialog = false;
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
   suppliersFromSet: ISupplier[] = [];
-  @Input() isEdited: boolean = false;
+  emailsList: IEmailsList[] = [];
 
   constructor(
     private notificationService: NotificationService,
@@ -68,29 +71,28 @@ export class SetMenuComponent {
     private pdfService: PdfService
   ) {}
 
+  ngOnInit() {
+    this.getEmailsList();
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (this.set && this.positions?.length && this.allSuppliers?.length) {
       this.findUniqueSuppliers();
       this.updateMenuItems();
     }
   }
-  // Wykonaj po załadowaniu widoku
-  ngAfterViewInit() {
-    // Po załadowaniu widoku odwołujemy się do każdego elementu menu, aby przypisać tooltip
-    setTimeout(() => {
-      // Przechodzimy po wszystkich elementach `menuItems`
-      this.menuItems.forEach((item, index) => {
-        // Zastosuj tooltip do elementu na podstawie indeksu
-        const element = document.getElementById(`pn_id_${index}`);
-        if (element && item.tooltip) {
-          // Wstawienie tooltipu (używamy Angulara 'pTooltip')
-          element.setAttribute('pTooltip', item.tooltip);
-        }
-      });
+
+  getEmailsList() {
+    this.emailService.getEmailBySetId(this.set.id).subscribe({
+      next: (response) => {
+        this.emailsList = response;
+        this.updateMenuItems();
+      },
     });
   }
 
-  findUniqueSuppliers() {
+  // find all unique supplier to show in menu
+  findUniqueSuppliers(): void {
     const uniqueSupplierIds: number[] = [];
 
     this.positions.forEach((pos) => {
@@ -105,12 +107,38 @@ export class SetMenuComponent {
     );
   }
 
-  updateMenuItems() {
+  // finding the last email date and the user sent to the client
+  findLastEmailToClient() {
+    const email = this.emailsList.find(
+      (email: IEmailsList) => email.clientId?.id === this.set.clientId?.id
+    );
+    if (email) {
+      return `${email.sendAt} - ${email.sendBy.name}`;
+    }
+
+    return 'Nie wysłano';
+  }
+
+  // finding the last email date and the user sent to the supplier
+  findLastEmailToSupplier(supplierId: number) {
+    const email = this.emailsList.find(
+      (email: IEmailsList) => email.supplierId?.id === supplierId
+    );
+    if (email) {
+      return `${email.sendAt} - ${email.sendBy.name}`;
+    }
+
+    return 'Nie wysłano';
+  }
+
+  // create and update menu if set is edited or number of unique supplier is changed
+  updateMenuItems(): void {
     const suppliersList: MenuItem[] = this.suppliersFromSet.map((supplier) => {
       return {
         label: `${supplier.firma}`,
         icon: 'pi pi-truck',
         email: supplier.email,
+        sendAt: this.findLastEmailToSupplier(supplier.id),
         command: () => this.sendSetToSupplierViaEmail(supplier),
       };
     });
@@ -131,6 +159,7 @@ export class SetMenuComponent {
             label: `Do klienta`,
             icon: 'pi pi-user',
             email: this.set.clientId.email,
+            sendAt: this.findLastEmailToClient(),
             command: () => this.sendSetToClientViaEmail(),
           },
           {
@@ -161,7 +190,7 @@ export class SetMenuComponent {
   }
 
   // open edit set header dialog
-  editHeader() {
+  editHeader(): void {
     this.editHeaderProps = {
       name: this.set.name,
       selectedStatus: this.set.status,
@@ -171,12 +200,12 @@ export class SetMenuComponent {
   }
 
   // close edit set header dialog
-  hideDialog() {
+  hideDialog(): void {
     this.editHeaderDialog = false;
   }
 
   // change data after set header
-  onSetHeaderChange(headerData: ISetHeader) {
+  onSetHeaderChange(headerData: ISetHeader): void {
     const originalMap = new Map(
       this.set.bookmarks.map((item: IBookmark) => [item.id, item])
     );
@@ -200,7 +229,7 @@ export class SetMenuComponent {
   }
 
   // open send files dialog
-  openSendFilesDialog() {
+  openSendFilesDialog(): void {
     this.dialogSendFilesComponent.openSendFilesDialog(
       this.set.id,
       this.set.name
@@ -220,19 +249,20 @@ export class SetMenuComponent {
     });
   }
 
-  generatePDF() {
+  generatePDF(): void {
     this.pdfService.generatePDF(this.set, this.positions);
   }
 
   // send set link to client
-  sendSetToClientViaEmail() {
-    this.emailService.sendEmail(this.set.id).subscribe({
+  sendSetToClientViaEmail(): void {
+    this.emailService.sendEmail(this.set).subscribe({
       next: (response) => {
         this.set.status = SetStatus.sended;
         this.notificationService.showNotification(
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
+        this.getEmailsList();
       },
       error: (error) => {
         const sendigError = error?.error?.message
@@ -244,14 +274,15 @@ export class SetMenuComponent {
   }
 
   // send set link to supplier
-  sendSetToSupplierViaEmail(supplierId: ISupplier) {
-    this.emailService.sendEmailToSupplier(this.set.id, supplierId).subscribe({
+  sendSetToSupplierViaEmail(supplierId: ISupplier): void {
+    this.emailService.sendEmailToSupplier(this.set, supplierId).subscribe({
       next: (response) => {
         this.set.status = SetStatus.sended;
         this.notificationService.showNotification(
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
+        this.getEmailsList();
       },
       error: (error) => {
         const sendigError = error?.error?.message
