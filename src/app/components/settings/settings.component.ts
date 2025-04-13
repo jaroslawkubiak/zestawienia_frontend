@@ -22,6 +22,11 @@ export class SettingsComponent {
       name: 'Notification',
       route: '/settings/notification',
       icon: 'pi-bell',
+    },
+    {
+      name: 'Szablony e-mail',
+      route: '/settings/email-preview',
+      icon: 'pi-envelope',
     }
   ];
 }

@@ -1,0 +1,32 @@
+<p-toast />
+
+<div class="wrapper">
+  <p-button
+    size="large"
+    (click)="send('success', 'Wiadomość wysłana pomyślnie')"
+    icon="pi pi-star-fill"
+    severity="primary"
+    label="Sukces"
+  />
+  <p-button
+    size="large"
+    (click)="send('error', 'Wystąpił błąd')"
+    icon="pi pi-bolt"
+    severity="danger"
+    label="Błąd"
+  />
+  <p-button
+    size="large"
+    (click)="send('info', 'To jest tylko informacja')"
+    icon="pi pi-info"
+    severity="info"
+    label="Info"
+  />
+  <p-button
+    size="large"
+    (click)="send('warn', 'To jest ostrzeżenie')"
+    icon="pi pi-exclamation-triangle"
+    severity="warn"
+    label="Ostrzeżenie"
+  />
+</div>

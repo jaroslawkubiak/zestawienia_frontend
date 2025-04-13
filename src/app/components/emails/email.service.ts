@@ -4,6 +4,11 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { ISet } from '../sets/types/ISet';
+import {
+  createHTML,
+  HTMLClient,
+  HTMLSupplier,
+} from '../settings/email-preview/email.template';
 import { ISupplier } from '../suppliers/types/ISupplier';
 import { IEmailDetails } from './types/IEmailDetails';
 import { IEmailsList } from './types/IEmailsList';
@@ -33,14 +38,12 @@ export class EmailsService {
   }
 
   sendEmail(set: ISet): Observable<any> {
-    const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}`;
-    const content =
-      HTMLHeader +
-      tableHeader +
-      contentBodyClient1 +
-      linkToSet +
-      contentBodyClient2 +
-      HTMLFooter;
+    const link = `${environment.API_URL}/${set.id}/${set.hash}`;
+    const content = createHTML({
+      title: HTMLClient.title,
+      message: HTMLClient.message,
+      link,
+    });
 
     const newEmail: IEmailDetails = {
       to: set.clientId.email,
@@ -49,7 +52,7 @@ export class EmailsService {
       setId: set.id,
       userId: this.userId(),
       clientId: set.clientId.id,
-      link: linkToSet,
+      link,
     };
 
     return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
@@ -58,14 +61,12 @@ export class EmailsService {
   }
 
   sendEmailToSupplier(set: ISet, supplierId: ISupplier): Observable<any> {
-    const linkToSet = `${environment.API_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
-    const content =
-      HTMLHeader +
-      tableHeader +
-      contentBodySupplier1 +
-      linkToSet +
-      contentBodySupplier2 +
-      HTMLFooter;
+    const link = `${environment.API_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
+    const content = createHTML({
+      title: HTMLSupplier.title,
+      message: HTMLSupplier.message,
+      link,
+    });
 
     const newEmail: IEmailDetails = {
       to: supplierId.email,
@@ -74,7 +75,7 @@ export class EmailsService {
       setId: set.id,
       userId: this.userId(),
       supplierId: supplierId.id,
-      link: linkToSet,
+      link,
     };
 
     return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
@@ -82,109 +83,3 @@ export class EmailsService {
     });
   }
 }
-
-const contentBodyClient1 = `
-    
-      <tr>
-        <td style="padding: 30px 0; text-align: center" colspan="2">
-          <h1 style="margin: 0">Zestawienie</h1>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 20px" colspan="2">
-          <p>Dzień dobry.</p>
-
-          <p>Przesyłamy link do zestawienia</p>
-          <p>
-            <a
-              href="
-`;
-
-const contentBodyClient2 = `
-"
-              style="color: rgb(59, 191, 161); text-decoration: none"
-            >
-              zestawienie
-            </a>
-          </p>
-        </td>
-      </tr>
-`;
-
-const contentBodySupplier1 = `
-
-      <tr>
-        <td style="padding: 30px 0; text-align: center" colspan="2">
-          <h1 style="margin: 0">Zamówienie</h1>
-        </td>
-      </tr>
-
-      <tr>
-        <td style="padding: 20px" colspan="2">
-          <p>Dzień dobry.</p>
-
-          <p>Zamawiamy to co tam na liście :)</p>
-          <p>
-            <a
-              href="
-`;
-
-const contentBodySupplier2 = `
-"
-              style="color: rgb(59, 191, 161); text-decoration: none"
-            >
-              
-            </a>
-          </p>
-        </td>
-      </tr>
-`;
-
-const HTMLHeader = `<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Zestawienie</title>
-  </head>
-  <body
-    style="
-      background-color: rgb(0, 0, 0);
-      color: white;
-      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
-        sans-serif;
-      font-size: 30px;
-      padding: 40px;
-    "
-  >`;
-
-const HTMLFooter = `<tr>
-        <td style="padding: 0px 20px" colspan="2">
-          <p>
-            Pozdrawiamy. <br />Zespół Żurawicki Design<br />Jakub Żuwaricki,
-            Joanna Kubiak
-          </p>
-        </td>
-      </tr>
-      <tr>
-        <td style="padding: 60px 0; text-align: center" colspan="2">
-          <p style="margin: 0; font-size: 18px">&copy; 2025 Żurawicki Design</p>
-        </td>
-      </tr>
-    </table>
-  </body>
-</html>`;
-
-const tableHeader = `<table align="center" style="width: 800px; margin: 0 auto">
-      <tr style="margin: 30px 0; width: 800px">
-        <td style="width: 400px">
-          <img
-            src="https://zestawienia.zurawickidesign.pl/assets/images/logo.png"
-            alt="logo"
-          />
-        </td>
-        <td style="width: 400px; text-align: right">
-          <h2>Żurawicki Design</h2>
-        </td>
-      </tr>
-`;
