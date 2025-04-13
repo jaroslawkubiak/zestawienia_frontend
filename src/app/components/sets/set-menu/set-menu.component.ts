@@ -12,10 +12,10 @@ import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
-import { EmailService } from '../../../services/email.service';
+import { EmailsService } from '../../emails/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
-import { IEmailsList } from '../../../services/types/IEmailsList';
+import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { IFileList } from '../../../services/types/IFileList';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
@@ -62,12 +62,12 @@ export class SetMenuComponent {
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
   suppliersFromSet: ISupplier[] = [];
-  emailsList: IEmailsList[] = [];
+  emailsList: IEmailsToSet[] = [];
 
   constructor(
     private notificationService: NotificationService,
     private editSetService: EditSetService,
-    private emailService: EmailService,
+    private emailsService: EmailsService,
     private pdfService: PdfService
   ) {}
 
@@ -83,7 +83,7 @@ export class SetMenuComponent {
   }
 
   getEmailsList() {
-    this.emailService.getEmailBySetId(this.set.id).subscribe({
+    this.emailsService.getEmailBySetId(this.set.id).subscribe({
       next: (response) => {
         this.emailsList = response;
         this.updateMenuItems();
@@ -110,7 +110,7 @@ export class SetMenuComponent {
   // finding the last email date and the user sent to the client
   findLastEmailToClient() {
     const email = this.emailsList.find(
-      (email: IEmailsList) => email.clientId?.id === this.set.clientId?.id
+      (email: IEmailsToSet) => email.clientId?.id === this.set.clientId?.id
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -122,7 +122,7 @@ export class SetMenuComponent {
   // finding the last email date and the user sent to the supplier
   findLastEmailToSupplier(supplierId: number) {
     const email = this.emailsList.find(
-      (email: IEmailsList) => email.supplierId?.id === supplierId
+      (email: IEmailsToSet) => email.supplierId?.id === supplierId
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -255,7 +255,7 @@ export class SetMenuComponent {
 
   // send set link to client
   sendSetToClientViaEmail(): void {
-    this.emailService.sendEmail(this.set).subscribe({
+    this.emailsService.sendEmail(this.set).subscribe({
       next: (response) => {
         this.set.status = SetStatus.sended;
         this.notificationService.showNotification(
@@ -275,7 +275,7 @@ export class SetMenuComponent {
 
   // send set link to supplier
   sendSetToSupplierViaEmail(supplierId: ISupplier): void {
-    this.emailService.sendEmailToSupplier(this.set, supplierId).subscribe({
+    this.emailsService.sendEmailToSupplier(this.set, supplierId).subscribe({
       next: (response) => {
         this.set.status = SetStatus.sended;
         this.notificationService.showNotification(

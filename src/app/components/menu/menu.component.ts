@@ -36,6 +36,11 @@ export class MenuComponent {
       icon: 'pi-list-check',
     },
     {
+      name: 'Wysłane e-maile',
+      route: '/emails',
+      icon: 'pi-envelope',
+    },
+    {
       name: 'Ustawienia',
       route: '/settings',
       icon: 'pi-cog',

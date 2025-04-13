@@ -1,0 +1,90 @@
+<div class="spinner" *ngIf="isLoading">
+  <app-loading-spinner [size]="200"></app-loading-spinner>
+</div>
+
+<div *ngIf="!isLoading" class="card">
+  <p-table
+    #dt
+    [value]="emails"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="['to', 'firma', 'setId.name', 'sendBy.name']"
+    [tableStyle]="{ 'min-width': '105rem' }"
+    [rowHover]="true"
+    class="custom-table"
+    dataKey="id"
+    stripedRows
+    currentPageReportTemplate="{first} to {last}"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template #caption>
+      <div class="search-wrapper">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            class="search-input"
+            pTooltip="Filtruj emaile"
+            (input)="onGlobalFilter($event)"
+            placeholder="Firma, email, nazwa zestawienia, wysłał"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th class="flex-center" style="min-width: 3rem">LP</th>
+        <th style="min-width: 5rem">Typ</th>
+        <th pSortableColumn="firma" style="min-width: 12rem">
+          Firma
+          <p-sortIcon field="firma" />
+        </th>
+        <th pSortableColumn="to" style="min-width: 20rem">
+          Email
+          <p-sortIcon field="to" />
+        </th>
+        <th pSortableColumn="setId.name" style="min-width: 20rem">
+          Nazwa zestawienia
+          <p-sortIcon field="setId.name" />
+        </th>
+        <th style="min-width: 10rem">Link</th>
+        <th pSortableColumn="sendAtTimestamp" style="min-width: 20rem">
+          Wysłany
+          <p-sortIcon field="sendAtTimestamp" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-email let-index="rowIndex">
+      <tr class="row">
+        <td class="col-lp">{{ index + 1 }}</td>
+        <td>
+          <div class="email-type">
+            <i class="{{ email.type }}"></i>
+          </div>
+        </td>
+        <td>
+          {{
+            email.clientId?.firma
+              ? email.clientId?.firma
+              : email.supplierId?.firma
+          }}
+        </td>
+        <td>
+          {{ email.to }}
+        </td>
+        <td (click)="openSet(email.setId.id)">
+          {{ email.setId.name }}
+        </td>
+        <td class="link">
+          <a href="{{ email.link }}" target="_blank">LINK</a>
+        </td>
+        <td class="no-action">{{ email.sendAt }} ({{ email.sendBy.name }})</td>
+      </tr>
+    </ng-template>
+    <ng-template #summary>
+      <div class="total">Razem {{ emails ? emails.length : 0 }}</div>
+    </ng-template>
+  </p-table>
+</div>

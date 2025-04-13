@@ -11,19 +11,14 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { UiCheckComponent } from './misc/ui-check/ui-check.component';
 import { NotificationComponent } from './misc/notification/notification.component';
+import { UiCheckComponent } from './misc/ui-check/ui-check.component';
+import { EmailsComponent } from './components/emails/emails.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {
-    path: 'login',
-    component: LoginComponent,
-  },
-  {
-    path: 'notfound',
-    component: NotFoundComponent,
-  },
+  { path: 'login', component: LoginComponent },
+  { path: 'notfound', component: NotFoundComponent },
   {
     path: 'welcome',
     component: WelcomeComponent,
@@ -31,19 +26,16 @@ export const routes: Routes = [
   },
   {
     path: 'sets',
-    component: SetsComponent,
     canActivate: [AuthGuard],
-  },
-  {
-    path: 'sets/new',
-    component: NewSetComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'sets/:id',
-    component: EditSetComponent,
-    canActivate: [AuthGuard],
-    canDeactivate: [UnsavedChangesGuard],
+    children: [
+      { path: '', component: SetsComponent },
+      { path: 'new', component: NewSetComponent },
+      {
+        path: ':id',
+        component: EditSetComponent,
+        canDeactivate: [UnsavedChangesGuard],
+      },
+    ],
   },
   {
     path: 'products',
@@ -61,17 +53,18 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'settings',
-    component: SettingsComponent,
+    path: 'emails',
+    component: EmailsComponent,
     canActivate: [AuthGuard],
   },
   {
-    path: 'settings/ui-check',
-    component: UiCheckComponent,
-  },
-  {
-    path: 'settings/notification',
-    component: NotificationComponent,
+    path: 'settings',
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: SettingsComponent },
+      { path: 'ui-check', component: UiCheckComponent },
+      { path: 'notification', component: NotificationComponent },
+    ],
   },
   { path: '**', redirectTo: '/notfound' },
 ];

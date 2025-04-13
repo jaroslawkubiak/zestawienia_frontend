@@ -1,4 +1,4 @@
-export interface IEmailsList {
+export interface IEmailsToSet {
   id: number;
   link: string;
   sendAt: string;
