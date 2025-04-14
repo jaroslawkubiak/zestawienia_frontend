@@ -1,9 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, tap, throwError } from 'rxjs';
-import { ApiService } from '../services/api.service';
-import { ILoggedUser } from './ILoggedUser';
-import { ILoginUser } from './ILoginUser';
+import { environment } from '../../environments/environment';
+import { ILoggedUser } from './types/ILoggedUser';
+import { ILoginUser } from './types/ILoginUser';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class AuthService {
   userId = signal<number | undefined>(undefined);
   authorizationToken = signal<string | null>(null);
 
-  constructor(private apiService: ApiService, private router: Router) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   getAuthorizationToken(): string | null {
     return this.authorizationToken() || sessionStorage.getItem('access_token');
@@ -34,32 +35,34 @@ export class AuthService {
     return this.user() || sessionStorage.getItem('user_name');
   }
 
-  login(enteredData: ILoginUser): Observable<ILoggedUser> {
-    return this.apiService.logUser(enteredData).pipe(
-      tap((response) => {
-        // Store the response data in signals and sessionStorage
-        this.authorizationToken.set(response.accessToken);
-        this.user.set(response.name);
-        this.userId.set(response.id);
-
-        sessionStorage.setItem('access_token', response.accessToken);
-        sessionStorage.setItem('user_name', response.name);
-        sessionStorage.setItem('user_id', String(response.id));
-
-        // Navigate to the welcome page after successful login
-        this.router.navigate(['/welcome']);
-      }),
-      catchError((error) => {
-        return throwError(() => new Error('Błędne dane logowania'));
-      })
-    );
-  }
-
   isAuthenticated(): boolean {
     const token =
       this.authorizationToken() || sessionStorage.getItem('access_token');
     const user = this.user() || sessionStorage.getItem('user_name');
     return !!user && !!token;
+  }
+
+  login(enteredData: ILoginUser): Observable<ILoggedUser> {
+    return this.http
+      .post<ILoggedUser>(`${environment.API_URL}/auth/login`, enteredData)
+      .pipe(
+        tap((response) => this.storeUserData(response)),
+        catchError(() => throwError(() => new Error('Błędne dane logowania')))
+      );
+  }
+
+  private storeUserData(response: ILoggedUser): void {
+    // Store the response data in signals and sessionStorage
+    this.authorizationToken.set(response.accessToken);
+    this.user.set(response.name);
+    this.userId.set(response.id);
+
+    sessionStorage.setItem('access_token', response.accessToken);
+    sessionStorage.setItem('user_name', response.name);
+    sessionStorage.setItem('user_id', String(response.id));
+
+    // Navigate to the welcome page after successful login
+    this.router.navigate(['/welcome']);
   }
 
   logout(): void {

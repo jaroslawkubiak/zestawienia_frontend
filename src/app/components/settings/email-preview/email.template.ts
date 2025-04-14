@@ -11,7 +11,8 @@ export const HTMLSupplier = {
 };
 
 export function createHTML(options: IHTMLTemplateOptions): string {
-  return `<!DOCTYPE html>
+  return `
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />

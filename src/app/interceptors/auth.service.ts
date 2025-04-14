@@ -26,7 +26,7 @@ export class AuthInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        if (error.status === 401) {
+        if (error.status === 401 && !req.url.includes('/login')) {
           const confirmMessage = {
             message: 'Twoja sesja wygasła. Zaloguj się ponownie',
             header: 'Wylogowano',

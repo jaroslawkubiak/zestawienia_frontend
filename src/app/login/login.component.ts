@@ -5,16 +5,15 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ILoginUser } from './ILoginUser';
-import { AuthService } from './auth.service';
 import { InputTextModule } from 'primeng/inputtext';
+import { ILoginUser } from './types/ILoginUser';
+import { AuthService } from './auth.service';
 
 @Component({
   selector: 'app-login',
   imports: [ReactiveFormsModule, InputTextModule],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css', '../shared/css/input.css'],
-  standalone: true,
+  styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
   errorMessage = '';
@@ -47,7 +46,7 @@ export class LoginComponent {
 
   onSubmit() {
     if (this.form.invalid) {
-      this.errorMessage = 'Login and password are required';
+      this.errorMessage = 'Login i hasło są wymagane';
       return;
     }
 
@@ -58,7 +57,8 @@ export class LoginComponent {
 
     this.authService.login(enteredData).subscribe({
       next: () => (this.errorMessage = ''),
-      error: () => (this.errorMessage = 'Failed to login. Try again.'),
+      error: () =>
+        (this.errorMessage = 'Nie udało się zalogować. Spróbuj ponownie.'),
     });
   }
 }

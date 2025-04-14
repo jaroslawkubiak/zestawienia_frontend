@@ -1,4 +1,4 @@
-import { IUser } from '../../../login/IUser';
+import { IUser } from '../../../login/types/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISet } from './ISet';
 

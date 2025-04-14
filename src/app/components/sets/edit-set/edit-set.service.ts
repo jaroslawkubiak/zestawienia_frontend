@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
-import { IUser } from '../../../login/IUser';
+import { IUser } from '../../../login/types/IUser';
 import { IFileList } from '../../../services/types/IFileList';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IClonePosition } from '../types/IClonePosition';

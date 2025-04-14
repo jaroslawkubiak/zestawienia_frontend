@@ -24,7 +24,7 @@ export class UnsavedChangesGuard
     currentState: RouterStateSnapshot,
     nextState?: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
-    const destination = nextState?.url; // Pobieramy docelową ścieżkę URL
-    return component.canDeactivate(destination); // Przekazujemy destination
+    const destination = nextState?.url;
+    return component.canDeactivate(destination);
   }
 }

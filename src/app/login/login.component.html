@@ -1,5 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="wrapper">
+    <img src="/assets/images/logo-black.png" alt="logo" />
     <div class="field">
       <label for="login">Login</label>
       <input
@@ -9,7 +10,7 @@
         autocomplete="off"
       />
       @if(loginIsInvalid) {
-      <p class="error">Login is required</p>
+      <p class="error">Login jest wymagany</p>
       }
     </div>
 
@@ -22,16 +23,16 @@
         autocomplete="off"
       />
       @if(passwordIsInvalid) {
-      <p class="error">Password is required</p>
+      <p class="error">Hasło jest wymagane</p>
       }
     </div>
 
-    @if(errorMessage) {
     <p class="submit-error">
+      @if(errorMessage) {
       {{ errorMessage }}
+      }
     </p>
-    }
 
-    <button type="submit" class="submit" >Login <i class="pi pi-sign-in icon"></i></button>
+    <button type="submit">Login <i class="pi pi-sign-in"></i></button>
   </div>
 </form>

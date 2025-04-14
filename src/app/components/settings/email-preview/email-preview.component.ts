@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { EmailsService } from '../../emails/email.service';
-import { createHTML, HTMLClient } from './email.template';
+import { createHTML, HTMLClient, HTMLSupplier } from './email.template';
 
 @Component({
   selector: 'app-email-preview',
@@ -27,8 +27,8 @@ export class EmailPreviewComponent {
             link: this.clientLink,
           })
         : createHTML({
-            title: HTMLClient.title,
-            message: HTMLClient.message,
+            title: HTMLSupplier.title,
+            message: HTMLSupplier.message,
             link: this.supplierLink,
           });
 
