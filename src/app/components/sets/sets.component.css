@@ -8,6 +8,10 @@ tr {
   font-size: 1.8rem;
 }
 
+.lp {
+  text-align: center;
+}
+
 .search-input {
   display: flex !important;
   font-size: 1rem !important;
@@ -36,4 +40,21 @@ tr {
 .p-inputtext:hover,
 .p-inputtext:active {
   background-color: var(--accent-color-lighter) !important;
+}
+
+.action-btn-wrapper {
+  display: flex;
+  align-items: center;
+  width: 20rem;
+}
+
+.nr-comments {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  cursor: auto;
+}
+
+.btn-comments-wrapper {
+  position: relative;
 }

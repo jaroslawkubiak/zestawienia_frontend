@@ -54,8 +54,8 @@
     </ng-template>
     <ng-template #header>
       <tr>
-        <th style="width: 3rem">LP</th>
-        <th style="width: 20rem"></th>
+        <th class="lp">LP</th>
+        <th style="width: 220px"></th>
         <th pSortableColumn="clientId.firma">
           Firma
           <p-sortIcon field="clientId.firma" />
@@ -90,46 +90,76 @@
           </div>
         </td>
         <td (click)="$event.stopPropagation()">
-          <p-button
-            icon="pi pi-pencil"
-            class="m-4"
-            severity="primary"
-            alt="Edytuj zestawienie"
-            pTooltip="Edytuj zestawienie"
-            (click)="editSet(set.id)"
-          />
-          <p-button
-            icon="pi pi-trash"
-            class="m-4"
-            severity="danger"
-            alt="Usuń Zestawienie"
-            pTooltip="{{
-              set.status !== statusesList.new
-                ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
-                : 'Usuń Zestawienie'
-            }}"
-            [disabled]="set.status !== statusesList.new"
-            (click)="deleteSet(set.id)"
-          />
-          <p-button
-            icon="pi pi-paperclip"
-            class="m-4"
-            severity="warn"
-            alt="Załączniki"
-            pTooltip="{{
-              set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
-            }}"
-            [disabled]="!set.hasFiles"
-            (click)="showAttachedFiles(set.id, set.name)"
-          />
-          <p-button
-            icon="pi pi-upload"
-            class="m-4"
-            severity="info"
-            alt="Prześlij pliki"
-            pTooltip="Prześlij pliki"
-            (click)="openSendFilesDialog(set.id, set.name)"
-          />
+          <div class="action-btn-wrapper">
+            <p-button
+              icon="pi pi-pencil"
+              class="m-4"
+              severity="primary"
+              alt="Edytuj zestawienie"
+              pTooltip="Edytuj zestawienie"
+              (click)="editSet(set.id)"
+            />
+            <p-button
+              icon="pi pi-trash"
+              class="m-4"
+              severity="danger"
+              alt="Usuń Zestawienie"
+              pTooltip="{{
+                set.status !== statusesList.new
+                  ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
+                  : 'Usuń Zestawienie'
+              }}"
+              [disabled]="set.status !== statusesList.new"
+              (click)="deleteSet(set.id)"
+            />
+            <p-button
+              icon="pi pi-paperclip"
+              class="m-4"
+              severity="warn"
+              alt="Załączniki"
+              pTooltip="{{
+                set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
+              }}"
+              [disabled]="!set.hasFiles"
+              (click)="showAttachedFiles(set.id, set.name)"
+            />
+            <p-button
+              icon="pi pi-upload"
+              class="m-4"
+              severity="help"
+              alt="Prześlij pliki"
+              pTooltip="Prześlij pliki"
+              (click)="openSendFilesDialog(set.id, set.name)"
+            />
+            <div class="btn-comments-wrapper">
+              <p-button
+                icon="pi pi-comments"
+                class="m-4"
+                severity="info"
+                alt="Zobacz komentarze"
+                pTooltip="Zobacz komentarze"
+                [disabled]="set?.comments?.length === 0"
+                (click)="editSet(set.id)"
+              />
+              <p-badge
+                [value]="
+                  set?.newComments
+                    ? set?.newComments
+                    : set?.comments?.length > 0
+                    ? set?.comments?.length
+                    : 0
+                "
+                [severity]="set?.newComments ? 'danger' : 'secondary'"
+                class="nr-comments"
+                badgeSize="large"
+                [pTooltip]="
+                  set?.newComments
+                    ? 'Ilość nowych komentarzy'
+                    : 'Ilość komentarzy'
+                "
+              />
+            </div>
+          </div>
         </td>
         <td>{{ set.clientId.firma }}</td>
         <td>{{ set.clientId.email }}</td>

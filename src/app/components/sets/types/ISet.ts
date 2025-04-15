@@ -12,6 +12,7 @@ export interface ISet {
   hash: string;
   bookmarks: IBookmark[];
   files?: IFileList;
+  comments?: any[];
   hasFiles?: boolean;
   clientId: {
     id: number;

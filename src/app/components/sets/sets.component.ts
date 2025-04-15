@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -51,6 +52,7 @@ import { SetStatus } from './types/SetStatus';
     TooltipModule,
     SendFilesComponent,
     ShowFilesComponent,
+    BadgeModule,
   ],
   providers: [NotificationService, ConfirmationModalService],
 })
@@ -90,6 +92,8 @@ export class SetsComponent implements OnInit {
             !!set.files &&
             (set.files?.files.length !== 0 || set.files.pdf.length !== 0),
         }));
+
+        this.countNewComments();
 
         this.isLoading = false;
         this.cd.markForCheck();
@@ -166,6 +170,23 @@ export class SetsComponent implements OnInit {
       next: (response: IFileList) => {
         this.dialogShowFilesComponent.showDialog(setId, setName, response);
       },
+    });
+  }
+
+  countNewComments(): void {
+    this.sets = this.sets.map((set) => {
+      if (set?.comments && set.comments.length > 0) {
+        const newComments = set.comments.reduce((acc, item) => {
+          if (!item.readByReceiver) {
+            acc += 1;
+          }
+          return acc;
+        }, 0);
+
+        return { ...set, newComments };
+      }
+
+      return set;
     });
   }
 }
