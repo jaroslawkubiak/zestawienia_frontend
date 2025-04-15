@@ -13,12 +13,12 @@
           {{ item.email }}
         </span>
         <span class="menu-label-send-at" *ngIf="item.sendAt">
-          {{ item.sendAt}}
+          {{ item.sendAt }}
         </span>
       </div>
       <p-badge
         *ngIf="item.badge"
-        [ngClass]="{ 'm-4': !root, 'm-2': root }"
+        [ngClass]="(root ? 'm-2' : 'm-4') + ' ' + (item.badgeStyleClass || '')"
         [value]="item.badge"
       />
       <i

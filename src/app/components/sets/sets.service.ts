@@ -7,9 +7,10 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { IComment } from './types/IComment';
 import { INewSet } from './types/INewSet';
-import { ISet } from './types/ISet';
 import { ISavedSet } from './types/ISavedSet';
+import { ISet } from './types/ISet';
 
 @Injectable({
   providedIn: 'root',
@@ -64,5 +65,16 @@ export class SetsService {
         headers,
       })
       .pipe(catchError(this.handleError));
+  }
+
+  countNewComments(comments: IComment[]): number {
+    const newComments = comments.reduce((acc, item) => {
+      if (!item.readByReceiver) {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
+
+    return newComments;
   }
 }

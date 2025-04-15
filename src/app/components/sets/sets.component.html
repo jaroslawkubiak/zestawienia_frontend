@@ -149,7 +149,13 @@
                     ? set?.comments?.length
                     : 0
                 "
-                [severity]="set?.newComments ? 'danger' : 'secondary'"
+                [severity]="
+                  set?.newComments
+                    ? 'danger'
+                    : set?.comments?.length > 0
+                    ? 'contrast'
+                    : 'secondary'
+                "
                 class="nr-comments"
                 badgeSize="large"
                 [pTooltip]="

@@ -2,6 +2,7 @@ import { IUser } from '../../../login/types/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { IPositionStatus } from '../edit-set/PositionStatus';
+import { IComment } from './IComment';
 import { ISet } from './ISet';
 
 export interface IPosition {
@@ -34,4 +35,7 @@ export interface IPosition {
   createdBy: IUser;
   updatedBy: IUser;
   [key: string]: any;
+
+  comments?: IComment[];
+  newComments?: number;
 }

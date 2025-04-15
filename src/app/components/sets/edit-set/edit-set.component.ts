@@ -9,6 +9,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -28,6 +29,7 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
+import { SetsService } from '../sets.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -56,6 +58,7 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
     ImageClipboardInputComponent,
     TooltipModule,
     SetMenuComponent,
+    BadgeModule,
   ],
 })
 export class EditSetComponent
@@ -102,6 +105,7 @@ export class EditSetComponent
     private router: Router,
     private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
+    private setsService: SetsService,
     private notificationService: NotificationService,
     private footerService: FooterService,
     private cd: ChangeDetectorRef
@@ -134,8 +138,30 @@ export class EditSetComponent
     this.editSetService.loadSetData(this.setId).subscribe({
       next: ({ set, positions, suppliers }) => {
         this.set = set;
-        this.positions = positions;
         this.allSuppliers = suppliers;
+
+        if (this.set.comments) {
+          const newComments = this.setsService.countNewComments(
+            this.set.comments
+          );
+          this.set = { ...this.set, newComments };
+        }
+
+        this.positions = positions.map((item) => {
+          const comments =
+            this.set.comments?.filter(
+              (comment) => comment.positionId.id === item.id
+            ) || [];
+
+          return {
+            ...item,
+            comments,
+            newComments:
+              comments.length > 0
+                ? this.setsService.countNewComments(comments)
+                : undefined,
+          };
+        });
 
         // map option list for select fields
         this.dropwownColumnOptions = {
@@ -367,7 +393,7 @@ export class EditSetComponent
       (item) => item.id === this.selectedBookmark
     );
 
-    const { id, ...clonePosition } = originalPosition;
+    const { id, comments, newComments, ...clonePosition } = originalPosition;
 
     const newClonePosition: IClonePosition = {
       ...clonePosition,
@@ -593,5 +619,17 @@ export class EditSetComponent
   // get css class for row based on column status
   getRowClass(position: any): string {
     return position.status?.cssClass || '';
+  }
+
+  getRowNewComments(posId: number): number {
+    const position = this.positions.find((item) => item.id === posId);
+
+    return position?.newComments || 0;
+  }
+
+  getRowAllComments(posId: number): number {
+    const position = this.positions.find((item) => item.id === posId);
+
+    return position?.comments?.length || 0;
   }
 }

@@ -93,7 +93,12 @@ export class SetsComponent implements OnInit {
             (set.files?.files.length !== 0 || set.files.pdf.length !== 0),
         }));
 
-        this.countNewComments();
+        this.sets = this.sets.map((set) => ({
+          ...set,
+          newComments: set.comments
+            ? this.setsService.countNewComments(set.comments)
+            : undefined,
+        }));
 
         this.isLoading = false;
         this.cd.markForCheck();
@@ -170,23 +175,6 @@ export class SetsComponent implements OnInit {
       next: (response: IFileList) => {
         this.dialogShowFilesComponent.showDialog(setId, setName, response);
       },
-    });
-  }
-
-  countNewComments(): void {
-    this.sets = this.sets.map((set) => {
-      if (set?.comments && set.comments.length > 0) {
-        const newComments = set.comments.reduce((acc, item) => {
-          if (!item.readByReceiver) {
-            acc += 1;
-          }
-          return acc;
-        }, 0);
-
-        return { ...set, newComments };
-      }
-
-      return set;
     });
   }
 }

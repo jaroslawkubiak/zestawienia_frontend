@@ -6,6 +6,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
+  ViewEncapsulation,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
@@ -28,6 +29,7 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/SetStatus';
+import { IComment } from '../types/IComment';
 
 @Component({
   selector: 'app-set-menu',
@@ -43,6 +45,7 @@ import { SetStatus } from '../types/SetStatus';
   ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
+  standalone: true,
 })
 export class SetMenuComponent {
   @Input() set!: ISet;
@@ -185,6 +188,17 @@ export class SetMenuComponent {
         label: 'Prześlij pliki',
         icon: 'pi pi-upload',
         command: () => this.openSendFilesDialog(),
+      },
+      {
+        label: 'Komentarze',
+        icon: 'pi pi-comments',
+        badgeStyleClass: this.set.newComments
+          ? 'p-badge-danger'
+          : 'p-badge-contrast',
+        badge: this.set.newComments
+          ? String(this.set.newComments)
+          : String(this.set?.comments?.length),
+        command: () => null,
       },
     ];
   }

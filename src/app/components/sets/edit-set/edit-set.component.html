@@ -115,6 +115,36 @@
                       pTooltip="Przegiągnij, aby zmienić pozycję"
                       pReorderableRowHandle
                     />
+                    <div class="btn-comments-wrapper">
+                      <p-button
+                        icon="pi pi-comments"
+                        class="m-4"
+                        severity="info"
+                        alt="Zobacz komentarze"
+                        pTooltip="Zobacz komentarze"
+                      />
+                      <p-badge
+                        value="{{
+                          getRowNewComments(position.id)
+                            ? getRowNewComments(position.id)
+                            : getRowAllComments(position.id)
+                        }}"
+                        [severity]="
+                          getRowNewComments(position.id)
+                            ? 'danger'
+                            : getRowAllComments(position.id)
+                            ? 'contrast'
+                            : 'secondary'
+                        "
+                        class="nr-comments"
+                        badgeSize="large"
+                        [pTooltip]="
+                          getRowNewComments(position.id)
+                            ? 'Ilość nowych komentarzy'
+                            : 'Ilość komentarzy'
+                        "
+                      />
+                    </div>
                     <p-button
                       severity="primary"
                       icon="pi pi-plus"
@@ -124,7 +154,7 @@
                       (click)="addEmptyPosition(formData[i].kolejnosc)"
                     />
                     <p-button
-                      severity="info"
+                      severity="warn"
                       icon="pi pi-clone"
                       class="m-4"
                       alt="Klonuj pozycję"
