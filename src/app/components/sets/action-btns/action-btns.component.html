@@ -1,0 +1,65 @@
+<div class="position-actions flex-center">
+  <p-button
+    severity="contrast"
+    icon="pi pi-bars"
+    class="m-4"
+    alt="Przegiągnij, aby zmienić pozycję"
+    pTooltip="Przegiągnij, aby zmienić pozycję"
+    pReorderableRowHandle
+  />
+  <div class="btn-comments-wrapper">
+    <p-button
+      icon="pi pi-comments"
+      class="m-4"
+      severity="info"
+      alt="Zobacz komentarze"
+      pTooltip="Zobacz komentarze"
+    />
+    <p-badge
+      value="{{
+        getRowNewComments(posId)
+          ? getRowNewComments(posId)
+          : getRowAllComments(posId)
+      }}"
+      [severity]="
+        getRowNewComments(posId)
+          ? 'danger'
+          : getRowAllComments(posId)
+          ? 'contrast'
+          : 'secondary'
+      "
+      class="nr-comments"
+      badgeSize="large"
+      [pTooltip]="
+        getRowNewComments(posId)
+          ? 'Ilość nowych komentarzy'
+          : 'Ilość komentarzy'
+      "
+    />
+  </div>
+  <p-button
+    severity="primary"
+    icon="pi pi-plus"
+    class="m-4"
+    alt="Nowa pusta pozycja"
+    pTooltip="Nowa pusta pozycja"
+    (click)="triggerAddEmptyPosition()"
+  />
+
+  <p-button
+    severity="warn"
+    icon="pi pi-clone"
+    class="m-4"
+    alt="Klonuj pozycję"
+    pTooltip="Klonuj pozycję"
+    (click)="triggerClonePosition()"
+  />
+  <p-button
+    severity="danger"
+    class="m-4"
+    icon="pi pi-trash"
+    alt="Usuń pozycję"
+    pTooltip="Usuń pozycję"
+    (click)="triggerDeletePosition()"
+  />
+</div>

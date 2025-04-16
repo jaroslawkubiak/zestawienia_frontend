@@ -106,70 +106,14 @@
                 </td>
                 <td>
                   <!-- position action buttons  -->
-                  <div class="position-actions flex-center">
-                    <p-button
-                      severity="contrast"
-                      icon="pi pi-bars"
-                      class="m-4"
-                      alt="Przegiągnij, aby zmienić pozycję"
-                      pTooltip="Przegiągnij, aby zmienić pozycję"
-                      pReorderableRowHandle
-                    />
-                    <div class="btn-comments-wrapper">
-                      <p-button
-                        icon="pi pi-comments"
-                        class="m-4"
-                        severity="info"
-                        alt="Zobacz komentarze"
-                        pTooltip="Zobacz komentarze"
-                      />
-                      <p-badge
-                        value="{{
-                          getRowNewComments(position.id)
-                            ? getRowNewComments(position.id)
-                            : getRowAllComments(position.id)
-                        }}"
-                        [severity]="
-                          getRowNewComments(position.id)
-                            ? 'danger'
-                            : getRowAllComments(position.id)
-                            ? 'contrast'
-                            : 'secondary'
-                        "
-                        class="nr-comments"
-                        badgeSize="large"
-                        [pTooltip]="
-                          getRowNewComments(position.id)
-                            ? 'Ilość nowych komentarzy'
-                            : 'Ilość komentarzy'
-                        "
-                      />
-                    </div>
-                    <p-button
-                      severity="primary"
-                      icon="pi pi-plus"
-                      class="m-4"
-                      alt="Nowa pusta pozycja"
-                      pTooltip="Nowa pusta pozycja"
-                      (click)="addEmptyPosition(formData[i].kolejnosc)"
-                    />
-                    <p-button
-                      severity="warn"
-                      icon="pi pi-clone"
-                      class="m-4"
-                      alt="Klonuj pozycję"
-                      pTooltip="Klonuj pozycję"
-                      (click)="clonePosition(formData[i].id)"
-                    />
-                    <p-button
-                      severity="danger"
-                      class="m-4"
-                      icon="pi pi-trash"
-                      alt="Usuń pozycję"
-                      pTooltip="Usuń pozycję"
-                      (click)="deletePosition(formData[i].id)"
-                    />
-                  </div>
+                  <app-action-btns
+                    [positions]="positions"
+                    [posId]="position.id"
+                    [kolejnosc]="formData[i].kolejnosc"
+                    (addEmptyPosition)="addEmptyPosition(formData[i].kolejnosc)"
+                    (clonePosition)="clonePosition(formData[i].id)"
+                    (deletePosition)="deletePosition(formData[i].id)"
+                  />
                 </td>
                 <!-- main content  -->
                 <td

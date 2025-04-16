@@ -9,7 +9,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -27,12 +26,12 @@ import {
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISupplier } from '../../suppliers/types/ISupplier';
+import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { SetsService } from '../sets.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
-import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
@@ -58,7 +57,7 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
     ImageClipboardInputComponent,
     TooltipModule,
     SetMenuComponent,
-    BadgeModule,
+    ActionBtnsComponent,
   ],
 })
 export class EditSetComponent
@@ -127,6 +126,7 @@ export class EditSetComponent
       this.setMenuComponent.updateMenuItems();
     }
   }
+
   // change state of set - mark as edited or not edited
   isEdited(state: boolean) {
     this.setIsEdited = state;
@@ -346,34 +346,53 @@ export class EditSetComponent
   addEmptyPosition(kolejnosc: number) {
     this.isEdited(true);
 
-    const bookmark = this.set.bookmarks.filter(
-      (item) => item.id === this.selectedBookmark
-    );
+    this.editSetService
+      .addEmptyPosition(this.set, this.selectedBookmark, kolejnosc)
+      .subscribe({
+        next: (response) => {
+          this.formData.splice(response.kolejnosc, 0, response);
+          this.updateOrder();
+          this.updatePosition();
+          this.positions.push(response);
 
-    const newPosition: INewEmptyPosition = {
-      kolejnosc: kolejnosc,
-      bookmarkId: bookmark[0],
-      setId: { id: +this.setId } as ISet,
-    };
+          this.notificationService.showNotification(
+            'success',
+            'Pusta pozycja została dodana'
+          );
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
 
-    this.editSetService.addPosition(newPosition).subscribe({
-      next: (response) => {
-        // put new position in place according to property kolejnosc
-        this.formData.splice(response.kolejnosc, 0, response);
+    // const bookmark = this.set.bookmarks.filter(
+    //   (item) => item.id === this.selectedBookmark
+    // );
 
-        this.updateOrder();
-        this.updatePosition();
-        this.positions.push(response);
+    // const newPosition: INewEmptyPosition = {
+    //   kolejnosc: kolejnosc,
+    //   bookmarkId: bookmark[0],
+    //   setId: { id: +this.setId } as ISet,
+    // };
 
-        this.notificationService.showNotification(
-          'success',
-          'Pusta pozycja została dodana'
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification('error', error.message);
-      },
-    });
+    // this.editSetService.addPosition(newPosition).subscribe({
+    //   next: (response) => {
+    //     // put new position in place according to property kolejnosc
+    //     this.formData.splice(response.kolejnosc, 0, response);
+
+    //     this.updateOrder();
+    //     this.updatePosition();
+    //     this.positions.push(response);
+
+    //     this.notificationService.showNotification(
+    //       'success',
+    //       'Pusta pozycja została dodana'
+    //     );
+    //   },
+    //   error: (error) => {
+    //     this.notificationService.showNotification('error', error.message);
+    //   },
+    // });
   }
 
   // clone selected position
@@ -619,17 +638,5 @@ export class EditSetComponent
   // get css class for row based on column status
   getRowClass(position: any): string {
     return position.status?.cssClass || '';
-  }
-
-  getRowNewComments(posId: number): number {
-    const position = this.positions.find((item) => item.id === posId);
-
-    return position?.newComments || 0;
-  }
-
-  getRowAllComments(posId: number): number {
-    const position = this.positions.find((item) => item.id === posId);
-
-    return position?.comments?.length || 0;
   }
 }

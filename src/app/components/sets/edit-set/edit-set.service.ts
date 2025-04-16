@@ -98,24 +98,37 @@ export class EditSetService {
     );
   }
 
-  addPosition(newPosition: INewEmptyPosition): Observable<IPosition> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
-    const createPosition: INewEmptyPosition = {
-      ...newPosition,
+ 
+  addEmptyPosition(
+    set: ISet,
+    selectedBookmarkId: number,
+    kolejnosc: number
+  ): Observable<IPosition> {
+    const bookmark = set.bookmarks.find(b => b.id === selectedBookmarkId);
+  
+    if (!bookmark) {
+      return throwError(() => new Error('Nie znaleziono zakładki'));
+    }
+  
+    const newPosition: INewEmptyPosition = {
+      kolejnosc,
+      bookmarkId: bookmark,
+      setId: { id: +set.id } as ISet,
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,
     };
-
-    return this.http
-      .post<IPosition>(`${environment.API_URL}/positions/new`, createPosition, {
-        headers,
-      })
-      .pipe(catchError(this.handleError));
+  
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  
+    return this.http.post<IPosition>(
+      `${environment.API_URL}/positions/new`,
+      newPosition,
+      { headers }
+    ).pipe(catchError(this.handleError));
   }
-
+  
   clonePosition(clonePosition: IClonePosition): Observable<IPosition> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
