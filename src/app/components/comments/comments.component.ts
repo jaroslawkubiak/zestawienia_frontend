@@ -23,6 +23,8 @@ export class CommentsComponent {
   @Input() commentsDialog = false;
 
   newMessage: string = '';
+
+  editedCommentId: number | null = null;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 
   constructor(private commentsService: CommentsService) {}
@@ -47,19 +49,67 @@ export class CommentsComponent {
       console.error('Scroll error:', err);
     }
   }
-  sendMessage() {
+
+  sendComment() {
     if (!this.newMessage.trim()) return;
 
-    this.commentsService
-      .addComment(this.newMessage, this.setId, this.positionId)
-      .subscribe({
-        next: (response) => {
-          this.comments.push(response);
-          this.newMessage = '';
-        },
-        error: (error) => {
-          console.error(error);
-        },
-      });
+    // add new comment
+    if (!this.editedCommentId) {
+      this.commentsService
+        .addComment(this.newMessage, this.setId, this.positionId)
+        .subscribe({
+          next: (response) => {
+            this.comments.push(response);
+            this.newMessage = '';
+            setTimeout(() => {
+              this.scrollToBottom();
+            }, 100);
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
+    } else {
+      // edit comment
+      this.commentsService
+        .editComment(this.editedCommentId, this.newMessage)
+        .subscribe({
+          next: (response) => {
+            const commentIndex = this.comments.findIndex(
+              (item) => item.id === this.editedCommentId
+            );
+
+            if (commentIndex !== -1) {
+              this.comments[commentIndex] = response;
+            }
+
+            this.newMessage = '';
+            this.editedCommentId = null;
+            setTimeout(() => {
+              this.scrollToBottom();
+            }, 100);
+          },
+          error: (error) => {
+            console.error(error);
+          },
+        });
+    }
+  }
+
+  markCommentToEdit(id: number) {
+    this.editedCommentId = id;
+    this.newMessage =
+      this.comments.find((item) => item.id === id)?.comment || '';
+  }
+
+  deleteComment(id: number) {
+    this.commentsService.deleteComment(id).subscribe({
+      next: (response) => {
+        this.comments = this.comments.filter((item) => item.id !== id);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 }

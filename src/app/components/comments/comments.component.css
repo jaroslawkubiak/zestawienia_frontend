@@ -17,10 +17,12 @@
   margin-bottom: 2rem;
   overflow-x: hidden;
   border: 1px solid var(--accent-color);
+  scroll-behavior: smooth;
 }
 
 .message-wrapper {
-  margin: 2px;
+  padding: 10px;
+  position: relative;
   display: flex;
   max-width: 70%;
 }
@@ -62,8 +64,8 @@
 .message-wrapper.from-user::before {
   content: "";
   position: absolute;
-  bottom: 1px;
-  right: -7px;
+  bottom: 10px;
+  right: 2px;
   width: 20px;
   height: 20px;
   background-color: var(--user-bg);
@@ -74,8 +76,8 @@
 .message-wrapper.from-user::after {
   content: "";
   position: absolute;
-  bottom: 4px;
-  right: -12px;
+  bottom: 15px;
+  right: -3px;
   width: 20px;
   height: 20px;
   background-color: var(--chat-bg);
@@ -86,8 +88,8 @@
 .message-wrapper.from-client::before {
   content: "";
   position: absolute;
-  bottom: 1px;
-  left: -7px;
+  bottom: 10px;
+  left: 2px;
   width: 20px;
   height: 20px;
   background-color: var(--client-bg);
@@ -98,8 +100,8 @@
 .message-wrapper.from-client::after {
   content: "";
   position: absolute;
-  bottom: 4px;
-  left: -12px;
+  bottom: 15px;
+  left: -3px;
   width: 20px;
   height: 20px;
   background-color: var(--chat-bg);
@@ -135,10 +137,10 @@
 
 .new-message-input {
   flex: 1;
-  padding: 0.5rem 1rem;
+  padding: 1rem 1.5rem;
   border: 1px solid var(--accent-color);
-  background-color: var(--accent-color-lighter) !important;
-  color: var(--accent-color-darker) !important;
+  background-color: var(--accent-color-lighter);
+  color: var(--accent-color-darker);
   font-size: 1.6rem;
   outline: none;
 }
@@ -161,10 +163,58 @@
   transition: background-color 0.2s;
 }
 
+.disabled {
+  background-color: rgb(216, 216, 216);
+}
+
 .send-button:hover {
   background-color: var(--btn-color-hover);
 }
 
 .send-button i {
   font-size: 16px;
+}
+
+.message-wrapper.from-client .message-bubble i {
+  display: none;
+}
+
+.edit-icon,
+.delete-icon {
+  position: absolute;
+  top: -15px;
+  font-size: 12px;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  color: white;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease;
+  background-color: rgb(155, 155, 155);
+}
+
+.edit-icon {
+  right: 20px;
+}
+
+.delete-icon {
+  right: -10px;
+}
+
+.edit-icon:hover {
+  background-color: var(--accent-color);
+}
+
+.delete-icon:hover {
+  background-color: var(--error-color);
+}
+
+.message-wrapper:hover .edit-icon,
+.message-wrapper:hover .delete-icon {
+  opacity: 1;
+  visibility: visible;
 }
