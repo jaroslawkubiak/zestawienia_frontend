@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IFileList } from '../../../services/types/IFileList';
+import { IBookmark } from '../../bookmarks/IBookmark';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { ICompleteSet } from '../types/ICompleteSet';
@@ -18,6 +19,7 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
+import { SetsService } from '../sets.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +32,8 @@ export class EditSetService {
   constructor(
     private http: HttpClient,
     private supplierService: SuppliersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private setsService: SetsService
   ) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
@@ -84,32 +87,50 @@ export class EditSetService {
       suppliers: this.supplierService.getSuppliers(),
     }).pipe(
       map(({ set, positions, suppliers }) => {
-        const updatedPositions = positions.map((position) => ({
-          ...position,
-          status: position.status
-            ? this.positionStatus.find(
-                (item) => position.status === item.label
-              ) || ''
-            : position.status,
-        }));
+        const updatedPositions = positions.map((position) => {
+          const comments =
+            set.comments?.filter(
+              (comment) => comment.positionId.id === position.id
+            ) || [];
+
+          const newComments =
+            comments.length > 0
+              ? this.setsService.countNewComments(comments)
+              : undefined;
+
+          return {
+            ...position,
+            comments,
+            newComments,
+            status: position.status
+              ? this.positionStatus.find(
+                  (item) => position.status === item.label
+                ) || ''
+              : position.status,
+          };
+        });
+
+        if (set.comments) {
+          const newComments = this.setsService.countNewComments(set.comments);
+          set = { ...set, newComments };
+        }
 
         return { set, positions: updatedPositions, suppliers };
       })
     );
   }
 
- 
   addEmptyPosition(
     set: ISet,
     selectedBookmarkId: number,
     kolejnosc: number
   ): Observable<IPosition> {
-    const bookmark = set.bookmarks.find(b => b.id === selectedBookmarkId);
-  
+    const bookmark = set.bookmarks.find((b) => b.id === selectedBookmarkId);
+
     if (!bookmark) {
       return throwError(() => new Error('Nie znaleziono zakładki'));
     }
-  
+
     const newPosition: INewEmptyPosition = {
       kolejnosc,
       bookmarkId: bookmark,
@@ -117,38 +138,77 @@ export class EditSetService {
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,
     };
-  
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-  
-    return this.http.post<IPosition>(
-      `${environment.API_URL}/positions/new`,
-      newPosition,
-      { headers }
-    ).pipe(catchError(this.handleError));
-  }
-  
-  clonePosition(clonePosition: IClonePosition): Observable<IPosition> {
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    const createClonePosition: INewEmptyPosition = {
-      ...clonePosition,
+    return this.http
+      .post<IPosition>(`${environment.API_URL}/positions/new`, newPosition, {
+        headers,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  cloneAndPreparePosition(
+    positionId: number,
+    formData: IPosition[],
+    bookmarks: IBookmark[],
+    selectedBookmarkId: number,
+    setId: number,
+    statuses: { label: string }[]
+  ): Observable<IPosition> {
+    const original = formData.find((p) => p.id === positionId);
+
+    if (!original) {
+      return throwError(
+        () => new Error(`Position with ID ${positionId} not found`)
+      );
+    }
+
+    const bookmark = bookmarks.find((b) => b.id === selectedBookmarkId);
+    if (!bookmark) {
+      return throwError(
+        () => new Error(`Bookmark with ID ${selectedBookmarkId} not found`)
+      );
+    }
+
+    const { id, comments, newComments, ...cloneData } = original;
+
+    const newClonePosition: IClonePosition = {
+      ...cloneData,
+      bookmarkId: bookmark,
+      status:
+        typeof cloneData.status === 'object' && 'label' in cloneData.status
+          ? cloneData.status.label
+          : cloneData.status,
+      setId: { id: +setId } as ISet,
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,
     };
 
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
     return this.http
       .post<IPosition>(
         `${environment.API_URL}/positions/clone`,
-        createClonePosition,
-        {
-          headers,
-        }
+        newClonePosition,
+        { headers }
       )
-      .pipe(catchError(this.handleError));
+      .pipe(
+        map((response: IPosition) => {
+          // jeśli response.status to string — zamień na obiekt z listy
+          if (response.status) {
+            const statusObj = statuses.find((s) => s.label === response.status);
+            response.status = (statusObj as IPositionStatus) || '';
+          }
+
+          return response;
+        }),
+        catchError(this.handleError)
+      );
   }
 
   saveSet(savedSet: IUpdateSet): Observable<INewSet> {

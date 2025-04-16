@@ -30,7 +30,6 @@ import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { SetsService } from '../sets.service';
-import { IClonePosition } from '../types/IClonePosition';
 import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
@@ -138,30 +137,8 @@ export class EditSetComponent
     this.editSetService.loadSetData(this.setId).subscribe({
       next: ({ set, positions, suppliers }) => {
         this.set = set;
+        this.positions = positions;
         this.allSuppliers = suppliers;
-
-        if (this.set.comments) {
-          const newComments = this.setsService.countNewComments(
-            this.set.comments
-          );
-          this.set = { ...this.set, newComments };
-        }
-
-        this.positions = positions.map((item) => {
-          const comments =
-            this.set.comments?.filter(
-              (comment) => comment.positionId.id === item.id
-            ) || [];
-
-          return {
-            ...item,
-            comments,
-            newComments:
-              comments.length > 0
-                ? this.setsService.countNewComments(comments)
-                : undefined,
-          };
-        });
 
         // map option list for select fields
         this.dropwownColumnOptions = {
@@ -364,113 +341,55 @@ export class EditSetComponent
           this.notificationService.showNotification('error', error.message);
         },
       });
-
-    // const bookmark = this.set.bookmarks.filter(
-    //   (item) => item.id === this.selectedBookmark
-    // );
-
-    // const newPosition: INewEmptyPosition = {
-    //   kolejnosc: kolejnosc,
-    //   bookmarkId: bookmark[0],
-    //   setId: { id: +this.setId } as ISet,
-    // };
-
-    // this.editSetService.addPosition(newPosition).subscribe({
-    //   next: (response) => {
-    //     // put new position in place according to property kolejnosc
-    //     this.formData.splice(response.kolejnosc, 0, response);
-
-    //     this.updateOrder();
-    //     this.updatePosition();
-    //     this.positions.push(response);
-
-    //     this.notificationService.showNotification(
-    //       'success',
-    //       'Pusta pozycja została dodana'
-    //     );
-    //   },
-    //   error: (error) => {
-    //     this.notificationService.showNotification('error', error.message);
-    //   },
-    // });
   }
 
   // clone selected position
   clonePosition(positionId: number) {
     this.isEdited(true);
 
-    const originalPosition = this.formData.find(
-      (item) => item.id === positionId
-    );
+    this.editSetService
+      .cloneAndPreparePosition(
+        positionId,
+        this.formData,
+        this.set.bookmarks,
+        this.selectedBookmark,
+        this.setId,
+        this.positionStatus
+      )
+      .subscribe({
+        next: (response) => {
+          this.resetFooter();
 
-    if (!originalPosition) {
-      console.error(`Position with ID ${positionId} not found`);
-      return;
-    }
+          this.formData.splice(response.kolejnosc, 0, response);
 
-    const bookmark = this.set.bookmarks.filter(
-      (item) => item.id === this.selectedBookmark
-    );
+          this.formData = this.formData
+            .map((item: IPosition) => {
+              const brutto = calculateBrutto(item.netto);
+              return {
+                ...item,
+                brutto,
+                wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+                wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+              };
+            })
+            .map((item: IPosition) => {
+              this.calculateFooterRow(item);
+              return item;
+            });
 
-    const { id, comments, newComments, ...clonePosition } = originalPosition;
+          this.updateOrder();
+          this.updatePosition();
+          this.positions.push(response);
 
-    const newClonePosition: IClonePosition = {
-      ...clonePosition,
-      bookmarkId: bookmark[0],
-      status:
-        clonePosition.status &&
-        typeof clonePosition.status === 'object' &&
-        'label' in clonePosition.status
-          ? clonePosition.status.label
-          : clonePosition.status,
-      setId: { id: +this.setId } as ISet,
-    };
-
-    this.editSetService.clonePosition(newClonePosition).subscribe({
-      next: (response) => {
-        this.resetFooter();
-
-        // create a status object from status.label
-        if (response.status) {
-          const statusObj = this.positionStatus.find(
-            (item) => response.status === item.label
+          this.notificationService.showNotification(
+            'success',
+            'Pozycja została sklonowana'
           );
-
-          response.status = statusObj ? statusObj : '';
-        }
-
-        // put new position in place according to property kolejnosc
-        this.formData.splice(response.kolejnosc, 0, response);
-
-        this.formData = this.formData
-          .map((item: IPosition) => {
-            const brutto = calculateBrutto(item.netto);
-
-            return {
-              ...item,
-              brutto,
-              wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-              wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-            };
-          })
-          .map((item: IPosition) => {
-            this.calculateFooterRow(item);
-            return item;
-          });
-
-        this.updateOrder();
-        this.updatePosition();
-        this.positions.push(response);
-
-        this.notificationService.showNotification(
-          'success',
-          'Pozycja została sklonowana'
-        );
-      },
-      error: (error) => {
-        this.notificationService.showNotification('error', error.message);
-      },
-    });
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
   }
 
   // mark position to be deleted after submit
