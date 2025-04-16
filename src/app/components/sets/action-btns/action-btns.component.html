@@ -14,28 +14,25 @@
       severity="info"
       alt="Zobacz komentarze"
       pTooltip="Zobacz komentarze"
+      (click)="showComments(positionId)"
     />
     <p-badge
-      value="{{
-        getRowNewComments(posId)
-          ? getRowNewComments(posId)
-          : getRowAllComments(posId)
-      }}"
+      [value]="getRowNewComments(positionId) || getRowAllComments(positionId)"
       [severity]="
-        getRowNewComments(posId)
+        getRowNewComments(positionId)
           ? 'danger'
-          : getRowAllComments(posId)
+          : getRowAllComments(positionId)
           ? 'contrast'
           : 'secondary'
       "
       class="nr-comments"
       badgeSize="large"
       [pTooltip]="
-        getRowNewComments(posId)
+        getRowNewComments(positionId)
           ? 'Ilość nowych komentarzy'
           : 'Ilość komentarzy'
       "
-    />
+    ></p-badge>
   </div>
   <p-button
     severity="primary"
@@ -63,3 +60,16 @@
     (click)="triggerDeletePosition()"
   />
 </div>
+<p-dialog
+  [header]="header"
+  [modal]="true"
+  [(visible)]="showCommentsDialog"
+  [style]="{ width: '70rem' }"
+>
+  <app-comments
+    [comments]="comments"
+    [positionId]="positionId"
+    [setId]="setId"
+    [commentsDialog]="showCommentsDialog"
+  />
+</p-dialog>

@@ -1,0 +1,32 @@
+<div class="chat-container" #chatContainer>
+  <div
+    *ngFor="let comment of comments"
+    class="message-wrapper"
+    [ngClass]="{
+      'from-client': comment.authorType === 'client',
+      'from-user': comment.authorType === 'user'
+    }"
+  >
+    <div class="message-bubble">
+      <p class="text">{{ comment.comment }}</p>
+      <span class="timestamp"
+        >{{ comment.authorName }}, {{ comment.createdAt }}</span
+      >
+    </div>
+  </div>
+</div>
+
+<div class="new-message-input-wrapper">
+  <input
+    type="text"
+    [(ngModel)]="newMessage"
+    class="new-message-input"
+    placeholder="Napisz wiadomość..."
+    (keyup.enter)="sendMessage()"
+  />
+  <div class="send-btn-wrapper">
+    <button class="send-btn" (click)="sendMessage()">
+      <i class="pi pi-arrow-up"></i>
+    </button>
+  </div>
+</div>

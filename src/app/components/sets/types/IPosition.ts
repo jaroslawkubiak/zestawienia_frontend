@@ -1,8 +1,8 @@
 import { IUser } from '../../../login/types/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { IComment } from '../../comments/types/IComment';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { IPositionStatus } from '../edit-set/PositionStatus';
-import { IComment } from './IComment';
 import { ISet } from './ISet';
 
 export interface IPosition {

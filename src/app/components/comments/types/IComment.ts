@@ -1,5 +1,5 @@
-import { IPosition } from './IPosition';
-import { ISet } from './ISet';
+import { IPosition } from '../../sets/types/IPosition';
+import { ISet } from '../../sets/types/ISet';
 
 export interface IComment {
   id: number;
@@ -11,4 +11,5 @@ export interface IComment {
   createdAtTimestamp: number;
   positionId: IPosition;
   setId: ISet;
+  authorName?: string;
 }

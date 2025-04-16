@@ -108,7 +108,8 @@
                   <!-- position action buttons  -->
                   <app-action-btns
                     [positions]="positions"
-                    [posId]="position.id"
+                    [positionId]="position.id"
+                    [setId]="setId"
                     [kolejnosc]="formData[i].kolejnosc"
                     (addEmptyPosition)="addEmptyPosition(formData[i].kolejnosc)"
                     (clonePosition)="clonePosition(formData[i].id)"

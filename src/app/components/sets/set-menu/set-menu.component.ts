@@ -6,20 +6,19 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation,
 } from '@angular/core';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
-import { EmailsService } from '../../emails/email.service';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
-import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { IFileList } from '../../../services/types/IFileList';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { EmailsService } from '../../emails/email.service';
+import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { EditSetService } from '../edit-set/edit-set.service';
@@ -29,7 +28,6 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/SetStatus';
-import { IComment } from '../types/IComment';
 
 @Component({
   selector: 'app-set-menu',

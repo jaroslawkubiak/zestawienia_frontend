@@ -1,4 +1,3 @@
-
 .position-actions {
   display: flex;
   flex-direction: column;
@@ -14,4 +13,16 @@
 
 .btn-comments-wrapper {
   position: relative;
+}
+
+::ng-deep .p-dialog-title {
+  color: var(--accent-color-darker) !important;
+}
+
+::ng-deep .p-dialog-close-button {
+  color: var(--accent-color-darker) !important;
+}
+
+::ng-deep .p-dialog-close-button:hover {
+  background-color: var(--accent-color-lighter) !important;
 }
