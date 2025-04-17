@@ -173,6 +173,7 @@ export class ClientsComponent implements OnInit {
     this.clientDialog = false;
     this.form.reset();
   }
+
   deleteClient(client: IClient) {
     const accept = () => {
       this.clientsService.removeClients([client.id]).subscribe({
@@ -210,6 +211,7 @@ export class ClientsComponent implements OnInit {
 
     return index;
   }
+
   saveClient() {
     if (!this.form.valid) {
       (
@@ -272,6 +274,7 @@ export class ClientsComponent implements OnInit {
       this.form.reset();
     }
   }
+  
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {

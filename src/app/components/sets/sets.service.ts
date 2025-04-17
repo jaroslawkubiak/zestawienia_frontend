@@ -67,9 +67,12 @@ export class SetsService {
       .pipe(catchError(this.handleError));
   }
 
-  countNewComments(comments: IComment[]): number {
+  countNewComments(
+    comments: IComment[],
+    authorType: 'user' | 'client'
+  ): number {
     const newComments = comments.reduce((acc, item) => {
-      if (!item.readByReceiver) {
+      if (!item.readByReceiver && item.authorType !== authorType) {
         acc += 1;
       }
       return acc;

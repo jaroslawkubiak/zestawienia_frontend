@@ -96,7 +96,7 @@ export class SetsComponent implements OnInit {
         this.sets = this.sets.map((set) => ({
           ...set,
           newComments: set.comments
-            ? this.setsService.countNewComments(set.comments)
+            ? this.setsService.countNewComments(set.comments, 'user')
             : undefined,
         }));
 
@@ -176,5 +176,9 @@ export class SetsComponent implements OnInit {
         this.dialogShowFilesComponent.showDialog(setId, setName, response);
       },
     });
+  }
+
+  showComments(setId: number) {
+    console.log(`##### show comments ${setId} #####`);
   }
 }

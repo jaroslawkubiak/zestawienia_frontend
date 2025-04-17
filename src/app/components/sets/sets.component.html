@@ -139,20 +139,14 @@
                 alt="Zobacz komentarze"
                 pTooltip="Zobacz komentarze"
                 [disabled]="set?.comments?.length === 0"
-                (click)="editSet(set.id)"
+                (click)="showComments(set.id)"
               />
               <p-badge
-                [value]="
-                  set?.newComments
-                    ? set?.newComments
-                    : set?.comments?.length > 0
-                    ? set?.comments?.length
-                    : 0
-                "
+                [value]="set?.newComments || set?.comments?.length || 0"
                 [severity]="
                   set?.newComments
                     ? 'danger'
-                    : set?.comments?.length > 0
+                    : set?.comments?.length
                     ? 'contrast'
                     : 'secondary'
                 "

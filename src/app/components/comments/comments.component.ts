@@ -9,6 +9,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
+import { ConfirmationModalService } from '../../services/confirmation.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 
 @Component({
   selector: 'app-comments',
@@ -27,7 +29,10 @@ export class CommentsComponent {
   editedCommentId: number | null = null;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 
-  constructor(private commentsService: CommentsService) {}
+  constructor(
+    private commentsService: CommentsService,
+    private confirmationModalService: ConfirmationModalService
+  ) {}
 
   ngAfterViewInit() {
     if (this.commentsDialog) {
@@ -103,13 +108,23 @@ export class CommentsComponent {
   }
 
   deleteComment(id: number) {
-    this.commentsService.deleteComment(id).subscribe({
-      next: (response) => {
-        this.comments = this.comments.filter((item) => item.id !== id);
-      },
-      error: (error) => {
-        console.error(error);
-      },
-    });
+    const accept = () => {
+      this.commentsService.deleteComment(id).subscribe({
+        next: (response) => {
+          this.comments = this.comments.filter((item) => item.id !== id);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
+    };
+
+    const confirmMessage: IConfirmationMessage = {
+      message: 'Czy na pewno usunąć komentarz?',
+      header: 'Potwierdź usunięcie komentarza',
+      accept,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
   }
 }

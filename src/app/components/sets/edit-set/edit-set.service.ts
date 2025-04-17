@@ -95,7 +95,7 @@ export class EditSetService {
 
           const newComments =
             comments.length > 0
-              ? this.setsService.countNewComments(comments)
+              ? this.setsService.countNewComments(comments, 'user')
               : undefined;
 
           return {
@@ -111,7 +111,10 @@ export class EditSetService {
         });
 
         if (set.comments) {
-          const newComments = this.setsService.countNewComments(set.comments);
+          const newComments = this.setsService.countNewComments(
+            set.comments,
+            'user'
+          );
           set = { ...set, newComments };
         }
 
