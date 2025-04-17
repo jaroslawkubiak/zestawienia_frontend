@@ -179,6 +179,10 @@ export class SetsComponent implements OnInit {
   }
 
   showComments(setId: number) {
-    console.log(`##### show comments ${setId} #####`);
+    const backPath = '/sets';
+
+    this.router.navigate([`/sets/comments/${setId}`], {
+      state: { backPath },
+    });
   }
 }

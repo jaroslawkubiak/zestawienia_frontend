@@ -7,6 +7,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
@@ -66,6 +67,7 @@ export class SetMenuComponent {
   emailsList: IEmailsToSet[] = [];
 
   constructor(
+    private router: Router,
     private notificationService: NotificationService,
     private editSetService: EditSetService,
     private emailsService: EmailsService,
@@ -196,7 +198,7 @@ export class SetMenuComponent {
         badge: this.set.newComments
           ? String(this.set.newComments)
           : String(this.set?.comments?.length),
-        command: () => null,
+        command: () => this.showComments(),
       },
     ];
   }
@@ -302,6 +304,15 @@ export class SetMenuComponent {
           : 'Nie udało się wysłać emaila.';
         this.notificationService.showNotification('error', sendigError);
       },
+    });
+  }
+
+  // show all comments from this set
+  showComments() {
+    const backPath = `/sets/${this.set.id}`;
+
+    this.router.navigate([`/sets/comments/${this.set.id}`], {
+      state: { backPath },
     });
   }
 }

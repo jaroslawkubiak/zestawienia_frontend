@@ -36,7 +36,7 @@ export class ActionBtnsComponent {
 
     if (position?.comments) {
       this.comments = position.comments;
-      this.header = `Pozycji ${position.kolejnosc} : ${position.produkt}`;
+      this.header = `Pozycja ${position.kolejnosc} : ${position.produkt}`;
       this.showCommentsDialog = true;
     }
   }

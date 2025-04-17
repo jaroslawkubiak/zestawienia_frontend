@@ -29,7 +29,6 @@ import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
-import { SetsService } from '../sets.service';
 import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
@@ -103,7 +102,6 @@ export class EditSetComponent
     private router: Router,
     private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
-    private setsService: SetsService,
     private notificationService: NotificationService,
     private footerService: FooterService,
     private cd: ChangeDetectorRef
