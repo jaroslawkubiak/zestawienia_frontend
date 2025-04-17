@@ -17,6 +17,13 @@
         pTooltip="Nowe zestawienie"
         (onClick)="openNew()"
       />
+      <div class="status-wrapper">
+        <p-checkbox
+          (click)="showClosedSets()"
+          value="hideClosedSets"
+        />
+        Pokaż zamknięte zestawienia
+      </div>
     </ng-template>
   </p-toolbar>
 

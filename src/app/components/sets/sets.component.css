@@ -58,3 +58,12 @@ tr {
 .btn-comments-wrapper {
   position: relative;
 }
+
+.status-wrapper{
+  margin-left: 400px;
+  display: flex; 
+  gap: 20px;
+  font-size: 1.4rem;
+  color: var(--accent-color);
+  align-items: center; 
+}

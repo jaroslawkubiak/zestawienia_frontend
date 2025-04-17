@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -53,16 +54,19 @@ import { SetStatus } from './types/SetStatus';
     SendFilesComponent,
     ShowFilesComponent,
     BadgeModule,
+    CheckboxModule,
   ],
   providers: [NotificationService, ConfirmationModalService],
 })
 export class SetsComponent implements OnInit {
   isLoading = true;
   sets: ISet[] = [];
+  allSets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
   statusesList = SetStatus;
+  hideClosedSets = true;
 
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
@@ -100,6 +104,9 @@ export class SetsComponent implements OnInit {
             : undefined,
         }));
 
+        this.allSets = this.sets;
+        this.filterSets();
+
         this.isLoading = false;
         this.cd.markForCheck();
       },
@@ -119,6 +126,12 @@ export class SetsComponent implements OnInit {
       title: col.header,
       dataKey: col.field,
     }));
+  }
+
+  filterSets() {
+    this.sets = this.hideClosedSets
+      ? this.allSets.filter((item) => item.status !== SetStatus.archive)
+      : [...this.allSets];
   }
 
   openNew() {
@@ -184,5 +197,10 @@ export class SetsComponent implements OnInit {
     this.router.navigate([`/sets/comments/${setId}`], {
       state: { backPath },
     });
+  }
+
+  showClosedSets() {
+    this.hideClosedSets = !this.hideClosedSets;
+    this.filterSets();
   }
 }
