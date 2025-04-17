@@ -45,26 +45,14 @@ export class EditSetService {
   }
 
   getPositions(setId: number): Observable<IPosition[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
-      .get<IPosition[]>(`${environment.API_URL}/positions/${setId}`, {
-        headers,
-      })
+      .get<IPosition[]>(`${environment.API_URL}/positions/${setId}`)
       .pipe(catchError(this.handleError));
   }
 
   getSet(setId: number): Observable<ISet> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
-      .get<ISet>(`${environment.API_URL}/sets/${setId}`, {
-        headers,
-      })
+      .get<ISet>(`${environment.API_URL}/sets/${setId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -77,6 +65,12 @@ export class EditSetService {
       .get<IFileList>(`${environment.API_URL}/files/${setId}`, {
         headers,
       })
+      .pipe(catchError(this.handleError));
+  }
+
+  validateSetAndHash(setId: number, hash: string): Observable<boolean> {
+    return this.http
+      .get<boolean>(`${environment.API_URL}/sets/${setId}/${hash}`)
       .pipe(catchError(this.handleError));
   }
 

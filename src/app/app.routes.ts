@@ -16,6 +16,7 @@ import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './misc/notification/notification.component';
 import { UiCheckComponent } from './misc/ui-check/ui-check.component';
+import { SetforclientComponent } from './components/setforclient/setforclient.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -69,6 +70,10 @@ export const routes: Routes = [
       { path: 'notification', component: NotificationComponent },
       { path: 'email-preview', component: EmailPreviewComponent },
     ],
+  },
+  {
+    path: ':id/:hash',
+    component: SetforclientComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

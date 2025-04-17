@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin } from 'rxjs';
 import { CommentsComponent } from '../comments/comments.component';
@@ -20,7 +20,7 @@ interface IPositionsWithComments {
   templateUrl: './newcomments.component.html',
   styleUrl: './newcomments.component.css',
 })
-export class NewcommentsComponent {
+export class NewcommentsComponent implements OnInit {
   setId!: number;
   set!: ISet;
   comments: IComment[] = [];

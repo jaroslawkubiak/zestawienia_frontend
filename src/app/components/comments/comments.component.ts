@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   Input,
+  OnChanges,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -18,7 +20,7 @@ import { IConfirmationMessage } from '../../services/types/IConfirmationMessage'
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css',
 })
-export class CommentsComponent {
+export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() setId!: number;
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];

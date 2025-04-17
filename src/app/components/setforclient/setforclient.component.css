@@ -1,0 +1,87 @@
+.container {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 20px 50px;
+  background-color: var(--accent-color);
+}
+
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 4px solid var(--accent-color-darker);
+}
+
+.positions-item {
+  display: grid; 
+  padding: 20px 0;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: var(--accent-color-lighter); 
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+  margin: 10px;
+}
+
+.title-header{
+  display: flex; 
+  flex-direction: column;
+  gap: 20px;
+}
+
+.title-actions{
+  display: flex; 
+  justify-content: space-between;
+  margin: 0 10px;
+}
+
+.title-actions i {
+  font-size: 3rem;
+  color: var(--accent-color-darker);
+}
+
+.bookmark-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-color-darker);
+}
+
+.room {
+  font-size: 1.6rem;
+}
+
+.product-img img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-details {
+  display: flex; 
+  flex-direction: column;
+  gap: 5px;
+}
+
+.product-details-group {
+  display: flex; 
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 5px;
+}
+
+.product-details-title {
+  color: var(--neutral-color-dark);
+  font-size: 1.2rem;
+}
+
+.product-details-name {
+  font-size: 2rem;
+  color: var(--accent-color-darker);
+}
