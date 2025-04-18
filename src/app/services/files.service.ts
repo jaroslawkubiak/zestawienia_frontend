@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { AuthService } from '../login/auth.service';
 import { IFileDetails } from '../components/sets/show-files/types/IFileDetails';
+import { AuthService } from '../login/auth.service';
+import { IFileList } from './types/IFileList';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,6 @@ import { IFileDetails } from '../components/sets/show-files/types/IFileDetails';
 export class FilesService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
-  BASE_URL = 'http://localhost:3005/uploads/sets/';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -54,7 +54,7 @@ export class FilesService {
     innerPath: string,
     fileName: string
   ): Observable<Blob> {
-    const url = `${this.BASE_URL}${setId}/${innerPath}/${fileName}`;
+    const url = `${environment.FILES_URL}${setId}/${innerPath}/${fileName}`;
 
     return this.http.get(url, {
       headers: new HttpHeaders(),
@@ -82,5 +82,39 @@ export class FilesService {
         headers,
       }
     );
+  }
+
+  prepareFilesList(setId: number, filesList: IFileList) {
+    return filesList.files.map((file) => {
+      const fileParts = file.split('.');
+      const extension = fileParts[fileParts.length - 1].toUpperCase() as
+        | 'JPEG'
+        | 'PNG'
+        | 'JPG'
+        | 'PDF';
+      return {
+        id: Math.floor(Math.random() * 9999),
+        name: file,
+        shortName: fileParts[0],
+        extension: extension,
+        path: `${environment.FILES_URL}${setId}/files/${file}`,
+        dir: 'files',
+      } as IFileDetails;
+    });
+  }
+
+  preparePdfFilesList(setId: number, filesList: IFileList) {
+    return filesList.pdf.map((file) => {
+      const fileParts = file.split('.');
+      const extension = fileParts[fileParts.length - 1].toUpperCase() as 'PDF';
+      return {
+        id: Math.floor(Math.random() * 9999),
+        name: file,
+        shortName: fileParts[0],
+        extension: extension,
+        path: `${environment.FILES_URL}${setId}/pdf/${file}`,
+        dir: 'pdf',
+      } as IFileDetails;
+    });
   }
 }

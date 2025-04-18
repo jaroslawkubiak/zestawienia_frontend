@@ -38,7 +38,7 @@ export class EmailsService {
   }
 
   sendEmail(set: ISet): Observable<any> {
-    const link = `${environment.API_URL}/${set.id}/${set.hash}`;
+    const link = `${environment.FRONT_URL}/${set.id}/${set.hash}`;
     const content = createHTML({
       title: HTMLClient.title,
       message: HTMLClient.message,
@@ -61,7 +61,7 @@ export class EmailsService {
   }
 
   sendEmailToSupplier(set: ISet, supplierId: ISupplier): Observable<any> {
-    const link = `${environment.API_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
+    const link = `${environment.FRONT_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
     const content = createHTML({
       title: HTMLSupplier.title,
       message: HTMLSupplier.message,

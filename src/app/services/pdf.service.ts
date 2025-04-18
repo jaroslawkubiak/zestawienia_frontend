@@ -1,6 +1,7 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { environment } from '../../environments/environment';
 import {
   ColumnList,
   IColumnList,
@@ -61,7 +62,6 @@ export class PdfService {
 
   ROW_HEIGHT = 60;
   IMAGE_HORIZONTAL_PADDING = 3;
-  BASE_URL = 'http://localhost:3005/uploads/sets/';
   visibleColumns = this.columnList.filter(
     (col) => col.classHeader !== 'hidden'
   );
@@ -148,7 +148,7 @@ export class PdfService {
               return;
             }
 
-            const imageUrl = `${this.BASE_URL}${set.id}/positions/${row.id}/${row.image}`;
+            const imageUrl = `${environment.FILES_URL}${set.id}/positions/${row.id}/${row.image}`;
             try {
               const base64Image = await this.getBase64Image(imageUrl);
               const { width, height } = await this.getImageSize(

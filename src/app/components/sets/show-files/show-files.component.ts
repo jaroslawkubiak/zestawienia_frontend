@@ -40,7 +40,6 @@ export class ShowFilesComponent {
   displayPdf = false;
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
-  BASE_URL = 'http://localhost:3005/uploads/sets/';
   attachments: IFileDetails[] = [];
   attachmentsPdf: IFileDetails[] = [];
   showFilesDialog = false;
@@ -49,35 +48,16 @@ export class ShowFilesComponent {
     this.setId = setId;
     this.setName = setName;
     this.showFilesDialog = true;
-    this.attachments = filesList.files.map((file) => {
-      const fileParts = file.split('.');
-      const extension = fileParts[fileParts.length - 1].toUpperCase() as
-        | 'JPEG'
-        | 'PNG'
-        | 'JPG'
-        | 'PDF';
-      return {
-        id: Math.floor(Math.random() * 9999),
-        name: file,
-        shortName: fileParts[0],
-        extension: extension,
-        path: `${this.BASE_URL}${this.setId}/files/${file}`,
-        dir: 'files',
-      } as IFileDetails;
-    });
 
-    this.attachmentsPdf = filesList.pdf.map((file) => {
-      const fileParts = file.split('.');
-      const extension = fileParts[fileParts.length - 1].toUpperCase() as 'PDF';
-      return {
-        id: Math.floor(Math.random() * 9999),
-        name: file,
-        shortName: fileParts[0],
-        extension: extension,
-        path: `${this.BASE_URL}${this.setId}/pdf/${file}`,
-        dir: 'pdf',
-      } as IFileDetails;
-    });
+    this.attachments = this.filesService.prepareFilesList(
+      this.setId,
+      filesList
+    );
+
+    this.attachmentsPdf = this.filesService.preparePdfFilesList(
+      this.setId,
+      filesList
+    );
   }
 
   // download file to client
