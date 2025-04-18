@@ -13,7 +13,7 @@
         [ngClass]="
           !comment.readByReceiver && comment.authorType !== 'user'
             ? 'comment-icon-unread'
-            : ''
+            : 'comment-icon-read'
         "
         (click)="toggleCommentRead(comment.id)"
       ></i>
@@ -34,6 +34,20 @@
 </div>
 
 <div class="new-message-input-wrapper">
+  <div class="all-comments flex-center">
+    <i
+      class="pi pi-comments comment-read"
+      pTooltip="Oznacz wszystkie jako przeczytane"
+      tooltipPosition="bottom"
+      (click)="markAllComments(true)"
+    ></i>
+    <i
+      class="pi pi-comments comment-unread"
+      pTooltip="Oznacz wszystkie jako nieprzeczytane"
+      tooltipPosition="bottom"
+      (click)="markAllComments(false)"
+    ></i>
+  </div>
   <input
     type="text"
     [(ngModel)]="newMessage"
@@ -41,7 +55,7 @@
     placeholder="Napisz wiadomość..."
     (keyup.enter)="sendComment()"
   />
-  <div class="send-btn-wrapper">
+  <div class="send-btn-wrapper flex-center">
     <button
       class="send-btn"
       (click)="sendComment()"

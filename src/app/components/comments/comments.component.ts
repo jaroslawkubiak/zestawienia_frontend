@@ -16,10 +16,11 @@ import { IComment } from './types/IComment';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { NotificationService } from '../../services/notification.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-comments',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, TooltipModule],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css',
 })
@@ -140,7 +141,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         const updatedComment = response[0];
 
         this.notificationService.showNotification(
-          'success',
+          'info',
           `Komentarz został oznaczony jako ${
             updatedComment.readByReceiver ? 'przeczytany' : 'nieprzeczytany'
           }`
@@ -161,6 +162,37 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       },
       error: (error) => {
         console.error(error);
+      },
+    });
+  }
+
+  markAllComments(state: boolean) {
+    this.commentsService.markAllComments(this.positionId, state).subscribe({
+      next: (updatedComments) => {
+        const firstClientComment = updatedComments.find(
+          (comment) => comment.authorType === 'client'
+        );
+
+        this.notificationService.showNotification(
+          'info',
+          `Wszystkie komentarze zostały oznaczone jako ${
+            firstClientComment?.readByReceiver
+              ? 'przeczytane'
+              : 'nieprzeczytane'
+          }`
+        );
+
+        this.comments = updatedComments;
+
+        const positionWithComments = {
+          posId: this.positionId,
+          comments: this.comments,
+        };
+
+        this.updateComments.emit(positionWithComments);
+      },
+      error: (err) => {
+        console.error(err);
       },
     });
   }

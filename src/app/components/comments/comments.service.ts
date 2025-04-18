@@ -65,4 +65,18 @@ export class CommentsService {
       .patch<IComment[]>(`${environment.API_URL}/comments/`, body)
       .pipe(catchError(this.handleError));
   }
+
+  markAllComments(
+    positionId: number,
+    readState: boolean
+  ): Observable<IComment[]> {
+    const body = {
+      positionId,
+      readState,
+    };
+
+    return this.http
+      .patch<IComment[]>(`${environment.API_URL}/comments/positions`, body)
+      .pipe(catchError(this.handleError));
+  }
 }
