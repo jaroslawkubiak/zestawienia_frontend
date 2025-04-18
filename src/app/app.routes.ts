@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
+import { NewcommentsComponent } from './components/comments/newcomments/newcomments.component';
 import { EmailsComponent } from './components/emails/emails.component';
-import { NewcommentsComponent } from './components/newcomments/newcomments.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductsComponent } from './components/products/products.component';
+import { SetforclientComponent } from './components/setforclient/setforclient.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
@@ -16,7 +17,6 @@ import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { NotificationComponent } from './misc/notification/notification.component';
 import { UiCheckComponent } from './misc/ui-check/ui-check.component';
-import { SetforclientComponent } from './components/setforclient/setforclient.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

@@ -203,7 +203,7 @@
 }
 
 .edit-icon:hover {
-  background-color: var(--accent-color);
+  background-color: var(--ok-color);
 }
 
 .delete-icon:hover {
@@ -242,11 +242,11 @@
 }
 
 .comment-icon-unread:hover {
-  background-color: var(--accent-color);
+  background-color: var(--ok-color);
 }
 
 .comment-icon-read {
-  background-color: var(--accent-color);
+  background-color: var(--ok-color);
 }
 
 .comment-icon-read:hover {
@@ -265,7 +265,7 @@
 }
 
 .comment-read {
-  color: var(--accent-color);
+  color: var(--ok-color);
 }
 
 .comment-unread {

@@ -2,6 +2,7 @@ import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { environment } from '../../environments/environment';
+import { FilesService } from '../components/files/files.service';
 import {
   ColumnList,
   IColumnList,
@@ -15,7 +16,6 @@ import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { getCssVariable } from '../shared/helpers/getCssVariable';
 import { getFormatedDate } from '../shared/helpers/getFormatedDate';
-import { FilesService } from './files.service';
 import { NotificationService } from './notification.service';
 
 type ColumnStyles = {

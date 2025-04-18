@@ -6,11 +6,11 @@ import { Dialog, DialogModule } from 'primeng/dialog';
 import { Image } from 'primeng/image';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
-import { FilesService } from '../../../services/files.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
-import { IFileList } from '../../../services/types/IFileList';
-import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
+import { PdfThumbnailComponent } from '../../sets/pdf-thumbnail/pdf-thumbnail.component';
+import { FilesService } from '../files.service';
+import { IFileList } from '../IFileList';
 import { IFileDetails } from './types/IFileDetails';
 
 @Component({

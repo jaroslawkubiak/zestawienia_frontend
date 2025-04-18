@@ -8,9 +8,10 @@ import { Observable, catchError, forkJoin, map, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
-import { IFileList } from '../../../services/types/IFileList';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { IFileList } from '../../files/IFileList';
 import { SuppliersService } from '../../suppliers/suppliers.service';
+import { SetsService } from '../sets.service';
 import { IClonePosition } from '../types/IClonePosition';
 import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -19,7 +20,6 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
-import { SetsService } from '../sets.service';
 
 @Injectable({
   providedIn: 'root',

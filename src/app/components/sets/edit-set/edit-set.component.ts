@@ -37,6 +37,7 @@ import { ColumnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-set',
@@ -91,7 +92,7 @@ export class EditSetComponent
   suppliersFromSet: ISupplier[] = [];
   positionStatus: IPositionStatus[] = PositionStatusList;
   dropwownColumnOptions: { [key: string]: any[] } = {};
-  BASE_IMAGE_URL = 'http://localhost:3005/uploads/sets/';
+  FILES_URL = environment.FILES_URL;
   DEFAULT_COLUMN_WIDTH = 200;
   hasFiles = false;
   menuItems: MenuItem[] = [];

@@ -19,13 +19,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
-import { IFileList } from '../../services/types/IFileList';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
+import { IFileList } from '../files/IFileList';
+import { SendFilesComponent } from '../files/send-files/send-files.component';
+import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { EditSetService } from './edit-set/edit-set.service';
-import { SendFilesComponent } from './send-files/send-files.component';
 import { SetsService } from './sets.service';
-import { ShowFilesComponent } from './show-files/show-files.component';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/SetStatus';
 
@@ -51,10 +51,10 @@ import { SetStatus } from './types/SetStatus';
     SelectModule,
     LoadingSpinnerComponent,
     TooltipModule,
-    SendFilesComponent,
-    ShowFilesComponent,
     BadgeModule,
     CheckboxModule,
+    SendFilesComponent,
+    ShowFilesComponent,
   ],
   providers: [NotificationService, ConfirmationModalService],
 })

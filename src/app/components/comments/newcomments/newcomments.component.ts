@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
-import { CommentsComponent } from '../comments/comments.component';
-import { IComment } from '../comments/types/IComment';
-import { EditSetService } from '../sets/edit-set/edit-set.service';
-import { IPosition } from '../sets/types/IPosition';
-import { ISet } from '../sets/types/ISet';
 import { TooltipModule } from 'primeng/tooltip';
+import { forkJoin } from 'rxjs';
+import { EditSetService } from '../../sets/edit-set/edit-set.service';
+import { IPosition } from '../../sets/types/IPosition';
+import { ISet } from '../../sets/types/ISet';
+import { CommentsComponent } from '../comments.component';
+import { IComment } from '../types/IComment';
 
 interface IPositionsWithComments {
   position: IPosition;

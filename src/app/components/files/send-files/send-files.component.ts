@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
-import { Component, Input, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Dialog } from 'primeng/dialog';
 import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
-import { FilesService } from '../../../services/files.service';
 import { NotificationService } from '../../../services/notification.service';
+import { FilesService } from '../files.service';
+
 @Component({
   selector: 'app-send-files',
   imports: [CommonModule, Dialog, FileUpload, ProgressBarModule],

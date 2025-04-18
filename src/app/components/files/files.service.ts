@@ -2,10 +2,10 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
-import { IFileDetails } from '../components/sets/show-files/types/IFileDetails';
-import { AuthService } from '../login/auth.service';
-import { IFileList } from './types/IFileList';
+import { environment } from '../../../environments/environment';
+import { AuthService } from '../../login/auth.service';
+import { IFileList } from './IFileList';
+import { IFileDetails } from './show-files/types/IFileDetails';
 
 @Injectable({
   providedIn: 'root',
