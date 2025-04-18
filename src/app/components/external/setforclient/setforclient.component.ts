@@ -9,7 +9,7 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { FilesService } from '../../files/files.service';
-import { IFileList } from '../../files/IFileList';
+import { IFileList } from '../../files/types/IFileList';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';

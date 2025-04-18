@@ -1,0 +1,71 @@
+<div class="preview">
+  <div *ngIf="isImage">
+    <p-image
+      [src]="file.path"
+      [preview]="true"
+      alt="Załączony plik"
+      pTooltip="Powiększ"
+    >
+      <ng-template #indicator>
+        <i class="pi pi-search-plus"></i>
+      </ng-template>
+      <ng-template #image>
+        <img [src]="file.path" alt="Załączony plik" />
+      </ng-template>
+      <ng-template
+        #preview
+        let-style="style"
+        let-previewCallback="previewCallback"
+      >
+        <img
+          [src]="file.path"
+          alt="Załączony plik"
+          [style]="style"
+          (click)="previewCallback()"
+        />
+      </ng-template>
+    </p-image>
+  </div>
+
+  <div class="file-pdf" *ngIf="isPdf">
+    <app-pdf-thumbnail
+      [pdfUrl]="file.path"
+      (click)="openPdf.emit(file.path)"
+    ></app-pdf-thumbnail>
+  </div>
+
+  <div class="file-pdf" *ngIf="!isImage && !isPdf">
+    <i class="pi pi-file"></i>
+  </div>
+
+  <p>{{ file.name }}</p>
+
+  <div class="action-btns">
+    <p-button
+      severity="info"
+      class="m-4"
+      icon="pi pi-download"
+      alt="Pobierz plik"
+      pTooltip="Pobierz plik"
+      tooltipPosition="bottom"
+      (click)="download.emit()"
+    />
+    <div id="file-icons" *ngIf="file">
+      <i
+        [class]="iconData.icon"
+        [pTooltip]="iconData.tooltip"
+        tooltipPosition="bottom"
+      ></i>
+    </div>
+    <p-button
+      [disabled]="canDelete"
+      severity="danger"
+      class="m-4"
+      icon="pi pi-trash"
+      alt="Usuń plik"
+      pTooltip="Usuń plik"
+      tooltipPosition="bottom"
+      (click)="delete.emit()"
+    />
+  </div>
+</div>

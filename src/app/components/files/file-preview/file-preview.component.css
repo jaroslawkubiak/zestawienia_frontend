@@ -1,0 +1,34 @@
+.action-btns {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.file-pdf {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: var(--img-height);
+  overflow: hidden;
+  width: var(--img-container-width);
+}
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  height: 280px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+p {
+  all: unset;
+  font-size: 1rem;
+  text-align: center;
+  width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

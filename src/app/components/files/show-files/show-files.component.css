@@ -25,10 +25,6 @@
 
 .file-container .file-item {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
   width: var(--img-container-width);
   height: 280px;
   margin: 10px;
@@ -65,32 +61,6 @@
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
-}
-
-.file-pdf {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: var(--img-height);
-  overflow: hidden;
-}
-
-p {
-  all: unset;
-  font-size: 1rem;
-  text-align: center;
-  width: 180px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.action-btns {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
 }
 
 .p-image-toolbar {
