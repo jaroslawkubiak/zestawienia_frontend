@@ -115,6 +115,7 @@
               ></i>
             </div>
             <p-button
+              *ngIf="this.who === 'user'"
               severity="danger"
               class="m-4"
               icon="pi pi-trash"
@@ -148,14 +149,8 @@
               tooltipPosition="bottom"
               (click)="downloadFile(file.id)"
             />
-            <span id="file-icon">
-              <i
-              class="pi pi-file-pdf"
-              pTooltip="Plik PDF"
-              tooltipPosition="bottom"
-              ></i>
-            </span>
             <p-button
+              *ngIf="this.who === 'user'"
               severity="danger"
               class="m-4"
               icon="pi pi-trash"

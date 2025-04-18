@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { Dialog, DialogModule } from 'primeng/dialog';
@@ -37,6 +37,7 @@ export class ShowFilesComponent {
   ) {}
   setId!: number;
   setName: string = '';
+  @Input() who!: string;
   displayPdf = false;
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';

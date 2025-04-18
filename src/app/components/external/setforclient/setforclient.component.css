@@ -1,0 +1,115 @@
+.container {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  padding: 20px 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  background-color: var(--accent-color);
+}
+
+h3 {
+  color: var(--accent-color-lighter);
+}
+
+.header-actions-btn {
+  display: flex;
+  justify-content: flex-end;
+  gap: 30px;
+}
+
+.header-actions-btn i {
+  font-size: 3rem;
+  color: var(--accent-color-lighter);
+}
+
+.header-actions-btn i:hover {
+  color: var(--accent-color-darker);
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 10px;
+}
+
+.title-header {
+  display: flex;
+  flex-direction: column;
+  align-items: start; 
+  gap: 20px;
+}
+
+.bookmark-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-color-darker);
+}
+
+.room-name {
+  font-size: 1.6rem;
+}
+
+.positions-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 4px solid var(--accent-color-darker);
+}
+
+.positions-item {
+  display: grid;
+  padding: 20px 0;
+  grid-template-columns: repeat(5, 1fr);
+  background-color: var(--accent-color-lighter);
+  border-bottom: 2px solid var(--accent-color-darker);
+}
+
+.position-action-btn {
+  display: flex;
+  justify-content: start;
+  gap: 20px;
+}
+
+.position-action-btn i {
+  font-size: 3rem;
+  color: var(--accent-color-darker);
+}
+
+.position-action-btn i:hover {
+  color: var(--error-color);
+}
+
+.product-img img {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.product-details {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.product-details-group {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  gap: 5px;
+}
+
+.product-details-title {
+  color: var(--neutral-color-dark);
+  font-size: 1.2rem;
+}
+
+.product-details-name {
+  font-size: 2rem;
+  color: var(--accent-color-darker);
+}
