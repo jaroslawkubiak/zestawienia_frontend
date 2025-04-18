@@ -9,7 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { IFileList } from '../../files/IFileList';
+import { IFileList } from '../../files/types/IFileList';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { SetsService } from '../sets.service';
 import { IClonePosition } from '../types/IClonePosition';

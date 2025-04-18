@@ -21,7 +21,7 @@ import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
-import { IFileList } from '../files/IFileList';
+import { IFileList } from '../files/types/IFileList';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { EditSetService } from './edit-set/edit-set.service';

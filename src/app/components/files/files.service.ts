@@ -4,8 +4,8 @@ import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { IFileList } from './IFileList';
-import { IFileDetails } from './show-files/types/IFileDetails';
+import { IFileList } from './types/IFileList';
+import { IFileDetails } from './types/IFileDetails';
 
 @Injectable({
   providedIn: 'root',
@@ -32,13 +32,17 @@ export class FilesService {
   }
 
   // save attached files to set
-  saveFile(setId: number, formData: FormData): Observable<any> {
+  saveFile(
+    setId: number,
+    formData: FormData,
+    uploadFolder: string
+  ): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
     return this.http.post<any>(
-      `${environment.API_URL}/files/upload/${setId}/files`,
+      `${environment.API_URL}/files/upload/${setId}/${uploadFolder}`,
       formData,
       {
         reportProgress: true,
@@ -84,6 +88,7 @@ export class FilesService {
     );
   }
 
+  // prepare details file list from /files dir - dir for user to upload files
   prepareFilesList(setId: number, filesList: IFileList) {
     return filesList.files.map((file) => {
       const fileParts = file.split('.');
@@ -103,6 +108,27 @@ export class FilesService {
     });
   }
 
+  // prepare details file list from /inspirations dir - dir for client to upload files
+  prepareInspirationFilesList(setId: number, filesList: IFileList) {
+    return filesList.inspirations.map((file) => {
+      const fileParts = file.split('.');
+      const extension = fileParts[fileParts.length - 1].toUpperCase() as
+        | 'JPEG'
+        | 'PNG'
+        | 'JPG'
+        | 'PDF';
+      return {
+        id: Math.floor(Math.random() * 9999),
+        name: file,
+        shortName: fileParts[0],
+        extension: extension,
+        path: `${environment.FILES_URL}${setId}/inspirations/${file}`,
+        dir: 'inspirations',
+      } as IFileDetails;
+    });
+  }
+
+  // prepare details file list from /pdf dir - dir for store set in pdf
   preparePdfFilesList(setId: number, filesList: IFileList) {
     return filesList.pdf.map((file) => {
       const fileParts = file.split('.');

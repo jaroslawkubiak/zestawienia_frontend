@@ -64,58 +64,97 @@
               tooltipPosition="bottom"
               (click)="downloadFile(file.id)"
             />
-            <div id="file-icons" [ngSwitch]="file.extension.toUpperCase()">
+            <div id="file-icons" *ngIf="file">
               <i
-                *ngSwitchCase="'JPG'"
-                class="pi pi-image"
-                pTooltip="Obraz JPG"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'JPEG'"
-                class="pi pi-image"
-                pTooltip="Obraz JPEG"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'PNG'"
-                class="pi pi-image"
-                pTooltip="Obraz PNG"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'PDF'"
-                class="pi pi-file-pdf"
-                pTooltip="Plik PDF"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'TXT'"
-                class="pi pi-file"
-                pTooltip="Plik TXT"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'DOCX'"
-                class="pi pi-file-word"
-                pTooltip="Dokument Word"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchCase="'XLSX'"
-                class="pi pi-file-excel"
-                pTooltip="Arkusz Excel"
-                tooltipPosition="bottom"
-              ></i>
-              <i
-                *ngSwitchDefault
-                class="pi pi-question-circle"
-                pTooltip="Nieznany typ pliku"
+                [class]="getFileIconData(file.extension).icon"
+                [pTooltip]="getFileIconData(file.extension).tooltip"
                 tooltipPosition="bottom"
               ></i>
             </div>
             <p-button
-              *ngIf="this.who === 'user'"
+              [disabled]="this.who === 'client'"
+              severity="danger"
+              class="m-4"
+              icon="pi pi-trash"
+              alt="Usuń plik"
+              pTooltip="Usuń plik"
+              tooltipPosition="bottom"
+              (click)="deleteFile(file.id)"
+            />
+          </div>
+        </li>
+      </ul>
+    </div>
+    <div *ngIf="attachmentsInspirations.length > 0">
+      <div class="title">Inspiracje klienta</div>
+      <ul class="file-container">
+        <li
+          class="file-item"
+          *ngFor="let file of attachmentsInspirations; let i = index"
+        >
+          @if(file.extension === 'JPEG' || file.extension === 'JPG' ||
+          file.extension === 'PNG') {
+          <!-- show image files -->
+          <div class="flex-center">
+            <p-image
+              [src]="file.path"
+              [preview]="true"
+              alt="Załączony plik"
+              pTooltip="Powiększ"
+            >
+              <ng-template #indicator>
+                <i class="pi pi-search-plus"></i>
+              </ng-template>
+              <ng-template #image>
+                <img [src]="file.path" alt="Załączony plik" />
+              </ng-template>
+              <ng-template
+                #preview
+                let-style="style"
+                let-previewCallback="previewCallback"
+              >
+                <img
+                  [src]="file.path"
+                  alt="Załączony plik"
+                  [style]="style"
+                  (click)="previewCallback()"
+                />
+              </ng-template>
+            </p-image>
+          </div>
+          } @else if(file.extension === 'PDF') {
+          <!-- show PDF files -->
+          <div class="file-pdf">
+            <app-pdf-thumbnail
+              [pdfUrl]="file.path"
+              (pdfClick)="openPdf($event, file.name)"
+            ></app-pdf-thumbnail>
+          </div>
+          } @else {
+          <!-- show other files -->
+          <div class="file-pdf">
+            <i class="pi pi-file"></i>
+          </div>
+          }
+          <p>{{ file.name }}</p>
+          <div class="action-btns">
+            <p-button
+              severity="info"
+              class="m-4"
+              icon="pi pi-download"
+              alt="Pobierz plik"
+              pTooltip="Pobierz plik"
+              tooltipPosition="bottom"
+              (click)="downloadFile(file.id)"
+            />
+            <div id="file-icons" *ngIf="file">
+              <i
+                [class]="getFileIconData(file.extension).icon"
+                [pTooltip]="getFileIconData(file.extension).tooltip"
+                tooltipPosition="bottom"
+              ></i>
+            </div>
+            <p-button
               severity="danger"
               class="m-4"
               icon="pi pi-trash"
@@ -150,7 +189,7 @@
               (click)="downloadFile(file.id)"
             />
             <p-button
-              *ngIf="this.who === 'user'"
+              [disabled]="this.who === 'client'"
               severity="danger"
               class="m-4"
               icon="pi pi-trash"

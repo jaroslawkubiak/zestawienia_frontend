@@ -1,6 +1,6 @@
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { IComment } from '../../comments/types/IComment';
-import { IFileList } from '../../files/IFileList';
+import { IFileList } from '../../files/types/IFileList';
 
 export interface ISet {
   id: number;

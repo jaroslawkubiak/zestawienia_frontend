@@ -8,10 +8,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
-import { PdfThumbnailComponent } from '../../sets/pdf-thumbnail/pdf-thumbnail.component';
+import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
 import { FilesService } from '../files.service';
-import { IFileList } from '../IFileList';
-import { IFileDetails } from './types/IFileDetails';
+import { IFileList } from '../types/IFileList';
+import { IFileDetails } from '../types/IFileDetails';
 
 @Component({
   selector: 'app-show-files',
@@ -43,7 +43,18 @@ export class ShowFilesComponent {
   pdfUrl: SafeResourceUrl = '';
   attachments: IFileDetails[] = [];
   attachmentsPdf: IFileDetails[] = [];
+  attachmentsInspirations: IFileDetails[] = [];
   showFilesDialog = false;
+
+  fileIconMap: Record<string, { icon: string; tooltip: string }> = {
+    JPG: { icon: 'pi pi-image', tooltip: 'Obraz JPG' },
+    JPEG: { icon: 'pi pi-image', tooltip: 'Obraz JPEG' },
+    PNG: { icon: 'pi pi-image', tooltip: 'Obraz PNG' },
+    PDF: { icon: 'pi pi-file-pdf', tooltip: 'Plik PDF' },
+    TXT: { icon: 'pi pi-file', tooltip: 'Plik TXT' },
+    DOCX: { icon: 'pi pi-file-word', tooltip: 'Dokument Word' },
+    XLSX: { icon: 'pi pi-file-excel', tooltip: 'Arkusz Excel' },
+  };
 
   showDialog(setId: number, setName: string, filesList: IFileList) {
     this.setId = setId;
@@ -59,6 +70,9 @@ export class ShowFilesComponent {
       this.setId,
       filesList
     );
+
+    this.attachmentsInspirations =
+      this.filesService.prepareInspirationFilesList(this.setId, filesList);
   }
 
   // download file to client
@@ -114,5 +128,15 @@ export class ShowFilesComponent {
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(path);
     this.displayPdfHeader = fileName;
     this.displayPdf = true;
+  }
+
+  getFileIconData(extension: string) {
+    const ext = extension.toUpperCase();
+    return (
+      this.fileIconMap[ext] ?? {
+        icon: 'pi pi-question-circle',
+        tooltip: 'Nieznany typ pliku',
+      }
+    );
   }
 }

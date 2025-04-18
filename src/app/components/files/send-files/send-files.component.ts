@@ -44,12 +44,13 @@ export class SendFilesComponent {
   uploadFiles(event: FileUploadHandlerEvent) {
     const files = event.files;
     const formData = new FormData();
+    const uploadFolder = this.who === 'user' ? 'files' : 'inspirations';
 
     for (let file of files) {
       formData.append('files', file, file.name);
     }
 
-    this.filesService.saveFile(+this.setId, formData).subscribe((event) => {
+    this.filesService.saveFile(+this.setId, formData, uploadFolder).subscribe((event) => {
       if (event.type === HttpEventType.UploadProgress && event.total) {
         const percentDone = Math.round((100 * event.loaded) / event.total);
         this.uploadProgress = percentDone;

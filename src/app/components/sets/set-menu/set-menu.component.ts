@@ -19,7 +19,7 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { EmailsService } from '../../emails/email.service';
 import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
-import { IFileList } from '../../files/IFileList';
+import { IFileList } from '../../files/types/IFileList';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { ISupplier } from '../../suppliers/types/ISupplier';
