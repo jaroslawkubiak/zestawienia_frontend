@@ -64,4 +64,22 @@ export class ActionBtnsComponent {
 
     return position?.comments?.length || 0;
   }
+
+  updateComments(res: any) {
+    this.positions = this.positions.map((item) => {
+      if (item.id === res.posId) {
+        const newCommentsCount = res.comments.filter(
+          (c: IComment) => !c.readByReceiver && c.authorType !== 'user'
+        ).length;
+
+        return {
+          ...item,
+          comments: res.comments,
+          newComments: newCommentsCount,
+        };
+      }
+
+      return { ...item };
+    });
+  }
 }

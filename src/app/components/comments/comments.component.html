@@ -8,10 +8,15 @@
     }"
   >
     <div class="message-bubble">
-      <div
-        *ngIf="!comment.readByReceiver && comment.authorType !== 'user'"
-        class="unread"
-      ></div>
+      <i
+        class="pi pi-comment comment-icon"
+        [ngClass]="
+          !comment.readByReceiver && comment.authorType !== 'user'
+            ? 'comment-icon-unread'
+            : ''
+        "
+        (click)="toggleCommentRead(comment.id)"
+      ></i>
       <i
         class="pi pi-pencil edit-icon"
         (click)="markCommentToEdit(comment.id)"

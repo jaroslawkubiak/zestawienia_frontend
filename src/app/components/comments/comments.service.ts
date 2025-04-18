@@ -55,4 +55,14 @@ export class CommentsService {
       .delete<any>(`${environment.API_URL}/comments/${id}`)
       .pipe(catchError(this.handleError));
   }
+
+  toggleCommentRead(id: number): Observable<IComment[]> {
+    const body = {
+      ids: [id],
+    };
+
+    return this.http
+      .patch<IComment[]>(`${environment.API_URL}/comments/`, body)
+      .pipe(catchError(this.handleError));
+  }
 }

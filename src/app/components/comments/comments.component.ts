@@ -3,8 +3,10 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  EventEmitter,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
@@ -13,6 +15,7 @@ import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
+import { NotificationService } from '../../services/notification.service';
 
 @Component({
   selector: 'app-comments',
@@ -25,7 +28,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
-
+  @Output() updateComments = new EventEmitter<any>();
   newMessage: string = '';
 
   editedCommentId: number | null = null;
@@ -33,6 +36,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   constructor(
     private commentsService: CommentsService,
+    private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService
   ) {}
 
@@ -128,5 +132,36 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     };
 
     this.confirmationModalService.showConfirmation(confirmMessage);
+  }
+
+  toggleCommentRead(id: number) {
+    this.commentsService.toggleCommentRead(id).subscribe({
+      next: (response: IComment[]) => {
+        const updatedComment = response[0];
+
+        this.notificationService.showNotification(
+          'success',
+          `Komentarz został oznaczony jako ${
+            updatedComment.readByReceiver ? 'przeczytany' : 'nieprzeczytany'
+          }`
+        );
+
+        this.comments = this.comments.map((item) =>
+          item.id === updatedComment.id
+            ? { ...item, readByReceiver: updatedComment.readByReceiver }
+            : item
+        );
+
+        const positionWithComments = {
+          posId: this.positionId,
+          comments: this.comments,
+        };
+
+        this.updateComments.emit(positionWithComments);
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 }
