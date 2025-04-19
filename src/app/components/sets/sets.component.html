@@ -1,5 +1,5 @@
-<app-send-files who="user"/>
-<app-show-files who="user"/>
+<app-send-files who="user" />
+<app-show-files who="user" />
 
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
@@ -18,8 +18,19 @@
         (onClick)="openNew()"
       />
       <div class="status-wrapper">
-        <p-checkbox (click)="showClosedSets()" value="hideClosedSets" />
-        Pokaż zamknięte zestawienia
+        <p-checkbox
+          inputId="showClosedSets"
+          [(ngModel)]="showClosed"
+          (onChange)="showClosedSets()"
+          binary="true"
+        >
+        </p-checkbox>
+        <label
+          (click)="showClosed = !showClosed; showClosedSets()"
+          style="cursor: pointer"
+        >
+          Pokaż zamknięte zestawienia
+        </label>
       </div>
     </ng-template>
   </p-toolbar>

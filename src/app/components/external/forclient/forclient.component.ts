@@ -24,10 +24,10 @@ import { SendFilesComponent } from '../../files/send-files/send-files.component'
     SendFilesComponent,
     ShowFilesComponent,
   ],
-  templateUrl: './setforclient.component.html',
-  styleUrl: './setforclient.component.css',
+  templateUrl: './forclient.component.html',
+  styleUrl: './forclient.component.css',
 })
-export class SetforclientComponent implements OnInit {
+export class ForClientComponent implements OnInit {
   setId!: number;
   hash: string | null = null;
   set!: ISet;

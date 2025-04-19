@@ -188,9 +188,10 @@ th {
 }
 
 ::ng-deep .p-select-clear-icon {
+  position: absolute !important;
   margin-right: 10px !important;
   color: var(--accent-color-darker) !important;
-  top: 72px !important;
+  top: calc((var(--row-height) / 2) - 3px ) !important;
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {

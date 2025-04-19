@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { NewcommentsComponent } from './components/comments/newcomments/newcomments.component';
 import { EmailsComponent } from './components/emails/emails.component';
-import { SetforclientComponent } from './components/external/setforclient/setforclient.component';
+import { ForClientComponent } from './components/external/forclient/forclient.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { ProductsComponent } from './components/products/products.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
@@ -73,7 +73,7 @@ export const routes: Routes = [
   },
   {
     path: ':id/:hash',
-    component: SetforclientComponent,
+    component: ForClientComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

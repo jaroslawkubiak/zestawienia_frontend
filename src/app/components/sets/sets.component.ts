@@ -73,7 +73,8 @@ export class SetsComponent implements OnInit {
 
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
-
+  showClosed = false;
+  
   constructor(
     private router: Router,
     private setsService: SetsService,
