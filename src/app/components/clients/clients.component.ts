@@ -274,11 +274,16 @@ export class ClientsComponent implements OnInit {
       this.form.reset();
     }
   }
-  
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
+  }
+
+  getClientSetCount(clientId: number) {
+    const count = this.clients.filter((item) => item.id === clientId)[0]
+      ?.setCount;
+    return count || 0;
   }
 }

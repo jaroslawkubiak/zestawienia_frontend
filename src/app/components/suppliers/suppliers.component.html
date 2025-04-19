@@ -92,7 +92,7 @@
           <p-tableCheckbox
             [value]="supplier"
             pTooltip="Zaznacz dostawcę"
-            [disabled]="supplier.positionCount !== 0"
+            [disabled]="getSupplierPositionCount(supplier.id) !== 0"
           />
         </td>
         <td (click)="$event.stopPropagation()">
@@ -109,11 +109,11 @@
             class="m-4"
             alt="Usuń dostawcę"
             pTooltip="{{
-              supplier.positionCount !== 0
+              getSupplierPositionCount(supplier.id) !== 0
                 ? 'Dostawca widnieje w zestawieniach'
                 : 'Usuń dostawcę'
             }}"
-            [disabled]="supplier.positionCount !== 0"
+            [disabled]="getSupplierPositionCount(supplier.id) !== 0"
             (click)="deleteSupplier(supplier)"
           />
         </td>
@@ -132,7 +132,7 @@
   <p-dialog
     [(visible)]="supplierDialog"
     [style]="{ width: '750px' }"
-    header="{{supplierDialogHeader}}"
+    header="{{ supplierDialogHeader }}"
     [modal]="true"
   >
     <ng-template #content>

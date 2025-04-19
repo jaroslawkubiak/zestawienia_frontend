@@ -280,4 +280,10 @@ export class SuppliersComponent implements OnInit {
       this.dt.filterGlobal(inputElement.value, 'contains');
     }
   }
+
+  getSupplierPositionCount(supplierId: number) {
+    const count = this.suppliers.filter((item) => item.id === supplierId)[0]
+      ?.positionCount;
+    return count || 0;
+  }
 }
