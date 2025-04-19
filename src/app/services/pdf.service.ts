@@ -128,285 +128,286 @@ export class PdfService {
 
     const uniqueBookmarksCount = new Set(countsBookmarks).size;
 
+    const sortedBookmarks = [...set.bookmarks].sort((a, b) => a.id - b.id);
+
     // main loop for every bookmark in set
-    await Promise.all(
-      set.bookmarks.map(async (bookmark, index) => {
-        const sortPositions = positions
-          .filter((pos) => pos.bookmarkId.id === bookmark.id)
-          .sort((a, b) => a.kolejnosc - b.kolejnosc);
+    for (const [index, bookmark] of sortedBookmarks.entries()) {
+      const sortPositions = positions
+        .filter((pos) => pos.bookmarkId.id === bookmark.id)
+        .sort((a, b) => a.kolejnosc - b.kolejnosc);
 
-        // return if no position in current bookmark
-        if (sortPositions.length === 0) {
-          return;
-        }
+      // return if no position in current bookmark
+      if (sortPositions.length === 0) {
+        return;
+      }
 
-        // get all image before creating PDF
-        const imageMap = new Map<string, IImage>();
-        await Promise.all(
-          sortPositions.map(async (row) => {
-            if (!row.image) {
-              return;
-            }
+      // get all image before creating PDF
+      const imageMap = new Map<string, IImage>();
+      await Promise.all(
+        sortPositions.map(async (row) => {
+          if (!row.image) {
+            return;
+          }
 
-            const imageUrl = `${environment.FILES_URL}${set.id}/positions/${row.id}/${row.image}`;
-            try {
-              const base64Image = await this.getBase64Image(imageUrl);
-              const { width, height } = await this.getImageSize(
-                base64Image as string
-              );
-              imageMap.set(row.id + '/' + row.image, {
-                base64: base64Image as string,
-                width,
-                height,
-              });
-            } catch (error) {
-              console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
-            }
-          })
-        );
+          const imageName = removeMiniSuffix(row.image);
 
-        // totals for footer
-        let totals = {
-          ilosc: 0,
-          netto: 0,
-          brutto: 0,
-          wartoscNetto: 0,
-          wartoscBrutto: 0,
-        };
+          const imageUrl = `${environment.FILES_URL}${set.id}/positions/${row.id}/${imageName}`;
+          try {
+            const base64Image = await this.getBase64Image(imageUrl);
+            const { width, height } = await this.getImageSize(
+              base64Image as string
+            );
+            imageMap.set(row.id + '/' + imageName, {
+              base64: base64Image as string,
+              width,
+              height,
+            });
+          } catch (error) {
+            console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
+          }
+        })
+      );
 
-        // prepare main body data to display
-        const data = await Promise.all(
-          sortPositions.map(async (row: IPosition, i: number) => {
-            const netto = row.netto ? row.netto : 0;
-            const brutto = row.netto ? calculateBrutto(row.netto) : 0;
-            const wartoscNetto = row.ilosc
-              ? calculateWartosc(row.ilosc, row.netto)
-              : 0;
-            const wartoscBrutto = brutto
-              ? calculateWartosc(row.ilosc, brutto)
-              : 0;
+      // totals for footer
+      let totals = {
+        ilosc: 0,
+        netto: 0,
+        brutto: 0,
+        wartoscNetto: 0,
+        wartoscBrutto: 0,
+      };
 
-            totals.ilosc += row.ilosc;
-            totals.netto += row.netto;
-            totals.brutto += brutto;
-            totals.wartoscNetto += wartoscNetto;
-            totals.wartoscBrutto += wartoscBrutto;
+      // prepare main body data to display
+      const data = await Promise.all(
+        sortPositions.map(async (row: IPosition, i: number) => {
+          const netto = row.netto ? row.netto : 0;
+          const brutto = row.netto ? calculateBrutto(row.netto) : 0;
+          const wartoscNetto = row.ilosc
+            ? calculateWartosc(row.ilosc, row.netto)
+            : 0;
+          const wartoscBrutto = brutto
+            ? calculateWartosc(row.ilosc, brutto)
+            : 0;
 
-            // prepare row in order according to visibleColumns
-            const formatRow = (row: any) => {
-              return this.visibleColumns.map((col) => {
-                const key = col.key;
+          totals.ilosc += row.ilosc;
+          totals.netto += row.netto;
+          totals.brutto += brutto;
+          totals.wartoscNetto += wartoscNetto;
+          totals.wartoscBrutto += wartoscBrutto;
 
-                // special case for couple columns ike image and supplier
-                switch (key) {
-                  case 'image':
-                    return `${row.id}/${row.image}`;
-                  case 'lp':
-                    return i + 1;
-                  case 'supplierId':
-                    return row.supplierId?.firma || '';
-                  case 'status':
-                    return row.status?.label || '';
-                  case 'netto':
-                    return netto.toFixed(2) + ' PLN';
-                  case 'brutto':
-                    return brutto.toFixed(2) + ' PLN';
-                  case 'wartoscNetto':
-                    return wartoscNetto.toFixed(2) + ' PLN';
-                  case 'wartoscBrutto':
-                    return wartoscBrutto.toFixed(2) + ' PLN';
-                  default:
-                    return row[key];
-                }
-              });
-            };
-
-            return formatRow(row);
-          })
-        );
-
-        this.drawBookmarkName(doc, bookmark.name);
-
-        // main table
-        autoTable(doc, {
-          head: this.headers,
-          body: data,
-          margin: 0,
-          startY: 20,
-          tableWidth: 'wrap',
-          didParseCell: (data) => {
-            // change row background according to status cell
-            const statusColumnIndex = columnIndexes['status'];
-            const rowArray = data.row.raw as any[];
-            const status = rowArray[statusColumnIndex];
-            if (status) {
-              const statusObj = this.positionStatus.find(
-                (s) => s.label === status
-              );
-
-              if (statusObj) {
-                const kolor = getCssVariable(statusObj.color);
-                data.cell.styles.fillColor = blendHexWithBackground(kolor);
+          // prepare row in order according to visibleColumns
+          const formatRow = (row: any) => {
+            return this.visibleColumns.map((col) => {
+              const key = col.key;
+              const imageName = removeMiniSuffix(row.image);
+              // special case for couple columns like image and supplier
+              switch (key) {
+                case 'image':
+                  return `${row.id}/${imageName}`;
+                case 'lp':
+                  return i + 1;
+                case 'supplierId':
+                  return row.supplierId?.firma || '';
+                case 'status':
+                  return row.status?.label || '';
+                case 'netto':
+                  return netto.toFixed(2) + ' PLN';
+                case 'brutto':
+                  return brutto.toFixed(2) + ' PLN';
+                case 'wartoscNetto':
+                  return wartoscNetto.toFixed(2) + ' PLN';
+                case 'wartoscBrutto':
+                  return wartoscBrutto.toFixed(2) + ' PLN';
+                default:
+                  return row[key];
               }
+            });
+          };
+
+          return formatRow(row);
+        })
+      );
+
+      this.drawBookmarkName(doc, bookmark.name);
+
+      // main table
+      autoTable(doc, {
+        head: this.headers,
+        body: data,
+        margin: 0,
+        startY: 20,
+        tableWidth: 'wrap',
+        didParseCell: (data) => {
+          // change row background according to status cell
+          const statusColumnIndex = columnIndexes['status'];
+          const rowArray = data.row.raw as any[];
+          const status = rowArray[statusColumnIndex];
+          if (status) {
+            const statusObj = this.positionStatus.find(
+              (s) => s.label === status
+            );
+
+            if (statusObj) {
+              const kolor = getCssVariable(statusObj.color);
+              data.cell.styles.fillColor = blendHexWithBackground(kolor);
             }
+          }
 
-            // change style for column LP
-            if (data.column.index === columnIndexes['lp']) {
-              data.cell.styles.fillColor = this.colors.accentDarker;
-              data.cell.styles.textColor = this.colors.white;
-              data.cell.styles.fontSize = 12;
-              data.cell.styles.fontStyle = 'bold';
-            }
+          // change style for column LP
+          if (data.column.index === columnIndexes['lp']) {
+            data.cell.styles.fillColor = this.colors.accentDarker;
+            data.cell.styles.textColor = this.colors.white;
+            data.cell.styles.fontSize = 12;
+            data.cell.styles.fontStyle = 'bold';
+          }
 
-            // change link text to actual link
-            if (
-              data.cell.raw &&
-              data.row.section === 'body' &&
-              data.column.index === columnIndexes['link']
-            ) {
-              data.cell.text = ['LINK'];
-              data.cell.styles.textColor = this.colors.accentDarker;
-              data.cell.styles.fontSize = 12;
-              data.cell.styles.fontStyle = 'bold';
-              data.cell.styles.halign = 'center';
-              (data.cell as any).link = data.cell.raw;
-            }
+          // change link text to actual link
+          if (
+            data.cell.raw &&
+            data.row.section === 'body' &&
+            data.column.index === columnIndexes['link']
+          ) {
+            data.cell.text = ['LINK'];
+            data.cell.styles.textColor = this.colors.accentDarker;
+            data.cell.styles.fontSize = 12;
+            data.cell.styles.fontStyle = 'bold';
+            data.cell.styles.halign = 'center';
+            (data.cell as any).link = data.cell.raw;
+          }
 
-            // remove image name from cell
-            if (
-              data.cell.raw &&
-              data.row.section === 'body' &&
-              data.column.index === columnIndexes['image']
-            ) {
-              data.cell.text = [''];
-            }
+          // remove image name from cell
+          if (
+            data.cell.raw &&
+            data.row.section === 'body' &&
+            data.column.index === columnIndexes['image']
+          ) {
+            data.cell.text = [''];
+          }
 
-            // align cell to center
-            const centeredColumns = [
-              'lp',
-              'ilosc',
-              'netto',
-              'brutto',
-              'wartoscNetto',
-              'wartoscBrutto',
-            ];
+          // align cell to center
+          const centeredColumns = [
+            'lp',
+            'ilosc',
+            'netto',
+            'brutto',
+            'wartoscNetto',
+            'wartoscBrutto',
+          ];
 
-            if (
-              centeredColumns.includes(
-                this.visibleColumns[data.column.index]?.key
-              )
-            ) {
-              data.cell.styles.halign = 'center';
-            }
-          },
-          didDrawCell: (data) => {
-            // for image type column
-            if (
-              data.row.section === 'body' &&
-              data.column.index === columnIndexes['image'] &&
-              data.row.index >= 0
-            ) {
-              const imageKey = data.cell.raw as string;
-              const imageInfo = imageMap.get(imageKey);
+          if (
+            centeredColumns.includes(
+              this.visibleColumns[data.column.index]?.key
+            )
+          ) {
+            data.cell.styles.halign = 'center';
+          }
+        },
+        didDrawCell: (data) => {
+          // for image type column
+          if (
+            data.row.section === 'body' &&
+            data.column.index === columnIndexes['image'] &&
+            data.row.index >= 0
+          ) {
+            const imageKey = data.cell.raw as string;
+            const imageInfo = imageMap.get(imageKey);
 
-              if (imageInfo) {
-                let imgWidth = this.ROW_HEIGHT - this.IMAGE_HORIZONTAL_PADDING; // max width
-                let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
+            if (imageInfo) {
+              let imgWidth = this.ROW_HEIGHT - this.IMAGE_HORIZONTAL_PADDING; // max width
+              let imgHeight = (imageInfo.height / imageInfo.width) * imgWidth;
 
-                if (imgHeight > this.ROW_HEIGHT) {
-                  imgHeight = this.ROW_HEIGHT;
-                  imgWidth = (imageInfo.width / imageInfo.height) * imgHeight;
-                }
-
-                // count align center position for image
-                const xCenter = data.cell.x + (data.cell.width - imgWidth) / 2;
-                const yCenter =
-                  data.cell.y + (data.cell.height - imgHeight) / 2;
-
-                doc.addImage(
-                  imageInfo.base64,
-                  'PNG',
-                  xCenter,
-                  yCenter,
-                  imgWidth,
-                  imgHeight
-                );
+              if (imgHeight > this.ROW_HEIGHT) {
+                imgHeight = this.ROW_HEIGHT;
+                imgWidth = (imageInfo.width / imageInfo.height) * imgHeight;
               }
-            }
 
-            // for links in column Link
-            if (data.column.index === columnIndexes['link'] && data.cell.raw) {
-              const url = data.cell.raw as string;
-              doc.link(
-                data.cell.x,
-                data.cell.y,
-                data.cell.width,
-                data.cell.height,
-                { url }
+              // count align center position for image
+              const xCenter = data.cell.x + (data.cell.width - imgWidth) / 2;
+              const yCenter = data.cell.y + (data.cell.height - imgHeight) / 2;
+
+              doc.addImage(
+                imageInfo.base64,
+                'PNG',
+                xCenter,
+                yCenter,
+                imgWidth,
+                imgHeight
               );
             }
+          }
+
+          // for links in column Link
+          if (data.column.index === columnIndexes['link'] && data.cell.raw) {
+            const url = data.cell.raw as string;
+            doc.link(
+              data.cell.x,
+              data.cell.y,
+              data.cell.width,
+              data.cell.height,
+              { url }
+            );
+          }
+        },
+        headStyles: {
+          font: 'Roboto',
+          fontStyle: 'bold',
+          halign: 'center',
+          valign: 'middle',
+          fillColor: this.colors.accentDarker,
+          textColor: this.colors.white,
+          minCellHeight: 15,
+        },
+        bodyStyles: {
+          font: 'Roboto',
+          fontStyle: 'normal',
+          fillColor: this.colors.white,
+          textColor: this.colors.black,
+          cellPadding: {
+            top: Math.floor(this.ROW_HEIGHT / 2),
+            bottom: Math.floor(this.ROW_HEIGHT / 2),
+            right: 3,
+            left: 3,
           },
-          headStyles: {
-            font: 'Roboto',
-            fontStyle: 'bold',
-            halign: 'center',
-            valign: 'middle',
-            fillColor: this.colors.accentDarker,
-            textColor: this.colors.white,
-            minCellHeight: 15,
-          },
-          bodyStyles: {
-            font: 'Roboto',
-            fontStyle: 'normal',
-            fillColor: this.colors.white,
-            textColor: this.colors.black,
-            cellPadding: {
-              top: Math.floor(this.ROW_HEIGHT / 2),
-              bottom: Math.floor(this.ROW_HEIGHT / 2),
-              right: 3,
-              left: 3,
-            },
-          },
-          theme: 'grid',
-          columnStyles: this.columnStyles,
-        });
+        },
+        theme: 'grid',
+        columnStyles: this.columnStyles,
+      });
 
-        // calculate footer
-        const footerRow = this.visibleColumns.map(({ key }) => {
-          if (key === 'ilosc') return totals.ilosc;
+      // calculate footer
+      const footerRow = this.visibleColumns.map(({ key }) => {
+        if (key === 'ilosc') return totals.ilosc;
 
-          const value = totals[key as keyof typeof totals];
-          return value !== undefined && typeof value === 'number'
-            ? `${value.toFixed(2)} PLN`
-            : '';
-        });
-        const footer = [footerRow];
+        const value = totals[key as keyof typeof totals];
+        return value !== undefined && typeof value === 'number'
+          ? `${value.toFixed(2)} PLN`
+          : '';
+      });
+      const footer = [footerRow];
 
-        // draw footer
-        const finalY = (doc as any).lastAutoTable?.finalY || 20;
+      // draw footer
+      const finalY = (doc as any).lastAutoTable?.finalY || 20;
 
-        autoTable(doc, {
-          body: footer,
-          margin: 0,
-          startY: finalY,
-          bodyStyles: {
-            font: 'Roboto',
-            fontStyle: 'bold',
-            fillColor: this.colors.accentDarker,
-            textColor: this.colors.white,
-            halign: 'center',
-            valign: 'middle',
-            minCellHeight: 15,
-          },
-          theme: 'grid',
-          columnStyles: this.columnStyles,
-        });
+      autoTable(doc, {
+        body: footer,
+        margin: 0,
+        startY: finalY,
+        bodyStyles: {
+          font: 'Roboto',
+          fontStyle: 'bold',
+          fillColor: this.colors.accentDarker,
+          textColor: this.colors.white,
+          halign: 'center',
+          valign: 'middle',
+          minCellHeight: 15,
+        },
+        theme: 'grid',
+        columnStyles: this.columnStyles,
+      });
 
-        if (index !== uniqueBookmarksCount) {
-          doc.addPage();
-        }
-      })
-    );
+      if (index !== uniqueBookmarksCount) {
+        doc.addPage();
+      }
+    }
 
     // draw header and footer for every page
     const totalPages = doc.getNumberOfPages();
@@ -621,4 +622,8 @@ function blendHexWithBackground(
     blend(g, background[1]),
     blend(b, background[2]),
   ];
+}
+
+function removeMiniSuffix(filename: string): string {
+  return filename.replace(/_mini(?=\.[^.]+$)/, '');
 }
