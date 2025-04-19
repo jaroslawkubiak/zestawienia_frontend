@@ -404,7 +404,7 @@ export class PdfService {
         columnStyles: this.columnStyles,
       });
 
-      if (index !== uniqueBookmarksCount) {
+      if (index !== uniqueBookmarksCount - 1) {
         doc.addPage();
       }
     }
@@ -441,23 +441,23 @@ export class PdfService {
       );
     }
 
-    const finalAction: Array<'save' | 'open' | 'send'> = [
-      // 'save',
-      'open',
-      // 'send',
+    const finalAction: Array<'saveToPC' | 'openInNewCard' | 'sendToFtp'> = [
+      // 'saveToPC',
+      'openInNewCard',
+      'sendToFtp',
     ];
 
     // execute final actions
     finalAction.forEach((action) => {
       switch (action) {
-        case 'save':
+        case 'saveToPC':
           doc.save(`zestawienie-${set.id}-${getFormatedDate()}.pdf`);
           break;
-        case 'open':
-          const pdfUrl = doc.output('bloburl'); // Generuje URL do PDF
-          window.open(pdfUrl, '_blank'); // Otwiera w nowej karcie
+        case 'openInNewCard':
+          const pdfUrl = doc.output('bloburl');
+          window.open(pdfUrl, '_blank');
           break;
-        case 'send':
+        case 'sendToFtp':
           const pdfBlob = doc.output('blob');
           const formData = new FormData();
           formData.append('files', pdfBlob, `zestawienie-${set.id}.pdf`);
