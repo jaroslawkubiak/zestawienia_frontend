@@ -34,19 +34,23 @@
 </div>
 
 <div class="new-message-input-wrapper">
-  <div class="all-comments flex-center">
-    <i
-      class="pi pi-comments comment-read"
-      pTooltip="Oznacz wszystkie jako przeczytane"
-      tooltipPosition="bottom"
-      (click)="markAllComments(true)"
-    ></i>
-    <i
-      class="pi pi-comments comment-unread"
-      pTooltip="Oznacz wszystkie jako nieprzeczytane"
-      tooltipPosition="bottom"
-      (click)="markAllComments(false)"
-    ></i>
+  <div class="all-comments">
+    <div class="comment-read flex-center">
+      <i
+        class="pi pi-comments"
+        pTooltip="Oznacz wszystkie jako przeczytane"
+        tooltipPosition="bottom"
+        (click)="markAllComments(true)"
+      ></i>
+    </div>
+    <div class="comment-unread flex-center">
+      <i
+        class="pi pi-comments"
+        pTooltip="Oznacz wszystkie jako nieprzeczytane"
+        tooltipPosition="bottom"
+        (click)="markAllComments(false)"
+      ></i>
+    </div>
   </div>
   <input
     type="text"
@@ -61,7 +65,7 @@
       (click)="sendComment()"
       [ngClass]="newMessage ? '' : 'disabled'"
     >
-      <i class="pi pi-arrow-up"></i>
+      <i class="pi pi-arrow-up send-icon"></i>
     </button>
   </div>
 </div>
