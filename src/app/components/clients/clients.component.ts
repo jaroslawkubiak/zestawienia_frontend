@@ -230,6 +230,7 @@ export class ClientsComponent implements OnInit {
           nazwisko: this.form.value.nazwisko!,
           firma: this.form.value.firma!,
           telefon: this.form.value.telefon || '',
+          setCount: this.client.setCount,
         };
         this.clients[this.findIndexById(this.client.id)] = editedClient;
 

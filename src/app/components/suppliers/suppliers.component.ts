@@ -229,6 +229,7 @@ export class SuppliersComponent implements OnInit {
           nazwisko: this.form.value.nazwisko!,
           firma: this.form.value.firma!,
           telefon: this.form.value.telefon || '',
+          positionCount: this.supplier.positionCount,
         };
         this.suppliers[this.findIndexById(this.supplier.id)] = editedSupplier;
 
