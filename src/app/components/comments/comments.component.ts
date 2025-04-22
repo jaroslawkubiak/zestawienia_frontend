@@ -75,6 +75,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             this.newMessage = '';
             setTimeout(() => {
               this.scrollToBottom();
+              this.playSound();
             }, 100);
           },
           error: (error) => {
@@ -195,5 +196,10 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       },
     });
+  }
+
+  playSound() {
+    const audio = new Audio('assets/audio/message_sending.mp3');
+    audio.play();
   }
 }

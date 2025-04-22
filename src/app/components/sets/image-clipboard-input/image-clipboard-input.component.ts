@@ -37,6 +37,8 @@ export class ImageClipboardInputComponent {
           this.imageFile = file;
           this.onSubmit();
         };
+        this.playSound();
+
         reader.readAsDataURL(file);
       }
     }
@@ -67,5 +69,10 @@ export class ImageClipboardInputComponent {
         this.notificationService.showNotification('error', error.message);
       },
     });
+  }
+
+  playSound() {
+    const audio = new Audio('assets/audio/screenshot.mp3');
+    audio.play();
   }
 }

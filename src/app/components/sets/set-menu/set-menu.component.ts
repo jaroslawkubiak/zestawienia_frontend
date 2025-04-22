@@ -276,6 +276,7 @@ export class SetMenuComponent {
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
+        this.playSound();
         this.getEmailsList();
       },
       error: (error) => {
@@ -296,6 +297,8 @@ export class SetMenuComponent {
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
+        this.playSound();
+
         this.getEmailsList();
       },
       error: (error) => {
@@ -314,5 +317,9 @@ export class SetMenuComponent {
     this.router.navigate([`/sets/comments/${this.set.id}`], {
       state: { backPath },
     });
+  }
+  playSound() {
+    const audio = new Audio('assets/audio/email_sending.mp3');
+    audio.play();
   }
 }
