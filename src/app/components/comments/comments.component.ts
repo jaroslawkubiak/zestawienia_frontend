@@ -11,12 +11,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TooltipModule } from 'primeng/tooltip';
+import { ConfirmationModalService } from '../../services/confirmation.service';
+import { NotificationService } from '../../services/notification.service';
+import { SoundService } from '../../services/sound.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
+import { SoundType } from '../../services/types/SoundType';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
-import { ConfirmationModalService } from '../../services/confirmation.service';
-import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
-import { NotificationService } from '../../services/notification.service';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-comments',
@@ -38,7 +40,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   constructor(
     private commentsService: CommentsService,
     private notificationService: NotificationService,
-    private confirmationModalService: ConfirmationModalService
+    private confirmationModalService: ConfirmationModalService,
+    private soundService: SoundService
   ) {}
 
   ngAfterViewInit() {
@@ -73,9 +76,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           next: (response) => {
             this.comments.push(response);
             this.newMessage = '';
+            this.soundService.playSound(SoundType.messageSending);
             setTimeout(() => {
               this.scrollToBottom();
-              this.playSound();
             }, 100);
           },
           error: (error) => {
@@ -98,6 +101,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
             this.newMessage = '';
             this.editedCommentId = null;
+            this.soundService.playSound(SoundType.messageSending);
             setTimeout(() => {
               this.scrollToBottom();
             }, 100);
@@ -120,6 +124,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       this.commentsService.deleteComment(id).subscribe({
         next: (response) => {
           this.comments = this.comments.filter((item) => item.id !== id);
+          this.soundService.playSound(SoundType.trash);
         },
         error: (error) => {
           console.error(error);
@@ -196,10 +201,5 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         console.error(err);
       },
     });
-  }
-
-  playSound() {
-    const audio = new Audio('assets/audio/message_sending.mp3');
-    audio.play();
   }
 }

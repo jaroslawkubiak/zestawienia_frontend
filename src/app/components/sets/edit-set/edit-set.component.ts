@@ -38,6 +38,7 @@ import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
 import { environment } from '../../../../environments/environment';
+import { IComment } from '../../comments/types/IComment';
 
 @Component({
   selector: 'app-set',
@@ -556,5 +557,27 @@ export class EditSetComponent
   // get css class for row based on column status
   getRowClass(position: any): string {
     return position.status?.cssClass || '';
+  }
+
+  updateComments(res: any) {
+    console.log(res);
+    // tutaj musze tez dodać nowe komentarze do this.set, bo menu ściąga ze wszystkich pozycji
+    this.positions = this.positions.map((item) => {
+      if (item.id === res.id) {
+        const newCommentsCount = res.comments.filter(
+          (c: IComment) => !c.readByReceiver && c.authorType !== 'user'
+        ).length;
+
+        return {
+          ...item,
+          comments: res.comments,
+          newComments: newCommentsCount,
+        };
+      }
+
+      return { ...item };
+    });
+
+    console.log(this.positions);
   }
 }

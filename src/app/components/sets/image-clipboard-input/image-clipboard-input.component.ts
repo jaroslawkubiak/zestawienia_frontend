@@ -3,6 +3,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
 import { ImageService } from './image.service';
+import { SoundService } from '../../../services/sound.service';
+import { SoundType } from '../../../services/types/SoundType';
 
 @Component({
   selector: 'app-image-clipboard-input',
@@ -22,7 +24,8 @@ export class ImageClipboardInputComponent {
   @Output() blur = new EventEmitter<Event>();
   constructor(
     private notificationService: NotificationService,
-    private imageService: ImageService
+    private imageService: ImageService,
+    private soundService: SoundService
   ) {}
 
   onPaste(event: ClipboardEvent): void {
@@ -37,7 +40,7 @@ export class ImageClipboardInputComponent {
           this.imageFile = file;
           this.onSubmit();
         };
-        this.playSound();
+        this.soundService.playSound(SoundType.screenshot);
 
         reader.readAsDataURL(file);
       }
@@ -69,10 +72,5 @@ export class ImageClipboardInputComponent {
         this.notificationService.showNotification('error', error.message);
       },
     });
-  }
-
-  playSound() {
-    const audio = new Audio('assets/audio/screenshot.mp3');
-    audio.play();
   }
 }

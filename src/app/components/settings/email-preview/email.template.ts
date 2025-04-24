@@ -21,8 +21,8 @@ export function createHTML(options: IHTMLTemplateOptions): string {
   </head>
   <body
     style="
-      background-color: rgb(0, 0, 0);
-      color: white;
+      background-color: rgb(240, 240, 240);
+      color: rgb(10, 10, 10);;
       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
         sans-serif;
       font-size: 30px;

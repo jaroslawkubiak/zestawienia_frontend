@@ -29,6 +29,8 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/SetStatus';
+import { SoundType } from '../../../services/types/SoundType';
+import { SoundService } from '../../../services/sound.service';
 
 @Component({
   selector: 'app-set-menu',
@@ -71,7 +73,8 @@ export class SetMenuComponent {
     private notificationService: NotificationService,
     private editSetService: EditSetService,
     private emailsService: EmailsService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
+    private soundService: SoundService
   ) {}
 
   ngOnInit() {
@@ -169,6 +172,8 @@ export class SetMenuComponent {
             label: 'Do dostawców',
             icon: 'pi pi-users',
             badge: String(suppliersList.length),
+            badgeStyleClass:
+              suppliersList.length === 0 ? 'p-badge-danger' : 'p-badge-primary',
             items: suppliersList,
           },
         ],
@@ -276,7 +281,7 @@ export class SetMenuComponent {
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
-        this.playSound();
+        this.soundService.playSound(SoundType.emailSending);
         this.getEmailsList();
       },
       error: (error) => {
@@ -297,8 +302,7 @@ export class SetMenuComponent {
           'success',
           `Email na adres ${response.accepted[0]} został wysłany poprawnie`
         );
-        this.playSound();
-
+        this.soundService.playSound(SoundType.emailSending);
         this.getEmailsList();
       },
       error: (error) => {
@@ -317,9 +321,5 @@ export class SetMenuComponent {
     this.router.navigate([`/sets/comments/${this.set.id}`], {
       state: { backPath },
     });
-  }
-  playSound() {
-    const audio = new Audio('assets/audio/email_sending.mp3');
-    audio.play();
   }
 }
