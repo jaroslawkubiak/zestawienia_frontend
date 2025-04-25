@@ -2,6 +2,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { ISetting } from './types/ISetting';
 
 @Injectable({
   providedIn: 'root',
@@ -15,9 +16,9 @@ export class SettingsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getByType(type: string): Observable<any[]> {
+  getByType(type: string): Observable<ISetting> {
     return this.http
-      .get<any[]>(`${environment.API_URL}/settings/${type}`)
+      .get<ISetting>(`${environment.API_URL}/settings/${type}`)
       .pipe(catchError(this.handleError));
   }
 }

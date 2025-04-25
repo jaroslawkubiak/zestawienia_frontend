@@ -3,13 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { ISet } from '../sets/types/ISet';
-import {
-  createHTML,
-  HTMLClient,
-  HTMLSupplier,
-} from '../settings/email-preview/email.template';
-import { ISupplier } from '../suppliers/types/ISupplier';
 import { IEmailDetails } from './types/IEmailDetails';
 import { IEmailsList } from './types/IEmailsList';
 import { IEmailsToSet } from './types/IEmailsToSet';
@@ -37,45 +30,10 @@ export class EmailsService {
     );
   }
 
-  sendEmail(set: ISet): Observable<any> {
-    const link = `${environment.FRONT_URL}/${set.id}/${set.hash}`;
-    const content = createHTML({
-      title: HTMLClient.title,
-      message: HTMLClient.message,
-      link,
-    });
-
+  sendEmail(emailDetails: IEmailDetails): Observable<any> {
     const newEmail: IEmailDetails = {
-      to: set.clientId.email,
-      subject: `Zestawienie ${set.name} utworzone w dniu ${set.createdAt}`,
-      content,
-      setId: set.id,
+      ...emailDetails,
       userId: this.userId(),
-      clientId: set.clientId.id,
-      link,
-    };
-
-    return this.http.post(`${environment.API_URL}/email/send`, newEmail, {
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
-
-  sendEmailToSupplier(set: ISet, supplierId: ISupplier): Observable<any> {
-    const link = `${environment.FRONT_URL}/${set.id}/${set.hash}/${supplierId.hash}`;
-    const content = createHTML({
-      title: HTMLSupplier.title,
-      message: HTMLSupplier.message,
-      link,
-    });
-
-    const newEmail: IEmailDetails = {
-      to: supplierId.email,
-      subject: `Zamówienie do zestawienia ${set.name}`,
-      content,
-      setId: set.id,
-      userId: this.userId(),
-      supplierId: supplierId.id,
-      link,
     };
 
     return this.http.post(`${environment.API_URL}/email/send`, newEmail, {

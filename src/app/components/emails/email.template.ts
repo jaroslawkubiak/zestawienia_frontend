@@ -10,7 +10,7 @@ export const HTMLSupplier = {
   message: 'Zamawiamy to co tam w tym linku',
 };
 
-export function createHTML(options: IHTMLTemplateOptions): string {
+export function createHTMLHeader(options: IHTMLTemplateOptions): string {
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -21,24 +21,22 @@ export function createHTML(options: IHTMLTemplateOptions): string {
   </head>
   <body
     style="
-      background-color: rgb(240, 240, 240);
+      background-color: rgb(250, 250, 250);
       color: rgb(10, 10, 10);;
       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS',
         sans-serif;
-      font-size: 30px;
-      padding: 40px;
+      font-size: 20px;
+      padding: 20px;
     "
   >
     <table align="center" style="width: 800px; margin: 0 auto">
-      <tr style="margin: 30px 0; width: 800px">
+      <tr style="margin: 30px 0; width: 800px; text-align: right">
         <td style="width: 300px">
           <img
-            src="https://zestawienia.zurawickidesign.pl/assets/images/logo.png"
+            src="https://zestawienia.zurawickidesign.pl/assets/images/logo-black.png"
             alt="logo"
+            style="width: 300px"
           />
-        </td>
-        <td style="width: 400px; text-align: right">
-          <h3>Żurawicki Design</h3>
         </td>
       </tr>
       <tr>
@@ -78,3 +76,22 @@ export function createHTML(options: IHTMLTemplateOptions): string {
 </html>
 `;
 }
+
+/*
+
+      <tr>
+        <td style="padding: 0px 20px" colspan="2">
+          <p>
+            Pozdrawiamy. <br />
+            Zespół Żurawicki Design<br />
+            Jakub Żurawicki, Joanna Kubiak
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td style="padding: 40px 0; text-align: center" colspan="2">
+          <p style="margin: 0; font-size: 18px">&copy; 2025 Żurawicki Design</p>
+        </td>
+      </tr>
+
+*/

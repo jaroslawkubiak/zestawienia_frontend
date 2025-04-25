@@ -17,20 +17,18 @@ import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { EmailSendComponent } from '../../emails/email-send/email-send.component';
 import { EmailsService } from '../../emails/email.service';
 import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
-import { IFileList } from '../../files/types/IFileList';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
+import { IFileList } from '../../files/types/IFileList';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { EditSetService } from '../edit-set/edit-set.service';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
-import { SetStatus } from '../types/SetStatus';
-import { SoundType } from '../../../services/types/SoundType';
-import { SoundService } from '../../../services/sound.service';
 
 @Component({
   selector: 'app-set-menu',
@@ -43,6 +41,7 @@ import { SoundService } from '../../../services/sound.service';
     ShowFilesComponent,
     TooltipModule,
     BadgeModule,
+    EmailSendComponent,
   ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
@@ -61,7 +60,8 @@ export class SetMenuComponent {
   dialogSendFilesComponent!: SendFilesComponent;
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
-
+  showEmailTemplate = false;
+  currentSupplier!: ISupplier;
   editHeaderDialog = false;
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
@@ -74,7 +74,6 @@ export class SetMenuComponent {
     private editSetService: EditSetService,
     private emailsService: EmailsService,
     private pdfService: PdfService,
-    private soundService: SoundService
   ) {}
 
   ngOnInit() {
@@ -274,44 +273,17 @@ export class SetMenuComponent {
 
   // send set link to client
   sendSetToClientViaEmail(): void {
-    this.emailsService.sendEmail(this.set).subscribe({
-      next: (response) => {
-        this.set.status = SetStatus.sended;
-        this.notificationService.showNotification(
-          'success',
-          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
-        );
-        this.soundService.playSound(SoundType.emailSending);
-        this.getEmailsList();
-      },
-      error: (error) => {
-        const sendigError = error?.error?.message
-          ? `${error.error.message} : ${error.error?.error}`
-          : 'Nie udało się wysłać emaila.';
-        this.notificationService.showNotification('error', sendigError);
-      },
-    });
+    this.showEmailTemplate = true;
   }
 
   // send set link to supplier
   sendSetToSupplierViaEmail(supplierId: ISupplier): void {
-    this.emailsService.sendEmailToSupplier(this.set, supplierId).subscribe({
-      next: (response) => {
-        this.set.status = SetStatus.sended;
-        this.notificationService.showNotification(
-          'success',
-          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
-        );
-        this.soundService.playSound(SoundType.emailSending);
-        this.getEmailsList();
-      },
-      error: (error) => {
-        const sendigError = error?.error?.message
-          ? `${error.error.message} : ${error.error?.error}`
-          : 'Nie udało się wysłać emaila.';
-        this.notificationService.showNotification('error', sendigError);
-      },
-    });
+    this.showEmailTemplate = true;
+    this.currentSupplier = supplierId;
+  }
+
+  hideEmailDialog() {
+    this.showEmailTemplate = false;
   }
 
   // show all comments from this set

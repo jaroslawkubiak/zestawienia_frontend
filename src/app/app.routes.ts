@@ -8,7 +8,6 @@ import { ProductsComponent } from './components/products/products.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
-import { EmailPreviewComponent } from './components/settings/email-preview/email-preview.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -68,7 +67,6 @@ export const routes: Routes = [
       { path: '', component: SettingsComponent },
       { path: 'ui-check', component: UiCheckComponent },
       { path: 'notification', component: NotificationComponent },
-      { path: 'email-preview', component: EmailPreviewComponent },
     ],
   },
   {
