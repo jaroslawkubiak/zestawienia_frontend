@@ -231,10 +231,10 @@ export class SuppliersComponent implements OnInit {
           telefon: this.form.value.telefon || '',
           positionCount: this.supplier.positionCount,
         };
-        this.suppliers[this.findIndexById(this.supplier.id)] = editedSupplier;
-
+        
         this.suppliersService.saveSupplier(editedSupplier).subscribe({
           next: (response) => {
+            this.suppliers[this.findIndexById(this.supplier.id)] = editedSupplier;
             this.notificationService.showNotification(
               'success',
               'Dane dostawcy zaktualizowane'

@@ -232,10 +232,10 @@ export class ClientsComponent implements OnInit {
           telefon: this.form.value.telefon || '',
           setCount: this.client.setCount,
         };
-        this.clients[this.findIndexById(this.client.id)] = editedClient;
 
         this.clientsService.saveClient(editedClient).subscribe({
           next: (response) => {
+            this.clients[this.findIndexById(this.client.id)] = editedClient;
             this.notificationService.showNotification(
               'success',
               'Dane klienta zaktualizowane'
