@@ -559,9 +559,8 @@ export class EditSetComponent
     return position.status?.cssClass || '';
   }
 
-  updateComments(res: any) {
-    console.log(res);
-    // tutaj musze tez dodać nowe komentarze do this.set, bo menu ściąga ze wszystkich pozycji
+  // update comments for current position
+  updateCommentsForPosition(res: any) {
     this.positions = this.positions.map((item) => {
       if (item.id === res.id) {
         const newCommentsCount = res.comments.filter(
@@ -578,6 +577,36 @@ export class EditSetComponent
       return { ...item };
     });
 
-    console.log(this.positions);
+    this.updateCommentsForSet();
+  }
+
+  // update comments for set, and count newComments property for badge
+  updateCommentsForSet() {
+    const allComments: IComment[] = [];
+    this.positions.forEach((item) => {
+      if (item.comments && item.comments.length !== 0) {
+        allComments.push(...item.comments);
+      }
+    });
+    this.set.comments = allComments;
+
+    this.set.newComments = allComments
+      ? this.countNewComments(this.set.comments, 'user')
+      : undefined;
+  }
+
+  // count new - unreaded comments
+  countNewComments(
+    comments: IComment[],
+    authorType: 'user' | 'client'
+  ): number {
+    const newComments = comments.reduce((acc, item) => {
+      if (!item.readByReceiver && item.authorType !== authorType) {
+        acc += 1;
+      }
+      return acc;
+    }, 0);
+
+    return newComments;
   }
 }
