@@ -9,9 +9,9 @@
     </div>
     <div class="header-actions-btn">
       <i
-        class="pi pi-file-pdf"
-        (click)="downloadPdf()"
-        pTooltip="Pobierz pdf"
+        class="pi pi-file-pdf {{ this.files?.pdf ? '' : 'disabled' }}"
+        (click)="this.files?.pdf && downloadPdf()"
+        pTooltip="{{ this.files?.pdf ? 'Pobierz pdf' : 'Brak pdf' }}"
         tooltipPosition="bottom"
       ></i>
       <i

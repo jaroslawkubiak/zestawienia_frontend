@@ -127,3 +127,8 @@ h3 {
   font-size: 2rem;
   color: var(--accent-color-darker);
 }
+
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

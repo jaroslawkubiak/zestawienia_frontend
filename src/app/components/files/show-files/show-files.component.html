@@ -52,6 +52,16 @@
         </li>
       </ul>
     </div>
+    <div
+      class="no-files"
+      *ngIf="
+        attachments.length === 0 &&
+        attachmentsPdf.length === 0 &&
+        attachmentsInspirations.length === 0
+      "
+    >
+      Brak załączników
+    </div>
   </div>
 </p-dialog>
 

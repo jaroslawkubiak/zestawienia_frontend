@@ -90,6 +90,8 @@ export class FilesService {
 
   // prepare details file list from /files dir - dir for user to upload files
   prepareFilesList(setId: number, filesList: IFileList) {
+    if (!filesList) return [];
+
     return filesList.files.map((file) => {
       const fileParts = file.split('.');
       const extension = fileParts[fileParts.length - 1].toUpperCase() as
@@ -110,6 +112,8 @@ export class FilesService {
 
   // prepare details file list from /inspirations dir - dir for client to upload files
   prepareInspirationFilesList(setId: number, filesList: IFileList) {
+    if (!filesList) return [];
+    
     return filesList.inspirations.map((file) => {
       const fileParts = file.split('.');
       const extension = fileParts[fileParts.length - 1].toUpperCase() as
@@ -130,6 +134,8 @@ export class FilesService {
 
   // prepare details file list from /pdf dir - dir for store set in pdf
   preparePdfFilesList(setId: number, filesList: IFileList) {
+    if (!filesList) return [];
+
     return filesList.pdf.map((file) => {
       const fileParts = file.split('.');
       const extension = fileParts[fileParts.length - 1].toUpperCase() as 'PDF';
