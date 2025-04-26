@@ -34,10 +34,22 @@
   margin: 2rem 0;
 }
 
+.position-info-wrapper {
+  display: flex;
+  align-items: center; 
+  justify-content: space-between;
+}
+
 .position-info {
   font-size: 2.2rem;
   padding: 1rem 0.75rem;
-  color: var(--accent-color) !important;
+  color: var(--accent-color);
+}
+
+.new-comments {
+  font-size: 1.4rem;
+  align-self: end;
+  color: var(--error-color);
 }
 
 .history-back {

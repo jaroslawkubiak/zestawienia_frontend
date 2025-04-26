@@ -33,7 +33,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() commentsDialog = false;
   @Output() updateComments = new EventEmitter<any>();
   newMessage: string = '';
-
   editedCommentId: number | null = null;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 

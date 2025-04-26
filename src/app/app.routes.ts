@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
-import { NewcommentsComponent } from './components/comments/newcomments/newcomments.component';
+import { CommentsToSetComponent } from './components/comments/comments-to-set/comments-to-set.component';
 import { EmailsComponent } from './components/emails/emails.component';
 import { ForClientComponent } from './components/external/forclient/forclient.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -32,7 +32,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: SetsComponent },
       { path: 'new', component: NewSetComponent },
-      { path: 'comments/:id', component: NewcommentsComponent },
+      { path: 'comments/:id', component: CommentsToSetComponent },
       {
         path: ':id',
         component: EditSetComponent,

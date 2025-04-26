@@ -12,20 +12,22 @@
       <div class="set-header-value">{{ set.clientId.firma }}</div>
     </div>
   </div>
-  <div class="comments" *ngFor="let pos of positionsWithComments">
-    <div class="position-info">
-      {{ pos.position.bookmarkId.name }}: Pozycja {{ pos.position.kolejnosc }}
-      {{
-        pos.position.produkt
-          ? " - " + pos.position.produkt
-          : pos.position.produkt
-      }}
+  <div class="comments" *ngFor="let pos of positionsWithComments$ | async">
+    <div class="position-info-wrapper">
+      <div class="position-info">
+        {{ pos.position.bookmarkId.name }}: Pozycja {{ pos.position.kolejnosc }}
+        <span *ngIf="pos.position.produkt"> - {{ pos.position.produkt }}</span>
+      </div>
+      <div class="new-comments" *ngIf="pos.newComments !== 0">
+        Liczba nieprzeczytanych komentarzy: {{ pos.newComments }}
+      </div>
     </div>
 
     <app-comments
       [positionId]="pos.position.id"
       [setId]="setId"
       [comments]="pos.comments"
+      (updateComments)="onUpdateComments($event)"
     />
   </div>
 </div>
