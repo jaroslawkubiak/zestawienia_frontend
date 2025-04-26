@@ -29,6 +29,7 @@ import { EditSetService } from '../edit-set/edit-set.service';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
+import { SetStatus } from '../types/SetStatus';
 
 @Component({
   selector: 'app-set-menu',
@@ -73,7 +74,7 @@ export class SetMenuComponent {
     private notificationService: NotificationService,
     private editSetService: EditSetService,
     private emailsService: EmailsService,
-    private pdfService: PdfService,
+    private pdfService: PdfService
   ) {}
 
   ngOnInit() {
@@ -284,6 +285,7 @@ export class SetMenuComponent {
 
   hideEmailDialog() {
     this.showEmailTemplate = false;
+    this.set.status = SetStatus.sended;
   }
 
   // show all comments from this set

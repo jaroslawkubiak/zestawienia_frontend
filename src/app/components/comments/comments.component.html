@@ -3,15 +3,20 @@
     *ngFor="let comment of comments"
     class="message-wrapper"
     [ngClass]="{
-      'from-client': comment.authorType === 'client',
-      'from-user': comment.authorType === 'user'
+      'from-client': isUser
+        ? comment.authorType === 'client'
+        : comment.authorType === 'user',
+      'from-user': isUser
+        ? comment.authorType === 'user'
+        : comment.authorType === 'client'
     }"
   >
     <div class="message-bubble">
       <i
         class="pi pi-comment comment-icon"
         [ngClass]="
-          !comment.readByReceiver && comment.authorType !== 'user'
+          !comment.readByReceiver &&
+          comment.authorType !== (isUser ? 'user' : 'client')
             ? 'comment-icon-unread'
             : 'comment-icon-read'
         "
@@ -26,9 +31,9 @@
         (click)="deleteComment(comment.id)"
       ></i>
       <p class="text">{{ comment.comment }}</p>
-      <span class="timestamp"
-        >{{ comment.authorName }}, {{ comment.createdAt }}</span
-      >
+      <span class="timestamp">
+        {{ comment.authorName }}, {{ comment.createdAt }}
+      </span>
     </div>
   </div>
 </div>
@@ -40,7 +45,7 @@
         class="pi pi-comments"
         pTooltip="Oznacz wszystkie jako przeczytane"
         tooltipPosition="bottom"
-        (click)="markAllComments(true)"
+        (click)="markAllComments(true, isUser ? 'client' : 'user')"
       ></i>
     </div>
     <div class="comment-unread flex-center">
@@ -48,7 +53,7 @@
         class="pi pi-comments"
         pTooltip="Oznacz wszystkie jako nieprzeczytane"
         tooltipPosition="bottom"
-        (click)="markAllComments(false)"
+        (click)="markAllComments(false, isUser ? 'client' : 'user')"
       ></i>
     </div>
   </div>
@@ -63,7 +68,7 @@
     <button
       class="send-btn"
       (click)="sendComment()"
-      [ngClass]="newMessage ? '' : 'disabled'"
+      [ngClass]="{ disabled: !newMessage }"
     >
       <i class="pi pi-arrow-up send-icon"></i>
     </button>

@@ -18,7 +18,7 @@
       </div>
       <p-badge
         *ngIf="item.badge"
-        [ngClass]="(root ? 'm-2' : 'm-4') + ' ' + (item.badgeStyleClass || '')"
+        [ngClass]="(item.badgeStyleClass || '')"
         [value]="item.badge"
       />
       <i

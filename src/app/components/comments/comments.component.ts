@@ -17,8 +17,10 @@ import { NotificationService } from '../../services/notification.service';
 import { SoundService } from '../../services/sound.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { SoundType } from '../../services/types/SoundType';
+import { ISet } from '../sets/types/ISet';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
+import { IEditedComment } from './types/IEditedComment';
 
 @Component({
   selector: 'app-comments',
@@ -28,9 +30,11 @@ import { IComment } from './types/IComment';
 })
 export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() setId!: number;
+  @Input() set!: ISet;
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
+  @Input() isUser: boolean = true;
   @Output() updateComments = new EventEmitter<any>();
   newMessage: string = '';
   editedCommentId: number | null = null;
@@ -70,7 +74,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     // add new comment
     if (!this.editedCommentId) {
       this.commentsService
-        .addComment(this.newMessage, this.setId, this.positionId)
+        .addComment(this.newMessage, this.setId, this.positionId, this.set)
         .subscribe({
           next: (response) => {
             this.comments.push(response);
@@ -86,29 +90,34 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         });
     } else {
       // edit comment
-      this.commentsService
-        .editComment(this.editedCommentId, this.newMessage)
-        .subscribe({
-          next: (response) => {
-            const commentIndex = this.comments.findIndex(
-              (item) => item.id === this.editedCommentId
-            );
+      const editedComment: IEditedComment = {
+        commentId: this.editedCommentId,
+        comment: this.newMessage,
+        clientId: this.set?.clientId?.id,
+        authorName: this.set?.clientId?.imie,
+      };
 
-            if (commentIndex !== -1) {
-              this.comments[commentIndex] = response;
-            }
+      this.commentsService.editComment(editedComment).subscribe({
+        next: (response) => {
+          const commentIndex = this.comments.findIndex(
+            (item) => item.id === this.editedCommentId
+          );
 
-            this.newMessage = '';
-            this.editedCommentId = null;
-            this.soundService.playSound(SoundType.messageSending);
-            setTimeout(() => {
-              this.scrollToBottom();
-            }, 100);
-          },
-          error: (error) => {
-            console.error(error);
-          },
-        });
+          if (commentIndex !== -1) {
+            this.comments[commentIndex] = response;
+          }
+
+          this.newMessage = '';
+          this.editedCommentId = null;
+          this.soundService.playSound(SoundType.messageSending);
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 100);
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     }
   }
 
@@ -142,8 +151,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   toggleCommentRead(id: number) {
     this.commentsService.toggleCommentRead(id).subscribe({
-      next: (response: IComment[]) => {
-        const updatedComment = response[0];
+      next: (response: IComment) => {
+        const updatedComment = response;
 
         this.notificationService.showNotification(
           'info',
@@ -171,34 +180,36 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     });
   }
 
-  markAllComments(state: boolean) {
-    this.commentsService.markAllComments(this.positionId, state).subscribe({
-      next: (updatedComments) => {
-        const firstClientComment = updatedComments.find(
-          (comment) => comment.authorType === 'client'
-        );
+  markAllComments(state: boolean, authorType: 'user' | 'client') {
+    this.commentsService
+      .markAllComments(this.positionId, state, authorType)
+      .subscribe({
+        next: (updatedComments) => {
+          const firstClientComment = updatedComments.find(
+            (comment) => comment.authorType === 'client'
+          );
 
-        this.notificationService.showNotification(
-          'info',
-          `Wszystkie komentarze zostały oznaczone jako ${
-            firstClientComment?.readByReceiver
-              ? 'przeczytane'
-              : 'nieprzeczytane'
-          }`
-        );
+          this.notificationService.showNotification(
+            'info',
+            `Wszystkie komentarze zostały oznaczone jako ${
+              firstClientComment?.readByReceiver
+                ? 'przeczytane'
+                : 'nieprzeczytane'
+            }`
+          );
 
-        this.comments = updatedComments;
+          this.comments = updatedComments;
 
-        const positionWithComments = {
-          posId: this.positionId,
-          comments: this.comments,
-        };
+          const positionWithComments = {
+            posId: this.positionId,
+            comments: this.comments,
+          };
 
-        this.updateComments.emit(positionWithComments);
-      },
-      error: (err) => {
-        console.error(err);
-      },
-    });
+          this.updateComments.emit(positionWithComments);
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
   }
 }

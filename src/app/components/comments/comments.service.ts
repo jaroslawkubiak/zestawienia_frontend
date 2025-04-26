@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { ISet } from '../sets/types/ISet';
 import { IComment } from './types/IComment';
+import { IEditedComment } from './types/IEditedComment';
 import { INewComment } from './types/INewComment';
 import { IUpdatedComment } from './types/IUpdatedComment';
 
@@ -21,15 +23,17 @@ export class CommentsService {
   addComment(
     comment: string,
     setId: number,
-    positionId: number
+    positionId: number,
+    set: ISet
   ): Observable<IComment> {
+    const isClient = !!set?.clientId?.id;
     const newComment: INewComment = {
       comment,
       setId,
       positionId,
-      authorType: 'user',
-      authorId: Number(this.userId()),
-      authorName: this.userName() || '',
+      authorType: isClient ? 'client' : 'user',
+      authorId: isClient ? set.clientId.id : Number(this.userId()),
+      authorName: isClient ? set.clientId.imie : this.userName() || '',
     };
 
     return this.http
@@ -37,13 +41,20 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  editComment(commentId: number, comment: string): Observable<IComment> {
-    const updatedComment: IUpdatedComment = {
-      comment: comment,
-      commentId: commentId,
-      authorId: Number(this.userId()),
-      authorName: this.userName() || '',
+  editComment(editedComment: IEditedComment): Observable<IComment> {
+    const updatedComment: Partial<IUpdatedComment> = {
+      comment: editedComment.comment,
+      commentId: editedComment.commentId,
     };
+
+    // if user edit comment
+    if (!editedComment.clientId) {
+      updatedComment.authorId = Number(this.userId());
+      updatedComment.authorName = this.userName() || '';
+    } else {
+      updatedComment.authorId = editedComment.clientId;
+      updatedComment.authorName = editedComment.authorName;
+    }
 
     return this.http
       .patch<IComment>(`${environment.API_URL}/comments/edit`, updatedComment)
@@ -56,23 +67,25 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  toggleCommentRead(id: number): Observable<IComment[]> {
+  toggleCommentRead(id: number): Observable<IComment> {
     const body = {
-      ids: [id],
+      id,
     };
 
     return this.http
-      .patch<IComment[]>(`${environment.API_URL}/comments/`, body)
+      .patch<IComment>(`${environment.API_URL}/comments/`, body)
       .pipe(catchError(this.handleError));
   }
 
   markAllComments(
     positionId: number,
-    readState: boolean
+    readState: boolean,
+    authorType: 'user' | 'client'
   ): Observable<IComment[]> {
     const body = {
       positionId,
       readState,
+      authorType,
     };
 
     return this.http

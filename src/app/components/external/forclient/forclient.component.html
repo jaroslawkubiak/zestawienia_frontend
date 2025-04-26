@@ -37,10 +37,37 @@
           <span class="room-name">{{ pos.pomieszczenie }}</span>
         </div>
         <div class="position-action-btn">
-          <a href="{{ pos.link }}" target="_blank"
-            ><i class="pi pi-link"> </i
-          ></a>
-          <i class="pi pi-comments"></i>
+          <div class="position-cell flex-center">
+            <i class="pi pi-comments" (click)="showComments(pos.id)"></i>
+            <p-badge
+              [value]="getRowNewComments(pos.id) || getRowAllComments(pos.id)"
+              [severity]="
+                getRowNewComments(pos.id)
+                  ? 'danger'
+                  : getRowAllComments(pos.id)
+                  ? 'contrast'
+                  : 'secondary'
+              "
+              class="nr-comments"
+              badgeSize="large"
+              [pTooltip]="
+                getRowNewComments(pos.id)
+                  ? 'Ilość nowych komentarzy'
+                  : 'Ilość komentarzy'
+              "
+            ></p-badge>
+          </div>
+          <div class="position-cell flex-center">
+            @if(pos.link) {
+            <a href="{{ pos.link }}" target="_blank"
+              ><i
+                class="pi pi-link"
+                pTooltip="Link do produktu"
+                tooltipPosition="bottom"
+              ></i
+            ></a>
+            }
+          </div>
         </div>
       </div>
       <div class="product-img">
@@ -98,3 +125,19 @@
     </li>
   </ul>
 </div>
+<p-dialog
+  [header]="header"
+  [modal]="true"
+  [(visible)]="showCommentsDialog"
+  [style]="{ width: '70rem' }"
+>
+  <app-comments
+    [comments]="comments"
+    [positionId]="positionId"
+    [setId]="setId"
+    [set]="set"
+    [isUser]="false"
+    [commentsDialog]="showCommentsDialog"
+    (updateComments)="onUpdateComments($event)"
+  />
+</p-dialog>
