@@ -23,7 +23,7 @@
         alt="Usuń zaznaczonych klientów"
         pTooltip="Usuń zaznaczonych klientów"
         (onClick)="deleteSelectedClient()"
-        [disabled]="!selectedClient || !selectedClient.length"
+        [disabled]="!selected || !selected.length"
       />
     </ng-template>
   </p-toolbar>
@@ -35,13 +35,11 @@
     [columns]="cols"
     [paginator]="true"
     [globalFilterFields]="['firma', 'imie', 'nazwisko', 'email', 'telefon']"
-    [tableStyle]="{ 'min-width': '105rem' }"
-    [(selection)]="selectedClient"
+    [tableStyle]="{ 'min-width': '115rem' }"
+    [(selection)]="selected"
     [rowHover]="true"
     dataKey="id"
     stripedRows
-    currentPageReportTemplate="{first} to {last}"
-    [showCurrentPageReport]="true"
   >
     <ng-template #caption>
       <div class="search-wrapper">
@@ -64,10 +62,6 @@
           <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
         </th>
         <th style="width: 10rem"></th>
-        <th pSortableColumn="firma" style="min-width: 16rem">
-          Firma
-          <p-sortIcon field="firma" />
-        </th>
         <th pSortableColumn="imie" style="min-width: 8rem">
           Imię
           <p-sortIcon field="imie" />
@@ -83,6 +77,10 @@
         <th pSortableColumn="telefon" style="min-width: 6rem">
           Telefon
           <p-sortIcon field="telefon" />
+        </th>
+        <th pSortableColumn="firma" style="min-width: 16rem">
+          Firma
+          <p-sortIcon field="firma" />
         </th>
       </tr>
     </ng-template>
@@ -117,9 +115,6 @@
             (click)="deleteClient(client)"
           />
         </td>
-        <td style="min-width: 16rem">
-          {{ client.firma }}
-        </td>
         <td style="min-width: 8rem">
           {{ client.imie }}
         </td>
@@ -132,10 +127,10 @@
         <td style="min-width: 10rem">
           {{ client.telefon }}
         </td>
+        <td style="min-width: 16rem">
+          {{ client.firma }}
+        </td>
       </tr>
-    </ng-template>
-    <ng-template #summary>
-      <div class="total">Razem {{ clients ? clients.length : 0 }}</div>
     </ng-template>
   </p-table>
 
@@ -149,28 +144,20 @@
       <form [formGroup]="form">
         <div class="new-client-wrapper">
           <div class="field">
-            <i class="pi pi-asterisk"></i>
             <label for="firma">Firma</label>
-            <input
-              type="text"
-              pInputText
-              id="firma"
-              formControlName="firma"
+            <textarea
+              rows="8"
+              pTextarea
               fluid
-            />
+              formControlName="firma"
+            ></textarea>
             <div class="error-container">
               <div
                 *ngIf="
                   form.controls['firma'].invalid &&
                   form.controls['firma'].touched
                 "
-              >
-                <span
-                  class="error"
-                  *ngIf="form.controls['firma'].errors?.['required']"
-                  >Firma jest wymagana.</span
-                >
-              </div>
+              ></div>
             </div>
           </div>
           <div class="field">

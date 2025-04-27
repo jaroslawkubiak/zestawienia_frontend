@@ -55,7 +55,7 @@ export class ClientsComponent implements OnInit {
   clientDialogHeader: string = '';
   clients!: IClient[];
   client!: IClient;
-  selectedClient!: IClient[] | null;
+  selected!: IClient[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   exportColumns!: IExportColumn[];
@@ -68,9 +68,7 @@ export class ClientsComponent implements OnInit {
   ) {}
 
   form = new FormGroup({
-    firma: new FormControl('', {
-      validators: [Validators.required],
-    }),
+    firma: new FormControl(''),
     imie: new FormControl('', {
       validators: [Validators.required],
     }),
@@ -142,11 +140,11 @@ export class ClientsComponent implements OnInit {
   deleteSelectedClient() {
     const accept = () => {
       this.clients = this.clients.filter(
-        (val) => !this.selectedClient?.includes(val)
+        (val) => !this.selected?.includes(val)
       );
 
-      const idList = this.selectedClient?.map((client) => client.id) ?? [];
-      this.selectedClient = null;
+      const idList = this.selected?.map((client) => client.id) ?? [];
+      this.selected = null;
 
       this.clientsService.removeClients(idList).subscribe({
         next: (response) => {
@@ -169,6 +167,7 @@ export class ClientsComponent implements OnInit {
 
     this.confirmationModalService.showConfirmation(confirmMessage);
   }
+
   hideDialog() {
     this.clientDialog = false;
     this.form.reset();
@@ -228,7 +227,7 @@ export class ClientsComponent implements OnInit {
           email: this.form.value.email!,
           imie: this.form.value.imie!,
           nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma!,
+          firma: this.form.value.firma || '',
           telefon: this.form.value.telefon || '',
           setCount: this.client.setCount,
         };
@@ -251,7 +250,7 @@ export class ClientsComponent implements OnInit {
           email: this.form.value.email!,
           imie: this.form.value.imie!,
           nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma!,
+          firma: this.form.value.firma || undefined,
           telefon: this.form.value.telefon || undefined,
         };
 
