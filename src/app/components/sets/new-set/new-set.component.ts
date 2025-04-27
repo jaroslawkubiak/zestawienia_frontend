@@ -55,7 +55,10 @@ export class NewSetComponent implements OnInit {
   getClients() {
     this.clientsService.getClients().subscribe({
       next: (data) => {
-        this.allClients = data;
+        this.allClients = data.map((client) => ({
+          ...client,
+          fullName: `${client.firstName} ${client.lastName}`,
+        }));
       },
       error: (err) => console.error('Error getting clients ', err),
     });

@@ -11,6 +11,7 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
 import { IStatus, SetStatus } from '../types/SetStatus';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-edit-header',
@@ -23,6 +24,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
     CheckboxModule,
     CommonModule,
     ButtonModule,
+    TextareaModule,
     InputTextModule,
     LoadingSpinnerComponent,
   ],
@@ -31,6 +33,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 export class EditHeaderComponent implements OnInit {
   @Input() editHeader!: ISetHeader;
   name: string = '';
+  address: string = '';
   selectedStatus: string = '';
   selectedBookmarks: IBookmark[] = [];
   allBookmarks: IBookmark[] = [];
@@ -48,6 +51,7 @@ export class EditHeaderComponent implements OnInit {
   ngOnInit() {
     this.getBookmarks();
     this.name = this.editHeader.name;
+    this.address = this.editHeader.address;
     this.selectedStatus = this.editHeader.selectedStatus;
     this.selectedBookmarks = this.editHeader.selectedBookmarks;
   }
@@ -66,6 +70,7 @@ export class EditHeaderComponent implements OnInit {
   save() {
     const newHeader: ISetHeader = {
       name: this.name,
+      address: this.address,
       selectedStatus: this.selectedStatus,
       selectedBookmarks: this.selectedBookmarks,
     };

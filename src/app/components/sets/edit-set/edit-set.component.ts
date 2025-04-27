@@ -39,6 +39,7 @@ import { FooterService } from './footer.service';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
 import { environment } from '../../../../environments/environment';
 import { IComment } from '../../comments/types/IComment';
+import { SetStatus } from '../types/SetStatus';
 
 @Component({
   selector: 'app-set',
@@ -136,7 +137,11 @@ export class EditSetComponent
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
       next: ({ set, positions, suppliers }) => {
-        this.set = set;
+        this.set = {
+          ...set,
+          fullName: set.clientId.firstName + ' ' + set.clientId.lastName,
+        };
+
         this.positions = positions;
         this.allSuppliers = suppliers;
 
@@ -330,6 +335,10 @@ export class EditSetComponent
           this.formData.splice(response.kolejnosc, 0, response);
           this.updateOrder();
           this.updatePosition();
+          // if this is first position - change status to in preparation
+          if (this.positions?.length === 0) {
+            this.set.status = SetStatus.inPreparation;
+          }
           this.positions.push(response);
 
           this.notificationService.showNotification(

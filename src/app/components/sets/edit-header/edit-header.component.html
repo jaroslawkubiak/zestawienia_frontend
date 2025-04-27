@@ -12,7 +12,17 @@
         [(ngModel)]="name"
       />
     </div>
-
+    <div class="field">
+      <label for="address" class="label">Adres inwestycji</label>
+      <textarea
+        rows="5"
+        pTextarea
+        fluid
+        [(ngModel)]="address"
+        name="address"
+        id="address"
+      ></textarea>
+    </div>
     <div class="field">
       <label for="status" class="label">Status</label>
       <p-select
