@@ -34,14 +34,19 @@
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
-    [globalFilterFields]="['firma', 'imie', 'nazwisko', 'email', 'telefon']"
-    [tableStyle]="{ 'min-width': '105rem' }"
+    [globalFilterFields]="[
+      'company',
+      'address',
+      'firstName',
+      'lastName',
+      'email',
+      'telephone'
+    ]"
+    [tableStyle]="{ 'min-width': '115rem' }"
     [(selection)]="selected"
     [rowHover]="true"
     dataKey="id"
     stripedRows
-    currentPageReportTemplate="{first} to {last}"
-    [showCurrentPageReport]="true"
   >
     <ng-template #caption>
       <div class="search-wrapper">
@@ -53,7 +58,7 @@
             class="search-input"
             pTooltip="Filtruj dostawców"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, imię, nazwisko, email, telefon"
+            placeholder="Firma, adres, imię, nazwisko, email, telefon"
           />
         </p-iconfield>
       </div>
@@ -64,25 +69,29 @@
           <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
         </th>
         <th style="width: 10rem"></th>
-        <th pSortableColumn="firma" style="min-width: 16rem">
+        <th pSortableColumn="company" style="min-width: 16rem">
           Firma
-          <p-sortIcon field="firma" />
+          <p-sortIcon field="company" />
         </th>
-        <th pSortableColumn="imie" style="min-width: 8rem">
+        <th pSortableColumn="company" style="min-width: 16rem">
+          Adres
+          <p-sortIcon field="company" />
+        </th>
+        <th pSortableColumn="firstName" style="min-width: 8rem">
           Imię
-          <p-sortIcon field="imie" />
+          <p-sortIcon field="firstName" />
         </th>
-        <th pSortableColumn="nazwisko" style="min-width: 8rem">
+        <th pSortableColumn="lastName" style="min-width: 8rem">
           Nazwisko
-          <p-sortIcon field="nazwisko" />
+          <p-sortIcon field="lastName" />
         </th>
         <th pSortableColumn="email" style="min-width: 8rem">
           E-mail
           <p-sortIcon field="email" />
         </th>
-        <th pSortableColumn="telefon" style="min-width: 6rem">
+        <th pSortableColumn="telephone" style="min-width: 6rem">
           Telefon
-          <p-sortIcon field="telefon" />
+          <p-sortIcon field="telephone" />
         </th>
       </tr>
     </ng-template>
@@ -117,15 +126,13 @@
             (click)="deleteSupplier(supplier)"
           />
         </td>
-        <td style="min-width: 16rem">{{ supplier.firma }}</td>
-        <td style="min-width: 10rem">{{ supplier.imie }}</td>
-        <td style="min-width: 12rem">{{ supplier.nazwisko }}</td>
+        <td style="min-width: 16rem">{{ supplier.company }}</td>
+        <td style="min-width: 16rem">{{ supplier.address }}</td>
+        <td style="min-width: 10rem">{{ supplier.firstName }}</td>
+        <td style="min-width: 12rem">{{ supplier.lastName }}</td>
         <td style="min-width: 12rem">{{ supplier.email }}</td>
-        <td style="min-width: 10rem">{{ supplier.telefon }}</td>
+        <td style="min-width: 10rem">{{ supplier.telephone }}</td>
       </tr>
-    </ng-template>
-    <ng-template #summary>
-      <div class="total">Razem {{ suppliers ? suppliers.length : 0 }}</div>
     </ng-template>
   </p-table>
 
@@ -140,48 +147,58 @@
         <div class="new-supplier-wrapper">
           <div class="field">
             <i class="pi pi-asterisk"></i>
-            <label for="firma">Firma</label>
+            <label for="company">Firma</label>
             <input
               type="text"
               pInputText
-              id="firma"
-              formControlName="firma"
+              id="company"
+              formControlName="company"
               fluid
             />
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['firma'].invalid &&
-                  form.controls['firma'].touched
+                  form.controls['company'].invalid &&
+                  form.controls['company'].touched
                 "
               >
                 <span
                   class="error"
-                  *ngIf="form.controls['firma'].errors?.['required']"
+                  *ngIf="form.controls['company'].errors?.['required']"
                   >Firma jest wymagana.</span
                 >
               </div>
             </div>
           </div>
           <div class="field">
+            <label for="firstName">Adres</label>
+            <textarea
+              rows="5"
+              pTextarea
+              fluid
+              formControlName="address"
+            ></textarea>
+          </div>
+          <div class="field">
             <i class="pi pi-asterisk"></i>
-            <label for="imie">Imię</label>
+            <label for="firstName">Imię</label>
             <input
               type="text"
               pInputText
-              id="imie"
-              formControlName="imie"
+              id="firstName"
+              formControlName="firstName"
               fluid
             />
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['imie'].invalid && form.controls['imie'].touched
+                  form.controls['firstName'].invalid &&
+                  form.controls['firstName'].touched
                 "
               >
                 <span
                   class="error"
-                  *ngIf="form.controls['imie'].errors?.['required']"
+                  *ngIf="form.controls['firstName'].errors?.['required']"
                   >Imię jest wymagane.</span
                 >
               </div>
@@ -189,24 +206,24 @@
           </div>
           <div class="field">
             <i class="pi pi-asterisk"></i>
-            <label for="nazwisko">Nazwisko</label>
+            <label for="lastName">Nazwisko</label>
             <input
               type="text"
               pInputText
-              id="nazwisko"
-              formControlName="nazwisko"
+              id="lastName"
+              formControlName="lastName"
               fluid
             />
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['nazwisko'].invalid &&
-                  form.controls['nazwisko'].touched
+                  form.controls['lastName'].invalid &&
+                  form.controls['lastName'].touched
                 "
               >
                 <span
                   class="error"
-                  *ngIf="form.controls['nazwisko'].errors?.['required']"
+                  *ngIf="form.controls['lastName'].errors?.['required']"
                   >Nazwisko jest wymagane.</span
                 >
               </div>
@@ -243,12 +260,12 @@
             </div>
           </div>
           <div class="field">
-            <label for="telefon">Telefon</label>
+            <label for="telephone">Telefon</label>
             <input
               type="text"
               pInputText
-              id="telefon"
-              formControlName="telefon"
+              id="telephone"
+              formControlName="telephone"
               fluid
             />
           </div>

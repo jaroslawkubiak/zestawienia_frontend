@@ -34,7 +34,13 @@
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
-    [globalFilterFields]="['firma', 'imie', 'nazwisko', 'email', 'telefon']"
+    [globalFilterFields]="[
+      'company',
+      'firstName',
+      'lastName',
+      'email',
+      'telephone'
+    ]"
     [tableStyle]="{ 'min-width': '115rem' }"
     [(selection)]="selected"
     [rowHover]="true"
@@ -51,7 +57,7 @@
             class="search-input"
             pTooltip="Filtruj klientów"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, imię, nazwisko, email, telefon"
+            placeholder="Firma, adres, imię, nazwisko, email, telefon"
           />
         </p-iconfield>
       </div>
@@ -62,25 +68,25 @@
           <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
         </th>
         <th style="width: 10rem"></th>
-        <th pSortableColumn="imie" style="min-width: 8rem">
+        <th pSortableColumn="firstName" style="min-width: 8rem">
           Imię
-          <p-sortIcon field="imie" />
+          <p-sortIcon field="firstName" />
         </th>
-        <th pSortableColumn="nazwisko" style="min-width: 8rem">
+        <th pSortableColumn="lastName" style="min-width: 8rem">
           Nazwisko
-          <p-sortIcon field="nazwisko" />
+          <p-sortIcon field="lastName" />
         </th>
         <th pSortableColumn="email" style="min-width: 8rem">
           E-mail
           <p-sortIcon field="email" />
         </th>
-        <th pSortableColumn="telefon" style="min-width: 6rem">
+        <th pSortableColumn="telephone" style="min-width: 6rem">
           Telefon
-          <p-sortIcon field="telefon" />
+          <p-sortIcon field="telephone" />
         </th>
-        <th pSortableColumn="firma" style="min-width: 16rem">
+        <th pSortableColumn="company" style="min-width: 16rem">
           Firma
-          <p-sortIcon field="firma" />
+          <p-sortIcon field="company" />
         </th>
       </tr>
     </ng-template>
@@ -116,19 +122,19 @@
           />
         </td>
         <td style="min-width: 8rem">
-          {{ client.imie }}
+          {{ client.firstName }}
         </td>
         <td style="min-width: 12rem">
-          {{ client.nazwisko }}
+          {{ client.lastName }}
         </td>
         <td style="min-width: 12rem">
           {{ client.email }}
         </td>
         <td style="min-width: 10rem">
-          {{ client.telefon }}
+          {{ client.telephone }}
         </td>
         <td style="min-width: 16rem">
-          {{ client.firma }}
+          {{ client.company }}
         </td>
       </tr>
     </ng-template>
@@ -144,41 +150,42 @@
       <form [formGroup]="form">
         <div class="new-client-wrapper">
           <div class="field">
-            <label for="firma">Firma</label>
+            <label for="company">Firma</label>
             <textarea
-              rows="8"
+              rows="5"
               pTextarea
               fluid
-              formControlName="firma"
+              formControlName="company"
             ></textarea>
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['firma'].invalid &&
-                  form.controls['firma'].touched
+                  form.controls['company'].invalid &&
+                  form.controls['company'].touched
                 "
               ></div>
             </div>
           </div>
           <div class="field">
             <i class="pi pi-asterisk"></i>
-            <label for="imie">Imię</label>
+            <label for="firstName">Imię</label>
             <input
               type="text"
               pInputText
-              id="imie"
-              formControlName="imie"
+              id="firstName"
+              formControlName="firstName"
               fluid
             />
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['imie'].invalid && form.controls['imie'].touched
+                  form.controls['firstName'].invalid &&
+                  form.controls['firstName'].touched
                 "
               >
                 <span
                   class="error"
-                  *ngIf="form.controls['imie'].errors?.['required']"
+                  *ngIf="form.controls['firstName'].errors?.['required']"
                   >Imię jest wymagane.</span
                 >
               </div>
@@ -186,24 +193,24 @@
           </div>
           <div class="field">
             <i class="pi pi-asterisk"></i>
-            <label for="nazwisko">Nazwisko</label>
+            <label for="lastName">Nazwisko</label>
             <input
               type="text"
               pInputText
-              id="nazwisko"
-              formControlName="nazwisko"
+              id="lastName"
+              formControlName="lastName"
               fluid
             />
             <div class="error-container">
               <div
                 *ngIf="
-                  form.controls['nazwisko'].invalid &&
-                  form.controls['nazwisko'].touched
+                  form.controls['lastName'].invalid &&
+                  form.controls['lastName'].touched
                 "
               >
                 <span
                   class="error"
-                  *ngIf="form.controls['nazwisko'].errors?.['required']"
+                  *ngIf="form.controls['lastName'].errors?.['required']"
                   >Nazwisko jest wymagane.</span
                 >
               </div>
@@ -240,12 +247,12 @@
             </div>
           </div>
           <div class="field">
-            <label for="telefon">Telefon</label>
+            <label for="telephone">Telefon</label>
             <input
               type="text"
               pInputText
-              id="telefon"
-              formControlName="telefon"
+              id="telephone"
+              formControlName="telephone"
               fluid
             />
           </div>

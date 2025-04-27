@@ -1,10 +1,11 @@
 export interface ISupplier {
   id: number;
-  firma: string;
-  imie: string;
-  nazwisko: string;
+  company: string;
+  address?: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  telefon?: string;
+  telephone?: string;
   hash?: string;
   positionCount: number;
 }

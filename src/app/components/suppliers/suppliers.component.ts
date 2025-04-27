@@ -20,11 +20,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
-import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { SuppliersService } from './suppliers.service';
 import { ISupplier } from './types/ISupplier';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 
 @Component({
   selector: 'app-suppliers',
@@ -68,19 +68,20 @@ export class SuppliersComponent implements OnInit {
   ) {}
 
   form = new FormGroup({
-    firma: new FormControl('', {
+    company: new FormControl('', {
       validators: [Validators.required],
     }),
-    imie: new FormControl('', {
+    address: new FormControl(''),
+    firstName: new FormControl('', {
       validators: [Validators.required],
     }),
-    nazwisko: new FormControl('', {
+    lastName: new FormControl('', {
       validators: [Validators.required],
     }),
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
-    telefon: new FormControl(''),
+    telephone: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -98,11 +99,12 @@ export class SuppliersComponent implements OnInit {
     });
 
     this.cols = [
-      { field: 'firma', header: 'Firma' },
-      { field: 'imie', header: 'Imię' },
-      { field: 'nazwisko', header: 'Nazwisko' },
+      { field: 'company', header: 'company' },
+      { field: 'address', header: 'Adres' },
+      { field: 'firstName', header: 'Imię' },
+      { field: 'lastName', header: 'lastName' },
       { field: 'email', header: 'E-mail' },
-      { field: 'telefon', header: 'Telefon' },
+      { field: 'telephone', header: 'telephone' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({
@@ -114,11 +116,12 @@ export class SuppliersComponent implements OnInit {
   openNew() {
     this.supplier = {} as ISupplier;
     this.form.setValue({
-      firma: null,
-      imie: null,
-      nazwisko: null,
+      company: null,
+      address: null,
+      firstName: null,
+      lastName: null,
       email: null,
-      telefon: null,
+      telephone: null,
     });
 
     this.supplierDialog = true;
@@ -128,11 +131,12 @@ export class SuppliersComponent implements OnInit {
   editSupplier(supplier: ISupplier) {
     this.supplier = { ...supplier };
     this.form.setValue({
-      firma: this.supplier.firma ?? null,
-      imie: this.supplier.imie ?? null,
-      nazwisko: this.supplier.nazwisko ?? null,
+      company: this.supplier.company ?? null,
+      address: this.supplier.address ?? null,
+      firstName: this.supplier.firstName ?? null,
+      lastName: this.supplier.lastName ?? null,
       email: this.supplier.email ?? null,
-      telefon: this.supplier.telefon ?? null,
+      telephone: this.supplier.telephone ?? null,
     });
 
     this.supplierDialog = true;
@@ -191,7 +195,7 @@ export class SuppliersComponent implements OnInit {
     };
 
     const confirmMessage: IConfirmationMessage = {
-      message: 'Czy na pewno usunąć dostawcę ' + supplier.firma + '?',
+      message: 'Czy na pewno usunąć dostawcę ' + supplier.company + '?',
       header: 'Potwierdź usunięcie dostawcy',
       accept,
     };
@@ -225,16 +229,18 @@ export class SuppliersComponent implements OnInit {
         const editedSupplier: ISupplier = {
           id: this.supplier.id,
           email: this.form.value.email || '',
-          imie: this.form.value.imie!,
-          nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma!,
-          telefon: this.form.value.telefon || '',
+          firstName: this.form.value.firstName!,
+          lastName: this.form.value.lastName!,
+          company: this.form.value.company!,
+          telephone: this.form.value.telephone || '',
+          address: this.form.value.address || '',
           positionCount: this.supplier.positionCount,
         };
-        
+
         this.suppliersService.saveSupplier(editedSupplier).subscribe({
           next: (response) => {
-            this.suppliers[this.findIndexById(this.supplier.id)] = editedSupplier;
+            this.suppliers[this.findIndexById(this.supplier.id)] =
+              editedSupplier;
             this.notificationService.showNotification(
               'success',
               'Dane dostawcy zaktualizowane'
@@ -247,11 +253,12 @@ export class SuppliersComponent implements OnInit {
       } else {
         // add supplier
         const newSupplier: Partial<ISupplier> = {
-          imie: this.form.value.imie!,
-          nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma!,
-          telefon: this.form.value.telefon || undefined,
-          email: this.form.value.email || undefined,
+          firstName: this.form.value.firstName!,
+          lastName: this.form.value.lastName!,
+          email: this.form.value.email!,
+          company: this.form.value.company!,
+          telephone: this.form.value.telephone || undefined,
+          address: this.form.value.address || undefined,
         };
 
         this.suppliersService.addSupplier(newSupplier).subscribe({
@@ -260,7 +267,7 @@ export class SuppliersComponent implements OnInit {
               'success',
               'Dostawca został dodany'
             );
-            this.suppliers.unshift(newSupplier as ISupplier);
+            this.suppliers.unshift(response);
             this.cd.markForCheck();
           },
           error: (error) => {

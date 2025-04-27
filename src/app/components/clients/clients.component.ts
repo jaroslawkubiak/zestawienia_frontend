@@ -18,13 +18,13 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
-import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
-import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn, IExportColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
 import { IClient } from './types/IClient';
+import { ConfirmationModalService } from '../../services/confirmation.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 
 @Component({
   selector: 'app-clients',
@@ -68,17 +68,17 @@ export class ClientsComponent implements OnInit {
   ) {}
 
   form = new FormGroup({
-    firma: new FormControl(''),
-    imie: new FormControl('', {
+    company: new FormControl(''),
+    firstName: new FormControl('', {
       validators: [Validators.required],
     }),
-    nazwisko: new FormControl('', {
+    lastName: new FormControl('', {
       validators: [Validators.required],
     }),
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
-    telefon: new FormControl(''),
+    telephone: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -96,11 +96,11 @@ export class ClientsComponent implements OnInit {
     });
 
     this.cols = [
-      { field: 'firma', header: 'Firma' },
-      { field: 'imie', header: 'Imię' },
-      { field: 'nazwisko', header: 'Nazwisko' },
+      { field: 'company', header: 'company' },
+      { field: 'firstName', header: 'Imię' },
+      { field: 'lastName', header: 'lastName' },
       { field: 'email', header: 'E-mail' },
-      { field: 'telefon', header: 'Telefon' },
+      { field: 'telephone', header: 'telephone' },
     ];
 
     this.exportColumns = this.cols.map((col) => ({
@@ -112,11 +112,11 @@ export class ClientsComponent implements OnInit {
   openNew() {
     this.client = {} as IClient;
     this.form.setValue({
-      firma: null,
-      imie: null,
-      nazwisko: null,
+      company: null,
+      firstName: null,
+      lastName: null,
       email: null,
-      telefon: null,
+      telephone: null,
     });
 
     this.clientDialog = true;
@@ -126,11 +126,11 @@ export class ClientsComponent implements OnInit {
   editClient(client: IClient) {
     this.client = { ...client };
     this.form.setValue({
-      firma: this.client.firma ?? null,
-      imie: this.client.imie ?? null,
-      nazwisko: this.client.nazwisko ?? null,
+      company: this.client.company ?? null,
+      firstName: this.client.firstName ?? null,
+      lastName: this.client.lastName ?? null,
       email: this.client.email ?? null,
-      telefon: this.client.telefon ?? null,
+      telephone: this.client.telephone ?? null,
     });
 
     this.clientDialog = true;
@@ -191,7 +191,7 @@ export class ClientsComponent implements OnInit {
     };
 
     const confirmMessage: IConfirmationMessage = {
-      message: 'Czy na pewno usunąć klienta ' + client.firma + '?',
+      message: 'Czy na pewno usunąć klienta ' + client.company + '?',
       header: 'Potwierdź usunięcie klienta',
       accept,
     };
@@ -225,10 +225,10 @@ export class ClientsComponent implements OnInit {
         const editedClient: IClient = {
           id: this.client.id,
           email: this.form.value.email!,
-          imie: this.form.value.imie!,
-          nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma || '',
-          telefon: this.form.value.telefon || '',
+          firstName: this.form.value.firstName!,
+          lastName: this.form.value.lastName!,
+          company: this.form.value.company || '',
+          telephone: this.form.value.telephone || '',
           setCount: this.client.setCount,
         };
 
@@ -248,10 +248,10 @@ export class ClientsComponent implements OnInit {
         // add client
         const newClient: Partial<IClient> = {
           email: this.form.value.email!,
-          imie: this.form.value.imie!,
-          nazwisko: this.form.value.nazwisko!,
-          firma: this.form.value.firma || undefined,
-          telefon: this.form.value.telefon || undefined,
+          firstName: this.form.value.firstName!,
+          lastName: this.form.value.lastName!,
+          company: this.form.value.company || undefined,
+          telephone: this.form.value.telephone || undefined,
         };
 
         this.clientsService.addClient(newClient).subscribe({
@@ -260,7 +260,7 @@ export class ClientsComponent implements OnInit {
               'success',
               'Klient został dodany'
             );
-            this.clients.unshift(newClient as IClient);
+            this.clients.unshift(response);
             this.cd.markForCheck();
           },
           error: (error) => {
