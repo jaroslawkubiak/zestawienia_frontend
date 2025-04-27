@@ -127,7 +127,12 @@
           />
         </td>
         <td style="min-width: 16rem">{{ supplier.company }}</td>
-        <td style="min-width: 16rem">{{ supplier.address }}</td>
+        <td
+          style="min-width: 16rem"
+          (click)="copyToClipboard(supplier.address); $event.stopPropagation()"
+        >
+          {{ supplier.address }}
+        </td>
         <td style="min-width: 10rem">{{ supplier.firstName }}</td>
         <td style="min-width: 12rem">{{ supplier.lastName }}</td>
         <td style="min-width: 12rem">{{ supplier.email }}</td>

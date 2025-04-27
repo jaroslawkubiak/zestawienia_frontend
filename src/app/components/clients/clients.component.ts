@@ -286,4 +286,18 @@ export class ClientsComponent implements OnInit {
       ?.setCount;
     return count || 0;
   }
+
+  copyToClipboard(textToCopy: string) {
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        this.notificationService.showNotification(
+          'info',
+          'Adres klienta został skopiowany do schowka'
+        );
+      })
+      .catch((err) => {
+        console.error('Błąd podczas kopiowania: ', err);
+      });
+  }
 }

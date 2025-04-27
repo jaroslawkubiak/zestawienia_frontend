@@ -133,7 +133,10 @@
         <td style="min-width: 10rem">
           {{ client.telephone }}
         </td>
-        <td style="min-width: 16rem">
+        <td
+          style="min-width: 16rem"
+          (click)="copyToClipboard(client.company); $event.stopPropagation()"
+        >
           {{ client.company }}
         </td>
       </tr>

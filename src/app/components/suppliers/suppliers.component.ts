@@ -294,4 +294,18 @@ export class SuppliersComponent implements OnInit {
       ?.positionCount;
     return count || 0;
   }
+
+  copyToClipboard(textToCopy: string) {
+    navigator.clipboard
+      .writeText(textToCopy)
+      .then(() => {
+        this.notificationService.showNotification(
+          'info',
+          'Adres dostawcy został skopiowany do schowka'
+        );
+      })
+      .catch((err) => {
+        console.error('Błąd podczas kopiowania: ', err);
+      });
+  }
 }
