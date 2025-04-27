@@ -33,7 +33,7 @@ export class CommentsService {
       positionId,
       authorType: isClient ? 'client' : 'user',
       authorId: isClient ? set.clientId.id : Number(this.userId()),
-      authorName: isClient ? set.clientId.imie : this.userName() || '',
+      authorName: isClient ? set.clientId.firstName : this.userName() || '',
     };
 
     return this.http

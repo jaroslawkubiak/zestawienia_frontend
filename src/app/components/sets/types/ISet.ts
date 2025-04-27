@@ -18,9 +18,9 @@ export interface ISet {
   hasFiles?: boolean;
   clientId: {
     id: number;
-    firma: string;
+    company: string;
     email: string;
-    imie: string;
+    firstName: string;
   };
   createdBy: {
     name: string;

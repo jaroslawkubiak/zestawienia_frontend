@@ -207,7 +207,7 @@ export class PdfService {
                 case 'lp':
                   return i + 1;
                 case 'supplierId':
-                  return row.supplierId?.firma || '';
+                  return row.supplierId?.company || '';
                 case 'status':
                   return row.status?.label || '';
                 case 'netto':
@@ -422,7 +422,7 @@ export class PdfService {
         this.colors.white,
         `Zestawienie : ${set.name}`
       );
-      this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.firma);
+      this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.company);
       this.drawRectFull(
         doc,
         this.pageHeight - 20,

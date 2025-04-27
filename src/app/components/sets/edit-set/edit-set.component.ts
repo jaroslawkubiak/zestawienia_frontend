@@ -185,7 +185,7 @@ export class EditSetComponent
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item: IPosition, index: number) => {
         const brutto = calculateBrutto(item.netto);
-        const dostawca = item.supplierId?.firma;
+        const dostawca = item.supplierId?.company;
         return {
           ...item,
           kolejnosc: index + 1,

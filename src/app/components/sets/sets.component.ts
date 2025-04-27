@@ -115,7 +115,7 @@ export class SetsComponent implements OnInit {
     });
 
     this.cols = [
-      { field: 'firma', header: 'Firma' },
+      { field: 'company', header: 'Firma' },
       { field: 'email', header: 'E-mail' },
       { field: 'numer', header: 'Numer' },
       { field: 'status', header: 'Status' },
@@ -164,7 +164,7 @@ export class SetsComponent implements OnInit {
         'Czy na pewno chcesz usunąć zestawienie ' +
         setToDelete?.name +
         ' dla ' +
-        setToDelete?.clientId.firma +
+        setToDelete?.clientId.company +
         ' ?<br />Spowoduje to usunięcie również wszystkich przesłynych zdjęć do zestawienia.',
       header: 'Potwierdź usunięcie zestawienia',
       accept,

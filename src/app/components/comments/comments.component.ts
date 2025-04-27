@@ -94,7 +94,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         commentId: this.editedCommentId,
         comment: this.newMessage,
         clientId: this.set?.clientId?.id,
-        authorName: this.set?.clientId?.imie,
+        authorName: this.set?.clientId?.firstName,
       };
 
       this.commentsService.editComment(editedComment).subscribe({

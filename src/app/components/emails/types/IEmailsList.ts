@@ -5,10 +5,10 @@ export interface IEmailsList {
   sendAt: string;
   sendAtTimestamp: string;
   clientId?: {
-    firma: string;
+    company: string;
   };
   supplierId?: {
-    firma: string;
+    company: string;
   };
   sendBy: {
     name: string;

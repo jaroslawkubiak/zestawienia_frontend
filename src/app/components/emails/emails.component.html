@@ -15,8 +15,6 @@
     class="custom-table"
     dataKey="id"
     stripedRows
-    currentPageReportTemplate="{first} to {last}"
-    [showCurrentPageReport]="true"
   >
     <ng-template #caption>
       <div class="search-wrapper">
@@ -37,16 +35,16 @@
       <tr>
         <th class="flex-center" style="min-width: 3rem">LP</th>
         <th style="min-width: 5rem">Typ</th>
-        <th pSortableColumn="firma" style="min-width: 12rem">
+        <th pSortableColumn="company" style="min-width: 12rem">
           Firma
-          <p-sortIcon field="firma" />
+          <p-sortIcon field="company" />
         </th>
         <th pSortableColumn="to" style="min-width: 20rem">
           Email
           <p-sortIcon field="to" />
         </th>
         <th pSortableColumn="setId.name" style="min-width: 20rem">
-          Nazwa zestawienia
+          Inwestycja
           <p-sortIcon field="setId.name" />
         </th>
         <th style="min-width: 10rem">Zestawienie</th>
@@ -66,9 +64,9 @@
         </td>
         <td>
           {{
-            email.clientId?.firma
-              ? email.clientId?.firma
-              : email.supplierId?.firma
+            email.clientId?.company
+              ? email.clientId?.company
+              : email.supplierId?.company
           }}
         </td>
         <td>
@@ -82,9 +80,6 @@
         </td>
         <td class="no-action">{{ email.sendAt }} ({{ email.sendBy.name }})</td>
       </tr>
-    </ng-template>
-    <ng-template #summary>
-      <div class="total">Razem {{ emails ? emails.length : 0 }}</div>
     </ng-template>
   </p-table>
 </div>

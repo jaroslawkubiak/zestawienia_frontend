@@ -141,7 +141,7 @@ export class SetMenuComponent {
   updateMenuItems(): void {
     const suppliersList: MenuItem[] = this.suppliersFromSet.map((supplier) => {
       return {
-        label: `${supplier.firma}`,
+        label: `${supplier.company}`,
         icon: 'pi pi-truck',
         email: supplier.email,
         sendAt: this.findLastEmailToSupplier(supplier.id),

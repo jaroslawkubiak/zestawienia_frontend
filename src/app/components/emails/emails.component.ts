@@ -62,14 +62,14 @@ export class EmailsComponent {
     this.emailsService.getEmails().subscribe({
       next: (data) => {
         this.emails = data.map((item) => {
-          const firma = item.clientId?.firma
-            ? item.clientId?.firma
-            : item.supplierId?.firma;
-          const type = item.clientId?.firma
+          const company = item.clientId?.company
+            ? item.clientId?.company
+            : item.supplierId?.company;
+          const type = item.clientId?.company
             ? 'pi pi-user i-client'
             : 'pi pi-truck i-supplier';
 
-          return { ...item, firma, type };
+          return { ...item, company, type };
         });
 
         this.isLoading = false;
@@ -79,7 +79,7 @@ export class EmailsComponent {
     });
 
     this.cols = [
-      { field: 'firma', header: 'Firma' },
+      { field: 'company', header: 'Firma' },
       { field: 'to', header: 'Email' },
       { field: 'setId.name', header: 'Nazwa zestawienia' },
       { field: 'sendAt', header: 'Wysłany' },
@@ -90,10 +90,6 @@ export class EmailsComponent {
       dataKey: col.field,
     }));
   }
-
-  // hideDialog() {
-  //   this.emailDialog = false;
-  // }
 
   openSet(setId: number) {
     this.router.navigate([`/sets/${setId}`]);

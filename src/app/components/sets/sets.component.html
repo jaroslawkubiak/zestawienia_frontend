@@ -41,7 +41,7 @@
     [rows]="10"
     [paginator]="true"
     [globalFilterFields]="[
-      'clientId.firma',
+      'clientId.company',
       'clientId.email',
       'name',
       'status'
@@ -50,8 +50,6 @@
     [rowHover]="true"
     dataKey="id"
     stripedRows
-    currentPageReportTemplate="{first} to {last}"
-    [showCurrentPageReport]="true"
   >
     <ng-template #caption>
       <div class="search-wrapper">
@@ -62,25 +60,21 @@
             type="text"
             class="search-input"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, email, nazwa, status"
+            placeholder="Firma, klient, status"
           />
         </p-iconfield>
       </div>
     </ng-template>
     <ng-template #header>
       <tr>
-        <th class="lp">LP</th>
+        <th class="lp">L.P.</th>
         <th style="width: 220px"></th>
-        <th pSortableColumn="clientId.firma">
-          Firma
-          <p-sortIcon field="clientId.firma" />
-        </th>
-        <th pSortableColumn="clientId.email">
-          E-mail
-          <p-sortIcon field="clientId.email" />
+        <th pSortableColumn="clientId.company">
+          Klient
+          <p-sortIcon field="clientId.company" />
         </th>
         <th pSortableColumn="name">
-          Nazwa
+          Inwestycja
           <p-sortIcon field="name" />
         </th>
         <th pSortableColumn="status">
@@ -176,8 +170,7 @@
             </div>
           </div>
         </td>
-        <td>{{ set.clientId.firma }}</td>
-        <td>{{ set.clientId.email }}</td>
+        <td>{{ set.clientId.company }}</td>
         <td>{{ set.name }}</td>
         <td>{{ set.status }}</td>
         <td>
@@ -189,9 +182,6 @@
           {{ set.updatedBy?.name ? "(" + set.updatedBy?.name + ")" : "" }}
         </td>
       </tr>
-    </ng-template>
-    <ng-template #summary>
-      <div class="total">Total {{ sets ? sets.length : 0 }}</div>
     </ng-template>
   </p-table>
 </div>

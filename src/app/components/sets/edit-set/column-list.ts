@@ -43,7 +43,7 @@ export const ColumnList: IColumnList[] = [
     type: 'select',
     classColumn: 'select-field',
     optionList: 'allSuppliers',
-    optionLabel: 'firma',
+    optionLabel: 'company',
     pdfWidth: 50,
   },
   {

@@ -5,12 +5,12 @@ export interface IEmailsToSet {
   sendAtTimestamp: number;
   clientId?: {
     id: number;
-    firma: string;
+    company: string;
     email: string;
   };
   supplierId?: {
     id: number;
-    firma: string;
+    company: string;
     email: string;
   };
   sendBy: {

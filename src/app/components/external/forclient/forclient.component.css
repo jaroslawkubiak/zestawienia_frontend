@@ -19,7 +19,7 @@ h3 {
 .header-actions-btn {
   display: flex;
   justify-content: flex-end;
-  gap: 30px;
+  gap: 50px;
 }
 
 .header-actions-btn i {

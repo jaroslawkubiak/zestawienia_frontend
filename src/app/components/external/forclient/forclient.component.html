@@ -8,24 +8,30 @@
       <h1>{{ set.name }}</h1>
     </div>
     <div class="header-actions-btn">
-      <i
+      <!-- <i
         class="pi pi-file-pdf {{ this.files?.pdf ? '' : 'disabled' }}"
         (click)="this.files?.pdf && downloadPdf()"
         pTooltip="{{ this.files?.pdf ? 'Pobierz pdf' : 'Brak pdf' }}"
         tooltipPosition="bottom"
-      ></i>
-      <i
-        class="pi pi-paperclip"
-        pTooltip="Załączniki"
-        tooltipPosition="bottom"
-        (click)="showAttachedFiles()"
-      ></i>
-      <i
-        class="pi pi-upload"
-        pTooltip="Wgraj plik"
-        tooltipPosition="bottom"
-        (click)="openSendFilesDialog(set.id, set.name)"
-      ></i>
+      ></i> -->
+      <div>
+        Załączone pliki
+        <i
+          class="pi pi-paperclip"
+          pTooltip="Załączone pliki"
+          tooltipPosition="bottom"
+          (click)="showAttachedFiles()"
+        ></i>
+      </div>
+      <div>
+        Wgraj swój plik
+        <i
+          class="pi pi-upload"
+          pTooltip="Wgraj swój plik"
+          tooltipPosition="bottom"
+          (click)="openSendFilesDialog(set.id, set.name)"
+        ></i>
+      </div>
     </div>
   </div>
 
@@ -38,7 +44,23 @@
         </div>
         <div class="position-action-btn">
           <div class="position-cell flex-center">
-            <i class="pi pi-comments" (click)="showComments(pos.id)"></i>
+            @if(pos.link) {
+            <a href="{{ pos.link }}" target="_blank"
+              ><i
+                class="pi pi-link"
+                pTooltip="Link do produktu"
+                tooltipPosition="bottom"
+              ></i
+            ></a>
+            }
+          </div>
+          <div class="position-cell flex-center">
+            <i
+              class="pi pi-comments"
+              pTooltip="Dodaj komentarz"
+              tooltipPosition="bottom"
+              (click)="showComments(pos.id)"
+            ></i>
             <p-badge
               [value]="getRowNewComments(pos.id) || getRowAllComments(pos.id)"
               [severity]="
@@ -56,17 +78,6 @@
                   : 'Ilość komentarzy'
               "
             ></p-badge>
-          </div>
-          <div class="position-cell flex-center">
-            @if(pos.link) {
-            <a href="{{ pos.link }}" target="_blank"
-              ><i
-                class="pi pi-link"
-                pTooltip="Link do produktu"
-                tooltipPosition="bottom"
-              ></i
-            ></a>
-            }
           </div>
         </div>
       </div>
@@ -100,7 +111,7 @@
         <div class="product-details-group">
           <li class="product-details-title">DOSTAWCA</li>
           <li class="product-details-name">
-            {{ pos.supplierId ? pos.supplierId["firma"] : "" }}
+            {{ pos.supplierId ? pos.supplierId["company"] : "" }}
           </li>
         </div>
       </ul>

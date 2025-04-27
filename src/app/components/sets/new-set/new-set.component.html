@@ -1,7 +1,7 @@
 <form #form="ngForm" (ngSubmit)="onSubmit(form)">
   <div class="container">
     <div class="field">
-      <label for="name" class="label">Nazwa zestawienia</label>
+      <label for="name" class="label">Inwestycja</label>
       <input
         type="text"
         pInputText
@@ -12,7 +12,17 @@
         class="form-field"
       />
     </div>
-
+    <div class="field">
+      <label for="address" class="label">Adres inwestycji</label>
+      <textarea
+        rows="5"
+        pTextarea
+        fluid
+        [(ngModel)]="address"
+        name="address"
+        id="address"
+      ></textarea>
+    </div>
     <div class="field">
       <label for="client" class="label">Wybierz klienta</label>
       <p-select
@@ -21,7 +31,7 @@
         name="client"
         id="client"
         class="form-field"
-        optionLabel="firma"
+        optionLabel="company"
       />
     </div>
 

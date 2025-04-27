@@ -14,6 +14,7 @@ import { IClient } from '../../clients/types/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
 import { Router } from '@angular/router';
+import { TextareaModule } from 'primeng/textarea';
 
 @Component({
   selector: 'app-new-set',
@@ -27,10 +28,12 @@ import { Router } from '@angular/router';
     CommonModule,
     ButtonModule,
     InputTextModule,
+    TextareaModule,
   ],
 })
 export class NewSetComponent implements OnInit {
   name: string = '';
+  address: string = '';
   allClients: IClient[] = [];
   selectedClient = '';
   allBookmarks: IBookmark[] = [];
@@ -82,6 +85,7 @@ export class NewSetComponent implements OnInit {
 
     const newSet: INewSet = {
       name: this.name,
+      address: this.address,
       clientId: client.id,
       createdBy: 0,
       bookmarks,
