@@ -15,6 +15,7 @@
         size="large"
         alt="Nowe zestawienie"
         pTooltip="Nowe zestawienie"
+        tooltipPosition="bottom"
         (onClick)="openNew()"
       />
       <div class="status-wrapper">
@@ -40,12 +41,7 @@
     [value]="sets"
     [rows]="10"
     [paginator]="true"
-    [globalFilterFields]="[
-      'clientId.company',
-      'clientId.email',
-      'name',
-      'status'
-    ]"
+    [globalFilterFields]="['fullName', 'name', 'status', 'address']"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
     dataKey="id"
@@ -60,7 +56,9 @@
             type="text"
             class="search-input"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, klient, status"
+            placeholder="Klient, inwestycja, adres, status"
+            pTooltip="Filtruj zestawienia"
+            tooltipPosition="bottom"
           />
         </p-iconfield>
       </div>
@@ -69,13 +67,17 @@
       <tr>
         <th class="lp">L.P.</th>
         <th style="width: 220px"></th>
-        <th pSortableColumn="clientId.company">
+        <th pSortableColumn="fullName">
           Klient
-          <p-sortIcon field="clientId.company" />
+          <p-sortIcon field="fullName" />
         </th>
         <th pSortableColumn="name">
           Inwestycja
           <p-sortIcon field="name" />
+        </th>
+        <th pSortableColumn="address">
+          Adres inwestycji
+          <p-sortIcon field="address" />
         </th>
         <th pSortableColumn="status">
           Status
@@ -106,6 +108,7 @@
               severity="primary"
               alt="Edytuj zestawienie"
               pTooltip="Edytuj zestawienie"
+              tooltipPosition="bottom"
               (click)="editSet(set.id)"
             />
             <p-button
@@ -118,26 +121,29 @@
                   ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
                   : 'Usuń Zestawienie'
               }}"
+              tooltipPosition="bottom"
               [disabled]="set.status !== statusesList.new"
               (click)="deleteSet(set.id)"
             />
             <p-button
-              icon="pi pi-paperclip"
+              icon="pi pi-cloud"
               class="m-4"
               severity="warn"
               alt="Załączniki"
               pTooltip="{{
                 set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
               }}"
+              tooltipPosition="bottom"
               [disabled]="!set.hasFiles"
               (click)="showAttachedFiles(set.id, set.name)"
             />
             <p-button
-              icon="pi pi-upload"
+              icon="pi pi-paperclip"
               class="m-4"
               severity="help"
               alt="Prześlij pliki"
               pTooltip="Prześlij pliki"
+              tooltipPosition="bottom"
               (click)="openSendFilesDialog(set.id, set.name)"
             />
             <div class="btn-comments-wrapper">
@@ -147,6 +153,7 @@
                 severity="info"
                 alt="Zobacz komentarze"
                 pTooltip="Zobacz komentarze"
+                tooltipPosition="bottom"
                 [disabled]="set?.comments?.length === 0"
                 (click)="showComments(set.id)"
               />
@@ -170,8 +177,9 @@
             </div>
           </div>
         </td>
-        <td>{{ set.clientId.company }}</td>
+        <td>{{ set.fullName }}</td>
         <td>{{ set.name }}</td>
+        <td>{{ set.address }}</td>
         <td>{{ set.status }}</td>
         <td>
           {{ set.createdAt }}

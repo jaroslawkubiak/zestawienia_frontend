@@ -153,23 +153,6 @@
       <form [formGroup]="form">
         <div class="new-client-wrapper">
           <div class="field">
-            <label for="company">Firma</label>
-            <textarea
-              rows="5"
-              pTextarea
-              fluid
-              formControlName="company"
-            ></textarea>
-            <div class="error-container">
-              <div
-                *ngIf="
-                  form.controls['company'].invalid &&
-                  form.controls['company'].touched
-                "
-              ></div>
-            </div>
-          </div>
-          <div class="field">
             <i class="pi pi-asterisk"></i>
             <label for="firstName">Imię</label>
             <input
@@ -258,6 +241,16 @@
               formControlName="telephone"
               fluid
             />
+            <div class="error-container"></div>
+          </div>
+          <div class="field">
+            <label for="company">Firma</label>
+            <textarea
+              rows="5"
+              pTextarea
+              fluid
+              formControlName="company"
+            ></textarea>
           </div>
         </div>
       </form>

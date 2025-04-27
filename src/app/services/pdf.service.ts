@@ -121,17 +121,13 @@ export class PdfService {
       },
       {}
     );
-
-    const countsBookmarks = positions.map((pos) => {
-      return pos.bookmarkId.id;
-    });
-
-    const uniqueBookmarksCount = new Set(countsBookmarks).size;
-
-    const sortedBookmarks = [...set.bookmarks].sort((a, b) => a.id - b.id);
+    const uniqueBookmarks = new Set(positions.map((pos) => pos.bookmarkId.id));
+    const filteredBookmarks = set.bookmarks
+      .filter((bookmark) => uniqueBookmarks.has(bookmark.id))
+      .sort((a, b) => a.id - b.id);
 
     // main loop for every bookmark in set
-    for (const [index, bookmark] of sortedBookmarks.entries()) {
+    for (const [index, bookmark] of filteredBookmarks.entries()) {
       const sortPositions = positions
         .filter((pos) => pos.bookmarkId.id === bookmark.id)
         .sort((a, b) => a.kolejnosc - b.kolejnosc);
@@ -199,7 +195,9 @@ export class PdfService {
           const formatRow = (row: any) => {
             return this.visibleColumns.map((col) => {
               const key = col.key;
-              const imageName = removeMiniSuffix(row.image);
+
+              const imageName = row.image && removeMiniSuffix(row.image);
+
               // special case for couple columns like image and supplier
               switch (key) {
                 case 'image':
@@ -404,7 +402,7 @@ export class PdfService {
         columnStyles: this.columnStyles,
       });
 
-      if (index !== uniqueBookmarksCount - 1) {
+      if (index !== uniqueBookmarks.size - 1) {
         doc.addPage();
       }
     }
@@ -422,7 +420,14 @@ export class PdfService {
         this.colors.white,
         `Zestawienie : ${set.name}`
       );
-      this.drawRectRight(doc, 0, 14, 14, this.colors.white, set.clientId.company);
+      this.drawRectRight(
+        doc,
+        0,
+        14,
+        14,
+        this.colors.white,
+        set.clientId.firstName
+      );
       this.drawRectFull(
         doc,
         this.pageHeight - 20,
@@ -444,7 +449,7 @@ export class PdfService {
     const finalAction: Array<'saveToPC' | 'openInNewCard' | 'sendToFtp'> = [
       // 'saveToPC',
       'openInNewCard',
-      'sendToFtp',
+      // 'sendToFtp',
     ];
 
     // execute final actions

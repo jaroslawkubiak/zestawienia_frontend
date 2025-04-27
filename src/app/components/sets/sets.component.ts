@@ -64,7 +64,6 @@ export class SetsComponent implements OnInit {
   allSets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
-  exportColumns!: IExportColumn[];
   statusesList = SetStatus;
   hideClosedSets = true;
 
@@ -74,7 +73,7 @@ export class SetsComponent implements OnInit {
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
   showClosed = false;
-  
+
   constructor(
     private router: Router,
     private setsService: SetsService,
@@ -93,6 +92,7 @@ export class SetsComponent implements OnInit {
       next: (data) => {
         this.sets = data.map((set) => ({
           ...set,
+          fullName: set.clientId.firstName + ' ' + set.clientId.lastName,
           hasFiles:
             !!set.files &&
             (set.files?.files.length !== 0 || set.files.pdf.length !== 0),
@@ -104,7 +104,7 @@ export class SetsComponent implements OnInit {
             ? this.setsService.countNewComments(set.comments, 'user')
             : undefined,
         }));
-
+        
         this.allSets = this.sets;
         this.filterSets();
 
@@ -113,20 +113,6 @@ export class SetsComponent implements OnInit {
       },
       error: (err) => console.error('Error getting sets ', err),
     });
-
-    this.cols = [
-      { field: 'company', header: 'Firma' },
-      { field: 'email', header: 'E-mail' },
-      { field: 'numer', header: 'Numer' },
-      { field: 'status', header: 'Status' },
-      { field: 'utworzone', header: 'Utworzone' },
-      { field: 'zaktualizowane', header: 'Zaktualizowane' },
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({
-      title: col.header,
-      dataKey: col.field,
-    }));
   }
 
   filterSets() {

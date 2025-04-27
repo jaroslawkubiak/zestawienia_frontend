@@ -58,8 +58,6 @@ export class ClientsComponent implements OnInit {
   selected!: IClient[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
-  exportColumns!: IExportColumn[];
-
   constructor(
     private clientsService: ClientsService,
     private notificationService: NotificationService,
@@ -94,19 +92,6 @@ export class ClientsComponent implements OnInit {
       },
       error: (err) => console.error('Error getting clients ', err),
     });
-
-    this.cols = [
-      { field: 'company', header: 'company' },
-      { field: 'firstName', header: 'Imię' },
-      { field: 'lastName', header: 'lastName' },
-      { field: 'email', header: 'E-mail' },
-      { field: 'telephone', header: 'telephone' },
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({
-      title: col.header,
-      dataKey: col.field,
-    }));
   }
 
   openNew() {

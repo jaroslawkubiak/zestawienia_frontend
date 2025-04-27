@@ -152,7 +152,7 @@ export class SetMenuComponent {
     this.menuItems = [
       {
         description: 'To jest opis edytowania nagłówka',
-        label: 'Edytuj nagłówek',
+        label: 'Edytuj zestawienie',
         icon: 'pi pi-file-edit',
         command: () => this.editHeader(),
       },
@@ -186,12 +186,12 @@ export class SetMenuComponent {
       },
       {
         label: 'Załączniki',
-        icon: 'pi pi-paperclip',
+        icon: 'pi pi-cloud',
         command: () => this.showAttachedFiles(),
       },
       {
         label: 'Prześlij pliki',
-        icon: 'pi pi-upload',
+        icon: 'pi pi-paperclip',
         command: () => this.openSendFilesDialog(),
       },
       {
@@ -212,6 +212,7 @@ export class SetMenuComponent {
   editHeader(): void {
     this.editHeaderProps = {
       name: this.set.name,
+      address: this.set.address,
       selectedStatus: this.set.status,
       selectedBookmarks: this.selectedBookmarks,
     };
@@ -238,6 +239,7 @@ export class SetMenuComponent {
     this.updateBookmarks.emit();
 
     this.set.name = headerData.name;
+    this.set.address = headerData.address;
     this.set.status = headerData.selectedStatus;
 
     this.notificationService.showNotification(

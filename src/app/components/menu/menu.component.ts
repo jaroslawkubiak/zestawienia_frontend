@@ -31,11 +31,6 @@ export class MenuComponent {
       icon: 'pi-truck',
     },
     {
-      name: 'Produkty',
-      route: '/products',
-      icon: 'pi-list-check',
-    },
-    {
       name: 'Wysłane e-maile',
       route: '/emails',
       icon: 'pi-envelope',

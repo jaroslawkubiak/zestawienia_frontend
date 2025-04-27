@@ -5,6 +5,7 @@ import { IFileList } from '../../files/types/IFileList';
 export interface ISet {
   id: number;
   name: string;
+  address: string;
   status: string;
   createdAt: string;
   createdAtTimestamp: number;
@@ -16,11 +17,13 @@ export interface ISet {
   comments?: IComment[];
   newComments?: number;
   hasFiles?: boolean;
+  fullName?: string;
   clientId: {
     id: number;
-    company: string;
-    email: string;
+    lastName: string;
     firstName: string;
+    email: string;
+    company: string;
   };
   createdBy: {
     name: string;

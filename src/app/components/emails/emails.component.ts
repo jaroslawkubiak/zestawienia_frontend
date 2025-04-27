@@ -46,8 +46,6 @@ export class EmailsComponent {
   email!: IEmailsList;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
-  exportColumns!: IExportColumn[];
-
   constructor(
     private emailsService: EmailsService,
     private router: Router,
@@ -77,18 +75,6 @@ export class EmailsComponent {
       },
       error: (err) => console.error('Error getting emails ', err),
     });
-
-    this.cols = [
-      { field: 'company', header: 'Firma' },
-      { field: 'to', header: 'Email' },
-      { field: 'setId.name', header: 'Nazwa zestawienia' },
-      { field: 'sendAt', header: 'Wysłany' },
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({
-      title: col.header,
-      dataKey: col.field,
-    }));
   }
 
   openSet(setId: number) {

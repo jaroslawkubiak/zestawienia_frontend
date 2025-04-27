@@ -24,7 +24,7 @@ tr {
 }
 
 label {
-  margin-top: 20px;
+  margin: 20px 0 10px 0;
   display: block;
   color: var(--accent-color);
   font-size: 1.6rem;

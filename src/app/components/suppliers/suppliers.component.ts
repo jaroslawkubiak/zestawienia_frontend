@@ -58,8 +58,6 @@ export class SuppliersComponent implements OnInit {
   selected!: ISupplier[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
-  exportColumns!: IExportColumn[];
-
   constructor(
     private suppliersService: SuppliersService,
     private notificationService: NotificationService,
@@ -97,20 +95,6 @@ export class SuppliersComponent implements OnInit {
       },
       error: (err) => console.error('Error getting suppliers ', err),
     });
-
-    this.cols = [
-      { field: 'company', header: 'company' },
-      { field: 'address', header: 'Adres' },
-      { field: 'firstName', header: 'Imię' },
-      { field: 'lastName', header: 'lastName' },
-      { field: 'email', header: 'E-mail' },
-      { field: 'telephone', header: 'telephone' },
-    ];
-
-    this.exportColumns = this.cols.map((col) => ({
-      title: col.header,
-      dataKey: col.field,
-    }));
   }
 
   openNew() {
