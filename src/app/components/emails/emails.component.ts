@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
@@ -12,10 +13,9 @@ import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { IColumn, IExportColumn } from '../../shared/types/ITable';
+import { IColumn } from '../../shared/types/ITable';
 import { EmailsService } from './email.service';
 import { IEmailsList } from './types/IEmailsList';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-emails',
@@ -60,14 +60,24 @@ export class EmailsComponent {
     this.emailsService.getEmails().subscribe({
       next: (data) => {
         this.emails = data.map((item) => {
-          const company = item.clientId?.company
-            ? item.clientId?.company
-            : item.supplierId?.company;
-          const type = item.clientId?.company
-            ? 'pi pi-user i-client'
-            : 'pi pi-truck i-supplier';
+          const isClient = item.supplierId?.company ? true : false;
 
-          return { ...item, company, type };
+          const icon = isClient
+            ? 'pi pi-truck i-supplier'
+            : 'pi pi-user i-client';
+
+          let company: string | undefined;
+          if (isClient) {
+            company = item.supplierId?.company;
+          } else if (item.clientId?.company) {
+            company = item.clientId?.company;
+          } else {
+            const firstName = item.clientId?.firstName ?? '';
+            const lastName = item.clientId?.lastName ?? '';
+            company = firstName + ' ' + lastName;
+          }
+
+          return { ...item, company, icon };
         });
 
         this.isLoading = false;

@@ -79,7 +79,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
       this.title = HTMLSupplier.title;
     } else {
       this.newEmail.to = this.set.clientId.email;
-      this.newEmail.subject = `Zestawienie ${this.set.name} utworzone w dniu ${this.set.createdAt}`;
+      this.newEmail.subject = `Inwestycja ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
       this.newEmail.link = `${environment.FRONT_URL}/${this.set.id}/${this.set.hash}`;
 
       this.emailMessage = HTMLClient.message;

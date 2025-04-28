@@ -6,6 +6,8 @@ export interface IEmailsList {
   sendAtTimestamp: string;
   clientId?: {
     company: string;
+    firstName: string;
+    lastName: string;
   };
   supplierId?: {
     company: string;

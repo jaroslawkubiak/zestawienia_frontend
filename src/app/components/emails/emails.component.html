@@ -9,7 +9,7 @@
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
-    [globalFilterFields]="['to', 'firma', 'setId.name', 'sendBy.name']"
+    [globalFilterFields]="['to', 'company', 'setId.name', 'sendBy.name']"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
     class="custom-table"
@@ -27,19 +27,15 @@
             pTooltip="Filtruj emaile"
             tooltipPosition="bottom"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, email, nazwa zestawienia, wysłał"
+            placeholder="Firma, email, nazwa inwestycji, wysłał"
           />
         </p-iconfield>
       </div>
     </ng-template>
     <ng-template #header>
       <tr>
-        <th class="flex-center" style="min-width: 3rem">LP</th>
+        <th class="flex-center" style="min-width: 3rem">L.P.</th>
         <th style="min-width: 5rem">Typ</th>
-        <th pSortableColumn="company" style="min-width: 12rem">
-          Firma
-          <p-sortIcon field="company" />
-        </th>
         <th pSortableColumn="to" style="min-width: 20rem">
           Email
           <p-sortIcon field="to" />
@@ -48,7 +44,11 @@
           Inwestycja
           <p-sortIcon field="setId.name" />
         </th>
-        <th style="min-width: 10rem">Zestawienie</th>
+        <th style="min-width: 10rem">Link</th>
+        <th pSortableColumn="company" style="min-width: 12rem">
+          Firma
+          <p-sortIcon field="company" />
+        </th>
         <th pSortableColumn="sendAtTimestamp" style="min-width: 20rem">
           Wysłany
           <p-sortIcon field="sendAtTimestamp" />
@@ -60,15 +60,8 @@
         <td class="col-lp">{{ index + 1 }}</td>
         <td>
           <div class="email-type">
-            <i class="{{ email.type }}"></i>
+            <i class="{{ email.icon }}"></i>
           </div>
-        </td>
-        <td>
-          {{
-            email.clientId?.company
-              ? email.clientId?.company
-              : email.supplierId?.company
-          }}
         </td>
         <td>
           {{ email.to }}
@@ -78,6 +71,9 @@
         </td>
         <td class="link">
           <a href="{{ email.link }}" target="_blank">LINK</a>
+        </td>
+        <td>
+          {{ email.company }}
         </td>
         <td class="no-action">{{ email.sendAt }} ({{ email.sendBy.name }})</td>
       </tr>
