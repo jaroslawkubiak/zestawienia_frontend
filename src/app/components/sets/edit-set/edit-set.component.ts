@@ -22,6 +22,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import {
   calculateBrutto,
+  calculateNetto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
@@ -185,15 +186,19 @@ export class EditSetComponent
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item: IPosition, index: number) => {
-        const brutto = calculateBrutto(item.netto);
+        console.log(`##### item.netto #####`);
+        console.log(item.netto);
+        console.log(`##### item.brutto #####`);
+        console.log(item.brutto);
+        // const brutto = calculateBrutto(item.netto);
         const dostawca = item.supplierId?.company;
         return {
           ...item,
           kolejnosc: index + 1,
           dostawca,
-          brutto,
+          // brutto,
           wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+          wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
         };
       });
 
@@ -267,36 +272,49 @@ export class EditSetComponent
     this.isEdited(true);
     const newValue = value.srcElement?.value;
 
-    // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
-    if (column.key === 'ilosc') {
-      const nowaWartoscNetto = calculateWartosc(
-        +newValue,
-        +this.formData[rowIndex]['netto']
-      );
-      this.formData[rowIndex]['wartoscNetto'] = nowaWartoscNetto;
+    const ilosc = +this.formData[rowIndex]['ilosc'];
+    const netto = +this.formData[rowIndex]['netto'];
 
-      const nowaWartoscrutto = calculateWartosc(
-        +newValue,
-        calculateBrutto(+this.formData[rowIndex]['netto'])
-      );
-      this.formData[rowIndex]['wartoscBrutto'] = nowaWartoscrutto;
-    }
+    switch (column.key) {
+      case 'ilosc':
+        // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
+        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+          ilosc,
+          netto
+        );
+        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+          ilosc,
+          calculateBrutto(netto)
+        );
+        break;
 
-    // column netto has changed - calculate new brutto, wartoscNetto i wartoscBrutto columns
-    if (column.key === 'netto') {
-      this.formData[rowIndex]['brutto'] = calculateBrutto(+newValue);
+      case 'netto':
+        // column netto has changed - calculate new brutto, wartoscNetto i wartoscBrutto columns
+        const newBrutto = calculateBrutto(+newValue);
+        this.formData[rowIndex]['brutto'] = newBrutto;
+        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+          ilosc,
+          +newValue
+        );
+        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+          ilosc,
+          newBrutto
+        );
+        break;
 
-      const nowaWartoscNetto = calculateWartosc(
-        +this.formData[rowIndex]['ilosc'],
-        +this.formData[rowIndex]['netto']
-      );
-      this.formData[rowIndex]['wartoscNetto'] = nowaWartoscNetto;
-
-      const nowaWartoscrutto = calculateWartosc(
-        +this.formData[rowIndex]['ilosc'],
-        +this.formData[rowIndex]['brutto']
-      );
-      this.formData[rowIndex]['wartoscBrutto'] = nowaWartoscrutto;
+      case 'brutto':
+        // column brutto has changed - calculate new brutto, wartoscbrutto i wartoscBrutto columns
+        const newNetto = calculateNetto(+newValue);
+        this.formData[rowIndex]['netto'] = newNetto;
+        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+          ilosc,
+          +newValue
+        );
+        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+          ilosc,
+          newNetto
+        );
+        break;
     }
 
     this.resetFooter();
