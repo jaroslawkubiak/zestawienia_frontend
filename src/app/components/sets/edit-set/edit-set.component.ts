@@ -186,10 +186,6 @@ export class EditSetComponent
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item: IPosition, index: number) => {
-        console.log(`##### item.netto #####`);
-        console.log(item.netto);
-        console.log(`##### item.brutto #####`);
-        console.log(item.brutto);
         // const brutto = calculateBrutto(item.netto);
         const dostawca = item.supplierId?.company;
         return {

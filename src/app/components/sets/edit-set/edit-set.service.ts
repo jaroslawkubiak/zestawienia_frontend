@@ -159,13 +159,18 @@ export class EditSetService {
 
     const { id, comments, newComments, ...cloneData } = original;
 
+    const cloneStatus =
+      cloneData.status &&
+      typeof cloneData.status === 'object' &&
+      'label' in cloneData.status
+        ? cloneData.status.label
+        : cloneData.status;
+
     const newClonePosition: IClonePosition = {
       ...cloneData,
       bookmarkId: bookmark,
-      status:
-        typeof cloneData.status === 'object' && 'label' in cloneData.status
-          ? cloneData.status.label
-          : cloneData.status,
+      status: cloneStatus,
+
       setId: { id: +setId } as ISet,
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,
