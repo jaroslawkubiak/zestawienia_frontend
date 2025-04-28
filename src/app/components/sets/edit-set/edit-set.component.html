@@ -110,17 +110,29 @@
                   {{ i + 1 }}
                 </td>
                 <td>
-                  <!-- position action buttons  -->
-                  <app-action-btns
-                    [positions]="positions"
-                    [positionId]="position.id"
-                    [setId]="setId"
-                    [kolejnosc]="formData[i].kolejnosc"
-                    (addEmptyPosition)="addEmptyPosition(formData[i].kolejnosc)"
-                    (clonePosition)="clonePosition(formData[i].id)"
-                    (deletePosition)="deletePosition(formData[i].id)"
-                    (updateComments)="updateCommentsForPosition($event)"
-                  />
+                  <div class="action-btns-wrapper flex-center">
+                    <!-- position action buttons  -->
+                    <p-button
+                      severity="contrast"
+                      icon="pi pi-bars"
+                      class="m-4"
+                      alt="Przegiągnij, aby zmienić pozycję"
+                      pTooltip="Przegiągnij, aby zmienić pozycję"
+                      pReorderableRowHandle
+                    />
+                    <app-action-btns
+                      [positions]="positions"
+                      [positionId]="position.id"
+                      [setId]="setId"
+                      [kolejnosc]="formData[i].kolejnosc"
+                      (addEmptyPosition)="
+                        addEmptyPosition(formData[i].kolejnosc)
+                      "
+                      (clonePosition)="clonePosition(formData[i].id)"
+                      (deletePosition)="deletePosition(formData[i].id)"
+                      (updateComments)="updateCommentsForPosition($event)"
+                    />
+                  </div>
                 </td>
                 <!-- main content  -->
                 <td

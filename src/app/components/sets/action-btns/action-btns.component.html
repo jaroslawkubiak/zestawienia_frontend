@@ -1,12 +1,4 @@
-<div class="position-actions flex-center">
-  <p-button
-    severity="contrast"
-    icon="pi pi-bars"
-    class="m-4"
-    alt="Przegiągnij, aby zmienić pozycję"
-    pTooltip="Przegiągnij, aby zmienić pozycję"
-    pReorderableRowHandle
-  />
+<div class="position-actions">
   <div class="btn-comments-wrapper">
     <p-button
       icon="pi pi-comments"
@@ -42,7 +34,6 @@
     pTooltip="Nowa pusta pozycja"
     (click)="triggerAddEmptyPosition()"
   />
-
   <p-button
     severity="warn"
     icon="pi pi-clone"
@@ -60,6 +51,7 @@
     (click)="triggerDeletePosition()"
   />
 </div>
+
 <p-dialog
   [header]="header"
   [modal]="true"

@@ -191,7 +191,7 @@ th {
   position: absolute !important;
   margin-right: 10px !important;
   color: var(--accent-color-darker) !important;
-  top: calc((var(--row-height) / 2) - 3px ) !important;
+  top: calc((var(--row-height) / 2) - 3px) !important;
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {
@@ -223,4 +223,10 @@ th {
 
 .row-red {
   background-color: var(--status-red-color) !important;
+}
+
+.action-btns-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }

@@ -6,6 +6,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPosition } from '../types/IPosition';
+import { ISet } from '../types/ISet';
 
 @Component({
   selector: 'app-action-btns',
