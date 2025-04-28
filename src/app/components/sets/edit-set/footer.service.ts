@@ -12,28 +12,19 @@ export class FooterService {
   resetFooter(footerRow: IFooterRow[]): IFooterRow[] {
     return footerRow.map((item: IFooterRow) => ({
       ...item,
-      value: '',
+      value:
+        item.key === 'wartoscNetto' || item.key === 'wartoscBrutto' ? 0 : '',
     }));
   }
 
   // calculate values for footer row
   calculateFooterRow(footerRow: IFooterRow[], obj: IPosition): IFooterRow[] {
     return footerRow.map((item: IFooterRow) => {
-      switch (item.key) {
-        case 'wartoscNetto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.wartoscNetto)) * 100) /
-            100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
-        case 'wartoscBrutto':
-          item.value = (
-            Math.round((Number(item.value) + Number(obj.wartoscBrutto)) * 100) /
-            100
-          ).toFixed(2);
-          item.classFooter = 'position-footer-number';
-          break;
+      if (item.key === 'wartoscNetto') {
+        item.value = Number(item.value) + Number(obj.wartoscNetto);
+      }
+      if (item.key === 'wartoscBrutto') {
+        item.value = Number(item.value) + Number(obj.wartoscBrutto);
       }
 
       return { ...item };

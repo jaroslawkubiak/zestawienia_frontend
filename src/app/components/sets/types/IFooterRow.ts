@@ -3,7 +3,6 @@ export type IFooterRow = {
   key: string;
   type: 'number' | 'string' | 'select' | 'image';
   value?: number | string;
-  unit?: string;
   classHeader?: string;
   classColumn?: string;
   classRow?: string;

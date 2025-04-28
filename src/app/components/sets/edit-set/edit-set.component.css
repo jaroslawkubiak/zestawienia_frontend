@@ -76,15 +76,8 @@ th {
 .position-footer {
   background-color: var(--table-header-bc);
   height: 30px;
-}
-
-.position-footer-number {
   text-align: left;
   padding: 8px;
-}
-
-.position-footer-action {
-  text-align: center;
 }
 
 .view-mode {
@@ -229,4 +222,9 @@ th {
   display: flex;
   flex-direction: column;
   gap: 6px;
+}
+
+.highlighted {
+  background-color: #3bbfa06f !important;
+  transition: background-color 0.5s ease !important;
 }

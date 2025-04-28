@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnInit,
@@ -47,6 +48,7 @@ import { IPositionStatus, PositionStatusList } from './PositionStatus';
   selector: 'app-set',
   templateUrl: './edit-set.component.html',
   styleUrl: './edit-set.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [
     TabsModule,
@@ -100,6 +102,7 @@ export class EditSetComponent
   DEFAULT_COLUMN_WIDTH = 200;
   menuItems: MenuItem[] = [];
   @ViewChild(SetMenuComponent) setMenuComponent!: SetMenuComponent;
+  queryParams: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -126,6 +129,10 @@ export class EditSetComponent
     if (this.setMenuComponent) {
       this.setMenuComponent.updateMenuItems();
     }
+
+    this.route.queryParams.subscribe((params) => {
+      this.queryParams = params;
+    });
   }
 
   // change state of set - mark as edited or not edited
@@ -152,11 +159,15 @@ export class EditSetComponent
           positionStatus: this.positionStatus,
         };
 
+        this.isLoading = false;
+
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();
         }
 
         this.initializeForm();
+
+        this.handleQueryParamsAfterDataLoad();
       },
       error: (err) => console.error('Error loading data', err),
     });
@@ -164,7 +175,6 @@ export class EditSetComponent
 
   // take edited data from form and update this.position array
   updatePosition(): void {
-    // find all suppliers for this set
     this.positions = this.editSetService.updatePosition(
       this.positions,
       this.formData
@@ -186,13 +196,9 @@ export class EditSetComponent
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item: IPosition, index: number) => {
-        // const brutto = calculateBrutto(item.netto);
-        const dostawca = item.supplierId?.company;
         return {
           ...item,
           kolejnosc: index + 1,
-          dostawca,
-          // brutto,
           wartoscNetto: calculateWartosc(item.ilosc, item.netto),
           wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
         };
@@ -201,14 +207,9 @@ export class EditSetComponent
     this.initializeForm();
   }
 
-  // if column.unit is provided = add it to display, ex: PLN
-  getFormattedValue(column: any): string {
-    return column.value + (column.unit ? ' ' + column.unit : '');
-  }
-
   // create formData
   initializeForm() {
-    this.resetFooter();
+    this.footerRow = this.footerService.resetFooter(this.footerRow);
 
     this.formData = this.positionsFromBookmark.map((position: IPosition) => {
       let obj: any = {};
@@ -227,12 +228,14 @@ export class EditSetComponent
       return obj;
     });
 
-    this.isLoading = false;
+    setTimeout(() => {
+      this.cd.detectChanges();
+    }, 1);
   }
 
   // get column width from set object
   getColumnWidthToSelectedBookmark() {
-    const selectedBookmark = this.set.bookmarks.find(
+    const selectedBookmark = this.set?.bookmarks.find(
       (bookmark) => bookmark.id === this.selectedBookmark
     )?.width;
 
@@ -260,7 +263,9 @@ export class EditSetComponent
       return (item.default = true);
     });
 
-    this.loadContentForBookmark(this.selectedBookmark);
+    setTimeout(() => {
+      this.loadContentForBookmark(this.selectedBookmark);
+    }, 1);
   }
 
   // action when cell is finish editing
@@ -312,21 +317,13 @@ export class EditSetComponent
         );
         break;
     }
-
-    this.resetFooter();
-    this.calculateFooterRow(this.formData[rowIndex]);
   }
 
   // for select content (like ctrl+a) of input field when edit mode, need property (focus)="selectAll($event)" in HTML input
   selectAll(event: FocusEvent): void {
     setTimeout(() => {
       (event.target as HTMLInputElement).select();
-    }, 0);
-  }
-
-  // reset footer row
-  resetFooter(): void {
-    this.footerRow = this.footerService.resetFooter(this.footerRow);
+    }, 1);
   }
 
   // calculate values for footer row
@@ -377,24 +374,15 @@ export class EditSetComponent
       )
       .subscribe({
         next: (response) => {
-          this.resetFooter();
-
           this.formData.splice(response.kolejnosc, 0, response);
 
-          this.formData = this.formData
-            .map((item: IPosition) => {
-              const brutto = calculateBrutto(item.netto);
-              return {
-                ...item,
-                brutto,
-                wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-                wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-              };
-            })
-            .map((item: IPosition) => {
-              this.calculateFooterRow(item);
-              return item;
-            });
+          this.formData = this.formData.map((item: IPosition) => {
+            return {
+              ...item,
+              wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+              wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
+            };
+          });
 
           this.updateOrder();
           this.updatePosition();
@@ -414,20 +402,9 @@ export class EditSetComponent
   // mark position to be deleted after submit
   deletePosition(positionId: number) {
     this.isEdited(true);
-    this.resetFooter();
 
-    this.formData = this.formData
-      .filter((item) => item.id !== positionId)
-      .map((item: IPosition) => {
-        this.calculateFooterRow(item);
-        return item;
-      });
-
-    this.positions = this.positions
-      .filter((item) => item.id !== positionId)
-      .map((item: IPosition) => {
-        return item;
-      });
+    this.formData = this.formData.filter((item) => item.id !== positionId);
+    this.positions = this.positions.filter((item) => item.id !== positionId);
 
     this.updateOrder();
     this.updatePosition();
@@ -442,6 +419,8 @@ export class EditSetComponent
   // save data
   onSubmit() {
     this.updatePosition();
+    this.footerRow = this.footerService.resetFooter(this.footerRow);
+    this.formData.forEach((pos) => this.calculateFooterRow(pos));
 
     // need extract status.label from status object to save in DB
     const updatedPositions = this.positions.map((item: any) => ({
@@ -632,5 +611,37 @@ export class EditSetComponent
   // update files list after upload new files
   updateFileList(newFiles: IFileFullDetails[]) {
     this.set.files = [...(this.set.files || []), ...newFiles];
+  }
+
+  // for link to specific position - from comments section
+  handleQueryParamsAfterDataLoad() {
+    if (!this.queryParams) return;
+
+    const bookmarkId = this.queryParams['bookmark'];
+    const position = this.queryParams['position'];
+
+    if (bookmarkId) {
+      this.selectedBookmark = +bookmarkId;
+      this.loadContentForBookmark(+bookmarkId);
+    }
+
+    if (bookmarkId && position) {
+      const anchor = `bookmark-${bookmarkId}-position-${position}`;
+      this.tryScrollToAnchor(anchor);
+    }
+  }
+
+  // smooth scrolling to position
+  tryScrollToAnchor(anchor: string, attempts = 5) {
+    const el = document.getElementById(anchor);
+
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      el.classList.add('highlighted');
+      setTimeout(() => el.classList.remove('highlighted'), 2000);
+    } else if (attempts > 0) {
+      setTimeout(() => this.tryScrollToAnchor(anchor, attempts - 1), 100);
+    }
   }
 }

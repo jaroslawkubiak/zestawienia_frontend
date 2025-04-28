@@ -2,7 +2,6 @@ export interface IColumnList {
   name: string;
   key: string;
   type: 'number' | 'string' | 'select' | 'image';
-  unit?: string;
   width?: number;
   readOnly?: boolean;
   classHeader?: string;
@@ -11,7 +10,6 @@ export interface IColumnList {
   optionList?: any;
   optionLabel?: string;
   pdfWidth?: number | 50;
-  // action?: (value: any) => any;
 }
 
 export const ColumnList: IColumnList[] = [
@@ -59,7 +57,6 @@ export const ColumnList: IColumnList[] = [
     name: 'WARTOŚĆ NETTO',
     key: 'wartoscNetto',
     type: 'number',
-    unit: 'PLN',
     readOnly: true,
     classColumn: 'read-only',
     pdfWidth: 40,
@@ -68,7 +65,6 @@ export const ColumnList: IColumnList[] = [
     name: 'WARTOŚĆ BRUTTO',
     key: 'wartoscBrutto',
     type: 'number',
-    unit: 'PLN',
     readOnly: true,
     classColumn: 'read-only',
     pdfWidth: 40,

@@ -105,7 +105,16 @@
               let-editing="editing"
               let-i="rowIndex"
             >
-              <tr [ngClass]="getRowClass(position)" [pReorderableRow]="i">
+              <tr
+                [ngClass]="getRowClass(position)"
+                [pReorderableRow]="i"
+                [attr.id]="
+                  'bookmark-' +
+                  selectedBookmark +
+                  '-position-' +
+                  formData[i].kolejnosc
+                "
+              >
                 <td class="lp">
                   {{ i + 1 }}
                 </td>
@@ -259,9 +268,10 @@
                   *ngFor="let column of footerRow; let i = index"
                   class="position-footer"
                   [innerHTML]="
-                    column.unit
-                      ? column.value + ' ' + column.unit
-                      : column.value
+                    column.key === 'wartoscNetto' ||
+                    column.key === 'wartoscBrutto'
+                      ? (column?.value | number : '1.2-2') + ' PLN'
+                      : ''
                   "
                   [ngClass]="column.classFooter"
                 ></th>
