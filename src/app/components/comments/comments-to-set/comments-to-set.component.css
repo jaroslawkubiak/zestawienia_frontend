@@ -36,8 +36,9 @@
 
 .position-info-wrapper {
   display: flex;
-  align-items: center; 
+  align-items: center;
   justify-content: space-between;
+  position: relative;
 }
 
 .position-info {
@@ -46,7 +47,16 @@
   color: var(--accent-color);
 }
 
+.link-to-position i {
+  color: var(--accent-color);
+  font-size: 2.4rem;
+}
+
 .new-comments {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  z-index: 999;
   font-size: 1.4rem;
   align-self: end;
   color: var(--error-color);

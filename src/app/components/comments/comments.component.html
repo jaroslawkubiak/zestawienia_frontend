@@ -13,6 +13,13 @@
   >
     <div class="message-bubble">
       <i
+        [pTooltip]="
+          !comment.readByReceiver &&
+          comment.authorType !== (isUser ? 'user' : 'client')
+            ? 'Oznacz jako przeczytane'
+            : 'Oznacz jako nieprzeczytane'
+        "
+        tooltipPosition="top"
         class="pi pi-comment comment-icon"
         [ngClass]="
           !comment.readByReceiver &&
@@ -25,8 +32,12 @@
       <i
         class="pi pi-pencil edit-icon"
         (click)="markCommentToEdit(comment.id)"
+        pTooltip="Edytuj"
+        tooltipPosition="top"
       ></i>
       <i
+        pTooltip="Usuń"
+        tooltipPosition="top"
         class="pi pi-trash delete-icon"
         (click)="deleteComment(comment.id)"
       ></i>
@@ -44,7 +55,7 @@
       <i
         class="pi pi-comments"
         pTooltip="Oznacz wszystkie jako przeczytane"
-        tooltipPosition="bottom"
+        tooltipPosition="top"
         (click)="markAllComments(true, isUser ? 'client' : 'user')"
       ></i>
     </div>
@@ -52,7 +63,7 @@
       <i
         class="pi pi-comments"
         pTooltip="Oznacz wszystkie jako nieprzeczytane"
-        tooltipPosition="bottom"
+        tooltipPosition="top"
         (click)="markAllComments(false, isUser ? 'client' : 'user')"
       ></i>
     </div>

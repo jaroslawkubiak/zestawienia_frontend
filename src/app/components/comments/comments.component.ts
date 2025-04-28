@@ -83,6 +83,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             setTimeout(() => {
               this.scrollToBottom();
             }, 100);
+
+            this.onUpdateComments();
           },
           error: (error) => {
             console.error(error);
@@ -113,6 +115,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);
+
+          this.onUpdateComments();
         },
         error: (error) => {
           console.error(error);
@@ -133,6 +137,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         next: (response) => {
           this.comments = this.comments.filter((item) => item.id !== id);
           this.soundService.playSound(SoundType.trash);
+          this.onUpdateComments();
         },
         error: (error) => {
           console.error(error);
@@ -153,26 +158,19 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     this.commentsService.toggleCommentRead(id).subscribe({
       next: (response: IComment) => {
         const updatedComment = response;
-
         this.notificationService.showNotification(
           'info',
           `Komentarz został oznaczony jako ${
             updatedComment.readByReceiver ? 'przeczytany' : 'nieprzeczytany'
           }`
         );
-
         this.comments = this.comments.map((item) =>
           item.id === updatedComment.id
             ? { ...item, readByReceiver: updatedComment.readByReceiver }
             : item
         );
 
-        const positionWithComments = {
-          posId: this.positionId,
-          comments: this.comments,
-        };
-
-        this.updateComments.emit(positionWithComments);
+        this.onUpdateComments();
       },
       error: (error) => {
         console.error(error);
@@ -197,19 +195,22 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
                 : 'nieprzeczytane'
             }`
           );
-
           this.comments = updatedComments;
 
-          const positionWithComments = {
-            posId: this.positionId,
-            comments: this.comments,
-          };
-
-          this.updateComments.emit(positionWithComments);
+          this.onUpdateComments();
         },
         error: (err) => {
           console.error(err);
         },
       });
+  }
+
+  onUpdateComments() {
+    const positionWithComments = {
+      posId: this.positionId,
+      comments: this.comments,
+    };
+
+    this.updateComments.emit(positionWithComments);
   }
 }

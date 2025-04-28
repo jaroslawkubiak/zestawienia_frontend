@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { BehaviorSubject, forkJoin } from 'rxjs';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
@@ -17,7 +17,7 @@ interface IPositionsWithComments {
 
 @Component({
   selector: 'app-comments-to-set',
-  imports: [CommonModule, CommentsComponent, TooltipModule],
+  imports: [CommonModule, CommentsComponent, TooltipModule, RouterModule],
   templateUrl: './comments-to-set.component.html',
   styleUrl: './comments-to-set.component.css',
 })

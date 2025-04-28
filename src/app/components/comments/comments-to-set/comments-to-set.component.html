@@ -9,7 +9,13 @@
     </div>
     <div class="set-header-cell">
       <div class="set-header-title">Klient</div>
-      <div class="set-header-value">{{ set.clientId.company }}</div>
+      <div class="set-header-value">
+        {{
+          set.clientId.company
+            ? set.clientId.company
+            : set.clientId.firstName + " " + set.clientId.lastName
+        }}
+      </div>
     </div>
   </div>
   <div class="comments" *ngFor="let pos of positionsWithComments$ | async">
@@ -18,6 +24,16 @@
         {{ pos.position.bookmarkId.name }}: Pozycja {{ pos.position.kolejnosc }}
         <span *ngIf="pos.position.produkt"> - {{ pos.position.produkt }}</span>
       </div>
+      <a
+        class="link-to-position"
+        [routerLink]="['/sets', set.id]"
+        [queryParams]="{
+          bookmark: pos.position.bookmarkId.id,
+          position: pos.position.kolejnosc
+        }"
+      >
+        <i class="pi pi-arrow-right" pTooltip="Pokaż pozycję"></i>
+      </a>
       <div class="new-comments" *ngIf="pos.newComments !== 0">
         Liczba nieprzeczytanych komentarzy: {{ pos.newComments }}
       </div>
