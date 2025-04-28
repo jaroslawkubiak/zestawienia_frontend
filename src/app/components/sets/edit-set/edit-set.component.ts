@@ -15,6 +15,7 @@ import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
+import { environment } from '../../../../environments/environment';
 import { CanComponentDeactivate } from '../../../guards/unsaved-changes.guard';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -25,6 +26,8 @@ import {
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { IComment } from '../../comments/types/IComment';
+import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
@@ -33,13 +36,11 @@ import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
+import { SetStatus } from '../types/SetStatus';
 import { ColumnList, IColumnList } from './column-list';
 import { EditSetService } from './edit-set.service';
 import { FooterService } from './footer.service';
 import { IPositionStatus, PositionStatusList } from './PositionStatus';
-import { environment } from '../../../../environments/environment';
-import { IComment } from '../../comments/types/IComment';
-import { SetStatus } from '../types/SetStatus';
 
 @Component({
   selector: 'app-set',
@@ -94,9 +95,8 @@ export class EditSetComponent
   suppliersFromSet: ISupplier[] = [];
   positionStatus: IPositionStatus[] = PositionStatusList;
   dropwownColumnOptions: { [key: string]: any[] } = {};
-  FILES_URL = environment.FILES_URL;
+  FILES_URL = environment.FILES_URL + 'sets/';
   DEFAULT_COLUMN_WIDTH = 200;
-  hasFiles = false;
   menuItems: MenuItem[] = [];
   @ViewChild(SetMenuComponent) setMenuComponent!: SetMenuComponent;
 
@@ -150,10 +150,6 @@ export class EditSetComponent
           allSuppliers: this.allSuppliers,
           positionStatus: this.positionStatus,
         };
-
-        this.hasFiles =
-          !!set.files &&
-          (set.files?.files.length !== 0 || set.files.pdf.length !== 0);
 
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();
@@ -617,5 +613,10 @@ export class EditSetComponent
     }, 0);
 
     return newComments;
+  }
+
+  // update files list after upload new files
+  updateFileList(newFiles: IFileFullDetails[]) {
+    this.set.files = [...(this.set.files || []), ...newFiles];
   }
 }

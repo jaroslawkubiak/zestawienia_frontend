@@ -22,7 +22,7 @@ import { EmailsService } from '../../emails/email.service';
 import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
-import { IFileList } from '../../files/types/IFileList';
+import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { EditSetService } from '../edit-set/edit-set.service';
@@ -56,6 +56,7 @@ export class SetMenuComponent {
   @Input() isEdited: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
+  @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
 
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
@@ -187,6 +188,10 @@ export class SetMenuComponent {
       {
         label: 'Załączniki',
         icon: 'pi pi-cloud',
+        badge: String(this.set?.files?.length),
+        badgeStyleClass: this.set.files?.length
+          ? 'p-badge-contrast'
+          : 'p-badge-secondary',
         command: () => this.showAttachedFiles(),
       },
       {
@@ -259,15 +264,7 @@ export class SetMenuComponent {
 
   // show attached files to set
   showAttachedFiles() {
-    this.editSetService.getSetFiles(this.set.id).subscribe({
-      next: (response: IFileList) => {
-        this.dialogShowFilesComponent.showDialog(
-          this.set.id,
-          this.set.name,
-          response
-        );
-      },
-    });
+    this.dialogShowFilesComponent.showDialog(this.set);
   }
 
   generatePDF(): void {
@@ -297,5 +294,9 @@ export class SetMenuComponent {
     this.router.navigate([`/sets/comments/${this.set.id}`], {
       state: { backPath },
     });
+  }
+
+  updateAttachedFiles(files: IFileFullDetails[]) {
+    this.updateFileList.emit(files);
   }
 }

@@ -125,18 +125,28 @@
               [disabled]="set.status !== statusesList.new"
               (click)="deleteSet(set.id)"
             />
-            <p-button
-              icon="pi pi-cloud"
-              class="m-4"
-              severity="warn"
-              alt="Załączniki"
-              pTooltip="{{
-                set.files?.length > 0 ? 'Pokaż załączniki' : 'Brak załączników'
-              }}"
-              tooltipPosition="bottom"
-              [disabled]="set.files?.length === 0"
-              (click)="showAttachedFiles(set)"
-            />
+            <div class="btn-comments-wrapper">
+              <p-button
+                icon="pi pi-cloud"
+                class="m-4"
+                severity="warn"
+                alt="Załączniki"
+                pTooltip="{{
+                  set.files?.length > 0
+                    ? 'Pokaż załączniki'
+                    : 'Brak załączników'
+                }}"
+                tooltipPosition="bottom"
+                [disabled]="set.files?.length === 0"
+                (click)="showAttachedFiles(set)"
+              />
+              <p-badge
+                [value]="set.files?.length"
+                [severity]="set.files?.length ? 'contrast' : 'secondary'"
+                class="nr-comments"
+                pTooltip="Ilość załączników"
+              />
+            </div>
             <p-button
               icon="pi pi-paperclip"
               class="m-4"
@@ -167,7 +177,6 @@
                     : 'secondary'
                 "
                 class="nr-comments"
-                badgeSize="large"
                 [pTooltip]="
                   set?.newComments
                     ? 'Ilość nowych komentarzy'

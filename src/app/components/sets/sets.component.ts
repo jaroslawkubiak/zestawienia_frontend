@@ -124,7 +124,6 @@ export class SetsComponent implements OnInit {
 
   deleteSet(id: number) {
     const setToDelete = this.sets.find((item) => item.id === id);
-    console.log(setToDelete);
     const accept = () => {
       this.setsService.remove(id).subscribe({
         next: (data) => {
