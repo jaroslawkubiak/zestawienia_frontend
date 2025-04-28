@@ -20,11 +20,9 @@ import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { IColumn, IExportColumn } from '../../shared/types/ITable';
-import { IFileList } from '../files/types/IFileList';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
-import { EditSetService } from './edit-set/edit-set.service';
+import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/SetStatus';
@@ -63,7 +61,6 @@ export class SetsComponent implements OnInit {
   sets: ISet[] = [];
   allSets: ISet[] = [];
   @ViewChild('dt') dt!: Table;
-  cols!: IColumn[];
   statusesList = SetStatus;
   hideClosedSets = true;
 
@@ -77,7 +74,6 @@ export class SetsComponent implements OnInit {
   constructor(
     private router: Router,
     private setsService: SetsService,
-    private editSetService: EditSetService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
@@ -93,9 +89,6 @@ export class SetsComponent implements OnInit {
         this.sets = data.map((set) => ({
           ...set,
           fullName: set.clientId.firstName + ' ' + set.clientId.lastName,
-          hasFiles:
-            !!set.files &&
-            (set.files?.files.length !== 0 || set.files.pdf.length !== 0),
         }));
 
         this.sets = this.sets.map((set) => ({
@@ -104,7 +97,7 @@ export class SetsComponent implements OnInit {
             ? this.setsService.countNewComments(set.comments, 'user')
             : undefined,
         }));
-        
+
         this.allSets = this.sets;
         this.filterSets();
 
@@ -131,7 +124,7 @@ export class SetsComponent implements OnInit {
 
   deleteSet(id: number) {
     const setToDelete = this.sets.find((item) => item.id === id);
-
+    console.log(setToDelete);
     const accept = () => {
       this.setsService.remove(id).subscribe({
         next: (data) => {
@@ -150,8 +143,9 @@ export class SetsComponent implements OnInit {
         'Czy na pewno chcesz usunąć zestawienie ' +
         setToDelete?.name +
         ' dla ' +
-        setToDelete?.clientId.company +
-        ' ?<br />Spowoduje to usunięcie również wszystkich przesłynych zdjęć do zestawienia.',
+        setToDelete?.clientId.firstName +
+        setToDelete?.clientId.lastName +
+        '?<br />Spowoduje to usunięcie również wszystkich przesłanych zdjęć do zestawienia.',
       header: 'Potwierdź usunięcie zestawienia',
       accept,
     };
@@ -170,12 +164,17 @@ export class SetsComponent implements OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setName);
   }
 
-  showAttachedFiles(setId: number, setName: string) {
-    this.editSetService.getSetFiles(setId).subscribe({
-      next: (response: IFileList) => {
-        this.dialogShowFilesComponent.showDialog(setId, setName, response);
-      },
-    });
+  showAttachedFiles(set: ISet) {
+    this.dialogShowFilesComponent.showDialog(set);
+  }
+
+  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
+    const uploadedSetId = +uploadedFiles[0].setId;
+    this.sets = this.sets.map((set) =>
+      set.id === uploadedSetId
+        ? { ...set, files: [...(set.files || []), ...uploadedFiles] }
+        : set
+    );
   }
 
   showComments(setId: number) {

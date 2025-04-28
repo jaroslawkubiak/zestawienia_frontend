@@ -1,4 +1,4 @@
-<app-send-files who="user" />
+<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
 <app-show-files who="user" />
 
 <div class="spinner" *ngIf="isLoading">
@@ -131,11 +131,11 @@
               severity="warn"
               alt="Załączniki"
               pTooltip="{{
-                set.hasFiles ? 'Pokaż załączniki' : 'Brak załączników'
+                set.files?.length > 0 ? 'Pokaż załączniki' : 'Brak załączników'
               }}"
               tooltipPosition="bottom"
-              [disabled]="!set.hasFiles"
-              (click)="showAttachedFiles(set.id, set.name)"
+              [disabled]="set.files?.length === 0"
+              (click)="showAttachedFiles(set)"
             />
             <p-button
               icon="pi pi-paperclip"

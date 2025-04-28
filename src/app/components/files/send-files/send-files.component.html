@@ -5,19 +5,28 @@
   [style]="{ width: '100rem' }"
 >
   <p-progressBar [value]="uploadProgress"></p-progressBar>
-
+  <div class="directory-wrapper">
+    <label for="directory" class="label">Wybierz katalog docelowy</label>
+    <p-select
+      name="selectedDirectory"
+      optionLabel="label"
+      optionValue="label"
+      id="directory"
+      class="form-field"
+      [options]="directoryList"
+      [(ngModel)]="selectedDirectory"
+      (onChange)="changeDirectory()"
+    />
+  </div>
+  <div [ngClass]="!selectedDirectory ? 'upload-blocker' : ''"></div>
   <p-fileupload
     #fileUploader
     [customUpload]="true"
     (uploadHandler)="uploadFiles($event)"
     [multiple]="true"
-    [uploadButtonProps]="{ severity: 'info', label: 'Wgraj', size: 'large' }"
-    [cancelButtonProps]="{ severity: 'danger', label: 'Anuluj', size: 'large' }"
-    [chooseButtonProps]="{
-      severity: 'primary',
-      label: 'Wybierz pliki',
-      size: 'large'
-    }"
+    [uploadButtonProps]="uploadButtonProps"
+    [cancelButtonProps]="cancelButtonProps"
+    [chooseButtonProps]="chooseButtonProps"
     mode="advanced"
     [fileLimit]="fileLimit"
     maxFileSize="1000000000"
@@ -25,7 +34,7 @@
     <ng-template #empty>
       <div class="send-files-wrapper">
         <i class="pi pi-cloud-upload" (click)="openFileDialogManually()"></i>
-        <span class="file-limit">Maksymalnie {{fileLimit}} plików</span>
+        <span class="file-limit">Maksymalnie {{ fileLimit }} plików</span>
       </div>
     </ng-template>
     <ng-template #content>

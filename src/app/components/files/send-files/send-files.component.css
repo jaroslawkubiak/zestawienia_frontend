@@ -20,3 +20,65 @@
   font-size: 1rem;
   color: var(--error-color);
 }
+
+.directory-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-top: 30px;
+  width: 100%;
+}
+
+.directory-wrapper label {
+  color: var(--accent-color);
+  font-size: 2rem;
+}
+
+.p-select {
+  display: flex !important;
+  padding: 0px 8px !important;
+  font-size: 2rem !important;
+  font-weight: normal;
+  border-radius: 0 !important;
+  border: 1px solid var(--accent-color-darker) !important;
+  background-color: white !important;
+  width: 300px !important;
+}
+
+.p-select:hover {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+::ng-deep .p-select-option {
+  font-size: 2rem;
+}
+
+.p-select-label {
+  color: var(--accent-color) !important;
+}
+
+.upload-blocker {
+  position: absolute;
+  z-index: 999;
+  bottom: 15px;
+  left: 15px;
+  right: 15px;
+  height: 345px;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  animation: fadeIn 0.4s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

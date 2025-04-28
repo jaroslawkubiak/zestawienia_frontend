@@ -1,5 +1,5 @@
-<app-send-files />
-<app-show-files />
+<app-send-files who="user" />
+<app-show-files who="user" />
 
 <p-menubar [model]="menuItems">
   <ng-template #item let-item let-root="root">
@@ -18,7 +18,7 @@
       </div>
       <p-badge
         *ngIf="item.badge"
-        [ngClass]="(item.badgeStyleClass || '')"
+        [ngClass]="item.badgeStyleClass || ''"
         [value]="item.badge"
       />
       <i
