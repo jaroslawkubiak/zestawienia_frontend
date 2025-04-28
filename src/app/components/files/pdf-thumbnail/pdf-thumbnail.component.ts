@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import * as pdfjsLib from 'pdfjs-dist';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { IFileFullDetails } from '../types/IFileFullDetails';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-pdf-thumbnail',
@@ -10,11 +12,11 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
   styleUrl: './pdf-thumbnail.component.css',
 })
 export class PdfThumbnailComponent implements OnInit {
-  @Input() pdfUrl: string = '';
-  @Output() pdfClick = new EventEmitter<string>();
+  @Input() file!: IFileFullDetails;
+  @Output() pdfClick = new EventEmitter<IFileFullDetails>();
 
   handleClick() {
-    this.pdfClick.emit(this.pdfUrl);
+    this.pdfClick.emit(this.file);
   }
   thumbnail: string = '';
   isLoading: boolean = true;
@@ -25,7 +27,8 @@ export class PdfThumbnailComponent implements OnInit {
   }
 
   generateThumbnail() {
-    const loadingTask = pdfjsLib.getDocument(this.pdfUrl);
+    const fullPath = `${environment.FILES_URL}${this.file.path}/${this.file.fileName}`;
+    const loadingTask = pdfjsLib.getDocument(fullPath);
     loadingTask.promise
       .then((pdf: any) => {
         pdf.getPage(1).then((page: any) => {

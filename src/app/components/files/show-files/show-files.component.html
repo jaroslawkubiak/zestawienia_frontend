@@ -5,63 +5,21 @@
   [style]="{ width: '90%', maxWidth: '100rem' }"
 >
   <div class="file-wrapper">
-    <div *ngIf="attachments.length > 0">
+    <div *ngIf="files.length > 0">
       <div class="title">Załączniki</div>
       <ul class="file-container">
-        <li class="file-item" *ngFor="let file of attachments; let i = index">
+        <li class="file-item" *ngFor="let file of files; let i = index">
           <app-file-preview
             [file]="file"
             [canDelete]="who === 'client'"
             (delete)="deleteFile(file.id)"
             (download)="downloadFile(file.id)"
-            (openPdf)="openPdf($event, file.name)"
+            (openPdf)="openPdf(file)"
           ></app-file-preview>
         </li>
       </ul>
     </div>
-    <div *ngIf="attachmentsPdf.length > 0">
-      <div class="title">Zestawienie w PDF</div>
-      <ul class="file-container">
-        <li
-          class="file-item"
-          *ngFor="let file of attachmentsPdf; let i = index"
-        >
-          <app-file-preview
-            [file]="file"
-            [canDelete]="who === 'client'"
-            (delete)="deleteFile(file.id)"
-            (download)="downloadFile(file.id)"
-            (openPdf)="openPdf($event, file.name)"
-          ></app-file-preview>
-        </li>
-      </ul>
-    </div>
-    <div *ngIf="attachmentsInspirations.length > 0">
-      <div class="title">Inspiracje klienta</div>
-      <ul class="file-container">
-        <li
-          class="file-item"
-          *ngFor="let file of attachmentsInspirations; let i = index"
-        >
-          <app-file-preview
-            [file]="file"
-            (delete)="deleteFile(file.id)"
-            (download)="downloadFile(file.id)"
-            (openPdf)="openPdf($event, file.name)"
-          ></app-file-preview>
-        </li>
-      </ul>
-    </div>
-    <div
-      class="no-files"
-      *ngIf="
-        attachments.length === 0 &&
-        attachmentsPdf.length === 0 &&
-        attachmentsInspirations.length === 0
-      "
-    >
-      Brak załączników
-    </div>
+    <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>
   </div>
 </p-dialog>
 

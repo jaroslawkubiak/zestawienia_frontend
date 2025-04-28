@@ -10,6 +10,7 @@ import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
 import { ImageModule } from 'primeng/image';
+import { IFileFullDetails } from '../types/IFileFullDetails';
 
 @Component({
   selector: 'app-file-preview',
@@ -25,23 +26,23 @@ import { ImageModule } from 'primeng/image';
   encapsulation: ViewEncapsulation.None,
 })
 export class FilePreviewComponent {
-  @Input() file: any;
+  @Input() file!: IFileFullDetails;
   @Input() canDelete = false;
 
   @Output() delete = new EventEmitter<void>();
   @Output() download = new EventEmitter<void>();
-  @Output() openPdf = new EventEmitter<string>();
+  @Output() openPdf = new EventEmitter<IFileFullDetails>();
 
   get isImage(): boolean {
-    return ['JPG', 'JPEG', 'PNG'].includes(this.file?.extension?.toUpperCase());
+    return ['JPG', 'JPEG', 'PNG'].includes(this.file?.type?.toUpperCase());
   }
 
   get isPdf(): boolean {
-    return this.file?.extension?.toUpperCase() === 'PDF';
+    return this.file?.type?.toUpperCase() === 'PDF';
   }
 
   get iconData() {
-    const ext: string = this.file?.extension?.toUpperCase() ?? '';
+    const ext: string = this.file?.type?.toUpperCase() ?? '';
     const map: Record<string, { icon: string; tooltip: string }> = {
       JPG: { icon: 'pi pi-image', tooltip: 'Obraz JPG' },
       JPEG: { icon: 'pi pi-image', tooltip: 'Obraz JPEG' },

@@ -1,7 +1,7 @@
 <div class="preview">
   <div *ngIf="isImage">
     <p-image
-      [src]="file.path"
+      [src]="file.fullPath"
       [preview]="true"
       alt="Załączony plik"
       pTooltip="Powiększ"
@@ -10,7 +10,7 @@
         <i class="pi pi-search-plus"></i>
       </ng-template>
       <ng-template #image>
-        <img [src]="file.path" alt="Załączony plik" />
+        <img [src]="file.fullPath" alt="Załączony plik" />
       </ng-template>
       <ng-template
         #preview
@@ -18,7 +18,7 @@
         let-previewCallback="previewCallback"
       >
         <img
-          [src]="file.path"
+          [src]="file.fullPath"
           alt="Załączony plik"
           [style]="style"
           (click)="previewCallback()"
@@ -29,8 +29,8 @@
 
   <div class="file-pdf" *ngIf="isPdf">
     <app-pdf-thumbnail
-      [pdfUrl]="file.path"
-      (click)="openPdf.emit(file.path)"
+      [file]="file"
+      (click)="openPdf.emit(file)"
     ></app-pdf-thumbnail>
   </div>
 
@@ -38,7 +38,7 @@
     <i class="pi pi-file"></i>
   </div>
 
-  <p>{{ file.name }}</p>
+  <p>{{ file.fileName }}</p>
 
   <div class="action-btns">
     <p-button
