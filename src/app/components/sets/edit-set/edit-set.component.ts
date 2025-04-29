@@ -188,23 +188,27 @@ export class EditSetComponent
     this.selectedBookmark = bookmarkId;
     this.getColumnWidthToSelectedBookmark();
 
-    this.positionsFromBookmark = this.positions
-      .filter(
-        (item) =>
-          item.bookmarkId?.id === this.selectedBookmark &&
-          !this.positionToDelete.includes(item.id)
-      )
-      .sort((a, b) => a.kolejnosc - b.kolejnosc)
-      .map((item: IPosition, index: number) => {
-        return {
-          ...item,
-          kolejnosc: index + 1,
-          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
-        };
-      });
+    this.positionsFromBookmark = [];
 
-    this.initializeForm();
+    setTimeout(() => {
+      this.positionsFromBookmark = this.positions
+        .filter(
+          (item) =>
+            item.bookmarkId?.id === this.selectedBookmark &&
+            !this.positionToDelete.includes(item.id)
+        )
+        .sort((a, b) => a.kolejnosc - b.kolejnosc)
+        .map((item: IPosition, index: number) => {
+          return {
+            ...item,
+            kolejnosc: index + 1,
+            wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+            wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
+          };
+        });
+
+      this.initializeForm();
+    }, 0);
   }
 
   // create formData
@@ -550,11 +554,6 @@ export class EditSetComponent
     this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };
     });
-  }
-
-  // get css class for row based on column status
-  getRowClass(position: any): string {
-    return position.status?.cssClass || '';
   }
 
   // update comments for current position

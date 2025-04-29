@@ -65,6 +65,9 @@
             editable="true"
             columnResizeMode="expand"
             class="p-datatable-gridlines"
+            [virtualScroll]="true"
+            [virtualScrollItemSize]="190"
+            [scrollHeight]="'900px'"
             [resizableColumns]="true"
             [scrollable]="true"
             [value]="formData"
@@ -106,13 +109,13 @@
               let-i="rowIndex"
             >
               <tr
-                [ngClass]="getRowClass(position)"
+                [ngClass]="position.status?.cssClass || ''"
                 [pReorderableRow]="i"
                 [attr.id]="
                   'bookmark-' +
                   selectedBookmark +
                   '-position-' +
-                  formData[i].kolejnosc
+                  position.kolejnosc
                 "
               >
                 <td class="lp">
