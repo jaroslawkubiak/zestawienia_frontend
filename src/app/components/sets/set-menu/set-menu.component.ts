@@ -25,7 +25,6 @@ import { ShowFilesComponent } from '../../files/show-files/show-files.component'
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
-import { EditSetService } from '../edit-set/edit-set.service';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
@@ -73,7 +72,6 @@ export class SetMenuComponent {
   constructor(
     private router: Router,
     private notificationService: NotificationService,
-    private editSetService: EditSetService,
     private emailsService: EmailsService,
     private pdfService: PdfService
   ) {}
@@ -145,6 +143,8 @@ export class SetMenuComponent {
         label: `${supplier.company}`,
         icon: 'pi pi-truck',
         email: supplier.email,
+        preview: () => this.showPreviewForSupplier(supplier.hash),
+        previewTooltip: `Podgląd zestawienia dla ${supplier.company}`,
         sendAt: this.findLastEmailToSupplier(supplier.id),
         command: () => this.sendSetToSupplierViaEmail(supplier),
       };
@@ -166,6 +166,8 @@ export class SetMenuComponent {
             label: `Do klienta`,
             icon: 'pi pi-user',
             email: this.set.clientId.email,
+            preview: () => this.showPreviewForClient(),
+            previewTooltip: 'Podgląd zestawienia dla klienta',
             sendAt: this.findLastEmailToClient(),
             command: () => this.sendSetToClientViaEmail(),
           },
@@ -298,5 +300,26 @@ export class SetMenuComponent {
 
   updateAttachedFiles(files: IFileFullDetails[]) {
     this.updateFileList.emit(files);
+  }
+
+  // open preview for client
+  showPreviewForClient() {
+    const link = this.emailsService.createLinkForClient(
+      this.set.id,
+      this.set.hash
+    );
+
+    window.open(link, '_blank');
+  }
+
+  // open preview for supplier
+  showPreviewForSupplier(supplierHash: string) {
+    const link = this.emailsService.createLinkForSupplier(
+      this.set.id,
+      this.set.hash,
+      supplierHash
+    );
+
+    window.open(link, '_blank');
   }
 }

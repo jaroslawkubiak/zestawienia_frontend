@@ -3,32 +3,43 @@
 
 <p-menubar [model]="menuItems">
   <ng-template #item let-item let-root="root">
-    <a pRipple class="menu-item">
-      <i class="menu-icon m-4 {{ item.icon }}"></i>
-      <div class="menu-label-wrapper">
-        <span class="menu-label">
-          {{ item.label }}
-        </span>
-        <span class="menu-label-email" *ngIf="item.email">
-          {{ item.email }}
-        </span>
-        <span class="menu-label-send-at" *ngIf="item.sendAt">
-          {{ item.sendAt }}
-        </span>
-      </div>
-      <p-badge
-        *ngIf="item.badge"
-        [ngClass]="item.badgeStyleClass || ''"
-        [value]="item.badge"
-      />
-      <i
-        *ngIf="item.items"
-        [ngClass]="[
-          'menu-icon-arrow m-4 pi',
-          root ? 'pi-angle-down' : 'pi-angle-right'
-        ]"
-      ></i>
-    </a>
+    <div class="flex-center">
+      <a pRipple class="menu-item">
+        <i class="menu-icon m-4 {{ item.icon }}"></i>
+        <div class="menu-label-wrapper">
+          <span class="menu-label">
+            {{ item.label }}
+          </span>
+          <span class="menu-label-email" *ngIf="item.email">
+            {{ item.email }}
+          </span>
+          <span class="menu-label-send-at" *ngIf="item.sendAt">
+            {{ item.sendAt }}
+          </span>
+        </div>
+        <p-badge
+          *ngIf="item.badge"
+          [ngClass]="item.badgeStyleClass || ''"
+          [value]="item.badge"
+        />
+        <i
+          *ngIf="item.items"
+          [ngClass]="[
+            'menu-icon-arrow m-4 pi',
+            root ? 'pi-angle-down' : 'pi-angle-right'
+          ]"
+        ></i>
+      </a>
+
+      <button
+        class="menu-label-preview"
+        *ngIf="item.preview"
+        type="button"
+        (click)="item.preview(); $event.stopPropagation()"
+      >
+        <i class="pi pi-eye m-2" [pTooltip]="item.previewTooltip"></i>
+      </button>
+    </div>
   </ng-template>
 </p-menubar>
 

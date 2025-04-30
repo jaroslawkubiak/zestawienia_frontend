@@ -28,7 +28,7 @@
   border-radius: 0 !important;
   min-width: 20rem !important;
   padding: 0 !important;
-  z-index: 9999 !important;
+  z-index: 5 !important;
 }
 ::ng-deep .p-menubar-item-link {
   gap: 8px !important;
@@ -41,9 +41,17 @@
 .menu-item {
   display: flex;
   align-items: center;
+  justify-content: start;
   gap: 12px;
   padding: 6px;
+  width: 100%;
   cursor: pointer;
+}
+
+.menu-label-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .menu-icon {
@@ -54,7 +62,7 @@
 .menu-label-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .menu-label {
@@ -73,4 +81,18 @@
 
 .menu-icon-arrow {
   font-size: 1.4rem;
+}
+
+.menu-label-preview {
+  padding: 4px;
+  margin-left: 4px;
+}
+
+.menu-label-preview i {
+  color: var(--accent-color-darker);
+  font-size: 2.4rem;
+}
+
+.menu-label-preview i:hover {
+  color: var(--error-color);
 }

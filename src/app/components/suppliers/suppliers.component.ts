@@ -212,6 +212,7 @@ export class SuppliersComponent implements OnInit {
       if (this.supplier.id) {
         const editedSupplier: ISupplier = {
           id: this.supplier.id,
+          hash: this.supplier.hash,
           email: this.form.value.email || '',
           firstName: this.form.value.firstName!,
           lastName: this.form.value.lastName!,
