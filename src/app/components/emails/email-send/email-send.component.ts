@@ -13,7 +13,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
 import { debounceTime, Subject, Subscription } from 'rxjs';
-import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../../services/notification.service';
 import { SoundService } from '../../../services/sound.service';
 import { SoundType } from '../../../services/types/SoundType';
@@ -73,14 +72,21 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.supplier) {
       this.newEmail.to = this.supplier.email;
       this.newEmail.subject = `Zamówienie do zestawienia ${this.set.name}`;
-      this.newEmail.link = `${environment.FRONT_URL}/${this.set.id}/${this.set.hash}/${this.supplier.hash}`;
+      this.newEmail.link = this.emailsService.createLinkForSupplier(
+        this.set.id,
+        this.set.hash,
+        this.supplier.hash
+      );
 
       this.emailMessage = HTMLSupplier.message;
       this.title = HTMLSupplier.title;
     } else {
       this.newEmail.to = this.set.clientId.email;
       this.newEmail.subject = `Inwestycja ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
-      this.newEmail.link = `${environment.FRONT_URL}/${this.set.id}/${this.set.hash}`;
+      this.newEmail.link = this.emailsService.createLinkForClient(
+        this.set.id,
+        this.set.hash
+      );
 
       this.emailMessage = HTMLClient.message;
       this.title = HTMLClient.title;

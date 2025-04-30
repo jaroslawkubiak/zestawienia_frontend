@@ -6,6 +6,6 @@ export interface ISupplier {
   lastName: string;
   email: string;
   telephone?: string;
-  hash?: string;
+  hash: string;
   positionCount: number;
 }

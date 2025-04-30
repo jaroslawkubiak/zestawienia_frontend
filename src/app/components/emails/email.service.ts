@@ -40,4 +40,16 @@ export class EmailsService {
       headers: { 'Content-Type': 'application/json' },
     });
   }
+
+  createLinkForClient(setId: number, setHash: string): string {
+    return `${environment.FRONT_URL}/${setId}/${setHash}`;
+  }
+
+  createLinkForSupplier(
+    setId: number,
+    setHash: string,
+    supplierHash: string
+  ): string {
+    return `${environment.FRONT_URL}/${setId}/${setHash}/${supplierHash}`;
+  }
 }
