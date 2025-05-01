@@ -8,6 +8,7 @@ import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
 import { CommentsComponent } from '../comments.component';
 import { IComment } from '../types/IComment';
+import { IPositionWithComments } from '../types/IPositionWithComments';
 
 interface IPositionsWithComments {
   position: IPosition;
@@ -93,11 +94,11 @@ export class CommentsToSetComponent implements OnInit {
   }
 
   // update comments when status change
-  onUpdateComments(updatedData: { posId: number; comments: IComment[] }) {
+  onUpdateComments(updatedData: IPositionWithComments) {
     const currentPositions = this.positionsWithComments$.value;
 
     const updatedPositions = currentPositions.map((pos) => {
-      if (pos.position.id === updatedData.posId) {
+      if (pos.position.id === updatedData.positionId) {
         return {
           ...pos,
           comments: updatedData.comments,

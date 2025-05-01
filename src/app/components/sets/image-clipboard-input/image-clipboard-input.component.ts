@@ -65,7 +65,7 @@ export class ImageClipboardInputComponent {
 
         this.notificationService.showNotification(
           'info',
-          response.message || 'Obraz został wysłany'
+          response.message || 'Obraz został zapisany'
         );
       },
       error: (error) => {

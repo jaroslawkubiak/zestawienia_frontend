@@ -19,6 +19,7 @@ import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 
 @Component({
   selector: 'app-setforclient',
@@ -236,9 +237,9 @@ export class ForClientComponent implements OnInit {
   }
 
   // update new comments when changing status
-  onUpdateComments(updatedData: { posId: number; comments: IComment[] }) {
+  onUpdateComments(updatedData: IPositionWithComments) {
     this.positions = this.positions.map((item) => {
-      if (item.id === updatedData.posId) {
+      if (item.id === updatedData.positionId) {
         return {
           ...item,
           comments: updatedData.comments,

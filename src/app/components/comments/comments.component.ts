@@ -21,6 +21,8 @@ import { ISet } from '../sets/types/ISet';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
 import { IEditedComment } from './types/IEditedComment';
+import { IPositionWithComments } from './types/IPositionWithComments';
+import { IPosition } from '../sets/types/IPosition';
 
 @Component({
   selector: 'app-comments',
@@ -35,7 +37,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
   @Input() isUser: boolean = true;
-  @Output() updateComments = new EventEmitter<any>();
+  @Output() updateComments = new EventEmitter<IPositionWithComments>();
   newMessage: string = '';
   editedCommentId: number | null = null;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
@@ -206,8 +208,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   onUpdateComments() {
-    const positionWithComments = {
-      posId: this.positionId,
+    const positionWithComments: IPositionWithComments = {
+      positionId: this.positionId,
       comments: this.comments,
     };
 

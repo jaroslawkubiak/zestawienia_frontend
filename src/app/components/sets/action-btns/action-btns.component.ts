@@ -7,6 +7,7 @@ import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 
 @Component({
   selector: 'app-action-btns',
@@ -31,7 +32,7 @@ export class ActionBtnsComponent {
   @Output() addEmptyPosition = new EventEmitter<number>();
   @Output() clonePosition = new EventEmitter<number>();
   @Output() deletePosition = new EventEmitter<number>();
-  @Output() updateComments = new EventEmitter<any>();
+  @Output() updateComments = new EventEmitter<IPosition>();
 
   showComments(positionId: number) {
     const position = this.positions.find((item) => item.id === positionId);
@@ -69,14 +70,14 @@ export class ActionBtnsComponent {
     return position?.comments?.length || 0;
   }
 
-  onUpdateComments(res: any) {
+  onUpdateComments(res: IPositionWithComments) {
     this.positions = this.positions.map((item) => {
-      if (item.id === res.posId) {
+      if (item.id === res.positionId) {
         const newCommentsCount = res.comments.filter(
           (c: IComment) => !c.readByReceiver && c.authorType !== 'user'
         ).length;
 
-        const response = {
+        const response: IPosition = {
           ...item,
           comments: res.comments,
           newComments: newCommentsCount,
