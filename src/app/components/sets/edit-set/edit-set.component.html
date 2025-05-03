@@ -9,7 +9,7 @@
     [set]="set"
     [positions]="positions"
     [selectedBookmarks]="selectedBookmarks"
-    [isEdited]="setIsEdited"
+    [isEdited]="setIsDirty"
     (editStarted)="isEdited(true)"
     (updateBookmarks)="updateBookmarks()"
     (updateFileList)="updateFileList($event)"
@@ -54,240 +54,28 @@
     <p-tabpanels>
       @for (bookmark of set.bookmarks; track bookmark.id) {
       <p-tabpanel [value]="bookmark.id">
-        <div
-          [ngClass]="{ 'form-dirty': setIsEdited }"
-          class="position-container"
-        >
-          <p-table
-            pEditableTable
-            stripedRows
-            dataKey="id"
-            editable="true"
-            columnResizeMode="expand"
-            class="p-datatable-gridlines"
-            [virtualScroll]="true"
-            [virtualScrollItemSize]="190"
-            [scrollHeight]="'900px'"
-            [resizableColumns]="true"
-            [scrollable]="true"
-            [value]="formData"
-            (onColResize)="onColResize($event)"
-            [reorderableColumns]="true"
-            (onRowReorder)="handleRowReorder($event)"
-            [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
+        <ng-container *ngIf="selectedBookmark === bookmark.id">
+          <div
+            [ngClass]="{ 'form-dirty': setIsDirty }"
+            class="position-container"
           >
-            <!-- table header  -->
-            <ng-template pTemplate="header">
-              <tr>
-                <th style="width: 4rem" class="position-header">L.P.</th>
-                <th style="width: 5rem" class="position-header add-position">
-                  <p-button
-                    severity="primary"
-                    icon="pi pi-plus"
-                    class="m-4"
-                    alt="Nowa pusta pozycja"
-                    pTooltip="Nowa pusta pozycja"
-                    (click)="addEmptyPosition(1)"
-                  />
-                </th>
-                <th
-                  *ngFor="let column of columnList"
-                  class="position-header"
-                  [ngClass]="column.classHeader"
-                  pResizableColumn
-                  [ngStyle]="{ width: column?.width + 'px' }"
-                >
-                  {{ column.name }}
-                </th>
-              </tr>
-            </ng-template>
-            <!-- table body  -->
-            <ng-template
-              pTemplate="body"
-              let-position
-              let-editing="editing"
-              let-i="rowIndex"
-            >
-              <tr
-                [ngClass]="position.status?.cssClass || ''"
-                [pReorderableRow]="i"
-                [attr.id]="
-                  'bookmark-' +
-                  selectedBookmark +
-                  '-position-' +
-                  position.kolejnosc
-                "
-              >
-                <td class="lp">
-                  {{ i + 1 }}
-                </td>
-                <td>
-                  <div class="action-btns-wrapper flex-center">
-                    <!-- position action buttons  -->
-                    <p-button
-                      severity="contrast"
-                      icon="pi pi-bars"
-                      class="m-4"
-                      alt="Przegiągnij, aby zmienić pozycję"
-                      pTooltip="Przegiągnij, aby zmienić pozycję"
-                      pReorderableRowHandle
-                    />
-                    <app-action-btns
-                      [positions]="positions"
-                      [positionId]="position.id"
-                      [setId]="setId"
-                      [kolejnosc]="formData[i].kolejnosc"
-                      (addEmptyPosition)="
-                        addEmptyPosition(formData[i].kolejnosc)
-                      "
-                      (clonePosition)="clonePosition(formData[i].id)"
-                      (deletePosition)="deletePosition(formData[i].id)"
-                      (updateComments)="updateCommentsForPosition($event)"
-                    />
-                  </div>
-                </td>
-                <!-- main content  -->
-                <td
-                  *ngFor="let column of columnList"
-                  pEditableColumn
-                  [pEditableColumnField]="column.key"
-                  [ngClass]="column.classColumn"
-                  [ngStyle]="{ width: column?.width + 'px' }"
-                >
-                  <p-cellEditor>
-                    <!-- EDIT MODE  -->
-                    <ng-template pTemplate="input" [ngSwitch]="column.type">
-                      <ng-container *ngIf="!column.readOnly">
-                        <!-- EDIT MODE -> type = number  -->
-                        <input
-                          *ngSwitchCase="'number'"
-                          pInputText
-                          type="number"
-                          class="no-arrows"
-                          [readonly]="column.readOnly"
-                          [(ngModel)]="formData[i][column.key]"
-                          (blur)="applyAction($event, i, column)"
-                          (keydown.enter)="applyAction($event, i, column)"
-                          (focus)="selectAll($event)"
-                        />
-                        <!-- EDIT MODE -> type = select  -->
-                        <p-select
-                          *ngSwitchCase="'select'"
-                          [options]="dropwownColumnOptions[column.optionList]"
-                          [(ngModel)]="formData[i][column.key]"
-                          (onChange)="applyAction($event, i, column)"
-                          appendTo="body"
-                          [optionLabel]="column.optionLabel"
-                          [showClear]="true"
-                        />
-                        <!-- EDIT MODE -> type = image  -->
-                        <div *ngSwitchCase="'image'" class="edit-mode-image">
-                          <app-image-clipboard-input
-                            [onPasting]="true"
-                            [setId]="+setId"
-                            [positionId]="formData[i].id"
-                            (blur)="applyAction($event, i, column)"
-                            [imageUpload]="onImageUpload"
-                            [imagePreview]="
-                              formData[i][column.key]
-                                ? FILES_URL +
-                                  setId +
-                                  '/positions/' +
-                                  formData[i].id +
-                                  '/' +
-                                  formData[i][column.key]
-                                : ''
-                            "
-                          />
-                          <app-loading-spinner
-                            class="image-spinner"
-                            [size]="70"
-                          ></app-loading-spinner>
-                        </div>
-                        <!-- EDIT MODE -> type = text DEFAULT -->
-                        <input
-                          *ngSwitchCase="'string'"
-                          pInputText
-                          type="text"
-                          [readonly]="column.readOnly"
-                          [(ngModel)]="formData[i][column.key]"
-                          (blur)="applyAction($event, i, column)"
-                          (keydown.enter)="applyAction($event, i, column)"
-                          (focus)="selectAll($event)"
-                        />
-                      </ng-container>
-                      <!-- if field read only, wneh edited show view-mode -->
-                      <ng-container *ngIf="column.readOnly">
-                        <span class="view-mode">
-                          @if(column.type === 'number') {
-                          {{ formData[i][column.key] | number : "1.2-2" }}
-                          } @else {
-                          {{ formData[i][column.key] }}
-                          }
-                        </span>
-                      </ng-container>
-                    </ng-template>
-                    <!-- VIEW MODE  -->
-                    <ng-template pTemplate="output">
-                      <span class="view-mode" [ngSwitch]="column.type">
-                        <!-- VIEW MODE -> type = number  -->
-                        <div *ngSwitchCase="'number'">
-                          {{ formData[i][column.key] | number : "1.2-2" }}
-                        </div>
-                        <div *ngSwitchCase="'select'">
-                          {{ column.optionLabel ? formData[i][column.key]?.[column.optionLabel] : formData[i][column.key] }}
-                        </div>
-                        <!-- VIEW MODE -> type = image  -->
-                        <div *ngSwitchCase="'image'" class="view-mode-image">
-                          <app-image-clipboard-input
-                            [setId]="+setId"
-                            [positionId]="formData[i].id"
-                            [imagePreview]="
-                              formData[i][column.key]
-                                ? FILES_URL +
-                                  setId +
-                                  '/positions/' +
-                                  formData[i].id +
-                                  '/' +
-                                  formData[i][column.key]
-                                : ''
-                            "
-                          />
-                        </div>
-                        <!-- VIEW MODE default -> type = text  -->
-                        <div *ngSwitchCase="'string'">
-                          {{ formData[i][column.key] }}
-                        </div>
-                      </span>
-                    </ng-template>
-                  </p-cellEditor>
-                </td>
-              </tr>
-            </ng-template>
-            <!-- table footer  -->
-            <ng-template pTemplate="footer">
-              <tr>
-                <th
-                  *ngFor="let column of footerRow; let i = index"
-                  class="position-footer"
-                  [innerHTML]="
-                    column.key === 'wartoscNetto' ||
-                    column.key === 'wartoscBrutto'
-                      ? (column?.value | number : '1.2-2') + ' PLN'
-                      : ''
-                  "
-                  [ngClass]="column.classFooter"
-                ></th>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
+            <app-positions-table
+              [set]="set"
+              [positionsFromBookmark]="positionsFromBookmark"
+              [selectedBookmark]="selectedBookmark"
+              [allSuppliers]="allSuppliers"
+              (isEdited)="isEdited($event)"
+              (updateSetPositions)="updatePositions()"
+              (updateSetComments)="updateCommentsForSet($event)"
+            />
+          </div>
+        </ng-container>
       </p-tabpanel>
       }
     </p-tabpanels>
   </p-tabs>
   <div class="m-10 flex-center">
-    @if(setIsEdited) {
+    @if(setIsDirty) {
     <p-button
       label="Zapisz"
       icon="pi pi-save"

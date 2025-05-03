@@ -6,7 +6,7 @@
       severity="info"
       alt="Zobacz komentarze"
       pTooltip="Zobacz komentarze"
-      (click)="showComments(positionId)"
+      (click)="triggerShowComments()"
     />
     <p-badge
       [value]="getRowNewComments(positionId) || getRowAllComments(positionId)"
@@ -51,19 +51,3 @@
     (click)="triggerDeletePosition()"
   />
 </div>
-
-<p-dialog
-  [header]="header"
-  [modal]="true"
-  [(visible)]="showCommentsDialog"
-  [style]="{ width: '70rem' }"
->
-  <app-comments
-    [comments]="comments"
-    [positionId]="positionId"
-    [setId]="setId"
-    [commentsDialog]="showCommentsDialog"
-    [isUser]="true"
-    (updateComments)="onUpdateComments($event)"
-  />
-</p-dialog>

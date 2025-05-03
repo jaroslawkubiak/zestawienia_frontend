@@ -35,6 +35,13 @@ export const ColumnList: IColumnList[] = [
     type: 'image',
     pdfWidth: 60,
   },
+
+  {
+    name: 'PRODUKT',
+    key: 'produkt',
+    type: 'string',
+    pdfWidth: 50,
+  },
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
@@ -69,31 +76,6 @@ export const ColumnList: IColumnList[] = [
     classColumn: 'read-only',
     pdfWidth: 40,
   },
-
-  {
-    name: 'DOSTAWCA',
-    key: 'supplierId',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'allSuppliers',
-    optionLabel: 'company',
-    pdfWidth: 50,
-  },
-  {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-    pdfWidth: 50,
-  },
-  {
-    name: 'PRODUKT',
-    key: 'produkt',
-    type: 'string',
-    pdfWidth: 50,
-  },
   {
     name: 'PRODUCENT',
     key: 'producent',
@@ -123,6 +105,24 @@ export const ColumnList: IColumnList[] = [
     key: 'pomieszczenie',
     type: 'string',
     pdfWidth: 80,
+  },
+  {
+    name: 'DOSTAWCA',
+    key: 'supplierId',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'allSuppliers',
+    optionLabel: 'company',
+    pdfWidth: 50,
+  },
+  {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
+    optionLabel: 'label',
+    pdfWidth: 50,
   },
   {
     name: 'LINK',

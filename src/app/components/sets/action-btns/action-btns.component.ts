@@ -1,50 +1,23 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
-import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { CommentsComponent } from '../../comments/comments.component';
-import { IComment } from '../../comments/types/IComment';
 import { IPosition } from '../types/IPosition';
-import { ISet } from '../types/ISet';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 
 @Component({
   selector: 'app-action-btns',
-  imports: [
-    ButtonModule,
-    BadgeModule,
-    TooltipModule,
-    Dialog,
-    CommentsComponent,
-  ],
+  imports: [ButtonModule, BadgeModule, TooltipModule],
   templateUrl: './action-btns.component.html',
   styleUrl: './action-btns.component.css',
 })
 export class ActionBtnsComponent {
-  showCommentsDialog = false;
-  comments: IComment[] = [];
-  header = '';
   @Input() positions!: IPosition[];
-  @Input() setId: number = 0;
   @Input() positionId: number = 0;
   @Input() kolejnosc: number = 0;
   @Output() addEmptyPosition = new EventEmitter<number>();
   @Output() clonePosition = new EventEmitter<number>();
   @Output() deletePosition = new EventEmitter<number>();
-  @Output() updateComments = new EventEmitter<IPosition>();
-
-  showComments(positionId: number) {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    if (position?.comments) {
-      this.comments = position.comments;
-      this.header = `Pozycja ${position.kolejnosc} ${
-        position.produkt ? ' : ' + position.produkt : ''
-      }`;
-      this.showCommentsDialog = true;
-    }
-  }
+  @Output() showComments = new EventEmitter<number>();
 
   triggerAddEmptyPosition() {
     this.addEmptyPosition.emit(this.kolejnosc);
@@ -70,24 +43,7 @@ export class ActionBtnsComponent {
     return position?.comments?.length || 0;
   }
 
-  onUpdateComments(res: IPositionWithComments) {
-    this.positions = this.positions.map((item) => {
-      if (item.id === res.positionId) {
-        const newCommentsCount = res.comments.filter(
-          (c: IComment) => !c.readByReceiver && c.authorType !== 'user'
-        ).length;
-
-        const response: IPosition = {
-          ...item,
-          comments: res.comments,
-          newComments: newCommentsCount,
-        };
-
-        this.updateComments.emit(response);
-        return response;
-      }
-
-      return { ...item };
-    });
+  triggerShowComments() {
+    this.showComments.emit(this.positionId);
   }
 }

@@ -22,7 +22,6 @@ import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
 import { IEditedComment } from './types/IEditedComment';
 import { IPositionWithComments } from './types/IPositionWithComments';
-import { IPosition } from '../sets/types/IPosition';
 
 @Component({
   selector: 'app-comments',
@@ -72,7 +71,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   sendComment() {
     if (!this.newMessage.trim()) return;
-
     // add new comment
     if (!this.editedCommentId) {
       this.commentsService

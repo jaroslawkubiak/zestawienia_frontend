@@ -18,16 +18,26 @@ export class FooterService {
   }
 
   // calculate values for footer row
-  calculateFooterRow(footerRow: IFooterRow[], obj: IPosition): IFooterRow[] {
+  calculateFooterRow(footerRow: IFooterRow[], positions: IPosition[]): IFooterRow[] {
+    const totals = positions.reduce(
+      (acc, position) => {
+        acc.wartoscNetto += Number(position.wartoscNetto) || 0;
+        acc.wartoscBrutto += Number(position.wartoscBrutto) || 0;
+        return acc;
+      },
+      { wartoscNetto: 0, wartoscBrutto: 0 }
+    );
+
     return footerRow.map((item: IFooterRow) => {
       if (item.key === 'wartoscNetto') {
-        item.value = Number(item.value) + Number(obj.wartoscNetto);
-      }
-      if (item.key === 'wartoscBrutto') {
-        item.value = Number(item.value) + Number(obj.wartoscBrutto);
+        return { ...item, value: totals.wartoscNetto };
       }
 
-      return { ...item };
+      if (item.key === 'wartoscBrutto') {
+        return { ...item, value: totals.wartoscBrutto };
+      }
+
+      return item;
     });
   }
 }

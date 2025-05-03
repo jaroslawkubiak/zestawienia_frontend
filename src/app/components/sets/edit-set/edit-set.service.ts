@@ -139,8 +139,7 @@ export class EditSetService {
     formData: IPosition[],
     bookmarks: IBookmark[],
     selectedBookmarkId: number,
-    setId: number,
-    statuses: { label: string }[]
+    setId: number
   ): Observable<IPosition> {
     const original = formData.find((p) => p.id === positionId);
 
@@ -188,9 +187,11 @@ export class EditSetService {
       )
       .pipe(
         map((response: IPosition) => {
-          // jeśli response.status to string — zamień na obiekt z listy
+          // if response.status = string — change for object from list
           if (response.status) {
-            const statusObj = statuses.find((s) => s.label === response.status);
+            const statusObj = this.positionStatus.find(
+              (s) => s.label === response.status
+            );
             response.status = (statusObj as IPositionStatus) || '';
           }
 
@@ -199,7 +200,6 @@ export class EditSetService {
         catchError(this.handleError)
       );
   }
-
   saveSet(savedSet: IUpdateSet): Observable<INewSet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
@@ -221,15 +221,24 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  // take edited data from form and update this.position array
-  updatePosition(positions: IPosition[], formData: IPosition[]): IPosition[] {
+  // take edited data from form and update this.positions array
+  updatePosition(
+    positions: IPosition[],
+    formData: IPosition[],
+    positionToDelete: Set<number>
+  ): IPosition[] {
     const formDataMap = new Map(
       formData.map((form: IPosition) => [form.id, form])
     );
 
-    return positions.map((position: IPosition) => {
-      const form = formDataMap.get(position.id);
-      return form ? { ...position, ...form } : position;
-    });
+    // update data from form to all set positions and filter out deleted positions
+    const updatedPositions = positions
+      .filter((item) => !positionToDelete.has(item.id))
+      .map((position: IPosition) => {
+        const form = formDataMap.get(position.id);
+        return form ? { ...position, ...form } : position;
+      });
+
+    return updatedPositions;
   }
 }
