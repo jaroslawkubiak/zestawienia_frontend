@@ -97,7 +97,6 @@ export class EditSetComponent
     }
   }
 
-  // SPRAWDZONE OK
   // load needed data from set
   loadData(): void {
     this.editSetService.loadSetData(this.setId).subscribe({
@@ -119,7 +118,6 @@ export class EditSetComponent
     });
   }
 
-  // SPRAWDZONE OK
   // change state of set - mark as edited or not edited
   isEdited(state: boolean) {
     this.setIsDirty = state;
@@ -127,7 +125,6 @@ export class EditSetComponent
     this.cd.markForCheck();
   }
 
-  // SPRAWDZONE OK
   // update bookmarks after edit header
   updateBookmarks() {
     this.set.bookmarks.sort((a, b) => a.id - b.id);
@@ -148,14 +145,9 @@ export class EditSetComponent
   // TODO CHECK
   // update files list after upload new files
   updateFileList(newFiles: IFileFullDetails[]) {
-    console.log(`##### newFiles #####`);
-    console.log(newFiles);
     this.set.files = [...(this.set.files || []), ...newFiles];
-    console.log(`##### this.set.files #####`);
-    console.log(this.set.files);
   }
 
-  // SPRAWDZONE OK
   // save data
   onSubmit() {
     if (this.positionsTableComponent) {
@@ -198,7 +190,6 @@ export class EditSetComponent
     });
   }
 
-  // SPRAWDZONE OK
   // load positions for a given bookmarkID
   loadContentForBookmark(bookmarkId: number) {
     this.updatePositions();
@@ -231,7 +222,6 @@ export class EditSetComponent
     }, 0);
   }
 
-  // SPRAWDZONE OK
   // update comments for set, and count newComments property for badge
   updateCommentsForSet(commentsFromSelectedBookmark: IComment[]) {
     const allComments: IComment[] = [];
@@ -257,7 +247,6 @@ export class EditSetComponent
       : undefined;
   }
 
-  // SPRAWDZONE OK
   // count new - unreaded comments
   countNewComments(
     comments: IComment[],
@@ -273,7 +262,6 @@ export class EditSetComponent
     return newComments;
   }
 
-  // SPRAWDZONE OK
   // take edited data from form and update this.position array
   updatePositions(): void {
     if (this.positionsTableComponent) {
@@ -297,7 +285,6 @@ export class EditSetComponent
     this.positionsTableComponent?.updateFooter();
   }
 
-  // SPRAWDZONE OK
   // prevent from exit when form was edited
   canDeactivate(destination?: string): Promise<boolean> {
     if (this.setIsDirty) {
@@ -311,7 +298,6 @@ export class EditSetComponent
     return Promise.resolve(true);
   }
 
-  // SPRAWDZONE OK
   // confirmation window when form was edited and not saved
   exitPage(resolve: (value: boolean) => void) {
     const accept = () => {

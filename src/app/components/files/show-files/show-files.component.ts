@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { Dialog, DialogModule } from 'primeng/dialog';
@@ -32,11 +39,13 @@ export class ShowFilesComponent {
     private sanitizer: DomSanitizer,
     private filesService: FilesService,
     private notificationService: NotificationService,
-    private confirmationModalService: ConfirmationModalService
+    private confirmationModalService: ConfirmationModalService,
+    private cd: ChangeDetectorRef
   ) {}
   setId!: number;
   setName: string = '';
   @Input() who!: string;
+  @Output() refreshMenu = new EventEmitter<number>();
   displayPdf = false;
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
@@ -82,6 +91,8 @@ export class ShowFilesComponent {
             response.message
           );
           this.files = this.files.filter((file) => file.id !== id);
+          this.refreshMenu.emit(this.files.length);
+          this.cd.markForCheck();
         },
         error: (error) => {
           this.notificationService.showNotification('error', error.message);
@@ -106,4 +117,6 @@ export class ShowFilesComponent {
     this.displayPdfHeader = file.fileName;
     this.displayPdf = true;
   }
+
+  //refresh menu - after delete file neeed to update menu badge
 }

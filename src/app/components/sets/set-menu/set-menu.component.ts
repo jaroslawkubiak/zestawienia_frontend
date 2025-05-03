@@ -68,6 +68,7 @@ export class SetMenuComponent {
   menuItems: MenuItem[] = [];
   suppliersFromSet: ISupplier[] = [];
   emailsList: IEmailsToSet[] = [];
+  attachmentBadge: number = 0;
 
   constructor(
     private router: Router,
@@ -81,6 +82,8 @@ export class SetMenuComponent {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    this.attachmentBadge = this.set?.files?.length || 0;
+
     if (this.set && this.positions?.length && this.allSuppliers?.length) {
       this.findUniqueSuppliers();
       this.updateMenuItems();
@@ -190,8 +193,8 @@ export class SetMenuComponent {
       {
         label: 'Załączniki',
         icon: 'pi pi-cloud',
-        badge: String(this.set?.files?.length),
-        badgeStyleClass: this.set.files?.length
+        badge: String(this.attachmentBadge),
+        badgeStyleClass: this.attachmentBadge
           ? 'p-badge-contrast'
           : 'p-badge-secondary',
         command: () => this.showAttachedFiles(),
@@ -298,10 +301,19 @@ export class SetMenuComponent {
     });
   }
 
-  updateAttachedFiles(files: IFileFullDetails[]) {
+  //update set file list
+  updateAttachedFiles(files: IFileFullDetails[]): void {
+    const currentFileCount = this.set?.files?.length || 0;
+    this.attachmentBadge = currentFileCount + files.length;
+    this.updateMenuItems();
     this.updateFileList.emit(files);
   }
 
+  //delete
+  onDeleteFile(newFileLength: number) {
+    this.attachmentBadge = newFileLength;
+    this.updateMenuItems();
+  }
   // open preview for client
   showPreviewForClient() {
     const link = this.emailsService.createLinkForClient(
