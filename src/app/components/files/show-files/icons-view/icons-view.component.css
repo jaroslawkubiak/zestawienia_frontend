@@ -1,0 +1,32 @@
+
+.file-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 auto;
+  max-width: 940px;
+}
+
+.file-container .file-item {
+  position: relative;
+  width: var(--img-container-width);
+  height: 280px;
+  margin: 10px;
+  padding: 10px 5px;
+  border-radius: 5px;
+  background-color: var(--accent-color-lighter) !important;
+  -webkit-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+  -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+  box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+}
+
+.file-container .file-item:hover {
+  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+  box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+}
+
+.file-container .file-item i {
+  font-size: 80px !important;
+  color: var(--accent-color);
+  cursor: default;
+}

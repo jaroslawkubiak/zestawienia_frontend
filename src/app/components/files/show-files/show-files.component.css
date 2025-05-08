@@ -16,38 +16,6 @@
   color: var(--accent-color-darker);
 }
 
-.file-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  margin: 0 auto;
-  max-width: 940px;
-}
-
-.file-container .file-item {
-  position: relative;
-  width: var(--img-container-width);
-  height: 280px;
-  margin: 10px;
-  padding: 10px 5px;
-  border-radius: 5px;
-  background-color: var(--accent-color-lighter) !important;
-  -webkit-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
-  -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
-  box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
-}
-
-.file-container .file-item:hover {
-  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-  box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-}
-
-.file-container .file-item i {
-  font-size: 80px !important;
-  color: var(--accent-color);
-  cursor: default;
-}
-
 .p-image img {
   width: 100%;
   height: var(--img-height);
@@ -96,4 +64,24 @@
   padding: 40px;
   font-size: 4rem;
   color: var(--error-color);
+}
+
+.action-bar {
+  position: absolute;
+  top: 15px;
+  right: 30px;
+  display: flex;
+  gap: 1rem;
+  justify-content: end;
+  margin: 0 3rem;
+}
+
+.action-bar i {
+  padding: 0.75rem;
+  font-size: 2.6rem;
+  color: var(--accent-color-darker);
+}
+
+.action-bar i.active {
+  background-color: var(--accent-color-lighter);
 }

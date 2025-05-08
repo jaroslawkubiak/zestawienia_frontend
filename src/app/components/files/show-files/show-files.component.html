@@ -5,19 +5,31 @@
   [style]="{ width: '90%', maxWidth: '100rem' }"
 >
   <div class="file-wrapper">
+    <div class="action-bar">
+      <i
+        class="pi pi-list"
+        (click)="changeView('list')"
+        [ngClass]="{ active: defaultView === 'list' }"
+        pTooltip="Widok listy"
+        tooltipPosition="bottom"
+      ></i>
+      <i
+        class="pi pi-th-large"
+        (click)="changeView('icons')"
+        [ngClass]="{ active: defaultView === 'icons' }"
+        pTooltip="Widok ikon"
+        tooltipPosition="bottom"
+      ></i>
+    </div>
     <div *ngIf="files.length > 0">
-      <div class="title">Załączniki</div>
-      <ul class="file-container">
-        <li class="file-item" *ngFor="let file of files; let i = index">
-          <app-file-preview
-            [file]="file"
-            [canDelete]="who === 'client'"
-            (delete)="deleteFile(file.id)"
-            (download)="downloadFile(file.id)"
-            (openPdf)="openPdf(file)"
-          ></app-file-preview>
-        </li>
-      </ul>
+      <app-icons-view
+        *ngIf="defaultView === 'icons'"
+        [who]="who"
+        [files]="files"
+        [deleteFile]="deleteFile.bind(this)"
+        [downloadFile]="downloadFile.bind(this)"
+        [openPdf]="openPdf.bind(this)"
+      ></app-icons-view>
     </div>
     <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>
   </div>

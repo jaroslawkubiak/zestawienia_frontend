@@ -2,7 +2,7 @@ import { IHTMLTemplateOptions } from './types/IHTMLTemplateOptions';
 
 export const HTMLClient = {
   title: 'Inwestycja',
-  message: 'Przesyłamy link do zestawienia',
+  message: 'Przesyłamy link do inwestycji',
 };
 
 export const HTMLSupplier = {

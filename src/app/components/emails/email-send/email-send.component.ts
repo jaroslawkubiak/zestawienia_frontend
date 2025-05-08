@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -54,7 +55,8 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     private settingsService: SettingsService,
     private emailsService: EmailsService,
     private soundService: SoundService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -62,6 +64,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (response: ISetting) => {
         if (response) {
           this.fromEmail = response.value;
+          this.cd.markForCheck();
         }
       },
       error: (err) => {
@@ -71,7 +74,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.supplier) {
       this.newEmail.to = this.supplier.email;
-      this.newEmail.subject = `Zamówienie do zestawienia ${this.set.name}`;
+      this.newEmail.subject = `Zamówienie do inwestycji ${this.set.name}`;
       this.newEmail.link = this.emailsService.createLinkForSupplier(
         this.set.id,
         this.set.hash,

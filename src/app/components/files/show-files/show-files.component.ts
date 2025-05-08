@@ -16,9 +16,9 @@ import { ConfirmationModalService } from '../../../services/confirmation.service
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { ISet } from '../../sets/types/ISet';
-import { FilePreviewComponent } from '../file-preview/file-preview.component';
 import { FilesService } from '../files.service';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { IconsViewComponent } from './icons-view/icons-view.component';
 
 @Component({
   selector: 'app-show-files',
@@ -28,7 +28,7 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
     TooltipModule,
     DialogModule,
     ButtonModule,
-    FilePreviewComponent,
+    IconsViewComponent,
   ],
   templateUrl: './show-files.component.html',
   styleUrl: './show-files.component.css',
@@ -51,6 +51,7 @@ export class ShowFilesComponent {
   pdfUrl: SafeResourceUrl = '';
   files: IFileFullDetails[] = [];
   showFilesDialog = false;
+  defaultView = 'icons';
 
   showDialog(set: ISet) {
     this.setId = set.id;
@@ -118,5 +119,7 @@ export class ShowFilesComponent {
     this.displayPdf = true;
   }
 
-  //refresh menu - after delete file neeed to update menu badge
+  changeView(newView: string) {
+    this.defaultView = newView;
+  }
 }

@@ -28,7 +28,6 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 export class FilePreviewComponent {
   @Input() file!: IFileFullDetails;
   @Input() canDelete = false;
-
   @Output() delete = new EventEmitter<void>();
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();

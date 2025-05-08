@@ -32,3 +32,16 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.folder-wrapper {
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  color: var(--accent-color-darker);
+  gap: 8px;
+  font-size: 1.2rem;
+}
+
+.folder-icon {
+  font-size: 1.2rem;
+}
