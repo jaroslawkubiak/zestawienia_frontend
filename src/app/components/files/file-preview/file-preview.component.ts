@@ -7,9 +7,11 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
+import { ImageModule } from 'primeng/image';
 import { TooltipModule } from 'primeng/tooltip';
 import { PdfThumbnailComponent } from '../pdf-thumbnail/pdf-thumbnail.component';
-import { ImageModule } from 'primeng/image';
+import { IsImagePipe } from '../pipe/is-image.pipe';
+import { IsPdfPipe } from '../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 
 @Component({
@@ -22,6 +24,8 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
     ImageModule,
     ButtonModule,
     PdfThumbnailComponent,
+    IsImagePipe,
+    IsPdfPipe,
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -31,14 +35,6 @@ export class FilePreviewComponent {
   @Output() delete = new EventEmitter<void>();
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
-
-  get isImage(): boolean {
-    return ['JPG', 'JPEG', 'PNG'].includes(this.file?.type?.toUpperCase());
-  }
-
-  get isPdf(): boolean {
-    return this.file?.type?.toUpperCase() === 'PDF';
-  }
 
   get iconData() {
     const ext: string = this.file?.type?.toUpperCase() ?? '';

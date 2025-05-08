@@ -1,0 +1,43 @@
+.file-row {
+  height: 150px;
+  font-size: 1.8rem;
+}
+
+.file-row:hover {
+  background-color: var(--accent-color-lighter) !important;
+}
+
+.action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.p-image img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  display: block;
+}
+
+.indicator {
+  font-size: 80px;
+  color: var(--accent-color);
+}
+
+.file-pdf,
+.file-other {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  overflow: hidden;
+  width: 150px;
+}
+
+.file-other i {
+  color: var(--accent-color);
+  font-size: 80px;
+}

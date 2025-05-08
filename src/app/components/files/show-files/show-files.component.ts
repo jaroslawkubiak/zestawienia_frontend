@@ -19,6 +19,8 @@ import { ISet } from '../../sets/types/ISet';
 import { FilesService } from '../files.service';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
+import { ListViewComponent } from './list-view/list-view.component';
+import { isImage } from '../helper';
 
 @Component({
   selector: 'app-show-files',
@@ -29,6 +31,7 @@ import { IconsViewComponent } from './icons-view/icons-view.component';
     DialogModule,
     ButtonModule,
     IconsViewComponent,
+    ListViewComponent,
   ],
   templateUrl: './show-files.component.html',
   styleUrl: './show-files.component.css',
@@ -51,7 +54,7 @@ export class ShowFilesComponent {
   pdfUrl: SafeResourceUrl = '';
   files: IFileFullDetails[] = [];
   showFilesDialog = false;
-  defaultView = 'icons';
+  defaultView = 'list';
 
   showDialog(set: ISet) {
     this.setId = set.id;
@@ -101,9 +104,16 @@ export class ShowFilesComponent {
       });
     };
 
+    const deleteFilePreview = isImage(file)
+      ? `<img class="img-delete" src="${file.fullPath}" alt="${file.fileName}" />`
+      : '';
+
     const confirmMessage: IConfirmationMessage = {
-      header: 'Potwierdź usunięcie załącznika',
-      message: `Czy na pewno usunąć załącznik ${file.fileName}?`,
+      header: 'Potwierdź usunięcie',
+      message: `<div class="delete-file-wrapper">
+      Czy na pewno usunąć plik ${file.fileName}? 
+      ${deleteFilePreview}
+      </div>`,
       accept,
     };
 

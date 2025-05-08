@@ -9,13 +9,6 @@
   gap: 30px;
 }
 
-.title {
-  font-size: 2.4rem;
-  font-weight: 700;
-  text-align: center;
-  color: var(--accent-color-darker);
-}
-
 .p-image img {
   width: 100%;
   height: var(--img-height);
@@ -36,7 +29,7 @@
 }
 
 .p-image-action {
-  color: var(--accent-color-darker) !important;
+  color: var(--accent-color) !important;
 }
 
 .p-image-rotate-right-button,
@@ -79,9 +72,22 @@
 .action-bar i {
   padding: 0.75rem;
   font-size: 2.6rem;
-  color: var(--accent-color-darker);
+  color: var(--accent-color);
 }
 
 .action-bar i.active {
   background-color: var(--accent-color-lighter);
+}
+
+.img-delete {
+  height: 200px;
+}
+
+.delete-file-wrapper {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 750px !important;
 }

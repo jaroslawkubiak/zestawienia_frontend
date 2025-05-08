@@ -45,6 +45,6 @@
 
 .icon-overlay {
   z-index: 2;
-  font-size: 2rem;
+  font-size: 80px !important;
   color: var(--accent-color);
 }

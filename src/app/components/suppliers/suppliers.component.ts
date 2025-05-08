@@ -20,11 +20,11 @@ import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
+import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
-import { IColumn, IExportColumn } from '../../shared/types/ITable';
+import { IColumn } from '../../shared/types/ITable';
 import { SuppliersService } from './suppliers.service';
 import { ISupplier } from './types/ISupplier';
-import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 
 @Component({
   selector: 'app-suppliers',

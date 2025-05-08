@@ -5,7 +5,8 @@
   width: 100%;
 }
 
-.file-pdf {
+.file-pdf,
+.file-other {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,6 +14,11 @@
   height: var(--img-height);
   overflow: hidden;
   width: var(--img-container-width);
+}
+
+.file-other i {
+  color: var(--accent-color);
+  font-size: 80px;
 }
 
 .preview {
@@ -34,14 +40,19 @@ p {
 }
 
 .folder-wrapper {
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  color: var(--accent-color-darker);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-color);
   gap: 8px;
   font-size: 1.2rem;
 }
 
 .folder-icon {
   font-size: 1.2rem;
+}
+
+.indicator {
+  font-size: 80px;
+  color: var(--accent-color);
 }

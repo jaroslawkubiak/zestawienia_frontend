@@ -1,5 +1,5 @@
 <div class="preview">
-  <div *ngIf="isImage">
+  <div *ngIf="file | isImage">
     <p-image
       [src]="file.fullPath"
       [preview]="true"
@@ -7,7 +7,7 @@
       pTooltip="Powiększ"
     >
       <ng-template #indicator>
-        <i class="pi pi-search-plus"></i>
+        <i class="pi pi-search-plus indicator"></i>
       </ng-template>
       <ng-template #image>
         <img [src]="file.fullPath" alt="Załączony plik" />
@@ -27,14 +27,14 @@
     </p-image>
   </div>
 
-  <div class="file-pdf" *ngIf="isPdf">
+  <div class="file-pdf" *ngIf="file | isPdf">
     <app-pdf-thumbnail
       [file]="file"
       (click)="openPdf.emit(file)"
     ></app-pdf-thumbnail>
   </div>
 
-  <div class="file-pdf" *ngIf="!isImage && !isPdf">
+  <div class="file-other" *ngIf="!(file | isImage) && !(file | isPdf)">
     <i class="pi pi-file"></i>
   </div>
 

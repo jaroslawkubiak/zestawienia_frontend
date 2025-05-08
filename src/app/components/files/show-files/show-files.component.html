@@ -2,7 +2,7 @@
   header="Pliki dołączone do inwestycji: {{ setName }}"
   [modal]="true"
   [(visible)]="showFilesDialog"
-  [style]="{ width: '90%', maxWidth: '100rem' }"
+  [style]="{ width: '100%', maxWidth: '130rem' }"
 >
   <div class="file-wrapper">
     <div class="action-bar">
@@ -30,6 +30,14 @@
         [downloadFile]="downloadFile.bind(this)"
         [openPdf]="openPdf.bind(this)"
       ></app-icons-view>
+      <app-list-view
+        *ngIf="defaultView === 'list'"
+        [who]="who"
+        [files]="files"
+        (deleteFile)="deleteFile($event)"
+        (downloadFile)="downloadFile($event)"
+        (openPdf)="openPdf($event)"
+      ></app-list-view>
     </div>
     <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>
   </div>
