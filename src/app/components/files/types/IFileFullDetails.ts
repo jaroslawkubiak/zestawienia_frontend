@@ -8,6 +8,8 @@ export interface IFileFullDetails {
   dir: string;
   description: string;
   size: number;
+  width: number;
+  height: number;
   setId: ISet;
   createdAt: string;
   createdAtTimestamp: number;

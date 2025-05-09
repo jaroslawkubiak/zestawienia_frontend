@@ -68,6 +68,7 @@ export class FilesService {
     });
   }
 
+  // delete one file
   deleteFile(id: number): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
@@ -75,6 +76,18 @@ export class FilesService {
 
     return this.http.delete<any>(`${environment.API_URL}/files/${id}`, {
       headers,
+    });
+  }
+
+  // batch delete files
+  deleteFiles(ids: number[]): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
+    return this.http.delete<any>(`${environment.API_URL}/files`, {
+      headers,
+      body: { ids },
     });
   }
 }

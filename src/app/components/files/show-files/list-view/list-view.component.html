@@ -5,13 +5,29 @@
   dataKey="id"
   stripedRows
   [tableStyle]="{ 'min-width': '80rem' }"
-  [globalFilterFields]="['fileName', 'type', 'dir', 'size', 'createdAt']"
+  [globalFilterFields]="[
+    'fileName',
+    'type',
+    'dir',
+    'size',
+    'createdAtTimestamp'
+  ]"
   [rowHover]="true"
+  scrollable="true"
+  scrollHeight="800px"
 >
   <ng-template #header>
     <tr>
       <th style="width: 4rem; text-align: center">
-        <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkie" />
+        <p-button
+          severity="danger"
+          class="m-4"
+          icon="pi pi-trash"
+          alt="Usuń zaznaczone pliki"
+          pTooltip="Usuń zaznaczone pliki"
+          [disabled]="selectedFiles.length === 0"
+          (click)="deleteSelectedFiles()"
+        />
       </th>
       <th style="width: 160px; text-align: center">Podgląd</th>
       <th pSortableColumn="fileName" style="min-width: 6rem">
@@ -26,8 +42,9 @@
       <th pSortableColumn="size" style="width: 16rem">
         Rozmiar <p-sortIcon field="size" />
       </th>
-      <th pSortableColumn="createdAt" style="width: 16rem">
-        Przesłany <p-sortIcon field="createdAt" />
+      <th style="width: 16rem">Wymiary</th>
+      <th pSortableColumn="createdAtTimestamp" style="width: 16rem">
+        Przesłany <p-sortIcon field="createdAtTimestamp" />
       </th>
     </tr>
   </ng-template>
@@ -51,6 +68,7 @@
             alt="Usuń plik"
             pTooltip="Usuń plik"
             (click)="deleteFile.emit(file.id)"
+            [disabled]="selectedFiles.length !== 0"
           />
         </div>
       </td>
@@ -97,7 +115,8 @@
       <td>{{ file.fileName }}</td>
       <td>{{ file.type | uppercase }}</td>
       <td>{{ file.dir }}</td>
-      <td>{{ formatFileSize(file.size) }}</td>
+      <td>{{ file.displaySize }}</td>
+      <td>{{ file.dimmensions }}</td>
       <td>{{ file.createdAt }}</td>
     </tr>
   </ng-template>

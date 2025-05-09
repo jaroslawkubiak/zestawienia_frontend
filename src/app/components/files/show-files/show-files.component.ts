@@ -17,10 +17,10 @@ import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { ISet } from '../../sets/types/ISet';
 import { FilesService } from '../files.service';
+import { isImage } from '../helper';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
-import { isImage } from '../helper';
 
 @Component({
   selector: 'app-show-files',
@@ -114,6 +114,52 @@ export class ShowFilesComponent {
       Czy na pewno usunąć plik ${file.fileName}? 
       ${deleteFilePreview}
       </div>`,
+      accept,
+    };
+
+    this.confirmationModalService.showConfirmation(confirmMessage);
+  }
+
+  // delete selected files form server and remove from list
+  deleteFiles(ids: number[]) {
+    console.log(this.files);
+    if (ids.length === 0) {
+      return;
+    }
+
+    const accept = () => {
+      this.filesService.deleteFiles(ids).subscribe({
+        next: (response) => {
+          const messageOptions = (() => {
+            if (ids.length === 1) return 'plik';
+            if (ids.length > 1 && ids.length < 5) return 'pliki';
+            return 'plików';
+          })();
+
+          this.notificationService.showNotification(
+            'success',
+            `Pomyślnie usunięto ${ids.length} ${messageOptions}`
+          );
+
+          this.files = this.files.filter((file) => !ids.includes(file.id));
+          this.refreshMenu.emit(this.files.length);
+          this.cd.markForCheck();
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
+    };
+
+    const options = (() => {
+      if (ids.length === 1) return 'zaznaczony plik';
+      if (ids.length > 1 && ids.length < 5) return 'zaznaczone pliki';
+      return 'zaznaczonych plików';
+    })();
+
+    const confirmMessage: IConfirmationMessage = {
+      header: 'Potwierdź usunięcie',
+      message: `Czy na pewno usunąć ${ids.length} ${options}?`,
       accept,
     };
 
