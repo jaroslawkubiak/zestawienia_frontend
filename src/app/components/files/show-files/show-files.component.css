@@ -91,7 +91,3 @@
   flex-direction: column;
   width: 750px !important;
 }
-
-.disabled {
-  color: var(--neutral-color-darker) !important;
-}

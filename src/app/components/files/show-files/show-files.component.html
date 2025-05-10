@@ -2,17 +2,10 @@
   header="Pliki dołączone do inwestycji: {{ setName }}"
   [modal]="true"
   [(visible)]="showFilesDialog"
-  [style]="{ width: '100%', maxWidth: '130rem' }"
+  [style]="{ width: '100%', maxWidth: '160rem' }"
 >
   <div class="file-wrapper">
     <div class="action-bar">
-      <i
-        class="pi pi-download"
-        (click)="selectedFiles.length === 0 || downloadFiles()"
-        pTooltip="Pobierz pliki"
-        tooltipPosition="bottom"
-        [ngClass]="{ disabled: selectedFiles.length === 0 }"
-      ></i>
       <i
         class="pi pi-list"
         (click)="changeView('list')"
@@ -45,7 +38,9 @@
         (deleteFile)="deleteFile($event)"
         (deleteFiles)="deleteFiles()"
         (downloadFile)="downloadFile($event)"
+        (downloadFiles)="downloadFiles()"
         (addFileToSelected)="addFileToSelected($event)"
+        (selectAll)="selectAll($event)"
         (openPdf)="openPdf($event)"
       ></app-list-view>
     </div>

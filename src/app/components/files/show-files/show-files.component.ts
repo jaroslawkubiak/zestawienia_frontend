@@ -15,13 +15,13 @@ import { environment } from '../../../../environments/environment';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
+import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 import { ISet } from '../../sets/types/ISet';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
-import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 
 @Component({
   selector: 'app-show-files',
@@ -62,6 +62,7 @@ export class ShowFilesComponent {
     this.setId = set.id;
     this.setName = set.name;
     this.showFilesDialog = true;
+    this.selectedFiles = [];
 
     if (set.files) {
       this.files = set.files.map((file) => {
@@ -207,6 +208,16 @@ export class ShowFilesComponent {
       this.selectedFiles = this.selectedFiles.filter((el) => el.id !== file.id);
     } else {
       this.selectedFiles = [...this.selectedFiles, file];
+    }
+  }
+
+  selectAll(event: any) {
+    const checked = (event.target as HTMLInputElement).checked;
+
+    if (checked) {
+      this.selectedFiles = [...this.files];
+    } else {
+      this.selectedFiles = [];
     }
   }
 }

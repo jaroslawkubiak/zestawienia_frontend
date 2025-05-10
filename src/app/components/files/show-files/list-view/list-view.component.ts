@@ -43,12 +43,15 @@ export class ListViewComponent implements OnChanges {
   @Output() downloadFile = new EventEmitter<number>();
   @Output() deleteFile = new EventEmitter<number>();
   @Output() deleteFiles = new EventEmitter<void>();
+  @Output() clearSelectedFiles = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
+  @Output() selectAll = new EventEmitter<any>();
+  @Output() downloadFiles = new EventEmitter<any>();
   @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    // this.selectedFiles = [];
+    this.clearSelectedFiles.emit();
     if (this.files) {
       this.files = this.files.map((item) => {
         return {

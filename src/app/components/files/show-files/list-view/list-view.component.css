@@ -7,13 +7,6 @@
   background-color: var(--accent-color-lighter) !important;
 }
 
-.action-btns {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  align-items: center;
-}
-
 .p-image img {
   width: 100%;
   height: 150px;

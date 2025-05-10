@@ -19,7 +19,22 @@
 >
   <ng-template #header>
     <tr>
-      <th style="width: 4rem; text-align: center">
+      <th style="width: 3rem; text-align: center">
+        <p-tableHeaderCheckbox
+          pTooltip="Zaznacz wszystkie pliki"
+          (click)="selectAll.emit($event)"
+        />
+      </th>
+      <th style="width: 10rem; text-align: center">
+        <p-button
+          severity="info"
+          class="m-4"
+          icon="pi pi-download"
+          alt="Pobierz pliki"
+          pTooltip="Pobierz pliki"
+          [disabled]="selectedFiles.length === 0"
+          (click)="downloadFiles.emit()"
+        />
         <p-button
           severity="danger"
           class="m-4"
@@ -52,12 +67,14 @@
   <ng-template #body let-file>
     <tr class="file-row">
       <td>
-        <div class="action-btns">
-          <p-tableCheckbox
-            [value]="file"
-            pTooltip="Zaznacz plik"
-            (click)="addFileToSelected.emit(file)"
-          />
+        <p-tableCheckbox
+          [value]="file"
+          pTooltip="Zaznacz plik"
+          (click)="addFileToSelected.emit(file)"
+        />
+      </td>
+      <td>
+        <div class="flex-center">
           <p-button
             severity="info"
             class="m-4"
@@ -119,7 +136,7 @@
       </td>
       <td>{{ file.fileName }}</td>
       <td>{{ file.type | uppercase }}</td>
-      <td>{{ file.dir }}</td>
+      <td>/{{ file.dir }}</td>
       <td>{{ file.displaySize }}</td>
       <td>{{ file.dimmensions }}</td>
       <td>{{ file.createdAt }}</td>
