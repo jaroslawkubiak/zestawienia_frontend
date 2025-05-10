@@ -310,8 +310,8 @@ export class SetMenuComponent {
   }
 
   //delete
-  onDeleteFile(newFileLength: number) {
-    this.attachmentBadge = newFileLength;
+  onDeleteFile(files: IFileFullDetails[]) {
+    this.attachmentBadge = files.length;
     this.updateMenuItems();
   }
   // open preview for client

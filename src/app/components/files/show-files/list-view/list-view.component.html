@@ -1,9 +1,12 @@
 <p-table
   #dt
+  dataKey="id"
+  scrollable="true"
+  scrollHeight="500px"
+  stripedRows
+  [rowTrackBy]="trackByFileId"
   [value]="files"
   [(selection)]="selectedFiles"
-  dataKey="id"
-  stripedRows
   [tableStyle]="{ 'min-width': '80rem' }"
   [globalFilterFields]="[
     'fileName',
@@ -13,8 +16,6 @@
     'createdAtTimestamp'
   ]"
   [rowHover]="true"
-  scrollable="true"
-  scrollHeight="800px"
 >
   <ng-template #header>
     <tr>
@@ -23,10 +24,10 @@
           severity="danger"
           class="m-4"
           icon="pi pi-trash"
-          alt="Usuń zaznaczone pliki"
-          pTooltip="Usuń zaznaczone pliki"
+          alt="Usuń pliki"
+          pTooltip="Usuń pliki"
           [disabled]="selectedFiles.length === 0"
-          (click)="deleteSelectedFiles()"
+          (click)="deleteFiles.emit()"
         />
       </th>
       <th style="width: 160px; text-align: center">Podgląd</th>
@@ -52,7 +53,11 @@
     <tr class="file-row">
       <td>
         <div class="action-btns">
-          <p-tableCheckbox [value]="file" pTooltip="Zaznacz plik" />
+          <p-tableCheckbox
+            [value]="file"
+            pTooltip="Zaznacz plik"
+            (click)="addFileToSelected.emit(file)"
+          />
           <p-button
             severity="info"
             class="m-4"

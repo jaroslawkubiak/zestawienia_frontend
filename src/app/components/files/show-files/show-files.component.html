@@ -7,6 +7,13 @@
   <div class="file-wrapper">
     <div class="action-bar">
       <i
+        class="pi pi-download"
+        (click)="selectedFiles.length === 0 || downloadFiles()"
+        pTooltip="Pobierz pliki"
+        tooltipPosition="bottom"
+        [ngClass]="{ disabled: selectedFiles.length === 0 }"
+      ></i>
+      <i
         class="pi pi-list"
         (click)="changeView('list')"
         [ngClass]="{ active: defaultView === 'list' }"
@@ -34,9 +41,11 @@
         *ngIf="defaultView === 'list'"
         [who]="who"
         [files]="files"
+        [selectedFiles]="selectedFiles"
         (deleteFile)="deleteFile($event)"
-        (deleteFiles)="deleteFiles($event)"
+        (deleteFiles)="deleteFiles()"
         (downloadFile)="downloadFile($event)"
+        (addFileToSelected)="addFileToSelected($event)"
         (openPdf)="openPdf($event)"
       ></app-list-view>
     </div>

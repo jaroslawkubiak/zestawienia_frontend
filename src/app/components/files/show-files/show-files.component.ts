@@ -45,14 +45,15 @@ export class ShowFilesComponent {
     private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
   ) {}
+  @Input() who!: string;
+  @Output() refreshMenu = new EventEmitter<IFileFullDetails[]>();
   setId!: number;
   setName: string = '';
-  @Input() who!: string;
-  @Output() refreshMenu = new EventEmitter<number>();
   displayPdf = false;
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
   files: IFileFullDetails[] = [];
+  selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
   defaultView = 'list';
 
@@ -95,7 +96,7 @@ export class ShowFilesComponent {
             response.message
           );
           this.files = this.files.filter((file) => file.id !== id);
-          this.refreshMenu.emit(this.files.length);
+          this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
         },
         error: (error) => {
@@ -120,12 +121,13 @@ export class ShowFilesComponent {
     this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
-  // delete selected files form server and remove from list
-  deleteFiles(ids: number[]) {
-    console.log(this.files);
-    if (ids.length === 0) {
+  // batch delete selected files form server and remove from list
+  deleteFiles() {
+    if (this.selectedFiles.length === 0) {
       return;
     }
+
+    const ids: number[] = this.selectedFiles.map((item) => item.id);
 
     const accept = () => {
       this.filesService.deleteFiles(ids).subscribe({
@@ -142,7 +144,7 @@ export class ShowFilesComponent {
           );
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
-          this.refreshMenu.emit(this.files.length);
+          this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
         },
         error: (error) => {
@@ -177,5 +179,20 @@ export class ShowFilesComponent {
 
   changeView(newView: string) {
     this.defaultView = newView;
+  }
+
+  downloadFiles() {
+    console.log(`##### downloadFiles #####`);
+    console.log(this.selectedFiles);
+  }
+
+  addFileToSelected(file: IFileFullDetails) {
+    const exists = this.selectedFiles.some((el) => el.id === file.id);
+
+    if (exists) {
+      this.selectedFiles = this.selectedFiles.filter((el) => el.id !== file.id);
+    } else {
+      this.selectedFiles = [...this.selectedFiles, file];
+    }
   }
 }

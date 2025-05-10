@@ -108,13 +108,14 @@ export class SetsComponent implements OnInit {
     });
   }
 
+  // filter sets - hide archived sets on list
   filterSets() {
     this.sets = this.hideClosedSets
       ? this.allSets.filter((item) => item.status !== SetStatus.archive)
       : [...this.allSets];
   }
 
-  openNew() {
+  addNew() {
     this.router.navigate(['/sets/new']);
   }
 
@@ -167,6 +168,7 @@ export class SetsComponent implements OnInit {
     this.dialogShowFilesComponent.showDialog(set);
   }
 
+  // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     const uploadedSetId = +uploadedFiles[0].setId;
     this.sets = this.sets.map((set) =>
@@ -187,5 +189,13 @@ export class SetsComponent implements OnInit {
   showClosedSets() {
     this.hideClosedSets = !this.hideClosedSets;
     this.filterSets();
+  }
+
+  // when delete files - refresh badge
+  onDeleteFile(files: IFileFullDetails[]) {
+    const setId = +files[0].setId.id;
+    this.sets = this.sets.map((item) =>
+      item.id === setId ? { ...item, files: files } : item
+    );
   }
 }

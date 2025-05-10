@@ -37,16 +37,18 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   encapsulation: ViewEncapsulation.None,
 })
 export class ListViewComponent implements OnChanges {
-  selectedFiles: IFileFullDetails[] = [];
   @Input() who!: string;
   @Input() files: IFileFullDetails[] = [];
+  @Input() selectedFiles: IFileFullDetails[] = [];
   @Output() downloadFile = new EventEmitter<number>();
   @Output() deleteFile = new EventEmitter<number>();
-  @Output() deleteFiles = new EventEmitter<number[]>();
+  @Output() deleteFiles = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
+  @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
+  @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.selectedFiles = [];
+    // this.selectedFiles = [];
     if (this.files) {
       this.files = this.files.map((item) => {
         return {
@@ -56,6 +58,10 @@ export class ListViewComponent implements OnChanges {
         };
       });
     }
+  }
+
+  trackByFileId(index: number, file: IFileFullDetails): number {
+    return file.id;
   }
 
   formatFileSize(bytes: number) {
@@ -79,10 +85,5 @@ export class ListViewComponent implements OnChanges {
     }
 
     return '';
-  }
-
-  deleteSelectedFiles() {
-    const ids: number[] = this.selectedFiles.map((item) => item.id);
-    this.deleteFiles.emit(ids);
   }
 }

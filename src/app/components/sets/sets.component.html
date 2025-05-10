@@ -1,5 +1,5 @@
 <app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
-<app-show-files who="user" />
+<app-show-files who="user" (refreshMenu)="onDeleteFile($event)" />
 
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
@@ -16,7 +16,7 @@
         alt="Nowe zestawienie"
         pTooltip="Nowe zestawienie"
         tooltipPosition="bottom"
-        (onClick)="openNew()"
+        (onClick)="addNew()"
       />
       <div class="status-wrapper">
         <p-checkbox
