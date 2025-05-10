@@ -21,6 +21,7 @@ import { isImage } from '../helper';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
+import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 
 @Component({
   selector: 'app-show-files',
@@ -182,8 +183,21 @@ export class ShowFilesComponent {
   }
 
   downloadFiles() {
-    console.log(`##### downloadFiles #####`);
-    console.log(this.selectedFiles);
+    const sanitazeName = this.setName
+      .trim()
+      .replace(/\s+/g, '-')
+      .replace(/:/g, '-')
+      .replace(/[()]/g, '');
+
+    const ids: number[] = this.selectedFiles.map((item) => item.id);
+    this.filesService.downloadFiles(ids).subscribe((blob) => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${sanitazeName + '-' + getFormatedDate()}.zip`;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
   }
 
   addFileToSelected(file: IFileFullDetails) {

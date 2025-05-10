@@ -16,6 +16,22 @@ export class FilesService {
   constructor(private http: HttpClient, private authService: AuthService) {}
 
   // save created pdf from set
+  downloadFiles(ids: number[]): Observable<any> {
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+
+    return this.http.post(
+      `${environment.API_URL}/files/download-zip`,
+      { ids },
+      {
+        headers,
+        responseType: 'blob',
+      }
+    );
+  }
+
+  // save created pdf from set
   savePdf(setId: number, formData: FormData): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
