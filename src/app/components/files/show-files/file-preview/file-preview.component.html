@@ -38,7 +38,9 @@
     <i class="pi pi-file"></i>
   </div>
 
-  <p>{{ file.fileName }}</p>
+  <p [ngClass]="{ textBold: isSelected }">
+    {{ file.fileName }}
+  </p>
 
   <div class="action-btns">
     <p-button
@@ -49,7 +51,6 @@
       pTooltip="Pobierz plik"
       tooltipPosition="bottom"
       (click)="download.emit()"
-      [disabled]="selectedFiles.length !== 0"
     />
     <p-checkbox
       (click)="addFileToSelected.emit(file)"
