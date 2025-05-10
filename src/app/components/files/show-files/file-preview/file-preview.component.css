@@ -24,19 +24,20 @@
 .preview {
   display: flex;
   flex-direction: column;
-  height: 280px;
+  height: 350px;
   align-items: center;
   justify-content: space-between;
 }
 
 p {
   all: unset;
-  font-size: 1rem;
+  font-size: 1.2rem;
   text-align: center;
   width: 180px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: var(--accent-color);
 }
 
 .indicator {

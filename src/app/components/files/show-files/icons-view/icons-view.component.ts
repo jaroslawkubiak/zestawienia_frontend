@@ -1,11 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { FilePreviewComponent } from '../../file-preview/file-preview.component';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
+import { TooltipModule } from 'primeng/tooltip';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
+import { FilePreviewComponent } from '../file-preview/file-preview.component';
 
 @Component({
   selector: 'app-icons-view',
-  imports: [FilePreviewComponent, CommonModule],
+  imports: [
+    FilePreviewComponent,
+    CommonModule,
+    FormsModule,
+    ButtonModule,
+    TooltipModule,
+    CheckboxModule,
+  ],
   templateUrl: './icons-view.component.html',
   styleUrl: './icons-view.component.css',
 })
@@ -17,6 +28,10 @@ export class IconsViewComponent {
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
   @Input() openPdf!: (file: IFileFullDetails) => void;
+  @Input() addFileToSelected!: (file: IFileFullDetails) => void;
+  @Output() downloadFiles = new EventEmitter<any>();
+  @Output() deleteFiles = new EventEmitter<void>();
+  @Output() selectAll = new EventEmitter<any>();
   sortedFiles: IFileFullDetails[] = [];
 
   ngOnInit() {

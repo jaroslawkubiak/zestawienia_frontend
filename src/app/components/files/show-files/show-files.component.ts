@@ -66,16 +66,13 @@ export class ShowFilesComponent {
     this.selectedFiles = [];
 
     if (set.files) {
-      const sortedFiles = [...set.files];
-      sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
-
-      this.uniqueDir = [...new Set(sortedFiles.map((item) => item.dir))];
-
       this.files = set.files.map((file) => {
         const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
 
         return { ...file, fullPath };
       });
+
+      this.uniqueDir = this.getUniqueDirectory();
     }
   }
 
@@ -104,6 +101,8 @@ export class ShowFilesComponent {
             response.message
           );
           this.files = this.files.filter((file) => file.id !== id);
+          this.uniqueDir = this.getUniqueDirectory();
+
           this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
         },
@@ -152,6 +151,8 @@ export class ShowFilesComponent {
           );
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
+          this.uniqueDir = this.getUniqueDirectory();
+
           this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
         },
@@ -225,5 +226,14 @@ export class ShowFilesComponent {
     } else {
       this.selectedFiles = [];
     }
+
+    this.cd.markForCheck();
+  }
+
+  getUniqueDirectory() {
+    const sortedFiles = [...this.files];
+    sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+
+    return [...new Set(sortedFiles.map((item) => item.dir))];
   }
 }

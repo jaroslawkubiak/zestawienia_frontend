@@ -27,9 +27,14 @@
         [who]="who"
         [files]="files"
         [uniqueDir]="uniqueDir"
+        [selectedFiles]="selectedFiles"
         [deleteFile]="deleteFile.bind(this)"
         [downloadFile]="downloadFile.bind(this)"
         [openPdf]="openPdf.bind(this)"
+        [addFileToSelected]="addFileToSelected.bind(this)"
+        (deleteFiles)="deleteFiles()"
+        (downloadFiles)="downloadFiles()"
+        (selectAll)="selectAll($event)"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"

@@ -49,16 +49,17 @@
       pTooltip="Pobierz plik"
       tooltipPosition="bottom"
       (click)="download.emit()"
+      [disabled]="selectedFiles.length !== 0"
     />
-    <div id="file-icons" *ngIf="file">
-      <i
-        [class]="iconData.icon"
-        [pTooltip]="iconData.tooltip"
-        tooltipPosition="bottom"
-      ></i>
-    </div>
+    <p-checkbox
+      (click)="addFileToSelected.emit(file)"
+      [binary]="true"
+      size="large"
+      pTooltip="Zaznacz plik"
+      tooltipPosition="bottom"
+      [ngModel]="isSelected"
+    />
     <p-button
-      [disabled]="canDelete"
       severity="danger"
       class="m-4"
       icon="pi pi-trash"
@@ -66,6 +67,7 @@
       pTooltip="Usuń plik"
       tooltipPosition="bottom"
       (click)="delete.emit()"
+      [disabled]="canDelete || selectedFiles.length !== 0"
     />
   </div>
 </div>
