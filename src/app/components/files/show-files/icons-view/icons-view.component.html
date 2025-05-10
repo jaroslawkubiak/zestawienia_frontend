@@ -1,11 +1,17 @@
-<ul class="file-container">
-  <li class="file-item" *ngFor="let file of files; let i = index">
-    <app-file-preview
-      [file]="file"
-      [canDelete]="who === 'client'"
-      (delete)="deleteFile(file.id)"
-      (download)="downloadFile(file.id)"
-      (openPdf)="openPdf(file)"
-    ></app-file-preview>
-  </li>
-</ul>
+<div class="directory-wrapper" *ngFor="let dir of uniqueDir">
+  <h3>
+    <i class="pi pi-folder"></i>
+    /{{ dir }}
+  </h3>
+  <ul class="file-container">
+    <li class="file-item" *ngFor="let file of filesFilteredByDir(dir)">
+      <app-file-preview
+        [file]="file"
+        [canDelete]="who === 'client'"
+        (delete)="deleteFile(file.id)"
+        (download)="downloadFile(file.id)"
+        (openPdf)="openPdf(file)"
+      ></app-file-preview>
+    </li>
+  </ul>
+</div>

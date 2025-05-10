@@ -39,19 +39,6 @@ p {
   text-overflow: ellipsis;
 }
 
-.folder-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent-color);
-  gap: 8px;
-  font-size: 1.2rem;
-}
-
-.folder-icon {
-  font-size: 1.2rem;
-}
-
 .indicator {
   font-size: 80px;
   color: var(--accent-color);

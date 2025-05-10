@@ -56,7 +56,8 @@ export class ShowFilesComponent {
   files: IFileFullDetails[] = [];
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
-  defaultView = 'list';
+  defaultView = 'icons';
+  uniqueDir: string[] = [];
 
   showDialog(set: ISet) {
     this.setId = set.id;
@@ -65,6 +66,11 @@ export class ShowFilesComponent {
     this.selectedFiles = [];
 
     if (set.files) {
+      const sortedFiles = [...set.files];
+      sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+
+      this.uniqueDir = [...new Set(sortedFiles.map((item) => item.dir))];
+
       this.files = set.files.map((file) => {
         const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
 

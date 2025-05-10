@@ -12,8 +12,19 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 export class IconsViewComponent {
   @Input() who!: string;
   @Input() files: IFileFullDetails[] = [];
+  @Input() uniqueDir: string[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
   @Input() openPdf!: (file: IFileFullDetails) => void;
+  sortedFiles: IFileFullDetails[] = [];
+
+  ngOnInit() {
+    this.sortedFiles = [...this.files];
+    this.sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+  }
+
+  filesFilteredByDir(dir: string): IFileFullDetails[] {
+    return this.files.filter((file) => file.dir === dir);
+  }
 }
