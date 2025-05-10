@@ -4,6 +4,7 @@ import * as pdfjsLib from 'pdfjs-dist';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { environment } from '../../../../environments/environment';
+import { PdfCacheService } from './pdf-cache.service';
 
 @Component({
   selector: 'app-pdf-thumbnail',
@@ -15,6 +16,7 @@ export class PdfThumbnailComponent implements OnInit {
   @Input() file!: IFileFullDetails;
   @Output() pdfClick = new EventEmitter<IFileFullDetails>();
 
+  constructor(private pdfCacheService: PdfCacheService) {}
   handleClick() {
     this.pdfClick.emit(this.file);
   }
@@ -23,6 +25,14 @@ export class PdfThumbnailComponent implements OnInit {
 
   ngOnInit(): void {
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'assets/pdfjs/pdf.worker.min.mjs';
+
+    const cached = this.pdfCacheService.get(this.file.id);
+    if (cached) {
+      this.thumbnail = cached;
+      this.isLoading = false;
+      return;
+    }
+
     this.generateThumbnail();
   }
 
