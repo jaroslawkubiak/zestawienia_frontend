@@ -46,7 +46,7 @@ export class ShowFilesComponent {
     private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef
   ) {}
-  @Input() who!: string;
+  @Input() who!: 'user' | 'client';
   @Output() refreshMenu = new EventEmitter<IFileFullDetails[]>();
   setId!: number;
   setName: string = '';
@@ -56,7 +56,7 @@ export class ShowFilesComponent {
   files: IFileFullDetails[] = [];
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
-  defaultView = 'icons';
+  defaultView = 'list';
   uniqueDir: string[] = [];
 
   showDialog(set: ISet) {

@@ -22,15 +22,32 @@ h3 {
   gap: 50px;
 }
 
-.header-actions-btn i {
-  font-size: 3rem;
+.action-btn-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
   color: var(--accent-color-lighter);
 }
 
-.header-actions-btn i:hover {
+.action-btn-wrapper:hover {
   color: var(--error-color);
 }
 
+.action-btn-wrapper label {
+  font-size: 2.2rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.action-btn-wrapper i {
+  font-size: 3rem;
+}
+
+.action-btn-wrapper i,
+.action-btn-wrapper label {
+  color: inherit;
+}
 .title {
   display: flex;
   flex-direction: column;

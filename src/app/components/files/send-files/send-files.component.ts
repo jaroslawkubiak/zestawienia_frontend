@@ -40,7 +40,7 @@ export class SendFilesComponent {
     private filesService: FilesService,
     private notificationService: NotificationService
   ) {}
-  @Input() who!: string;
+  @Input() who!: 'user' | 'client';
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
   showSendFilesDialog = false;
   setId!: number;
@@ -49,6 +49,7 @@ export class SendFilesComponent {
   uploadedFiles: any[] = [];
   uploadProgress = 0;
   fileLimit = 20;
+  selectedDirectory: string | null = null;
 
   directoryList: IFileDirectoryList[] = Object.entries(FileDirectoryList).map(
     ([key, value]) => ({
@@ -61,7 +62,7 @@ export class SendFilesComponent {
     severity: 'primary',
     label: 'Wybierz pliki',
     size: 'large',
-    disabled: true,
+    disabled: this.who === 'user',
   };
 
   uploadButtonProps: any = { severity: 'info', label: 'Wgraj', size: 'large' };
@@ -70,8 +71,6 @@ export class SendFilesComponent {
     label: 'Anuluj',
     size: 'large',
   };
-
-  selectedDirectory: string | null = null;
 
   changeDirectory() {
     this.chooseButtonProps = {
@@ -84,6 +83,10 @@ export class SendFilesComponent {
     this.setId = setId;
     this.setName = setName;
     this.showSendFilesDialog = true;
+
+    if (this.who === 'client') {
+      this.selectedDirectory = 'inspirations';
+    }
   }
 
   openFileDialogManually() {
@@ -101,7 +104,7 @@ export class SendFilesComponent {
       const uploadFolder =
         this.who === 'user' ? this.selectedDirectory : 'inspirations';
 
-        for (let file of files) {
+      for (let file of files) {
         formData.append('files', file, file.name);
       }
 

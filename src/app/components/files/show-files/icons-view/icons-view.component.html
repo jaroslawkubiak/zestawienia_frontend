@@ -17,6 +17,7 @@
     (click)="downloadFiles.emit()"
   />
   <p-button
+    *ngIf="who === 'user'"
     severity="danger"
     class="m-4"
     icon="pi pi-trash"
@@ -35,7 +36,7 @@
     <li class="file-item" *ngFor="let file of filesFilteredByDir(dir)">
       <app-file-preview
         [file]="file"
-        [canDelete]="who === 'client'"
+        [who]="who"
         [selectedFiles]="selectedFiles"
         (delete)="deleteFile(file.id)"
         (addFileToSelected)="addFileToSelected(file)"

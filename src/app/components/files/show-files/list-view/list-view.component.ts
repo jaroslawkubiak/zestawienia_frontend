@@ -37,7 +37,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   encapsulation: ViewEncapsulation.None,
 })
 export class ListViewComponent implements OnChanges {
-  @Input() who!: string;
+  @Input() who!: 'user' | 'client';
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Output() downloadFile = new EventEmitter<number>();
@@ -88,5 +88,13 @@ export class ListViewComponent implements OnChanges {
     }
 
     return '';
+  }
+
+  canDelete(file: IFileFullDetails): boolean {
+    if (this.who === 'user') {
+      return false;
+    } else {
+      return file.dir === 'inspirations' ? false : true;
+    }
   }
 }

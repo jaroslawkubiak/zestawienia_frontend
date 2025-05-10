@@ -35,7 +35,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 })
 export class FilePreviewComponent {
   @Input() file!: IFileFullDetails;
-  @Input() canDelete = false;
+  @Input() who!: 'user' | 'client';
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Output() delete = new EventEmitter<void>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
@@ -44,5 +44,13 @@ export class FilePreviewComponent {
 
   get isSelected(): boolean {
     return this.selectedFiles.some((f) => f.id === this.file.id);
+  }
+
+  get canDelete(): boolean {
+    if (this.who === 'user') {
+      return false;
+    } else {
+      return this.file.dir === 'inspirations' ? false : true;
+    }
   }
 }

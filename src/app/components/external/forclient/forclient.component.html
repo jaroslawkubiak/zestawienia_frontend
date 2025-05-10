@@ -8,29 +8,25 @@
       <h1>{{ set.name }}</h1>
     </div>
     <div class="header-actions-btn">
-      <!-- <i
-        class="pi pi-file-pdf {{ this.files?.pdf ? '' : 'disabled' }}"
-        (click)="this.files?.pdf && downloadPdf()"
-        pTooltip="{{ this.files?.pdf ? 'Pobierz pdf' : 'Brak pdf' }}"
-        tooltipPosition="bottom"
-      ></i> -->
-      <div>
-        Załączone pliki
+      <div class="action-btn-wrapper" (click)="showAttachedFiles()">
         <i
-          class="pi pi-paperclip"
+          class="pi pi-cloud"
           pTooltip="Załączone pliki"
           tooltipPosition="bottom"
-          (click)="showAttachedFiles()"
         ></i>
+        <label> Załączone pliki </label>
       </div>
-      <div>
-        Wgraj swój plik
+      <div
+        class="action-btn-wrapper"
+        (click)="openSendFilesDialog(set.id, set.name)"
+      >
         <i
-          class="pi pi-upload"
+          id="upload-icon"
+          class="pi pi-paperclip"
           pTooltip="Wgraj swój plik"
           tooltipPosition="bottom"
-          (click)="openSendFilesDialog(set.id, set.name)"
         ></i>
+        <label for="upload-icon"> Wgraj swój plik </label>
       </div>
     </div>
   </div>

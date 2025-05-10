@@ -12,14 +12,13 @@ import {
 } from '../../../shared/helpers/calculate';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
-import { FilesService } from '../../files/files.service';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
+import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
-import { IFileFullDetails } from '../../files/types/IFileFullDetails';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 
 @Component({
   selector: 'app-setforclient',
@@ -41,7 +40,7 @@ export class ForClientComponent implements OnInit {
   set!: ISet;
   positions: IPosition[] = [];
   uniquePositionIds: number[] = [];
-  files: IFileFullDetails | undefined = undefined;
+  files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
 
   @ViewChild(ShowFilesComponent, { static: false })
@@ -57,7 +56,6 @@ export class ForClientComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private filesService: FilesService,
     private editSetService: EditSetService
   ) {}
 
@@ -115,7 +113,9 @@ export class ForClientComponent implements OnInit {
         };
       });
 
-      // this.files = set?.files;
+      this.files = (this.set?.files || []).filter(
+        (item) => item.dir !== 'robocze'
+      );
       this.sortByBookmarkAndOrder(this.positions);
 
       this.uniquePositionIds = [
@@ -136,26 +136,6 @@ export class ForClientComponent implements OnInit {
     });
   }
 
-  // download latest pdf
-  // downloadPdf() {
-  //   if (!this.files?.pdf) {
-  //     return;
-  //   }
-
-  //   const filesList = this.filesService.preparePdfFilesList(
-  //     this.setId,
-  //     this.files
-  //   );
-
-  //   const sortedFiles = filesList.sort((a, b) => {
-  //     const dateA = this.extractDateFromFilename(a.name);
-  //     const dateB = this.extractDateFromFilename(b.name);
-  //     return dateB.getTime() - dateA.getTime();
-  //   });
-
-  //   this.filesService.downloadAndSaveFile(this.setId, sortedFiles[0]);
-  // }
-
   // check date in pdf file name to download latest pdf file
   extractDateFromFilename(filename: string): Date {
     const match = filename.match(/(\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2})/);
@@ -169,15 +149,9 @@ export class ForClientComponent implements OnInit {
   }
 
   showAttachedFiles() {
-    // this.editSetService.getSetFiles(this.setId).subscribe({
-    //   next: (response: IFileFullDetails) => {
-    //     this.dialogShowFilesComponent.showDialog(
-    //       this.setId,
-    //       this.set.name,
-    //       response
-    //     );
-    //   },
-    // });
+    console.log(this.files);
+    const preparedSet = { ...this.set, files: this.files };
+    this.dialogShowFilesComponent.showDialog(preparedSet);
   }
 
   openSendFilesDialog(setId: number, setName: string) {
