@@ -25,7 +25,7 @@ import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
-import { SetStatus } from './types/SetStatus';
+import { SetStatus } from './types/set-status.enum';
 
 @Component({
   selector: 'app-sets',

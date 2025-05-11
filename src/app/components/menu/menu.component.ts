@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { AuthService } from '../../login/auth.service';
-import { IMenu } from './types/IMenu';
+import { IMenu } from './IMenu';
 
 @Component({
   selector: 'app-menu',

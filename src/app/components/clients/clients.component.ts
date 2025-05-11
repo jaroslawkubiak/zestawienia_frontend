@@ -24,7 +24,7 @@ import { IConfirmationMessage } from '../../services/types/IConfirmationMessage'
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { ClientsService } from './clients.service';
-import { IClient } from './types/IClient';
+import { IClient } from './IClient';
 
 @Component({
   selector: 'app-clients',

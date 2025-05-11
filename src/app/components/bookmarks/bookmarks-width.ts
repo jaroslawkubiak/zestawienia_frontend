@@ -1,6 +1,6 @@
-import { IBookmarksWidth } from './IBookmarksWidth';
+import { IBookmarkWidth } from './IBookmarksWidth';
 
-export const bookarksDefaultWidth: IBookmarksWidth[] = [
+export const bookarksDefaultWidth: IBookmarkWidth[] = [
   {
     name: 'id',
     width: 10,

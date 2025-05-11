@@ -24,7 +24,7 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { IComment } from '../../comments/types/IComment';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
-import { ISupplier } from '../../suppliers/types/ISupplier';
+import { ISupplier } from '../../suppliers/ISupplier';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { IPosition } from '../types/IPosition';

@@ -18,7 +18,10 @@ export class FooterService {
   }
 
   // calculate values for footer row
-  calculateFooterRow(footerRow: IFooterRow[], positions: IPosition[]): IFooterRow[] {
+  calculateFooterRow(
+    footerRow: IFooterRow[],
+    positions: IPosition[]
+  ): IFooterRow[] {
     const totals = positions.reduce(
       (acc, position) => {
         acc.wartoscNetto += Number(position.wartoscNetto) || 0;

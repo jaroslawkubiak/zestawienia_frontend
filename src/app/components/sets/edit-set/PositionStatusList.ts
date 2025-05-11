@@ -1,9 +1,5 @@
-export interface IPositionStatus {
-  name: string;
-  label: string;
-  cssClass: string;
-  color: string;
-}
+import { IPositionStatus } from '../types/IPositionStatus';
+
 export const PositionStatusList: IPositionStatus[] = [
   {
     name: 'pink',

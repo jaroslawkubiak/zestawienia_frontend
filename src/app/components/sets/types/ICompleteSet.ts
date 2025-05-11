@@ -1,4 +1,4 @@
-import { ISupplier } from '../../suppliers/types/ISupplier';
+import { ISupplier } from '../../suppliers/ISupplier';
 import { IPosition } from './IPosition';
 import { ISet } from './ISet';
 

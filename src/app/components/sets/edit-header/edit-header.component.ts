@@ -6,12 +6,13 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
+import { TextareaModule } from 'primeng/textarea';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ISetHeader } from '../types/ISetHeader';
-import { IStatus, SetStatus } from '../types/SetStatus';
-import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { TextareaModule } from 'primeng/textarea';
+import { SetStatus } from '../types/set-status.enum';
+import { ISetStatus } from '../types/ISetStatus';
 
 @Component({
   selector: 'app-edit-header',
@@ -39,7 +40,7 @@ export class EditHeaderComponent implements OnInit {
   allBookmarks: IBookmark[] = [];
   setStatus: string = '';
   isLoading = true;
-  statuses: IStatus[] = Object.entries(SetStatus).map(([key, value]) => ({
+  statuses: ISetStatus[] = Object.entries(SetStatus).map(([key, value]) => ({
     name: key,
     label: value,
   }));

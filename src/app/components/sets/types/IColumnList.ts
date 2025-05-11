@@ -1,12 +1,15 @@
 import { TField } from './field.type';
 
-export interface IFooterRow {
+export interface IColumnList {
   name: string;
   key: string;
   type: TField;
-  value?: number | string;
+  width?: number;
+  readOnly?: boolean;
   classHeader?: string;
   classColumn?: string;
-  classRow?: string;
   classFooter?: string;
+  optionList?: any;
+  optionLabel?: string;
+  pdfWidth?: number | 50;
 }

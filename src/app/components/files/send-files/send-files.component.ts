@@ -15,11 +15,9 @@ import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { NotificationService } from '../../../services/notification.service';
 import { FilesService } from '../files.service';
-import {
-  FileDirectoryList,
-  IFileDirectoryList,
-} from '../types/FileDirectoryList';
+import { IFileDirectoryList } from '../types/IFileDirectoryList';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { EFileDirectoryList } from '../types/file-directory-list.enum';
 
 @Component({
   selector: 'app-send-files',
@@ -51,7 +49,7 @@ export class SendFilesComponent {
   fileLimit = 20;
   selectedDirectory: string | null = null;
 
-  directoryList: IFileDirectoryList[] = Object.entries(FileDirectoryList).map(
+  directoryList: IFileDirectoryList[] = Object.entries(EFileDirectoryList).map(
     ([key, value]) => ({
       name: key,
       label: value,

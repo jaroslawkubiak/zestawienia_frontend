@@ -9,6 +9,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
@@ -20,26 +21,24 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { IBookmarksWidth } from '../../bookmarks/IBookmarksWidth';
+import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
-import { ISupplier } from '../../suppliers/types/ISupplier';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
+import { ISupplier } from '../../suppliers/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
-import { ColumnList, IColumnList } from '../edit-set/column-list';
 import { EditSetService } from '../edit-set/edit-set.service';
 import { FooterService } from '../edit-set/footer.service';
-import {
-  IPositionStatus,
-  PositionStatusList,
-} from '../edit-set/PositionStatus';
+import { PositionStatusList } from '../edit-set/PositionStatusList';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { IFooterRow } from '../types/IFooterRow';
+import { IColumnList } from '../types/IColumnList';
 import { IPosition } from '../types/IPosition';
+import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
-import { SetStatus } from '../types/SetStatus';
-import { Dialog } from 'primeng/dialog';
-import { CommentsComponent } from '../../comments/comments.component';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
+import { SetStatus } from '../types/set-status.enum';
+import { ColumnList } from './ColumnList';
 
 @Component({
   selector: 'app-positions-table',
@@ -249,7 +248,7 @@ export class PositionsTableComponent implements OnInit {
 
   // get column width from set object
   getColumnWidthToSelectedBookmark() {
-    const selectedBookmark: IBookmarksWidth[] | undefined =
+    const selectedBookmark: IBookmarkWidth[] | undefined =
       this.set?.bookmarks.find(
         (bookmark) => bookmark.id === this.selectedBookmark
       )?.width;

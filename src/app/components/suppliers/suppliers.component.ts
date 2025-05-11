@@ -24,7 +24,7 @@ import { IConfirmationMessage } from '../../services/types/IConfirmationMessage'
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { SuppliersService } from './suppliers.service';
-import { ISupplier } from './types/ISupplier';
+import { ISupplier } from './ISupplier';
 
 @Component({
   selector: 'app-suppliers',

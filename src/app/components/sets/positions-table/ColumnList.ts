@@ -1,16 +1,4 @@
-export interface IColumnList {
-  name: string;
-  key: string;
-  type: 'number' | 'string' | 'select' | 'image';
-  width?: number;
-  readOnly?: boolean;
-  classHeader?: string;
-  classColumn?: string;
-  classFooter?: string;
-  optionList?: any;
-  optionLabel?: string;
-  pdfWidth?: number | 50;
-}
+import { IColumnList } from '../types/IColumnList';
 
 export const ColumnList: IColumnList[] = [
   {
@@ -42,6 +30,31 @@ export const ColumnList: IColumnList[] = [
     type: 'string',
     pdfWidth: 50,
   },
+  {
+    name: 'PRODUCENT',
+    key: 'producent',
+    type: 'string',
+    pdfWidth: 50,
+  },
+  {
+    name: 'KOLEKCJA/SERIA',
+    key: 'kolekcja',
+    type: 'string',
+    pdfWidth: 95,
+  },
+  {
+    name: 'NR KATALOGOWY',
+    key: 'nrKatalogowy',
+    type: 'string',
+    pdfWidth: 90,
+  },
+  {
+    name: 'KOLOR',
+    key: 'kolor',
+    type: 'string',
+    pdfWidth: 50,
+  },
+
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
@@ -75,30 +88,6 @@ export const ColumnList: IColumnList[] = [
     readOnly: true,
     classColumn: 'read-only',
     pdfWidth: 40,
-  },
-  {
-    name: 'PRODUCENT',
-    key: 'producent',
-    type: 'string',
-    pdfWidth: 50,
-  },
-  {
-    name: 'KOLEKCJA/SERIA',
-    key: 'kolekcja',
-    type: 'string',
-    pdfWidth: 95,
-  },
-  {
-    name: 'NR KATALOGOWY',
-    key: 'nrKatalogowy',
-    type: 'string',
-    pdfWidth: 90,
-  },
-  {
-    name: 'KOLOR',
-    key: 'kolor',
-    type: 'string',
-    pdfWidth: 50,
   },
   {
     name: 'POMIESZCZENIE',

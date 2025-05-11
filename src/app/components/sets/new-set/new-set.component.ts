@@ -10,7 +10,7 @@ import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
-import { IClient } from '../../clients/types/IClient';
+import { IClient } from '../../clients/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
 import { Router } from '@angular/router';

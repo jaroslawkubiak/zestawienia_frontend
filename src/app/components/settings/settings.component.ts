@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { IMenu } from '../menu/types/IMenu';
+import { IMenu } from '../menu/IMenu';
 
 @Component({
   selector: 'app-settings',

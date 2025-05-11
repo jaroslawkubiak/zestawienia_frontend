@@ -16,9 +16,10 @@ import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { INewSet } from '../types/INewSet';
 import { IPosition } from '../types/IPosition';
+import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { IPositionStatus, PositionStatusList } from './PositionStatus';
+import { PositionStatusList } from './PositionStatusList';
 
 @Injectable({
   providedIn: 'root',

@@ -1,4 +1,4 @@
-export interface IBookmarksWidth {
+export interface IBookmarkWidth {
   name: string;
   width: number;
 }

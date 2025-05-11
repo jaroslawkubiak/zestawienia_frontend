@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { IClient } from './types/IClient';
+import { IClient } from './IClient';
 
 @Injectable({
   providedIn: 'root',

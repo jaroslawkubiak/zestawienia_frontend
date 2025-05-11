@@ -4,7 +4,6 @@ import { CommentsToSetComponent } from './components/comments/comments-to-set/co
 import { EmailsComponent } from './components/emails/emails.component';
 import { ForClientComponent } from './components/external/forclient/forclient.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
-import { ProductsComponent } from './components/products/products.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
@@ -39,11 +38,6 @@ export const routes: Routes = [
         canDeactivate: [UnsavedChangesGuard],
       },
     ],
-  },
-  {
-    path: 'products',
-    component: ProductsComponent,
-    canActivate: [AuthGuard],
   },
   {
     path: 'suppliers',

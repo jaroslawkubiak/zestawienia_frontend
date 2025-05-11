@@ -23,12 +23,12 @@ import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
-import { ISupplier } from '../../suppliers/types/ISupplier';
+import { ISupplier } from '../../suppliers/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
-import { SetStatus } from '../types/SetStatus';
+import { SetStatus } from '../types/set-status.enum';
 
 @Component({
   selector: 'app-set-menu',

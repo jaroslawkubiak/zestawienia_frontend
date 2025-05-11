@@ -3,15 +3,11 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
-import {
-  ColumnList,
-  IColumnList,
-} from '../components/sets/edit-set/column-list';
-import {
-  IPositionStatus,
-  PositionStatusList,
-} from '../components/sets/edit-set/PositionStatus';
+import { PositionStatusList } from '../components/sets/edit-set/PositionStatusList';
+import { ColumnList } from '../components/sets/positions-table/ColumnList';
+import { IColumnList } from '../components/sets/types/IColumnList';
 import { IPosition } from '../components/sets/types/IPosition';
+import { IPositionStatus } from '../components/sets/types/IPositionStatus';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { getCssVariable } from '../shared/helpers/getCssVariable';
