@@ -53,6 +53,7 @@ export class ListViewComponent implements OnChanges {
   @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
 
   ngOnChanges(changes: SimpleChanges): void {
+    console.log(this.files);
     this.clearSelectedFiles.emit();
     if (this.files) {
       this.files = this.files.map((item) => {

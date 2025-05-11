@@ -1,5 +1,5 @@
 <app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
-<app-show-files who="user" (refreshMenu)="onDeleteFile($event)" />
+<app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
 
 <p-menubar [model]="menuItems">
   <ng-template #item let-item let-root="root">

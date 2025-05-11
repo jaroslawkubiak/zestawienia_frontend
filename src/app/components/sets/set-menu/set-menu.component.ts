@@ -29,6 +29,7 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
+import { IDeletedFiles } from '../../files/types/IDeletedFiles';
 
 @Component({
   selector: 'app-set-menu',
@@ -310,7 +311,8 @@ export class SetMenuComponent {
   }
 
   //delete
-  onDeleteFile(files: IFileFullDetails[]) {
+  onDeleteFile(deletedFiles: IDeletedFiles) {
+    const { files } = deletedFiles;
     this.attachmentBadge = files.length;
     this.updateMenuItems();
   }

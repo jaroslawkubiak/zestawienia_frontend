@@ -26,6 +26,7 @@ import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
+import { IDeletedFiles } from '../files/types/IDeletedFiles';
 
 @Component({
   selector: 'app-sets',
@@ -192,8 +193,9 @@ export class SetsComponent implements OnInit {
   }
 
   // when delete files - refresh badge
-  onDeleteFile(files: IFileFullDetails[]) {
-    const setId = +files[0].setId.id;
+  onDeleteFile(deletedFiles: IDeletedFiles) {
+    const { setId, files } = deletedFiles;
+
     this.sets = this.sets.map((item) =>
       item.id === setId ? { ...item, files: files } : item
     );

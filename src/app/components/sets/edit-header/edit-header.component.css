@@ -87,6 +87,10 @@
   background-color: var(--accent-color-lighter) !important;
 }
 
+.p-select.p-variant-filled {
+  background-image: none !important;
+}
+
 ::ng-deep .p-select-option {
   font-size: 2.2rem;
 }

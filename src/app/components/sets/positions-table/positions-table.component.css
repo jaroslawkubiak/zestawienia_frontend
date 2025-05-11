@@ -124,6 +124,10 @@ th {
   align-items: center !important;
 }
 
+.p-select.p-variant-filled {
+  background-image: none !important;
+}
+
 ::ng-deep .p-select-label {
   padding: 4px !important;
 }

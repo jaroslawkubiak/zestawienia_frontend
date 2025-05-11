@@ -8,6 +8,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import * as pdfjsLib from 'pdfjs-dist';
 import { ButtonModule } from 'primeng/button';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
@@ -19,6 +20,7 @@ import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 import { ISet } from '../../sets/types/ISet';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
+import { IDeletedFiles } from '../types/IDeletedFiles';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
@@ -47,7 +49,7 @@ export class ShowFilesComponent {
     private cd: ChangeDetectorRef
   ) {}
   @Input() who!: 'user' | 'client';
-  @Output() refreshMenu = new EventEmitter<IFileFullDetails[]>();
+  @Output() deleteFiles = new EventEmitter<IDeletedFiles>();
   setId!: number;
   setName: string = '';
   displayPdf = false;
@@ -73,6 +75,12 @@ export class ShowFilesComponent {
       });
 
       this.uniqueDir = this.getUniqueDirectory();
+
+      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
+        pdfjsLib.GlobalWorkerOptions.workerSrc =
+          'assets/pdfjs/pdf.worker.min.mjs';
+      }
+      this.generateThumbnailsForFiles();
     }
   }
 
@@ -104,7 +112,12 @@ export class ShowFilesComponent {
           this.uniqueDir = this.getUniqueDirectory();
           this.selectedFiles = [];
 
-          this.refreshMenu.emit(this.files);
+          const deletedFiles: IDeletedFiles = {
+            setId: file.setId.id,
+            files: this.files,
+          };
+
+          this.deleteFiles.emit(deletedFiles);
           this.cd.markForCheck();
         },
         error: (error) => {
@@ -130,12 +143,13 @@ export class ShowFilesComponent {
   }
 
   // batch delete selected files form server and remove from list
-  deleteFiles() {
+  onDeleteFiles() {
     if (this.selectedFiles.length === 0) {
       return;
     }
 
     const ids: number[] = this.selectedFiles.map((item) => item.id);
+    const setId = this.selectedFiles[0]?.setId.id;
 
     const accept = () => {
       this.filesService.deleteFiles(ids).subscribe({
@@ -155,7 +169,12 @@ export class ShowFilesComponent {
           this.uniqueDir = this.getUniqueDirectory();
           this.selectedFiles = [];
 
-          this.refreshMenu.emit(this.files);
+          const deletedFiles: IDeletedFiles = {
+            setId,
+            files: this.files,
+          };
+
+          this.deleteFiles.emit(deletedFiles);
           this.cd.markForCheck();
         },
         error: (error) => {
@@ -237,5 +256,40 @@ export class ShowFilesComponent {
     sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
 
     return [...new Set(sortedFiles.map((item) => item.dir))];
+  }
+
+  generateThumbnailsForFiles() {
+    this.files.forEach((file) => {
+      if (!file.thumbnail) {
+        const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+
+        pdfjsLib.getDocument(fullPath).promise.then((pdf: any) => {
+          pdf.getPage(1).then((page: any) => {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const viewport = page.getViewport({ scale: 0.3 });
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            page
+              .render({
+                canvasContext: context,
+                viewport: viewport,
+              })
+              .promise.then(() => {
+                const thumbnail = canvas.toDataURL();
+
+                this.files = this.files.map((f) => {
+                  if (f.id === file.id) {
+                    return { ...f, thumbnail };
+                  }
+                  return f;
+                });
+
+                this.cd.detectChanges();
+              });
+          });
+        });
+      }
+    });
   }
 }

@@ -33,7 +33,7 @@
         [downloadFile]="downloadFile.bind(this)"
         [openPdf]="openPdf.bind(this)"
         [addFileToSelected]="addFileToSelected.bind(this)"
-        (deleteFiles)="deleteFiles()"
+        (deleteFiles)="onDeleteFiles()"
         (downloadFiles)="downloadFiles()"
         (selectAll)="selectAll($event)"
       ></app-icons-view>
@@ -43,7 +43,7 @@
         [files]="files"
         [selectedFiles]="selectedFiles"
         (deleteFile)="deleteFile($event)"
-        (deleteFiles)="deleteFiles()"
+        (deleteFiles)="onDeleteFiles()"
         (downloadFile)="downloadFile($event)"
         (downloadFiles)="downloadFiles()"
         (addFileToSelected)="addFileToSelected($event)"

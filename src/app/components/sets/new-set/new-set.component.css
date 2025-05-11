@@ -82,6 +82,10 @@
   border: 1px solid var(--accent-color-darker) !important;
 }
 
+.p-select.p-variant-filled {
+  background-image: none !important;
+}
+
 .p-textarea {
   resize: none;
   border-radius: 0px;
