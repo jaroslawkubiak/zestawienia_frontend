@@ -23,11 +23,10 @@ export const ColumnList: IColumnList[] = [
     type: 'image',
     pdfWidth: 60,
   },
-
   {
     name: 'PRODUKT',
     key: 'produkt',
-    type: 'string',
+    type: 'textarea',
     pdfWidth: 50,
   },
   {

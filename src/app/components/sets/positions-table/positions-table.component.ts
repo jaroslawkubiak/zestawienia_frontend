@@ -13,6 +13,7 @@ import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TableColResizeEvent, TableModule } from 'primeng/table';
+import { TextareaModule } from 'primeng/textarea';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../../services/notification.service';
 import {
@@ -21,8 +22,8 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
@@ -32,8 +33,8 @@ import { EditSetService } from '../edit-set/edit-set.service';
 import { FooterService } from '../edit-set/footer.service';
 import { PositionStatusList } from '../edit-set/PositionStatusList';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
-import { IFooterRow } from '../types/IFooterRow';
 import { IColumnList } from '../types/IColumnList';
+import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
@@ -53,6 +54,7 @@ import { ColumnList } from './ColumnList';
     LoadingSpinnerComponent,
     ActionBtnsComponent,
     Dialog,
+    TextareaModule,
     CommentsComponent,
   ],
   standalone: true,

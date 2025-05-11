@@ -50,7 +50,7 @@
   >
     <tr [ngClass]="position.status?.cssClass || ''" [pReorderableRow]="i">
       <td class="lp">
-        {{ i + 1 }}
+        <span title="{{ position.id }}">{{ i + 1 }}</span>
       </td>
       <td>
         <div class="action-btns-wrapper flex-center">
@@ -132,7 +132,7 @@
                   [size]="70"
                 ></app-loading-spinner>
               </div>
-              <!-- EDIT MODE -> type = text DEFAULT -->
+              <!-- EDIT MODE -> type = string DEFAULT -->
               <input
                 *ngSwitchCase="'string'"
                 pInputText
@@ -143,8 +143,17 @@
                 (keydown.enter)="applyAction($event, i, column)"
                 (focus)="selectAll($event)"
               />
+              <!-- EDIT MODE -> type = textarea  -->
+              <textarea
+                *ngSwitchCase="'textarea'"
+                pTextarea
+                [(ngModel)]="position[column.key]"
+                (focus)="selectAll($event)"
+                (keydown.enter)="$event.stopPropagation()"
+                (blur)="applyAction($event, i, column)"
+              ></textarea>
             </ng-container>
-            <!-- if field read only, wneh edited show view-mode -->
+            <!-- if field read only, when edited show view-mode -->
             <ng-container *ngIf="column.readOnly">
               <span class="view-mode">
                 @if(column.type === 'number') {
@@ -182,10 +191,13 @@
                   "
                 />
               </div>
-              <!-- VIEW MODE default -> type = text  -->
+              <!-- VIEW MODE default -> type = string  -->
               <div *ngSwitchCase="'string'">
                 {{ position[column.key] }}
               </div>
+              <!-- VIEW MODE -> type = textarea  -->
+              <!-- prettier-ignore -->
+              <div *ngSwitchCase="'textarea'" style="white-space: pre-wrap">{{ position[column.key] }}</div>
             </span>
           </ng-template>
         </p-cellEditor>
