@@ -1,3 +1,32 @@
+<div class="list-top-action-btns">
+  <p-checkbox
+    size="large"
+    class="m-4"
+    pTooltip="Zaznacz wszystkie pliki"
+    tooltipPosition="bottom"
+    (click)="selectAll.emit($event)"
+    [binary]="true"
+  />
+  <p-button
+    severity="info"
+    class="m-4"
+    icon="pi pi-download"
+    alt="Pobierz pliki"
+    pTooltip="Pobierz pliki"
+    [disabled]="selectedFiles.length === 0"
+    (click)="downloadFiles.emit()"
+  />
+  <p-button
+    *ngIf="who === 'user'"
+    severity="danger"
+    class="m-4"
+    icon="pi pi-trash"
+    alt="Usuń pliki"
+    pTooltip="Usuń pliki"
+    [disabled]="selectedFiles.length === 0"
+    (click)="deleteFiles.emit()"
+  />
+</div>
 <p-table
   #dt
   dataKey="id"
@@ -19,34 +48,8 @@
 >
   <ng-template #header>
     <tr>
-      <th style="width: 3rem; text-align: center">
-        <p-tableHeaderCheckbox
-          pTooltip="Zaznacz wszystkie pliki"
-          (click)="selectAll.emit($event)"
-        />
-      </th>
-      <th style="width: 10rem; text-align: center">
-        <p-button
-          severity="info"
-          class="m-4"
-          icon="pi pi-download"
-          alt="Pobierz pliki"
-          pTooltip="Pobierz pliki"
-          [disabled]="selectedFiles.length === 0"
-          (click)="downloadFiles.emit()"
-        />
-        <p-button
-          *ngIf="who === 'user'"
-          severity="danger"
-          class="m-4"
-          icon="pi pi-trash"
-          alt="Usuń pliki"
-          pTooltip="Usuń pliki"
-          [disabled]="selectedFiles.length === 0"
-          (click)="deleteFiles.emit()"
-        />
-      </th>
-      <th style="width: 160px; text-align: center">Podgląd</th>
+      <th></th>
+      <th style="width: 16rem; text-align: center">Podgląd</th>
       <th pSortableColumn="fileName" style="min-width: 6rem">
         Nazwa <p-sortIcon field="fileName" />
       </th>
@@ -68,14 +71,7 @@
   <ng-template #body let-file>
     <tr class="file-row">
       <td>
-        <p-tableCheckbox
-          [value]="file"
-          pTooltip="Zaznacz plik"
-          (click)="addFileToSelected.emit(file)"
-        />
-      </td>
-      <td>
-        <div class="flex-center">
+        <div class="row-action-btns">
           <p-button
             severity="info"
             class="m-4"
@@ -83,6 +79,11 @@
             alt="Pobierz plik"
             pTooltip="Pobierz plik"
             (click)="downloadFile.emit(file.id)"
+          />
+          <p-tableCheckbox
+            [value]="file"
+            pTooltip="Zaznacz plik"
+            (click)="addFileToSelected.emit(file)"
           />
           <p-button
             severity="danger"
@@ -109,7 +110,6 @@
             alt="Załączony plik"
             pTooltip="Powiększ"
             tooltipPosition="bottom"
-            class="img-preview"
           >
             <ng-template #indicator>
               <i class="pi pi-search-plus indicator"></i>

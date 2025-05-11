@@ -18,6 +18,7 @@ import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.compone
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
+import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-list-view',
@@ -26,6 +27,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
     FormsModule,
     CommonModule,
     TooltipModule,
+    CheckboxModule,
     ButtonModule,
     ImageModule,
     PdfThumbnailComponent,
@@ -95,6 +97,16 @@ export class ListViewComponent implements OnChanges {
       return false;
     } else {
       return file.dir === 'inspirations' ? false : true;
+    }
+  }
+
+  allSelected = false;
+
+  toggleAllFiles(checked: boolean) {
+    if (checked) {
+      this.selectedFiles = [...this.files];
+    } else {
+      this.selectedFiles = [];
     }
   }
 }

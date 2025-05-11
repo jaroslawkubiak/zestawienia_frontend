@@ -3,9 +3,10 @@
   [modal]="true"
   [(visible)]="showFilesDialog"
   [style]="{ width: '100%', maxWidth: '160rem' }"
+  class="dialog-header"
 >
   <div class="file-wrapper">
-    <div class="action-bar">
+    <div class="top-action-btns">
       <i
         class="pi pi-list"
         (click)="changeView('list')"

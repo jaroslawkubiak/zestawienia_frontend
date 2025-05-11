@@ -130,6 +130,7 @@
 }
 
 ::ng-deep .p-dialog-title {
+  padding: 1rem;
   font-size: 2rem !important;
   color: var(--accent-color-darker) !important;
 }

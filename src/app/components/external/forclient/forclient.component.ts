@@ -149,7 +149,6 @@ export class ForClientComponent implements OnInit {
   }
 
   showAttachedFiles() {
-    console.log(this.files);
     const preparedSet = { ...this.set, files: this.files };
     this.dialogShowFilesComponent.showDialog(preparedSet);
   }

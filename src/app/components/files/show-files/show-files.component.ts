@@ -102,6 +102,7 @@ export class ShowFilesComponent {
           );
           this.files = this.files.filter((file) => file.id !== id);
           this.uniqueDir = this.getUniqueDirectory();
+          this.selectedFiles = [];
 
           this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
@@ -152,6 +153,7 @@ export class ShowFilesComponent {
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
           this.uniqueDir = this.getUniqueDirectory();
+          this.selectedFiles = [];
 
           this.refreshMenu.emit(this.files);
           this.cd.markForCheck();
