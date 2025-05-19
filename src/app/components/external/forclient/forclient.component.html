@@ -4,134 +4,153 @@
 <div class="container" *ngIf="set">
   <div class="header">
     <div>
-      <h3>Witamy w zestawieniu</h3>
+      <h3>Witamy w inwestycji</h3>
       <h1>{{ set.name }}</h1>
     </div>
     <div class="header-actions-btn">
       <div class="action-btn-wrapper" (click)="showAttachedFiles()">
-        <i
-          class="pi pi-cloud"
-          pTooltip="Załączone pliki"
-          tooltipPosition="bottom"
-        ></i>
+        <i class="pi pi-cloud"></i>
         <label> Załączone pliki </label>
       </div>
       <div
         class="action-btn-wrapper"
         (click)="openSendFilesDialog(set.id, set.name)"
       >
-        <i
-          id="upload-icon"
-          class="pi pi-paperclip"
-          pTooltip="Wgraj swój plik"
-          tooltipPosition="bottom"
-        ></i>
+        <i id="upload-icon" class="pi pi-paperclip"></i>
         <label for="upload-icon"> Wgraj swój plik </label>
       </div>
     </div>
   </div>
+  <p-tabs [value]="selectedBookmark" scrollable>
+    <p-tablist>
+      @for (bookmark of set.bookmarks; track bookmark.id) {
+      <p-tab
+        [value]="bookmark.id"
+        (click)="loadContentForBookmark(bookmark.id)"
+        >{{ bookmark.name }}</p-tab
+      >
+      }
+    </p-tablist>
+    <p-tabpanels>
+      @for (bookmark of set.bookmarks; track bookmark.id) {
+      <p-tabpanel [value]="bookmark.id">
+        <ng-container *ngIf="selectedBookmark === bookmark.id">
+          <div>
+            <li
+              *ngFor="let pos of positionsFromBookmark"
+              class="positions-item"
+            >
+              <div class="title">
+                <div class="title-header">
+                  <span class="bookmark-order">{{ pos.kolejnosc }}</span>
+                  <span class="room-name">{{ pos.pomieszczenie }}</span>
+                </div>
+                <div class="position-action-btn">
+                  <div class="link-cell flex-center">
+                    @if(pos.link) {
+                    <a
+                      href="{{ pos.link }}"
+                      class="link flex-center"
+                      target="_blank"
+                      ><i class="pi pi-link"></i>LINK</a
+                    >
+                    }
+                  </div>
+                  <div class="comments-cell flex-center">
+                    <i
+                      class="pi pi-comments"
+                      pTooltip="Dodaj komentarz"
+                      tooltipPosition="bottom"
+                      (click)="showComments(pos.id)"
+                    ></i>
+                    <p-badge
+                      [value]="
+                        getRowNewComments(pos.id) || getRowAllComments(pos.id)
+                      "
+                      [severity]="
+                        getRowNewComments(pos.id)
+                          ? 'danger'
+                          : getRowAllComments(pos.id)
+                          ? 'contrast'
+                          : 'secondary'
+                      "
+                      class="nr-comments"
+                      badgeSize="large"
+                      [pTooltip]="
+                        getRowNewComments(pos.id)
+                          ? 'Ilość nowych komentarzy'
+                          : 'Ilość komentarzy'
+                      "
+                    ></p-badge>
+                  </div>
+                </div>
+              </div>
+              <div class="product-img flex-center">
+                <img
+                  [src]="pos['imageUrl']"
+                  alt="image"
+                  *ngIf="pos['imageUrl']"
+                />
+              </div>
+              <ul class="product-details">
+                <div class="product-group">
+                  <li class="product-title">PRODUKT</li>
+                  <li class="product-name">{{ pos.produkt }}</li>
+                </div>
+                <div class="product-group">
+                  <li class="product-title">PRODUCENT</li>
+                  <li class="product-name">{{ pos.producent }}</li>
+                </div>
 
-  <ul class="positions-list">
-    <li *ngFor="let pos of positions" class="positions-item">
-      <div class="title">
-        <div class="title-header">
-          <span class="bookmark-name">{{ pos.bookmarkId.name }}</span>
-          <span class="room-name">{{ pos.pomieszczenie }}</span>
-        </div>
-        <div class="position-action-btn">
-          <div class="position-cell flex-center">
-            @if(pos.link) {
-            <a href="{{ pos.link }}" target="_blank"
-              ><i
-                class="pi pi-link"
-                pTooltip="Link do produktu"
-                tooltipPosition="bottom"
-              ></i
-            ></a>
-            }
+                <div class="product-group">
+                  <li class="product-title">KOLEKCJA</li>
+                  <li class="product-name">{{ pos.kolekcja }}</li>
+                </div>
+              </ul>
+              <ul class="product-details">
+                <div class="product-group">
+                  <li class="product-title">NR KATALOGOWY</li>
+                  <li class="product-name">{{ pos.nrKatalogowy }}</li>
+                </div>
+                <div class="product-group">
+                  <li class="product-title">KOLOR</li>
+                  <li class="product-name">{{ pos.kolor }}</li>
+                </div>
+                <div class="product-group">
+                  <li class="product-title">DOSTAWCA</li>
+                  <li class="product-name">
+                    {{ pos.supplierId ? pos.supplierId["company"] : "" }}
+                  </li>
+                </div>
+              </ul>
+              <div class="product-details">
+                <div class="product-group">
+                  <li class="product-title">ILOŚĆ</li>
+                  <li class="product-name">{{ pos.ilosc }}</li>
+                </div>
+                <div class="product-group">
+                  <li class="product-title">CENA NETTO</li>
+                  <li class="product-name">
+                    {{ pos.netto ? pos.netto + " PLN" : "" }}
+                  </li>
+                </div>
+                <div class="product-group">
+                  <li class="product-title">WARTOŚĆ NETTO</li>
+                  <li class="product-name">
+                    {{ pos.wartoscNetto ? pos.wartoscNetto + " PLN" : "" }}
+                  </li>
+                </div>
+              </div>
+            </li>
           </div>
-          <div class="position-cell flex-center">
-            <i
-              class="pi pi-comments"
-              pTooltip="Dodaj komentarz"
-              tooltipPosition="bottom"
-              (click)="showComments(pos.id)"
-            ></i>
-            <p-badge
-              [value]="getRowNewComments(pos.id) || getRowAllComments(pos.id)"
-              [severity]="
-                getRowNewComments(pos.id)
-                  ? 'danger'
-                  : getRowAllComments(pos.id)
-                  ? 'contrast'
-                  : 'secondary'
-              "
-              class="nr-comments"
-              badgeSize="large"
-              [pTooltip]="
-                getRowNewComments(pos.id)
-                  ? 'Ilość nowych komentarzy'
-                  : 'Ilość komentarzy'
-              "
-            ></p-badge>
-          </div>
-        </div>
-      </div>
-      <div class="product-img">
-        <img [src]="pos['imageUrl']" alt="image" *ngIf="pos['imageUrl']" />
-      </div>
-      <ul class="product-details">
-        <div class="product-details-group">
-          <li class="product-details-title">PRODUKT</li>
-          <li class="product-details-name">{{ pos.produkt }}</li>
-        </div>
-        <div class="product-details-group">
-          <li class="product-details-title">PRODUCENT</li>
-          <li class="product-details-name">{{ pos.producent }}</li>
-        </div>
-
-        <div class="product-details-group">
-          <li class="product-details-title">KOLEKCJA</li>
-          <li class="product-details-name">{{ pos.kolekcja }}</li>
-        </div>
-      </ul>
-      <ul class="product-details">
-        <div class="product-details-group">
-          <li class="product-details-title">NR KATALOGOWY</li>
-          <li class="product-details-name">{{ pos.nrKatalogowy }}</li>
-        </div>
-        <div class="product-details-group">
-          <li class="product-details-title">KOLOR</li>
-          <li class="product-details-name">{{ pos.kolor }}</li>
-        </div>
-        <div class="product-details-group">
-          <li class="product-details-title">DOSTAWCA</li>
-          <li class="product-details-name">
-            {{ pos.supplierId ? pos.supplierId["company"] : "" }}
-          </li>
-        </div>
-      </ul>
-      <div class="product-details">
-        <div class="product-details-group">
-          <li class="product-details-title">ILOŚĆ</li>
-          <li class="product-details-name">{{ pos.ilosc }}</li>
-        </div>
-        <div class="product-details-group">
-          <li class="product-details-title">CENA NETTO</li>
-          <li class="product-details-name">
-            {{ pos.netto ? pos.netto + " PLN" : "" }}
-          </li>
-        </div>
-        <div class="product-details-group">
-          <li class="product-details-title">WARTOŚĆ NETTO</li>
-          <li class="product-details-name">
-            {{ pos.wartoscNetto ? pos.wartoscNetto + " PLN" : "" }}
-          </li>
-        </div>
-      </div>
-    </li>
-  </ul>
+        </ng-container>
+      </p-tabpanel>
+      }
+    </p-tabpanels>
+  </p-tabs>
+  <ul class="positions-list"></ul>
 </div>
+
 <p-dialog
   [header]="header"
   [modal]="true"

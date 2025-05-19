@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
@@ -19,6 +19,7 @@ import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
+import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-setforclient',
@@ -29,6 +30,7 @@ import { ISet } from '../../sets/types/ISet';
     ShowFilesComponent,
     BadgeModule,
     Dialog,
+    TabsModule,
     CommentsComponent,
   ],
   templateUrl: './forclient.component.html',
@@ -42,21 +44,22 @@ export class ForClientComponent implements OnInit {
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
-
+  selectedBookmark: number = 0;
+  positionsFromBookmark: IPosition[] = [];
+  showCommentsDialog = false;
+  header = '';
+  comments: IComment[] = [];
+  positionId!: number;
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
 
-  showCommentsDialog = false;
-  header = '';
-  comments: IComment[] = [];
-  positionId!: number;
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private editSetService: EditSetService
+    private editSetService: EditSetService,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -113,6 +116,10 @@ export class ForClientComponent implements OnInit {
         };
       });
 
+      // mark first (lowest id) bookmark as selected
+      this.selectedBookmark = this.set.bookmarks[0].id;
+      this.loadContentForBookmark(this.selectedBookmark);
+
       this.files = (this.set?.files || []).filter(
         (item) => item.dir !== 'robocze'
       );
@@ -126,6 +133,26 @@ export class ForClientComponent implements OnInit {
     });
   }
 
+  // load positions for a given bookmarkID
+  loadContentForBookmark(bookmarkId: number) {
+    this.selectedBookmark = bookmarkId;
+
+    this.positionsFromBookmark = [];
+    this.positionsFromBookmark = this.positions
+      .filter((item) => item.bookmarkId?.id === this.selectedBookmark)
+      .sort((a, b) => a.kolejnosc - b.kolejnosc)
+      .map((item: IPosition, index: number) => {
+        return {
+          ...item,
+          kolejnosc: index + 1,
+          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+          wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
+        };
+      });
+
+
+    this.cd.detectChanges();
+  }
   // sort position by bookmark id
   sortByBookmarkAndOrder(data: IPosition[]) {
     return data.sort((a, b) => {

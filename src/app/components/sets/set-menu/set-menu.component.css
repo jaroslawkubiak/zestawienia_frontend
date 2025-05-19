@@ -14,6 +14,7 @@
 
 ::ng-deep .p-menubar-item-content {
   padding: 8px 10px !important;
+  transition: color 0.2s ease !important;
 }
 
 ::ng-deep .p-menubar-item-content:hover {
@@ -91,6 +92,7 @@
 .menu-label-preview i {
   color: var(--accent-color-darker);
   font-size: 2.4rem;
+  transition: color 0.2s ease;
 }
 
 .menu-label-preview i:hover {

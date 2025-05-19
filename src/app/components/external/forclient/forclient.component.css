@@ -28,10 +28,11 @@ h3 {
   align-items: center;
   gap: 20px;
   color: var(--accent-color-lighter);
+  transition: color 0.2s ease;
 }
 
 .action-btn-wrapper:hover {
-  color: var(--error-color);
+  color: var(--primary-color);
 }
 
 .action-btn-wrapper label {
@@ -62,7 +63,7 @@ h3 {
   gap: 20px;
 }
 
-.bookmark-name {
+.bookmark-order {
   font-size: 1.8rem;
   font-weight: 700;
   text-align: left;
@@ -85,27 +86,47 @@ h3 {
   grid-template-columns: repeat(5, 1fr);
   background-color: var(--accent-color-lighter);
   border-bottom: 2px solid var(--accent-color-darker);
+  gap: 10px;
 }
 
 .position-action-btn {
   display: flex;
   justify-content: start;
-  gap: 20px;
+  align-items: center;
+  gap: 30px;
 }
 
-.position-cell {
+.link {
+  gap: 5px;
+  font-size: 2rem;
+  color: var(--accent-color-darker);
+  font-weight: 700;
+  transition: color 0.2s ease;
+}
+
+.link i,
+.comments-cell i {
+  font-size: 3rem;
+  color: var(--accent-color-darker);
+  transition: color 0.2s ease;
+}
+
+.link:hover,
+.link:hover i,
+.comments-cell:hover i {
+  color: var(--primary-color);
+}
+
+.link-cell {
+  width: 100px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.comments-cell {
   position: relative;
   width: 40px;
   height: 40px;
-}
-
-.position-action-btn i {
-  font-size: 3rem;
-  color: var(--accent-color-darker);
-}
-
-.position-action-btn i:hover {
-  color: var(--error-color);
 }
 
 .nr-comments {
@@ -115,10 +136,14 @@ h3 {
   cursor: auto;
 }
 
+.product-img {
+  background-color: rgb(255, 255, 255) !important;
+}
+
 .product-img img {
   width: 200px;
   height: 200px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 10px;
 }
 
@@ -128,24 +153,29 @@ h3 {
   gap: 5px;
 }
 
-.product-details-group {
+.product-group {
   display: flex;
   flex-direction: column;
   padding: 10px 0;
   gap: 5px;
 }
 
-.product-details-title {
+.product-title {
   color: var(--neutral-color-dark);
   font-size: 1.2rem;
 }
 
-.product-details-name {
+.product-name {
   font-size: 2rem;
   color: var(--accent-color-darker);
+  white-space: pre-wrap;
 }
 
 .disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+::ng-deep .p-tabpanels {
+  padding: 0 !important;
 }
