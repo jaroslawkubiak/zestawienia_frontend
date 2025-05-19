@@ -142,7 +142,6 @@ export class EditSetComponent
     this.loadContentForBookmark(this.selectedBookmark);
   }
 
-  // TODO CHECK
   // update files list after upload new files
   updateFileList(newFiles: IFileFullDetails[]) {
     this.set.files = [...(this.set.files || []), ...newFiles];

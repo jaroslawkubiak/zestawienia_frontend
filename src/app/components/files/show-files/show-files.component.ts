@@ -149,6 +149,7 @@ export class ShowFilesComponent {
     }
 
     const ids: number[] = this.selectedFiles.map((item) => item.id);
+    const fileNames: string[] = this.selectedFiles.map((item) => item.fileName);
     const setId = this.selectedFiles[0]?.setId.id;
 
     const accept = () => {
@@ -191,7 +192,9 @@ export class ShowFilesComponent {
 
     const confirmMessage: IConfirmationMessage = {
       header: 'Potwierdź usunięcie',
-      message: `Czy na pewno usunąć ${ids.length} ${options}?`,
+      message: `Czy na pewno usunąć ${
+        ids.length
+      } ${options}?<br /><br />${fileNames.join('<br />')}`,
       accept,
     };
 
