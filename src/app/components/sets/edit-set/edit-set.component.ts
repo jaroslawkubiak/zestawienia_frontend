@@ -31,6 +31,7 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { EditSetService } from './edit-set.service';
+import { SummaryComponent } from '../summary/summary.component';
 
 @Component({
   selector: 'app-set',
@@ -49,6 +50,7 @@ import { EditSetService } from './edit-set.service';
     SetMenuComponent,
     SelectModule,
     FormsModule,
+    SummaryComponent,
   ],
 })
 export class EditSetComponent

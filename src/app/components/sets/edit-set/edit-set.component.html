@@ -59,6 +59,12 @@
             [ngClass]="{ 'form-dirty': setIsDirty }"
             class="position-container"
           >
+            @if(bookmark.id === 1) {
+            <app-summary
+              [set]="set"
+              [positionsFromBookmark]="positionsFromBookmark"
+            />
+            } @else {
             <app-positions-table
               [set]="set"
               [positionsFromBookmark]="positionsFromBookmark"
@@ -68,6 +74,7 @@
               (updateSetPositions)="updatePositions()"
               (updateSetComments)="updateCommentsForSet($event)"
             />
+            }
           </div>
         </ng-container>
       </p-tabpanel>

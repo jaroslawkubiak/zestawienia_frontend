@@ -30,6 +30,15 @@ export const ColumnList: IColumnList[] = [
     pdfWidth: 50,
   },
   {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
+    optionLabel: 'label',
+    pdfWidth: 50,
+  },
+  {
     name: 'PRODUCENT',
     key: 'producent',
     type: 'string',
@@ -103,15 +112,7 @@ export const ColumnList: IColumnList[] = [
     optionLabel: 'company',
     pdfWidth: 50,
   },
-  {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-    pdfWidth: 50,
-  },
+
   {
     name: 'LINK',
     key: 'link',

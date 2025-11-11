@@ -1,5 +1,5 @@
 .set-container {
-  width: 1200px;
+  width: var(--screen-width);
 }
 
 .set-header-wrapper {

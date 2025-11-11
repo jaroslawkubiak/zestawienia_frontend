@@ -1,6 +1,5 @@
 .card {
-  width: 1400px;
-  margin-left: 200px;
+  width: var(--screen-width);
 }
 
 tr {
@@ -36,6 +35,10 @@ tr {
   left: 0;
 }
 
+::ng-deep .p-toolbar {
+  width: var(--screen-width);
+}
+
 .p-inputtext:focus,
 .p-inputtext:hover,
 .p-inputtext:active {
@@ -59,11 +62,11 @@ tr {
   position: relative;
 }
 
-.status-wrapper{
+.status-wrapper {
   margin-left: 400px;
-  display: flex; 
+  display: flex;
   gap: 20px;
   font-size: 1.4rem;
   color: var(--accent-color);
-  align-items: center; 
+  align-items: center;
 }
