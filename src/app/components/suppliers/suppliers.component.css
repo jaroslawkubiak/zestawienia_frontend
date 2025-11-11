@@ -1,5 +1,9 @@
 .card {
-  width: 1200px;
+  width: var(--screen-width);
+}
+
+::ng-deep .p-toolbar {
+  width: var(--screen-width);
 }
 
 tr {

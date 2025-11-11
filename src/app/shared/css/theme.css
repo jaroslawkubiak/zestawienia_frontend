@@ -1,4 +1,5 @@
 :root {
+  --screen-width: 1600px;
   --p-tooltip-background: rgb(0, 0, 0) !important;
   --p-tooltip-color: rgb(247, 247, 247) !important;
   --p-tooltip-padding: 6px !important;

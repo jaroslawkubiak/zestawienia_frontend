@@ -39,8 +39,10 @@ html {
 
   /* position status color  */
   --status-pink-color: #ffc1c840;
-  --status-green-color: #00ff3c40;
-  --status-red-color: #fb050540;
+  --status-green-color: #6cb127;
+  --status-red-color: #de1039;
+  --status-lightgreen-color: #afeab8;
+  --status-yellow-color: #f1f659;
 
   /* position row height  */
   --row-height: 190px;

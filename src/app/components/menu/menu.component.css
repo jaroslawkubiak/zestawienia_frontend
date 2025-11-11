@@ -1,4 +1,4 @@
-.menu-wrapper {
+.menu-background {
   display: flex;
   justify-content: center;
   background-color: var(--primary-color);
@@ -8,13 +8,18 @@
 
 .menu {
   display: flex;
-  padding: 1rem 2rem;
-  gap: 3rem;
-  justify-content: end;
+  width: var(--screen-width);
+  padding: 1rem 0;
+  justify-content: space-between;
+}
+
+.menu-wrapper {
+  display: flex;
+  gap: 2rem;
+  width: 100%;
+  justify-content: start;
   background-color: var(--primary-color);
   color: var(--secondary-color);
-  width: 100%;
-  max-width: 1200px;
 }
 
 li {
@@ -30,13 +35,14 @@ li a {
 }
 
 li:hover,
-.submit:hover,
+.logout:hover,
 .selected {
   color: var(--accent-color);
 }
 
-.submit {
+.logout {
   display: flex;
+  color: var(--secondary-color);
   justify-content: center;
   align-items: center;
   cursor: pointer;

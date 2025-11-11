@@ -1,5 +1,5 @@
 .container {
-  width: 1200px;
+  width: var(--screen-width);
   display: flex;
   flex-direction: column;
 }
