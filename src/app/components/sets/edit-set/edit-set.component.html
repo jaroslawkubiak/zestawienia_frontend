@@ -59,11 +59,9 @@
             [ngClass]="{ 'form-dirty': setIsDirty }"
             class="position-container"
           >
+            <!-- bookmark = podsumowanie -->
             @if(bookmark.id === 1) {
-            <app-summary
-              [set]="set"
-              [positionsFromBookmark]="positionsFromBookmark"
-            />
+            <app-summary [set]="set" [positions]="positions" />
             } @else {
             <app-positions-table
               [set]="set"

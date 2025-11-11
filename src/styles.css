@@ -38,7 +38,7 @@ html {
   --main-color-900: #600a20;
 
   /* position status color  */
-  --status-pink-color: #ffc1c840;
+  --status-pink-color: #ffc1c8;
   --status-green-color: #6cb127;
   --status-red-color: #de1039;
   --status-lightgreen-color: #afeab8;
@@ -82,4 +82,24 @@ body {
 
 i {
   cursor: pointer;
+}
+
+.row-pink {
+  background-color: var(--status-pink-color) !important;
+}
+
+.row-green {
+  background-color: var(--status-green-color) !important;
+}
+
+.row-red {
+  background-color: var(--status-red-color) !important;
+}
+
+.row-lightgreen {
+  background-color: var(--status-lightgreen-color) !important;
+}
+
+.row-yellow {
+  background-color: var(--status-yellow-color) !important;
 }

@@ -72,7 +72,7 @@ export class EditSetService {
         const updatedPositions = positions.map((position) => {
           const comments =
             set.comments?.filter(
-              (comment) => comment.positionId.id === position.id
+              (comment) => comment.positionId?.id === position.id
             ) || [];
 
           const newComments =

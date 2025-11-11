@@ -165,15 +165,3 @@ th {
   bottom: 0;
   left: 0;
 }
-
-.row-pink {
-  background-color: var(--status-pink-color) !important;
-}
-
-.row-green {
-  background-color: var(--status-green-color) !important;
-}
-
-.row-red {
-  background-color: var(--status-red-color) !important;
-}
