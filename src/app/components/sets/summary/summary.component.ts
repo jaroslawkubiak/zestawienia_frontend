@@ -4,7 +4,6 @@ import { TableModule } from 'primeng/table';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { SummaryData } from '../types/ISummaryData';
-import { PositionStatusList } from '../edit-set/PositionStatusList';
 
 @Component({
   selector: 'app-summary',

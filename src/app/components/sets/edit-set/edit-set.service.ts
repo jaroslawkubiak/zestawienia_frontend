@@ -19,7 +19,7 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { PositionStatusList } from './PositionStatusList';
+import { PositionStatusList } from '../PositionStatusList';
 
 @Injectable({
   providedIn: 'root',

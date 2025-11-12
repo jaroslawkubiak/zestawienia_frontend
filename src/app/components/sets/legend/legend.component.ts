@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { PositionStatusList } from '../edit-set/PositionStatusList';
+import { PositionStatusList } from '../PositionStatusList';
 import { CommonModule } from '@angular/common';
 
 @Component({

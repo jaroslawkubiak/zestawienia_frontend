@@ -31,7 +31,7 @@ import { ISupplier } from '../../suppliers/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { EditSetService } from '../edit-set/edit-set.service';
 import { FooterService } from '../edit-set/footer.service';
-import { PositionStatusList } from '../edit-set/PositionStatusList';
+import { PositionStatusList } from '../PositionStatusList';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { IColumnList } from '../types/IColumnList';
 import { IFooterRow } from '../types/IFooterRow';
@@ -39,7 +39,7 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
-import { ColumnList } from './ColumnList';
+import { ColumnList } from '../ColumnList';
 
 @Component({
   selector: 'app-positions-table',
