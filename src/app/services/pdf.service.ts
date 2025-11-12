@@ -3,7 +3,7 @@ import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
-import { PositionStatusList } from '../components/sets/edit-set/PositionStatusList';
+import { PositionStatusList } from '../components/sets/PositionStatusList';
 import { ColumnList } from '../components/sets/ColumnList';
 import { IColumnList } from '../components/sets/types/IColumnList';
 import { IPosition } from '../components/sets/types/IPosition';
