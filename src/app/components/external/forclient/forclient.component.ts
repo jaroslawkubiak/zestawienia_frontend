@@ -3,6 +3,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
+import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -17,9 +18,12 @@ import { SendFilesComponent } from '../../files/send-files/send-files.component'
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
+import { PositionStatusList } from '../../sets/PositionStatusList';
+import { SummaryComponent } from '../../sets/summary/summary.component';
+import { LegendComponent } from '../../sets/legend/legend.component';
 import { IPosition } from '../../sets/types/IPosition';
+import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
-import { TabsModule } from 'primeng/tabs';
 
 @Component({
   selector: 'app-setforclient',
@@ -32,6 +36,8 @@ import { TabsModule } from 'primeng/tabs';
     Dialog,
     TabsModule,
     CommentsComponent,
+    SummaryComponent,
+    LegendComponent,
   ],
   templateUrl: './forclient.component.html',
   styleUrl: './forclient.component.css',
@@ -92,8 +98,12 @@ export class ForClientComponent implements OnInit {
     }).subscribe(({ set, positions }) => {
       this.set = set;
       this.comments = this.set?.comments ?? [];
-
       this.positions = positions.map((item) => {
+        const statusObj: IPositionStatus =
+          PositionStatusList.filter(
+            (statusItem) => item.status === statusItem.label
+          )[0] || PositionStatusList[0];
+
         let imageUrl = '';
         if (item.image) {
           imageUrl = [
@@ -109,6 +119,7 @@ export class ForClientComponent implements OnInit {
 
         return {
           ...item,
+          status: statusObj ? statusObj : item.status,
           brutto,
           wartoscNetto: calculateWartosc(item.ilosc, item.netto),
           wartoscBrutto: calculateWartosc(item.ilosc, brutto),
@@ -126,7 +137,7 @@ export class ForClientComponent implements OnInit {
       this.sortByBookmarkAndOrder(this.positions);
 
       this.uniquePositionIds = [
-        ...new Set(this.comments.map((comment) => comment.positionId.id)),
+        ...new Set(this.comments.map((comment) => comment.positionId?.id)),
       ];
 
       this.assignCommentsToPosition();
@@ -149,7 +160,6 @@ export class ForClientComponent implements OnInit {
           wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
         };
       });
-
 
     this.cd.detectChanges();
   }
@@ -186,7 +196,7 @@ export class ForClientComponent implements OnInit {
 
   assignCommentsToPosition() {
     const positionCommentsMap = this.comments.reduce((map, comment) => {
-      const positionId = comment.positionId.id;
+      const positionId = comment.positionId?.id;
       if (!map[positionId]) {
         map[positionId] = [];
       }
@@ -248,5 +258,13 @@ export class ForClientComponent implements OnInit {
       }
       return item;
     });
+  }
+
+  getStatusLabel(status: IPositionStatus | string): string {
+    return typeof status === 'object' ? status?.label : '';
+  }
+
+  getStatusCss(status: IPositionStatus | string): string {
+    return typeof status === 'object' ? status?.cssClass : '';
   }
 }

@@ -23,6 +23,7 @@ h3 {
 }
 
 .action-btn-wrapper {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -36,7 +37,7 @@ h3 {
 }
 
 .action-btn-wrapper label {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 600;
   cursor: pointer;
 }
@@ -49,6 +50,7 @@ h3 {
 .action-btn-wrapper label {
   color: inherit;
 }
+
 .title {
   display: flex;
   flex-direction: column;
@@ -63,28 +65,15 @@ h3 {
   gap: 20px;
 }
 
-.bookmark-order {
-  font-size: 1.8rem;
-  font-weight: 700;
-  text-align: left;
-  color: var(--accent-color-darker);
-}
-
 .room-name {
   font-size: 1.6rem;
-}
-
-.positions-list {
-  display: flex;
-  flex-direction: column;
-  border-top: 4px solid var(--accent-color-darker);
 }
 
 .positions-item {
   display: grid;
   padding: 20px 0;
   grid-template-columns: repeat(5, 1fr);
-  background-color: var(--accent-color-lighter);
+  background-color: var(--neutral-color);
   border-bottom: 2px solid var(--accent-color-darker);
   gap: 10px;
 }
@@ -120,6 +109,9 @@ h3 {
 .link-cell {
   width: 100px;
   height: 40px;
+}
+
+.cursor-pointer {
   cursor: pointer;
 }
 
@@ -133,6 +125,13 @@ h3 {
   position: absolute;
   top: -7px;
   right: -7px;
+  cursor: auto;
+}
+
+.nr-files {
+  position: absolute;
+  top: -7px;
+  right: -20px;
   cursor: auto;
 }
 
@@ -158,10 +157,11 @@ h3 {
   flex-direction: column;
   padding: 10px 0;
   gap: 5px;
+  height: 80px;
 }
 
 .product-title {
-  color: var(--neutral-color-dark);
+  color: var(--primary-color);
   font-size: 1.2rem;
 }
 
@@ -178,4 +178,8 @@ h3 {
 
 ::ng-deep .p-tabpanels {
   padding: 0 !important;
+}
+
+::ng-deep .p-tab {
+  font-size: 1.4rem;
 }
