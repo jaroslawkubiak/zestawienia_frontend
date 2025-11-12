@@ -1,1 +1,7 @@
-export type TField = 'number' | 'string' | 'select' | 'image' | 'textarea';
+export type TField =
+  | 'number'
+  | 'string'
+  | 'select'
+  | 'image'
+  | 'textarea'
+  | 'link';
