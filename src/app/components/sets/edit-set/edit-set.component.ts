@@ -25,13 +25,14 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { IComment } from '../../comments/types/IComment';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
+import { LegendComponent } from '../legend/legend.component';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
+import { SummaryComponent } from '../summary/summary.component';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { EditSetService } from './edit-set.service';
-import { SummaryComponent } from '../summary/summary.component';
 
 @Component({
   selector: 'app-set',
@@ -51,6 +52,7 @@ import { SummaryComponent } from '../summary/summary.component';
     SelectModule,
     FormsModule,
     SummaryComponent,
+    LegendComponent,
   ],
 })
 export class EditSetComponent

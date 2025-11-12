@@ -38,11 +38,11 @@ html {
   --main-color-900: #600a20;
 
   /* position status color  */
-  --status-pink-color: #ffc1c8;
-  --status-green-color: #6cb127;
-  --status-red-color: #de1039;
-  --status-lightgreen-color: #afeab8;
-  --status-yellow-color: #f1f659;
+  --status-pink-color: #ffc1c8a2;
+  --status-green-color: #58ac1ba4;
+  --status-red-color: #de10398f;
+  --status-lightgreen-color: #c0f4c8db;
+  --status-yellow-color: #f1f659b9;
 
   /* position row height  */
   --row-height: 190px;
