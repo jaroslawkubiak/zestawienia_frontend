@@ -50,15 +50,44 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
+  getPositionsForSupplier(
+    setId: number,
+    supplierId: number
+  ): Observable<IPosition[]> {
+    return this.http
+      .get<IPosition[]>(
+        `${environment.API_URL}/positions/${setId}/${supplierId}`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
   getSet(setId: number): Observable<ISet> {
     return this.http
       .get<ISet>(`${environment.API_URL}/sets/${setId}`)
       .pipe(catchError(this.handleError));
   }
 
+  getSetForSupplier(setId: number, supplierId: number): Observable<ISet> {
+    return this.http
+      .get<ISet>(`${environment.API_URL}/sets/${setId}/${supplierId}`)
+      .pipe(catchError(this.handleError));
+  }
+
   validateSetAndHash(setId: number, hash: string): Observable<boolean> {
     return this.http
       .get<boolean>(`${environment.API_URL}/sets/${setId}/${hash}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  validateSetAndHashForSupplier(
+    setId: number,
+    hash: string,
+    supplierHash: string
+  ): Observable<{ isValid: boolean; supplierId?: number }> {
+    return this.http
+      .get<{ isValid: boolean; supplierId?: number }>(
+        `${environment.API_URL}/sets/${setId}/${hash}/${supplierHash}`
+      )
       .pipe(catchError(this.handleError));
   }
 

@@ -3,6 +3,7 @@ import { ClientsComponent } from './components/clients/clients.component';
 import { CommentsToSetComponent } from './components/comments/comments-to-set/comments-to-set.component';
 import { EmailsComponent } from './components/emails/emails.component';
 import { ForClientComponent } from './components/external/forclient/forclient.component';
+import { ForsupplierComponent } from './components/external/forsupplier/forsupplier.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
@@ -66,6 +67,10 @@ export const routes: Routes = [
   {
     path: ':id/:hash',
     component: ForClientComponent,
+  },
+  {
+    path: ':id/:hash/:supplierHash',
+    component: ForsupplierComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];
