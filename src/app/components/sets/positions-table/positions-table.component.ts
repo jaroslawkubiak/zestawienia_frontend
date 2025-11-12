@@ -90,7 +90,7 @@ export class PositionsTableComponent implements OnInit {
     },
     ...ColumnList,
   ];
-  positionStatus: IPositionStatus[] = PositionStatusList;
+  positionStatus: IPositionStatus[] = PositionStatusList.filter((s) => s.label);
   setId: number = 0;
   positionId: number = 0;
   showCommentsDialog = false;

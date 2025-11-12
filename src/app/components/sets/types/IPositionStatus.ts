@@ -3,5 +3,5 @@ export interface IPositionStatus {
   label: string;
   cssClass: string;
   color: string;
-  notSummary: boolean;
+  summary: boolean;
 }

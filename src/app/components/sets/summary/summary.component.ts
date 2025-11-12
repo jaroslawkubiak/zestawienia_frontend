@@ -30,7 +30,7 @@ export class SummaryComponent implements OnInit {
           const status = p.status;
           const include =
             !status ||
-            (typeof status === 'object' && status.notSummary === false);
+            (typeof status === 'object' && status.summary);
           if (!include) return sum;
 
           return sum + (p.netto ?? 0) * (p.ilosc ?? 0);

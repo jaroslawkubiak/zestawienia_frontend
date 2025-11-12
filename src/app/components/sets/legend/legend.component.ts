@@ -9,6 +9,5 @@ import { CommonModule } from '@angular/common';
   styleUrl: './legend.component.css',
 })
 export class LegendComponent {
-
-  statuses = PositionStatusList;
+  statuses = PositionStatusList.filter((s) => s.label);
 }
