@@ -1,10 +1,9 @@
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
-import jsPDF from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import type { jsPDF } from 'jspdf';
 import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
-import { PositionStatusList } from '../components/sets/PositionStatusList';
 import { ColumnList } from '../components/sets/ColumnList';
+import { PositionStatusList } from '../components/sets/PositionStatusList';
 import { IColumnList } from '../components/sets/types/IColumnList';
 import { IPosition } from '../components/sets/types/IPosition';
 import { IPositionStatus } from '../components/sets/types/IPositionStatus';
@@ -84,6 +83,10 @@ export class PdfService {
       console.error('Czcionki jeszcze się nie załadowały!');
       return;
     }
+
+    // 🔥 Lazy loading jspdf i autotable
+    const { default: jsPDF } = await import('jspdf');
+    const autoTable = (await import('jspdf-autotable')).default;
 
     // create doc 'p' = portret, 'l' = landscape
     const doc = new jsPDF('l', 'mm', 'a1');
