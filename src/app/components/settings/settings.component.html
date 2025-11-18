@@ -1,5 +1,8 @@
 <li *ngFor="let item of settingList">
-  <a [routerLink]="item.route"
+  <a
+    *ngIf="!item.requiredRole || userRole() === item.requiredRole"
+    [routerLink]="item.route"
     ><i class="pi {{ item.icon }} icon"></i>{{ item.name }}
   </a>
 </li>
+<p>rola={{ userRole() }}</p>

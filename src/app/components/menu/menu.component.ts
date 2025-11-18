@@ -14,6 +14,8 @@ import { IMenu } from './IMenu';
 })
 export class MenuComponent {
   userName = () => this.authService.getUserName();
+  userRole = () => this.authService.getUserRole();
+  
   menuItems: IMenu[] = [
     {
       name: 'Zestawienia',
@@ -43,6 +45,7 @@ export class MenuComponent {
   ];
 
   constructor(private authService: AuthService) {}
+  
   logout() {
     this.authService.logout();
   }

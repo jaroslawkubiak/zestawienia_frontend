@@ -5,12 +5,14 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { ILoggedUser } from './types/ILoggedUser';
 import { ILoginUser } from './types/ILoginUser';
+import { Role } from './types/role';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   user = signal<string | null>(null);
+  userRole = signal<Role | null>(null);
   userId = signal<number | undefined>(undefined);
   authorizationToken = signal<string | null>(null);
 
@@ -35,6 +37,11 @@ export class AuthService {
     return this.user() || sessionStorage.getItem('user_name');
   }
 
+  getUserRole(): Role | null {
+    return (this.userRole() ||
+      sessionStorage.getItem('user_role')) as Role | null;
+  }
+
   isAuthenticated(): boolean {
     const token =
       this.authorizationToken() || sessionStorage.getItem('access_token');
@@ -56,9 +63,11 @@ export class AuthService {
     this.authorizationToken.set(response.accessToken);
     this.user.set(response.name);
     this.userId.set(response.id);
+    this.userRole.set(response.role);
 
     sessionStorage.setItem('access_token', response.accessToken);
     sessionStorage.setItem('user_name', response.name);
+    sessionStorage.setItem('user_role', response.role);
     sessionStorage.setItem('user_id', String(response.id));
 
     // Navigate to the welcome page after successful login
@@ -74,6 +83,7 @@ export class AuthService {
     sessionStorage.removeItem('access_token');
     sessionStorage.removeItem('user_name');
     sessionStorage.removeItem('user_id');
+    sessionStorage.removeItem('user_role');
 
     // Navigate to the login page after logout
     this.router.navigate(['/login']);
