@@ -19,6 +19,13 @@
   font-size: 14px !important;
 }
 
+.wrapper p {
+  font-size: 4rem;
+  color: var(--accent-color-darker);
+  font-weight: 700;
+  padding-bottom: 20px;
+}
+
 img {
   width: 100%;
   margin-bottom: 100px;

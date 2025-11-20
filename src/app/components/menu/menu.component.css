@@ -15,7 +15,7 @@
 
 .menu-wrapper {
   display: flex;
-  gap: 2rem;
+  gap: 3rem;
   width: 100%;
   justify-content: start;
   background-color: var(--primary-color);

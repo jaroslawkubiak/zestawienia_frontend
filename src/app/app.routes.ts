@@ -8,14 +8,15 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
+import { NotificationComponent } from './components/settings/notification/notification.component';
+import { PasswordChangeComponent } from './components/settings/password-change/password-change.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { UiCheckComponent } from './components/settings/ui-check/ui-check.component';
 import { SuppliersComponent } from './components/suppliers/suppliers.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { UnsavedChangesGuard } from './guards/unsaved-changes.guard';
 import { AuthGuard } from './login/auth.guard';
 import { LoginComponent } from './login/login.component';
-import { NotificationComponent } from './misc/notification/notification.component';
-import { UiCheckComponent } from './misc/ui-check/ui-check.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -57,11 +58,21 @@ export const routes: Routes = [
   },
   {
     path: 'settings',
+    component: SettingsComponent,
     canActivate: [AuthGuard],
     children: [
-      { path: '', component: SettingsComponent },
-      { path: 'ui-check', component: UiCheckComponent },
-      { path: 'notification', component: NotificationComponent },
+      {
+        path: 'passwordChange',
+        component: PasswordChangeComponent,
+      },
+      {
+        path: 'ui-check',
+        component: UiCheckComponent,
+      },
+      {
+        path: 'notification',
+        component: NotificationComponent,
+      },
     ],
   },
   {

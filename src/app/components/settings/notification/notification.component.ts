@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
-import { NotificationService } from '../../services/notification.service';
-import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
+import { NotificationService } from '../../../services/notification.service';
 type ISeverity = 'success' | 'error' | 'warn' | 'info';
 
 @Component({
