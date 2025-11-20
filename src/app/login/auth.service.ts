@@ -22,15 +22,8 @@ export class AuthService {
     return this.authorizationToken() || sessionStorage.getItem('access_token');
   }
 
-  getUserId(): number | undefined {
-    if (this.userId()) {
-      return Number(this.userId());
-    }
-    if (sessionStorage.getItem('user_id')) {
-      return Number(sessionStorage.getItem('user_id'));
-    }
-
-    return undefined;
+  getUserId(): number {
+    return Number(this.userId() ?? sessionStorage.getItem('user_id'));
   }
 
   getUserName(): string | null {

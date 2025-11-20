@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ISetting } from './ISetting';
+import { IChangePassword } from './types/IChangePassword';
 
 @Injectable({
   providedIn: 'root',
@@ -20,5 +21,12 @@ export class SettingsService {
     return this.http
       .get<ISetting>(`${environment.API_URL}/settings/${type}`)
       .pipe(catchError(this.handleError));
+  }
+
+  changePassword(payload: IChangePassword) {
+    return this.http.post<IChangePassword>(
+      `${environment.API_URL}/auth/passwordChange`,
+      payload
+    );
   }
 }

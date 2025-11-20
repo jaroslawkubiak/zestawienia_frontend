@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../login/auth.service';
 import { IMenu } from '../menu/IMenu';
 
@@ -8,7 +8,7 @@ import { IMenu } from '../menu/IMenu';
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, RouterOutlet],
 })
 export class SettingsComponent {
   page: string = '';
@@ -16,14 +16,19 @@ export class SettingsComponent {
 
   settingList: IMenu[] = [
     {
+      name: 'Zmiana hasła',
+      route: 'passwordChange',
+      icon: 'pi-lock',
+    },
+    {
       name: 'UI Check',
-      route: '/settings/ui-check',
+      route: 'ui-check',
       icon: 'pi-sparkles',
       requiredRole: 'admin',
     },
     {
       name: 'Notification',
-      route: '/settings/notification',
+      route: 'notification',
       icon: 'pi-bell',
       requiredRole: 'admin',
     },
