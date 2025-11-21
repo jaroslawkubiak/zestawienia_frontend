@@ -19,7 +19,7 @@
   font-size: 14px !important;
 }
 
-.wrapper p {
+.login-ttile {
   font-size: 4rem;
   color: var(--accent-color-darker);
   font-weight: 700;
