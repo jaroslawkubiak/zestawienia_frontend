@@ -37,7 +37,7 @@ li a {
 li:hover,
 .logout:hover,
 .selected {
-  color: var(--accent-color);
+  color: var(--accent-color-10);
 }
 
 .logout {

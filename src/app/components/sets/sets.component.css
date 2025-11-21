@@ -42,7 +42,7 @@ tr {
 .p-inputtext:focus,
 .p-inputtext:hover,
 .p-inputtext:active {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .action-btn-wrapper {
@@ -67,6 +67,6 @@ tr {
   display: flex;
   gap: 20px;
   font-size: 1.4rem;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   align-items: center;
 }

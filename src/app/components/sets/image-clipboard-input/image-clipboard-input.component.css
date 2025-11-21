@@ -29,7 +29,7 @@
 
 .default-image i {
   font-size: 70px;
-  color: var(--neutral-color-darker);
+  color: var(--neutral-color-dark);
 }
 
 .image-overlay {

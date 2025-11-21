@@ -1,5 +1,5 @@
 ::ng-deep .p-menubar {
-  border: 2px solid var(--accent-color-darker) !important;
+  border: 2px solid var(--accent-color-13) !important;
   border-radius: 0 !important;
   padding: 0 !important;
 }
@@ -18,7 +18,7 @@
 }
 
 ::ng-deep .p-menubar-item-content:hover {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 ::ng-deep .p-menubar-item-content {
@@ -36,7 +36,7 @@
 }
 
 ::ng-deep .p-menubar-item-active > .p-menubar-item-content {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .menu-item {
@@ -57,7 +57,7 @@
 
 .menu-icon {
   font-size: 1.8rem;
-  color: var(--accent-color-darker);
+  color: var(--accent-color-13);
 }
 
 .menu-label-wrapper {
@@ -77,7 +77,7 @@
 
 .menu-label-send-at {
   font-size: 1.2rem;
-  color: var(--neutral-color-dark);
+  color: var(--neutral-color-darker);
 }
 
 .menu-icon-arrow {
@@ -90,7 +90,7 @@
 }
 
 .menu-label-preview i {
-  color: var(--accent-color-darker);
+  color: var(--accent-color-13);
   font-size: 2.4rem;
   transition: color 0.2s ease;
 }

@@ -117,7 +117,7 @@
 }
 
 .row:hover {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-07) !important;
 }
 
 ::ng-deep .p-iconwrapper svg {
@@ -133,7 +133,7 @@
 ::ng-deep .p-dialog-title {
   padding: 1rem;
   font-size: 2rem !important;
-  color: var(--accent-color-darker) !important;
+  color: var(--accent-color-13) !important;
 }
 
 ::ng-deep .p-dialog-footer {
@@ -156,8 +156,8 @@
 }
 
 ::ng-deep .p-fileupload .p-fileupload-highlight {
-  background-color: var(--accent-color-lighter) !important;
-  border: 1px dashed var(--accent-color-darker) !important;
+  background-color: var(--accent-color-07) !important;
+  border: 1px dashed var(--accent-color-13) !important;
 }
 
 .p-fileupload-file-list {

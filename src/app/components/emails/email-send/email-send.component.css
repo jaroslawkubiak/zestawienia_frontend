@@ -1,6 +1,6 @@
 .container {
   width: 100%;
-  border: 1px solid var(--accent-color-darker);
+  border: 1px solid var(--accent-color-13);
 }
 
 .header {
@@ -14,24 +14,24 @@
   grid-template-columns: 110px auto;
   width: 100%;
   height: 40px;
-  border-bottom: 1px solid var(--accent-color-darker);
+  border-bottom: 1px solid var(--accent-color-13);
 }
 
 .title {
   font-size: 1.8rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent-color-darker);
+  background-color: var(--accent-color-13);
   color: var(--secondary-color);
   border-bottom: 1px solid var(--secondary-color);
 }
 
 .email {
-  display: flex; 
+  display: flex;
   justify-content: start;
-  align-items: center; 
+  align-items: center;
   font-size: 1.6rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent-color-lighter);
+  background-color: var(--accent-color-03);
 }
 
 .content-container {
@@ -49,7 +49,7 @@
   color: var(--secondary-color);
   font-weight: 700;
   padding: 1.5rem;
-  background-color: var(--accent-color-darker);
+  background-color: var(--accent-color-13);
 }
 
 textarea {
@@ -59,7 +59,7 @@ textarea {
   font-family: "Poppins", sans-serif;
   font-size: 1.6rem;
   resize: none;
-  background-color: var(--accent-color-lighter);
+  background-color: var(--accent-color-03);
 }
 
 .footer {
@@ -67,7 +67,7 @@ textarea {
   top: 0;
   right: 0;
   padding: 1rem;
-  background-color: var(--accent-color-darker);
+  background-color: var(--accent-color-13);
 }
 
 .footer i {

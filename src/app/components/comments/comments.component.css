@@ -16,7 +16,7 @@
   overflow-y: auto;
   margin-bottom: 2rem;
   overflow-x: hidden;
-  border: 1px solid var(--accent-color);
+  border: 1px solid var(--accent-color-10);
   scroll-behavior: smooth;
 }
 
@@ -139,9 +139,9 @@
 .new-message-input {
   flex: 1;
   padding: 0.5rem 0.75rem;
-  border: 1px solid var(--accent-color);
-  background-color: var(--accent-color-lighter);
-  color: var(--accent-color-darker);
+  border: 1px solid var(--accent-color-10);
+  background-color: var(--accent-color-03);
+  color: var(--accent-color-13);
   font-size: 1.6rem;
   outline: none;
 }
@@ -204,7 +204,7 @@
 }
 
 .edit-icon:hover {
-  background-color: var(--ok-color);
+  background-color: var(--accent-color-10);
 }
 
 .delete-icon:hover {
@@ -243,11 +243,11 @@
 }
 
 .comment-icon-unread:hover {
-  background-color: var(--ok-color);
+  background-color: var(--accent-color-10);
 }
 
 .comment-icon-read {
-  background-color: var(--ok-color);
+  background-color: var(--accent-color-10);
 }
 
 .comment-icon-read:hover {
@@ -274,7 +274,7 @@
 }
 
 .comment-read {
-  background-color: var(--ok-color);
+  background-color: var(--accent-color-10);
 }
 
 .comment-unread {

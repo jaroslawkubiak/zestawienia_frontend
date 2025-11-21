@@ -11,21 +11,21 @@
   height: 350px;
   padding: 10px 5px;
   border-radius: 5px;
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
   -webkit-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
   -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
   box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
 }
 
 .file-container .file-item:hover {
-  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
-  box-shadow: 5px 5px 15px -4px var(--accent-color-darker);
+  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-13);
+  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-13);
+  box-shadow: 5px 5px 15px -4px var(--accent-color-13);
 }
 
 .file-container .file-item i {
   font-size: 80px !important;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   cursor: default;
 }
 
@@ -36,13 +36,13 @@
 
 h3 {
   font-size: 2.4rem;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
 }
 
 h3 i {
   font-size: 2rem;
   margin-right: 10px;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   cursor: auto;
 }
 

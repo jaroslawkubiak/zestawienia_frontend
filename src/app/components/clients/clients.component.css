@@ -30,7 +30,7 @@ tr {
 label {
   margin: 20px 0 10px 0;
   display: block;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   font-size: 1.6rem;
 }
 
@@ -65,7 +65,7 @@ i {
   all: unset !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-darker) !important;
+  border: 1px solid var(--accent-color-13) !important;
   width: 600px !important;
 }
 
@@ -75,7 +75,7 @@ i {
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .search-input {
@@ -95,7 +95,7 @@ i {
   background-color: white !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-darker) !important;
+  border: 1px solid var(--accent-color-13) !important;
 }
 
 .p-textarea.p-variant-filled {

@@ -16,13 +16,13 @@
 }
 
 ::ng-deep .p-dialog-title {
-  color: var(--accent-color-darker) !important;
+  color: var(--accent-color-13) !important;
 }
 
 ::ng-deep .p-dialog-close-button {
-  color: var(--accent-color-darker) !important;
+  color: var(--accent-color-13) !important;
 }
 
 ::ng-deep .p-dialog-close-button:hover {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }

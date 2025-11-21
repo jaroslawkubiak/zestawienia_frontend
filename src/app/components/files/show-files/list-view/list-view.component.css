@@ -4,7 +4,7 @@
 }
 
 .file-row:hover {
-  background-color: var(--accent-color-lighter) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .p-image img {
@@ -16,7 +16,7 @@
 
 .indicator {
   font-size: 80px;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
 }
 
 .file-pdf,
@@ -31,7 +31,7 @@
 }
 
 .file-other i {
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   font-size: 80px;
 }
 

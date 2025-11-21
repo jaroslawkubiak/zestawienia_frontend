@@ -17,7 +17,7 @@
 }
 
 .file-other i {
-  color: var(--accent-color);
+  color: var(--accent-color-10);
   font-size: 80px;
 }
 
@@ -37,10 +37,10 @@ p {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
 }
 
 .indicator {
   font-size: 80px;
-  color: var(--accent-color);
+  color: var(--accent-color-10);
 }
