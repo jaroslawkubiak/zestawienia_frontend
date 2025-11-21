@@ -28,11 +28,10 @@ export class SummaryComponent implements OnInit {
 
           const status = p.status;
           const include =
-            !status ||
-            (typeof status === 'object' && status.summary);
+            !status || (typeof status === 'object' && status.summary);
           if (!include) return sum;
 
-          return sum + (p.netto ?? 0) * (p.ilosc ?? 0);
+          return sum + (p.brutto ?? 0) * (p.ilosc ?? 0);
         }, 0);
 
         return { bookmarkId: b.id, bookmarkName: b.name, value };
