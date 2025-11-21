@@ -1,13 +1,6 @@
 <div class="container">
-  <ul class="menu-wrapper">
-    <li *ngFor="let item of settingList">
-      <a
-        *ngIf="!item.requiredRole || userRole() === item.requiredRole"
-        [routerLink]="item.route"
-        ><i class="pi {{ item.icon }} icon"></i>{{ item.name }}
-        <i *ngIf="item.requiredRole" class="pi pi-eye-slash" title="Hidden for users"></i>
-      </a>
-    </li>
-  </ul>
+  <div class="menu-wrapper">
+    <p-menu [model]="items" styleClass="settings-menu" />
+  </div>
   <div class="contenst-wrapper"><router-outlet></router-outlet></div>
 </div>

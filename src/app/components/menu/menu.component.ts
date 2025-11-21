@@ -13,39 +13,39 @@ import { IMenu } from './IMenu';
   imports: [CommonModule, ButtonModule, RouterLink, RouterLinkActive],
 })
 export class MenuComponent {
-  userName = () => this.authService.getUserName();
+  userlabel = () => this.authService.getUserName();
   userRole = () => this.authService.getUserRole();
-  
+
   menuItems: IMenu[] = [
     {
-      name: 'Zestawienia',
-      route: '/sets',
+      label: 'Zestawienia',
+      routerLink: '/sets',
       icon: 'pi-list',
     },
     {
-      name: 'Klienci',
-      route: '/clients',
+      label: 'Klienci',
+      routerLink: '/clients',
       icon: 'pi-user',
     },
     {
-      name: 'Dostawcy',
-      route: '/suppliers',
+      label: 'Dostawcy',
+      routerLink: '/suppliers',
       icon: 'pi-truck',
     },
     {
-      name: 'Wysłane e-maile',
-      route: '/emails',
+      label: 'Wysłane e-maile',
+      routerLink: '/emails',
       icon: 'pi-envelope',
     },
     {
-      name: 'Ustawienia',
-      route: '/settings',
+      label: 'Ustawienia',
+      routerLink: '/settings',
       icon: 'pi-cog',
     },
   ];
 
   constructor(private authService: AuthService) {}
-  
+
   logout() {
     this.authService.logout();
   }

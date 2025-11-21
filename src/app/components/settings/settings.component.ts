@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { RouterModule, RouterOutlet } from '@angular/router';
+import { MenuItem } from 'primeng/api';
+import { Menu, MenuModule } from 'primeng/menu';
 import { AuthService } from '../../login/auth.service';
 import { IMenu } from '../menu/IMenu';
 
@@ -8,31 +10,37 @@ import { IMenu } from '../menu/IMenu';
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrl: './settings.component.css',
-  imports: [RouterLink, CommonModule, RouterOutlet],
+  imports: [CommonModule, RouterOutlet, RouterModule, MenuModule, Menu],
 })
-export class SettingsComponent {
-  page: string = '';
+export class SettingsComponent implements OnInit {
   userRole = () => this.authService.getUserRole();
+  items: MenuItem[] | undefined;
 
-  settingList: IMenu[] = [
-    {
-      name: 'Zmiana hasła',
-      route: 'passwordChange',
-      icon: 'pi-lock',
-    },
-    {
-      name: 'UI Check',
-      route: 'ui-check',
-      icon: 'pi-sparkles',
-      requiredRole: 'admin',
-    },
-    {
-      name: 'Notification',
-      route: 'notification',
-      icon: 'pi-bell',
-      requiredRole: 'admin',
-    },
-  ];
+  ngOnInit() {
+    const role = this.userRole();
+    const allItems: IMenu[] = [
+      {
+        label: 'Zmiana hasła',
+        icon: 'pi pi-lock',
+        routerLink: 'passwordChange',
+      },
+      {
+        label: 'UI Check',
+        icon: 'pi pi-sparkles',
+        routerLink: 'ui-check',
+        requiredRole: 'admin',
+      },
+      {
+        label: 'Notification',
+        icon: 'pi pi-bell',
+        routerLink: 'notification',
+        requiredRole: 'admin',
+      },
+    ];
 
+    this.items = allItems.filter(
+      (item) => !item.requiredRole || item.requiredRole === role
+    );
+  }
   constructor(private authService: AuthService) {}
 }

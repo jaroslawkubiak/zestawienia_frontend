@@ -1,8 +1,8 @@
 import { Role } from '../../login/types/role';
 
 export interface IMenu {
-  name: string;
-  route: string;
+  label: string;
+  routerLink: string;
   icon: string;
   requiredRole?: Role;
 }

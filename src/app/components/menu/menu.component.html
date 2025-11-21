@@ -2,8 +2,8 @@
   <div class="menu">
     <ul class="menu-wrapper">
       <li *ngFor="let item of menuItems">
-        <a [routerLink]="item.route" routerLinkActive="selected"
-          ><i class="pi {{ item.icon }} icon"></i>{{ item.name }}
+        <a [routerLink]="item.routerLink" routerLinkActive="selected"
+          ><i class="pi {{ item.icon }} icon"></i>{{ item.label }}
         </a>
       </li>
     </ul>

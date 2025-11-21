@@ -5,32 +5,28 @@
 }
 
 .contenst-wrapper {
-  padding: 0 20px;
+  padding: 0 40px;
 }
 
-ul {
+.menu-wrapper {
   display: flex;
   height: 800px;
   width: 100%;
+  justify-content: flex-start;
   flex-direction: column;
-  background-color: var(--accent-color-17);
 }
 
-li:hover {
-  border-radius: 5px;
-  background-color: var(--accent-color-14);
+:host ::ng-deep .settings-menu {
+  --p-menu-background: var(--accent-color-02);
+  --p-menu-list-gap: 8px;
+  --p-menu-list-padding: 8px;
+  --p-menu-item-padding: 20px 10px;
+  --p-menu-item-color: var(--accent-color-12);
+  --p-menu-item-icon-color: var(--accent-color-12);
 }
 
-li a {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  cursor: pointer;
-  padding: 20px;
-  width: 200px;
-  color: var(--accent-color-05);
-}
-
-.icon {
+::ng-deep .p-menu-item-icon.pi {
   font-size: 2rem;
+  padding-right: 15px;
+  padding-left: 10px;
 }
