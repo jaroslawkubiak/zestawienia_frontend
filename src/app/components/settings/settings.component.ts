@@ -25,6 +25,11 @@ export class SettingsComponent implements OnInit {
         routerLink: 'passwordChange',
       },
       {
+        label: 'Colors',
+        icon: 'pi pi-palette',
+        routerLink: 'colors',
+      },
+      {
         label: 'UI Check',
         icon: 'pi pi-sparkles',
         routerLink: 'ui-check',

@@ -8,6 +8,7 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
+import { ColorsComponent } from './components/settings/colors/colors.component';
 import { NotificationComponent } from './components/settings/notification/notification.component';
 import { PasswordChangeComponent } from './components/settings/password-change/password-change.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -72,6 +73,10 @@ export const routes: Routes = [
       {
         path: 'notification',
         component: NotificationComponent,
+      },
+      {
+        path: 'colors',
+        component: ColorsComponent,
       },
     ],
   },
