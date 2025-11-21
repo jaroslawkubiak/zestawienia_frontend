@@ -23,8 +23,8 @@ export class SettingsService {
       .pipe(catchError(this.handleError));
   }
 
-  changePassword(payload: IChangePassword) {
-    return this.http.post<IChangePassword>(
+  changePassword(payload: IChangePassword): Observable<{ message: string }> {
+    return this.http.post<{ message: string }>(
       `${environment.API_URL}/auth/passwordChange`,
       payload
     );

@@ -26,13 +26,12 @@ export class AuthService {
     return Number(this.userId() ?? sessionStorage.getItem('user_id'));
   }
 
-  getUserName(): string | null {
-    return this.user() || sessionStorage.getItem('user_name');
+  getUserName(): string {
+    return String(this.user() ?? sessionStorage.getItem('user_name'));
   }
 
-  getUserRole(): Role | null {
-    return (this.userRole() ||
-      sessionStorage.getItem('user_role')) as Role | null;
+  getUserRole(): Role {
+    return this.userRole() ?? (sessionStorage.getItem('user_role') as Role);
   }
 
   isAuthenticated(): boolean {
@@ -47,7 +46,11 @@ export class AuthService {
       .post<ILoggedUser>(`${environment.API_URL}/auth/login`, enteredData)
       .pipe(
         tap((response) => this.storeUserData(response)),
-        catchError(() => throwError(() => new Error('Błędne dane logowania')))
+        catchError(() =>
+          throwError(
+            () => new Error('Błędne dane logowania. Spróbuj ponownie.')
+          )
+        )
       );
   }
 

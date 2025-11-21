@@ -75,10 +75,7 @@ export class PasswordChangeComponent {
 
     this.settingsService.changePassword(payload).subscribe({
       next: (response) => {
-        this.notificationService.showNotification(
-          'success',
-          'Hasło zostało zmienione'
-        );
+        this.notificationService.showNotification('success', response.message);
       },
       error: (error) => {
         this.notificationService.showNotification('error', error.message);

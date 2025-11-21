@@ -57,8 +57,9 @@ export class LoginComponent {
 
     this.authService.login(enteredData).subscribe({
       next: () => (this.errorMessage = ''),
-      error: () =>
-        (this.errorMessage = 'Nie udało się zalogować. Spróbuj ponownie.'),
+      error: (err) => {
+        this.errorMessage = err.message;
+      },
     });
   }
 }
