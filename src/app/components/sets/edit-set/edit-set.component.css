@@ -6,10 +6,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--accent-color-13);
+  background-color: var(--accent-color-09);
   color: var(--secondary-color);
   width: 100%;
-  padding: 20px;
+  padding: 15px;
 }
 
 .set-header-cell {
@@ -22,10 +22,12 @@
 .set-header-title {
   font-size: 1.6rem;
   color: var(--primary-color);
+  height: 30px;
 }
 
 .set-header-value {
   font-size: 2rem;
+  height: 40px;
 }
 
 ::ng-deep .p-tab {

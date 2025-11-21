@@ -29,7 +29,6 @@ export class PasswordChangeComponent {
     private fb: FormBuilder,
     private settingsService: SettingsService,
     private notificationService: NotificationService,
-
     private authService: AuthService
   ) {
     this.form = this.fb.group(
