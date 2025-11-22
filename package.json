@@ -1,14 +1,15 @@
 {
-  "name": "zestawienia-frontend",
+  "name": "zestawienia",
   "version": "0.0.1",
+  "author": "Jarosław Kubiak",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^19.1.0",
     "@angular/common": "^19.1.0",

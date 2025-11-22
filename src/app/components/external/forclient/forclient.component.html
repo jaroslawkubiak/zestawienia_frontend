@@ -12,7 +12,7 @@
         <i class="pi pi-cloud"></i>
         <p-badge
           [value]="set.files?.length || 0"
-          [severity]="'danger'"
+          [severity]="set.files?.length === 0 ? 'secondary' : 'danger'"
           class="nr-files"
           badgeSize="large"
           [pTooltip]="'Ilość załączonych plików'"

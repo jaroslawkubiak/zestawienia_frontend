@@ -9,11 +9,11 @@
   display: flex;
   justify-content: space-between;
   align-items: end;
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-09);
 }
 
 h3 {
-  color: var(--accent-color-03);
+  color: var(--accent-color-02);
 }
 
 .header-actions-btn {
@@ -28,12 +28,12 @@ h3 {
   justify-content: center;
   align-items: center;
   gap: 20px;
-  color: var(--accent-color-03);
+  color: var(--accent-color-02);
   transition: color 0.2s ease;
 }
 
 .action-btn-wrapper:hover {
-  color: var(--primary-color);
+  color: var(--accent-color-16);
 }
 
 .action-btn-wrapper label {
@@ -74,7 +74,7 @@ h3 {
   padding: 20px 0;
   grid-template-columns: repeat(5, 1fr);
   background-color: var(--neutral-color);
-  border-bottom: 2px solid var(--accent-color-13);
+  border-bottom: 2px solid var(--accent-color-09);
   gap: 10px;
 }
 
@@ -88,7 +88,7 @@ h3 {
 .link {
   gap: 5px;
   font-size: 2rem;
-  color: var(--accent-color-13);
+  color: var(--accent-color-09);
   font-weight: 700;
   transition: color 0.2s ease;
 }
@@ -96,7 +96,7 @@ h3 {
 .link i,
 .comments-cell i {
   font-size: 3rem;
-  color: var(--accent-color-13);
+  color: var(--accent-color-09);
   transition: color 0.2s ease;
 }
 
@@ -168,7 +168,7 @@ h3 {
 .product-name {
   font-size: 2rem;
   color: var(--accent-color-13);
-  white-space: pre-wrap;
+  /* white-space: pre-wrap; */
 }
 
 .disabled {
