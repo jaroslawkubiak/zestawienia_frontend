@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import {
   BehaviorSubject,
   catchError,
+  finalize,
   Observable,
   of,
   tap,
@@ -22,6 +23,7 @@ export class AuthService {
   userRole = signal<Role | null>(null);
   userId = signal<number | undefined>(undefined);
   authorizationToken = signal<string | null>(null);
+  private silentMode: boolean = false;
 
   private currentUserSubject = new BehaviorSubject<ILoggedUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
@@ -45,7 +47,17 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.user() && !!this.authorizationToken();
+    const hasUser = !!this.user();
+    const hasToken = !!this.authorizationToken();
+    return hasUser && hasToken;
+  }
+
+  setSilentMode(silent: boolean): void {
+    this.silentMode = silent;
+  }
+
+  isSilentMode(): boolean {
+    return this.silentMode;
   }
 
   login(enteredData: ILoginUser): Observable<ILoggedUser> {
@@ -73,16 +85,24 @@ export class AuthService {
   }
 
   logout(): void {
-    // Clear all signals
     this.user.set(null);
     this.userId.set(undefined);
     this.authorizationToken.set(null);
     this.userRole.set(null);
+    this.currentUserSubject.next(null);
+
+    this.http
+      .post(`${environment.API_URL}/auth/logout`, {}, { withCredentials: true })
+      .subscribe({
+        next: () => {},
+        error: () => {},
+      });
 
     this.router.navigate(['/login']);
   }
 
-  loadUserFromServer(): Observable<ILoggedUser | null> {
+  loadUserFromServer(silent: boolean = false): Observable<ILoggedUser | null> {
+    if (silent) this.setSilentMode(true);
     return this.http
       .get<ILoggedUser>(`${environment.API_URL}/auth/me`, {
         withCredentials: true,
@@ -97,13 +117,18 @@ export class AuthService {
             this.userRole.set(user.role);
           }
         }),
-        catchError(() => {
+        catchError((error) => {
           this.currentUserSubject.next(null);
           this.authorizationToken.set(null);
           this.user.set(null);
           this.userId.set(undefined);
           this.userRole.set(null);
           return of(null);
+        }),
+        finalize(() => {
+          if (this.silentMode) {
+            this.setSilentMode(false);
+          }
         })
       );
   }

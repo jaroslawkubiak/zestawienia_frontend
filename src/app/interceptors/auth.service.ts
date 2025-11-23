@@ -31,16 +31,25 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(clonedReq).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401 && !req.url.includes('/login')) {
-          const confirmMessage = {
-            message: 'Twoja sesja wygasła. Zaloguj się ponownie',
-            header: 'Wylogowano',
-            acceptLabel: 'Powrót do strony logowania',
-            rejectVisible: false,
-            acceptIcon: 'pi pi-sign-out',
-            accept: () => this.authService.logout(),
-          };
-          this.confirmationModalService.showConfirmation(confirmMessage);
-          this.router.navigate(['/login']);
+          const isSilent = this.authService.isSilentMode();
+          this.authService.setSilentMode(false);
+
+          // If in silent mode (app-initializer), don't show modal
+          if (isSilent) {
+            // Silent mode - no modal shown
+          } else {
+            // Otherwise show modal to user
+            const confirmMessage = {
+              message: 'Twoja sesja wygasła. Zaloguj się ponownie',
+              header: 'Wylogowano',
+              acceptLabel: 'Powrót do strony logowania',
+              rejectVisible: false,
+              acceptIcon: 'pi pi-sign-out',
+              accept: () => this.authService.logout(),
+            };
+            this.confirmationModalService.showConfirmation(confirmMessage);
+            this.router.navigate(['/login']);
+          }
         }
         return throwError(() => error);
       })
