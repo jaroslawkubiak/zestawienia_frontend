@@ -32,7 +32,8 @@ export class PdfThumbnailComponent implements OnChanges {
       this.thumbnail = this.file.thumbnail;
       this.isLoading = false;
     } else {
-      this.isLoading = true;
+      this.thumbnail = '';
+      this.isLoading = false;
     }
   }
 }

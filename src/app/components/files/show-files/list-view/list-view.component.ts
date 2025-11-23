@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxModule } from 'primeng/checkbox';
 import { ImageModule } from 'primeng/image';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
@@ -18,7 +19,6 @@ import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.compone
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
-import { CheckboxModule } from 'primeng/checkbox';
 
 @Component({
   selector: 'app-list-view',
@@ -53,13 +53,11 @@ export class ListViewComponent implements OnChanges {
   @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.files);
-    this.clearSelectedFiles.emit();
     if (this.files) {
       this.files = this.files.map((item) => {
         return {
           ...item,
-          dimmensions: this.getDimmensions(item.id),
+          dimmensions: this.getDimmensions(item),
           displaySize: this.formatFileSize(item.size),
         };
       });
@@ -78,18 +76,13 @@ export class ListViewComponent implements OnChanges {
     return `${size.toFixed(2)} ${units[i]}`;
   }
 
-  getDimmensions(id: number): string {
-    const file = this.files.find((item) => item.id === id);
-    if (!file) {
-      return '';
-    }
-
+  getDimmensions(file: IFileFullDetails): string {
     if (isPdf(file)) {
       return `${file.width}x${file.height}mm`;
-    } else if (isImage(file)) {
+    }
+    if (isImage(file)) {
       return `${file.width}x${file.height}px`;
     }
-
     return '';
   }
 

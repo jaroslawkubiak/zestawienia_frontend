@@ -105,6 +105,7 @@
         </div>
         <div *ngIf="file | isImage" class="flex-center">
           <p-image
+            *ngIf="file | isImage"
             [src]="file.fullPath"
             [preview]="true"
             alt="Załączony plik"

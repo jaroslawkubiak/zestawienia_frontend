@@ -5,5 +5,5 @@ export function isImage(file: IFileFullDetails): boolean {
 }
 
 export function isPdf(file: IFileFullDetails): boolean {
-  return file?.type?.toUpperCase() === 'PDF';
+  return file.type?.toUpperCase() === 'PDF';
 }
