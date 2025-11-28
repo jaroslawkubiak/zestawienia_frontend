@@ -23,6 +23,7 @@ import { NotificationService } from '../../../services/notification.service';
 })
 export class PasswordChangeComponent {
   form: FormGroup;
+  minPassLength = 6;
   userId = () => this.authService.getUserId();
 
   constructor(
@@ -34,8 +35,14 @@ export class PasswordChangeComponent {
     this.form = this.fb.group(
       {
         currentPassword: ['', [Validators.required]],
-        newPassword: ['', [Validators.required, Validators.minLength(3)]],
-        repeatPassword: ['', [Validators.required, Validators.minLength(3)]],
+        newPassword: [
+          '',
+          [Validators.required, Validators.minLength(this.minPassLength)],
+        ],
+        repeatPassword: [
+          '',
+          [Validators.required, Validators.minLength(this.minPassLength)],
+        ],
       },
       { validators: [PasswordChangeComponent.matchPasswords] }
     );
