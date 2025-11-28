@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -18,8 +19,8 @@ import { NotificationService } from '../../../services/notification.service';
 import { SoundService } from '../../../services/sound.service';
 import { SoundType } from '../../../services/types/SoundType';
 import { ISet } from '../../sets/types/ISet';
-import { SettingsService } from '../../settings/settings.service';
 import { ISetting } from '../../settings/ISetting';
+import { SettingsService } from '../../settings/settings.service';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { EmailsService } from '../email.service';
 import { createHTMLHeader, HTMLClient, HTMLSupplier } from '../email.template';
@@ -30,11 +31,13 @@ import { IEmailDetails } from '../types/IEmailDetails';
   imports: [CommonModule, FormsModule, TooltipModule],
   templateUrl: './email-send.component.html',
   styleUrl: './email-send.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() set!: ISet;
   @Input() supplier: ISupplier | undefined;
   @ViewChild('iframeRef') iframeRef!: ElementRef<HTMLIFrameElement>;
+
   @Output() getEmailsList = new EventEmitter<any>();
   @Output() hideEmailDialog = new EventEmitter<any>();
 
@@ -42,8 +45,10 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
   rawHTML = '';
   title = '';
   emailMessage = '';
+
   private messageInput$ = new Subject<string>();
   private subscription!: Subscription;
+
   newEmail: IEmailDetails = {
     to: '',
     subject: '',
@@ -66,9 +71,6 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
           this.fromEmail = response.value;
           this.cd.markForCheck();
         }
-      },
-      error: (err) => {
-        console.error(err);
       },
     });
 
@@ -96,15 +98,26 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     this.subscription = this.messageInput$
-      .pipe(debounceTime(300))
-      .subscribe((msg) => {
-        this.emailMessage = msg;
+      .pipe(debounceTime(700))
+      .subscribe(() => {
         this.loadPreview();
       });
   }
 
   ngAfterViewInit() {
-    this.loadPreview();
+    const iframe = this.iframeRef.nativeElement;
+
+    iframe.srcdoc = `
+      <html>
+        <body style="margin:0;padding:0;font-family:Arial;">
+          <div id="preview"></div>
+        </body>
+      </html>
+    `;
+
+    iframe.onload = () => {
+      this.loadPreview();
+    };
   }
 
   loadPreview() {
@@ -117,12 +130,13 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     });
 
     const iframe = this.iframeRef.nativeElement;
-    const doc = iframe.contentDocument || iframe.contentWindow?.document;
+    const doc = iframe.contentDocument;
 
-    if (doc) {
-      doc.open();
-      doc.write(this.rawHTML);
-      doc.close();
+    if (!doc) return;
+
+    const container = doc.getElementById('preview');
+    if (container) {
+      container.innerHTML = this.rawHTML;
     }
   }
 
@@ -139,29 +153,29 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     this.newEmail.setId = this.set.id;
 
     if (this.supplier) {
-      this.newEmail.supplierId = this.supplier?.id;
+      this.newEmail.supplierId = this.supplier.id;
     } else {
       this.newEmail.clientId = this.set.clientId.id;
     }
 
-    if (this.newEmail) {
-      this.emailsService.sendEmail(this.newEmail).subscribe({
-        next: (response) => {
-          this.notificationService.showNotification(
-            'success',
-            `Email na adres ${response.accepted[0]} został wysłany poprawnie`
-          );
-          this.soundService.playSound(SoundType.emailSending);
-          this.getEmailsList.emit();
-          this.hideEmailDialog.emit();
-        },
-        error: (error) => {
-          const sendigError = error?.error?.message
-            ? `${error.error.message} : ${error.error?.error}`
-            : 'Nie udało się wysłać emaila.';
-          this.notificationService.showNotification('error', sendigError);
-        },
-      });
-    }
+    this.emailsService.sendEmail(this.newEmail).subscribe({
+      next: (response) => {
+        this.notificationService.showNotification(
+          'success',
+          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
+        );
+
+        this.soundService.playSound(SoundType.emailSending);
+        this.getEmailsList.emit();
+        this.hideEmailDialog.emit();
+      },
+      error: (error) => {
+        const sendigError = error?.error?.message
+          ? `${error.error.message} : ${error.error?.error}`
+          : 'Nie udało się wysłać emaila.';
+
+        this.notificationService.showNotification('error', sendigError);
+      },
+    });
   }
 }

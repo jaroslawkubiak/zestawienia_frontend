@@ -14,20 +14,28 @@
     </div>
   </div>
   <div class="content-container">
-    <div class="footer">
-      <i class="pi pi-send" (click)="sendEmail()" pTooltip="Wyślij e-mail"></i>
-    </div>
-
     <div class="editor">
-      <label for="message">Edytuj treść wiadomości</label>
+      <label for="message" class="label-edit">Edytuj treść wiadomości</label>
       <textarea
         id="message"
-        [ngModel]="emailMessage"
+        [(ngModel)]="emailMessage"
         (ngModelChange)="onMessageChange($event)"
         rows="5"
       ></textarea>
     </div>
 
-    <iframe #iframeRef class="email-preview-iframe"></iframe>
+    <div class="preview-container">
+      <label class="label-preview">Podgląd treści wiadomości</label>
+
+      <div class="footer">
+        <i
+          class="pi pi-send"
+          (click)="sendEmail()"
+          pTooltip="Wyślij e-mail"
+        ></i>
+      </div>
+
+      <iframe #iframeRef class="email-preview-iframe"></iframe>
+    </div>
   </div>
 </div>
