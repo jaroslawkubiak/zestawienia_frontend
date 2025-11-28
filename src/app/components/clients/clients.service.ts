@@ -20,6 +20,8 @@ export class ClientsService {
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(() => new Error(error.error.message));
+    } else if (error.error.message) {
+      return throwError(() => new Error(error.error.message));
     }
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
