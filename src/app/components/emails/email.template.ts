@@ -72,25 +72,37 @@ export function createHTMLHeader(options: IHTMLTemplateOptions): string {
                   <tr>
 
                     <!-- IG -->
-                    <td style="padding-left:10px;">
+                    <td style="padding-left:20px;">
                       <a href="https://www.instagram.com/zurawicki.design/" target="_blank">
-                        <img alt="Instagram" fetchpriority="high" src="https://static.wixstatic.com/media/01c3aff52f2a4dffa526d7a9843d46ea.png/v1/fill/w_36,h_36,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/01c3aff52f2a4dffa526d7a9843d46ea.png">
+                        <img 
+                        alt="Instagram" 
+                        title="Instagram" 
+                        src="https://zestawienia.zurawickidesign.pl/assets/images/social-accent/ig.png"
+                        width="32"
+                        height="32"
+                        >
                       </a>
                     </td>
 
                     <!-- FB -->
-                    <td style="padding-left:10px;">
+                    <td style="padding-left:20px;">
                       <a href="https://www.facebook.com/zurawicki.design/?locale=pl_PL" target="_blank">
-                        <img alt="Facebook" fetchpriority="high" src="https://static.wixstatic.com/media/0fdef751204647a3bbd7eaa2827ed4f9.png/v1/fill/w_36,h_36,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/0fdef751204647a3bbd7eaa2827ed4f9.png">
+                        <img 
+                        alt="Facebook" 
+                        title="Facebook" 
+                        src="https://zestawienia.zurawickidesign.pl/assets/images/social-accent/fb.png"
+                        width="32"
+                        height="32">
                       </a>
                     </td>
 
                     <!-- WWW -->
-                    <td style="padding-left:10px;">
+                    <td style="padding-left:20px;">
                       <a href="https://zurawickidesign.pl/" target="_blank">
                       <img
                         alt="Website"
-                        src="https://img.icons8.com/?size=100&id=3685&format=png&color=000000"
+                        title="Website"
+                        src="https://zestawienia.zurawickidesign.pl/assets/images/social-accent/www.png"
                         width="32"
                         height="32"
                       />
