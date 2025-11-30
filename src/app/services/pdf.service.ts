@@ -120,10 +120,117 @@ export class PdfService {
       },
       {}
     );
+
     const uniqueBookmarks = new Set(positions.map((pos) => pos.bookmarkId.id));
     const filteredBookmarks = set.bookmarks
       .filter((bookmark) => uniqueBookmarks.has(bookmark.id))
       .sort((a, b) => a.id - b.id);
+
+    // draw summary
+    const summaryTotals = filteredBookmarks.map((bookmark, i) => {
+      const sum = positions
+        .filter((p) => {
+          if (p.bookmarkId.id !== bookmark.id) return false;
+
+          if (!p.status) return true;
+
+          if (typeof p.status === 'object' && 'summary' in p.status) {
+            return p.status.summary === true;
+          }
+
+          return false;
+        })
+        .reduce((acc, p) => {
+          const brutto = p.netto ? calculateBrutto(p.netto) : 0;
+          const wartoscBrutto = p.ilosc ? calculateWartosc(p.ilosc, brutto) : 0;
+          return acc + wartoscBrutto;
+        }, 0);
+
+      return {
+        lp: i + 1,
+        name: bookmark.name,
+        brutto: sum,
+      };
+    });
+
+    doc.setPage(1);
+
+    // header summary
+    this.drawBookmarkName(doc, 'Podsumowanie');
+    const totalBrutto = summaryTotals.reduce((acc, row) => acc + row.brutto, 0);
+
+    const summaryHead = [['LP', 'KATEGORIA', 'WARTOŚĆ [zł/brutto]']];
+    const summaryBody = [
+      ...summaryTotals.map((row) => [
+        row.lp,
+        row.name,
+        formatPLN(row.brutto ?? 0),
+      ]),
+      ['', 'WARTOŚĆ CAŁKOWITA (brutto)', formatPLN(totalBrutto)],
+    ];
+
+    // tabela podsumowania
+    autoTable(doc, {
+      head: summaryHead,
+      body: summaryBody,
+      startY: 20,
+      theme: 'grid',
+      headStyles: {
+        font: 'Roboto',
+        fontStyle: 'bold',
+        fillColor: this.colors.accentDarker,
+        textColor: this.colors.white,
+        halign: 'center',
+        cellPadding: {
+          top: Math.floor(10),
+          bottom: Math.floor(10),
+          right: 3,
+          left: 3,
+        },
+      },
+      bodyStyles: {
+        font: 'Roboto',
+        fontStyle: 'normal',
+        fillColor: this.colors.white,
+        textColor: this.colors.black,
+        halign: 'center',
+        cellPadding: {
+          top: Math.floor(10),
+          bottom: Math.floor(10),
+          right: 3,
+          left: 3,
+        },
+      },
+      columnStyles: {
+        0: { cellWidth: 30 },
+        1: { cellWidth: 150 },
+        2: { cellWidth: 100 },
+      },
+
+      didParseCell: (data) => {
+        data.cell.styles.fontSize = 20;
+        const isLastRow = data.row.index === summaryBody.length - 1;
+
+        if (isLastRow && data.section === 'body') {
+          data.cell.styles.fillColor = this.colors.accentDarker;
+          data.cell.styles.textColor = this.colors.white;
+          data.cell.styles.fontStyle = 'bold';
+        }
+
+        if (data.column.index === 0) {
+          data.cell.styles.fillColor = this.colors.accentDarker;
+          data.cell.styles.textColor = this.colors.white;
+          data.cell.styles.fontStyle = 'bold';
+        }
+
+        if (data.column.index === 1 || data.column.index === 2) {
+          data.cell.styles.halign = 'left';
+        }
+      },
+    });
+
+    doc.addPage();
+    // end summary
 
     // main loop for every bookmark in set
     for (const [index, bookmark] of filteredBookmarks.entries()) {
@@ -208,13 +315,13 @@ export class PdfService {
                 case 'status':
                   return row.status?.label || '';
                 case 'netto':
-                  return netto.toFixed(2) + ' PLN';
+                  return formatPLN(netto);
                 case 'brutto':
-                  return brutto.toFixed(2) + ' PLN';
+                  return formatPLN(brutto);
                 case 'wartoscNetto':
-                  return wartoscNetto.toFixed(2) + ' PLN';
+                  return formatPLN(wartoscNetto);
                 case 'wartoscBrutto':
-                  return wartoscBrutto.toFixed(2) + ' PLN';
+                  return formatPLN(wartoscBrutto);
                 default:
                   return row[key];
               }
@@ -376,7 +483,7 @@ export class PdfService {
 
         const value = totals[key as keyof typeof totals];
         return value !== undefined && typeof value === 'number'
-          ? `${value.toFixed(2)} PLN`
+          ? formatPLN(value)
           : '';
       });
       const footer = [footerRow];
@@ -491,7 +598,6 @@ export class PdfService {
     text: string
   ) {
     doc.setFontSize(font);
-    // doc.setFont('Roboto', 'bold');
     doc.setFillColor(color);
     doc.setTextColor(this.colors.black);
 
@@ -630,4 +736,13 @@ function blendHexWithBackground(
 
 function removeMiniSuffix(filename: string): string {
   return filename.replace(/_mini(?=\.[^.]+$)/, '');
+}
+
+function formatPLN(value: number) {
+  return (
+    value.toLocaleString('pl-PL', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }) + ' PLN'
+  );
 }
