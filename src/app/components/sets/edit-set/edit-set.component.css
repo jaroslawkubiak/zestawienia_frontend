@@ -1,5 +1,6 @@
 .set-container {
   width: var(--screen-width);
+  margin: 10px auto;
 }
 
 .set-header-wrapper {

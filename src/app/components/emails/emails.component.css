@@ -1,5 +1,6 @@
 .card {
   width: var(--screen-width);
+  margin: 10px auto;
 }
 
 ::ng-deep .p-toolbar {
