@@ -2,6 +2,7 @@
   width: 800px;
   display: flex;
   flex-direction: column;
+  margin: 10px auto;
 }
 
 .set-header-wrapper {
@@ -10,7 +11,7 @@
   align-items: center;
   justify-content: space-between;
   background-color: var(--accent-color-13);
-  color: var(--secondary-color);
+  color: var(--accent-color-01);
   padding: 20px 40px;
 }
 
@@ -22,8 +23,9 @@
 }
 
 .set-header-title {
-  font-size: 1.4rem;
-  color: var(--primary-color);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--accent-color-19);
 }
 
 .set-header-value {
@@ -52,6 +54,10 @@
   font-size: 2.4rem;
 }
 
+.link-to-position i:hover {
+  color: var(--accent-color-15);
+}
+
 .new-comments {
   position: absolute;
   bottom: -20px;
@@ -59,6 +65,7 @@
   z-index: 999;
   font-size: 1.4rem;
   align-self: end;
+  margin-right: 5px;
   color: var(--error-color);
 }
 
@@ -71,7 +78,7 @@
 }
 
 .history-back i {
-  color: var(--accent-color-03);
+  color: var(--accent-color-01);
   font-size: 2rem;
 }
 
