@@ -6,13 +6,14 @@ import {
   Input,
   OnInit,
   Output,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
-import { TableColResizeEvent, TableModule } from 'primeng/table';
+import { Table, TableColResizeEvent, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../../services/notification.service';
@@ -29,17 +30,17 @@ import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
+import { ColumnList } from '../ColumnList';
 import { EditSetService } from '../edit-set/edit-set.service';
 import { FooterService } from '../edit-set/footer.service';
-import { PositionStatusList } from '../PositionStatusList';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
+import { PositionStatusList } from '../PositionStatusList';
 import { IColumnList } from '../types/IColumnList';
 import { IFooterRow } from '../types/IFooterRow';
 import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
-import { ColumnList } from '../ColumnList';
 
 @Component({
   selector: 'app-positions-table',
@@ -96,6 +97,7 @@ export class PositionsTableComponent implements OnInit {
   showCommentsDialog = false;
   header = '';
   comments: IComment[] = [];
+  @ViewChild('table') table!: Table;
 
   constructor(
     private editSetService: EditSetService,
@@ -116,6 +118,16 @@ export class PositionsTableComponent implements OnInit {
     }
 
     this.setId = this.set.id;
+  }
+
+  scrollToPosition(positionNumber: number) {
+    const index = positionNumber - 1;
+
+    if (!this.table || index < 0) return;
+
+    setTimeout(() => {
+      this.table.scrollToVirtualIndex(index);
+    }, 50);
   }
 
   // mark set as edited

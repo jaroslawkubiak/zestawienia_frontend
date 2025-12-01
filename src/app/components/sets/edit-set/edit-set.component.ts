@@ -77,6 +77,9 @@ export class EditSetComponent
   positionsTableComponent?: PositionsTableComponent;
   positionToDelete = new Set<number>();
 
+  targetBookmark = 0;
+  targetPosition = 0;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -91,6 +94,16 @@ export class EditSetComponent
       this.setId = Number(params.get('id'));
       if (this.setId) {
         this.loadData();
+      }
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      const bookmarkId = Number(params['bookmark']);
+      const position = Number(params['position']);
+
+      if (bookmarkId && position) {
+        this.targetBookmark = bookmarkId;
+        this.targetPosition = position;
       }
     });
   }
@@ -111,11 +124,18 @@ export class EditSetComponent
         };
         this.positions = positions;
         this.allSuppliers = suppliers;
-
         this.isLoading = false;
 
         if (set.bookmarks.length > 0) {
           this.updateBookmarks();
+
+          if (this.targetBookmark && this.targetPosition) {
+            setTimeout(() => {
+              this.selectedBookmark = this.targetBookmark;
+              this.loadContentForBookmark(this.selectedBookmark);
+              this.cd.detectChanges();
+            }, 0);
+          }
         }
       },
       error: (err) => console.error('Error loading data', err),
@@ -196,14 +216,12 @@ export class EditSetComponent
   // load positions for a given bookmarkID
   loadContentForBookmark(bookmarkId: number) {
     this.updatePositions();
-
     this.selectedBookmark = bookmarkId;
 
-    this.positionsFromBookmark = [];
     this.positionsFromBookmark = this.positions
       .filter(
         (item) =>
-          item.bookmarkId?.id === this.selectedBookmark &&
+          item.bookmarkId?.id === bookmarkId &&
           !this.positionsTableComponent?.positionToDelete.includes(item.id)
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
@@ -221,6 +239,10 @@ export class EditSetComponent
     setTimeout(() => {
       if (this.positionsTableComponent) {
         this.positionsTableComponent.initializeForm();
+
+        if (bookmarkId === this.targetBookmark) {
+          this.positionsTableComponent.scrollToPosition(this.targetPosition);
+        }
       }
     }, 0);
   }
