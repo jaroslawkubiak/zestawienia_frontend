@@ -22,7 +22,7 @@ export class SummaryComponent implements OnInit {
 
     this.summaryData = this.set.bookmarks
       .filter((b) => b.id !== 1)
-      .map((b) => {
+      .map((b, index) => {
         const value = positions.reduce((sum, p) => {
           if (p.bookmarkId.id !== b.id) return sum;
 
@@ -34,11 +34,17 @@ export class SummaryComponent implements OnInit {
           return sum + (p.brutto ?? 0) * (p.ilosc ?? 0);
         }, 0);
 
-        return { bookmarkId: b.id, bookmarkName: b.name, value };
+        return {
+          bookmarkId: b.id,
+          bookmarkName: b.name,
+          value,
+          columnLp: index + 1,
+        };
       });
 
     total = this.summaryData.reduce((sum, item) => sum + item.value, 0);
     this.summaryData.push({
+      columnLp: null,
       bookmarkId: 1,
       bookmarkName: 'WARTOŚĆ CAŁKOWITA suma [zł/brutto]',
       value: total,

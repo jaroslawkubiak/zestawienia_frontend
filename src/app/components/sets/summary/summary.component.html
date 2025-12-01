@@ -13,7 +13,7 @@
     </ng-template>
     <ng-template #body let-summaryData let-rowIndex="rowIndex">
       <tr class="{{ summaryData.bookmarkId === 1 ? 'background' : '' }}">
-        <td class="lp background">{{ rowIndex + 1 }}</td>
+        <td class="lp background">{{ summaryData.columnLp }}</td>
         <td>{{ summaryData.bookmarkName }}</td>
         <td>{{ summaryData.value | number : "1.2-2" }}</td>
       </tr>
