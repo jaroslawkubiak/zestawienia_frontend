@@ -50,8 +50,8 @@ export class PdfService {
     accentLighter: getCssVariable('--accent-color-06'),
     accentDarker: getCssVariable('--accent-color-10'),
     black: getCssVariable('--black-color'),
-    neutral: getCssVariable('--neutral-color'),
-    neutralDarker: getCssVariable('--neutral-color-dark'),
+    neutral: getCssVariable('--neutral-color-01'),
+    neutralDarker: getCssVariable('--neutral-color-05'),
     white: getCssVariable('--white-color'),
   };
 

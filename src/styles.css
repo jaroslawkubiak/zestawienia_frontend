@@ -7,11 +7,18 @@
 html {
   --primary-color: #212121;
   --secondary-color: #f4f3f3;
-  --neutral-color: #f0f0f0;
-  --neutral-color-dark: #cdcdcd;
-  --neutral-color-darker: #939393;
-
   --table-header-bc: #ebebeb;
+
+  --neutral-color-01: #f9f9f9;
+  --neutral-color-02: #e6e6e6;
+  --neutral-color-03: #d4d4d4;
+  --neutral-color-04: #c2c2c2;
+  --neutral-color-05: #b0b0b0;
+  --neutral-color-06: #9d9d9d;
+  --neutral-color-07: #8b8b8b;
+  --neutral-color-08: #787878;
+  --neutral-color-09: #565656;
+  --neutral-color-10: #2e2e2e;
 
   --accent-color-01: #f7fdfb;
   --accent-color-02: #e2f6f1;

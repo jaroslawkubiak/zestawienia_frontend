@@ -33,7 +33,7 @@
 
 ::ng-deep .p-tab {
   font-size: 1.4rem;
-  background-color: var(--neutral-color);
+  background-color: var(--neutral-color-01);
 }
 
 ::ng-deep .p-tab:hover,
@@ -43,7 +43,7 @@
 
 .position-container {
   margin-top: 10px;
-  border: 1px solid var(--neutral-color-dark);
+  border: 1px solid var(--neutral-color-05);
   font-size: 1.2rem;
 }
 
@@ -51,7 +51,6 @@
   padding: 0 !important;
 }
 
-/* chyba tez */
 ::ng-deep .p-cell-editing {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
