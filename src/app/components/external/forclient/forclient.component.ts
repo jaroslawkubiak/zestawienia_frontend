@@ -267,4 +267,15 @@ export class ForClientComponent implements OnInit {
   getStatusCss(status: IPositionStatus | string): string {
     return typeof status === 'object' ? status?.cssClass : '';
   }
+
+  get filesCount(): number {
+    const files =
+      this.set?.files?.filter((file) => file.dir !== 'robocze') ?? [];
+
+    return files.length;
+  }
+
+  get filesSeverity(): 'danger' | 'secondary' {
+    return this.filesCount === 0 ? 'secondary' : 'danger';
+  }
 }

@@ -7,9 +7,9 @@
 html {
   --primary-color: #212121;
   --secondary-color: #f4f3f3;
-  --neutral-color: #e9efed;
-  --neutral-color-dark: #c9cfcd;
-  --neutral-color-darker: #919191;
+  --neutral-color: #f0f0f0;
+  --neutral-color-dark: #cdcdcd;
+  --neutral-color-darker: #939393;
 
   --table-header-bc: #ebebeb;
 
@@ -62,12 +62,8 @@ html {
   --error-color: #e91e63;
   --edit-color: #e691a4;
 
-  --white-color: #fff;
-  --black-color: #000;
-
-  --primary-bg-color: #f4f3f3;
-  --secondary-bg-color: #212121;
-  --neutral-bg-color: #e9efed;
+  --white-color: #f4f3f3;
+  --black-color: #111111;
 
   /* position status color  */
   --status-pink-color: #ffc1c8a2;
