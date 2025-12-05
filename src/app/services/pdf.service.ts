@@ -48,7 +48,8 @@ export class PdfService {
   colors = {
     accent: getCssVariable('--accent-color-10'),
     accentLighter: getCssVariable('--accent-color-06'),
-    accentDarker: getCssVariable('--accent-color-10'),
+    accentDarker: getCssVariable('--accent-color-12'),
+    accentDark: getCssVariable('--accent-color-15'),
     black: getCssVariable('--black-color'),
     neutral: getCssVariable('--neutral-color-01'),
     neutralDarker: getCssVariable('--neutral-color-05'),
@@ -155,8 +156,23 @@ export class PdfService {
 
     doc.setPage(1);
 
+    // draw background
+    const backgroundBase64 = await this.getBase64Image(
+      'assets/images/background1.jpg'
+    );
+
+    doc.addImage(
+      backgroundBase64,
+      'JPG', // format
+      0, // X
+      0, // Y
+      this.pageWidth,
+      this.pageHeight
+    );
+
     // header summary
-    this.drawBookmarkName(doc, 'Podsumowanie');
+    const summaryRowHeight = 40;
+    this.drawSummaryTitle(doc, `Podsumowanie inwestycji ${set.name}`);
     const totalBrutto = summaryTotals.reduce((acc, row) => acc + row.brutto, 0);
 
     const summaryHead = [['LP', 'KATEGORIA', 'WARTOŚĆ [zł/brutto]']];
@@ -168,17 +184,20 @@ export class PdfService {
       ]),
       ['', 'WARTOŚĆ CAŁKOWITA (brutto)', formatPLN(totalBrutto)],
     ];
+    const summaryTableYPos =
+      this.pageHeight - summaryRowHeight * (summaryBody.length + 1);
 
     // tabela podsumowania
     autoTable(doc, {
       head: summaryHead,
       body: summaryBody,
-      startY: 20,
+      margin: { left: 520 },
+      startY: summaryTableYPos,
       theme: 'grid',
       headStyles: {
         font: 'Roboto',
         fontStyle: 'bold',
-        fillColor: this.colors.accentDarker,
+        fillColor: this.colors.accentDark,
         textColor: this.colors.white,
         halign: 'center',
         cellPadding: {
@@ -203,7 +222,7 @@ export class PdfService {
       },
       columnStyles: {
         0: { cellWidth: 30 },
-        1: { cellWidth: 150 },
+        1: { cellWidth: 180 },
         2: { cellWidth: 100 },
       },
 
@@ -212,13 +231,13 @@ export class PdfService {
         const isLastRow = data.row.index === summaryBody.length - 1;
 
         if (isLastRow && data.section === 'body') {
-          data.cell.styles.fillColor = this.colors.accentDarker;
+          data.cell.styles.fillColor = this.colors.accentDark;
           data.cell.styles.textColor = this.colors.white;
           data.cell.styles.fontStyle = 'bold';
         }
 
         if (data.column.index === 0) {
-          data.cell.styles.fillColor = this.colors.accentDarker;
+          data.cell.styles.fillColor = this.colors.accentDark;
           data.cell.styles.textColor = this.colors.white;
           data.cell.styles.fontStyle = 'bold';
         }
@@ -515,7 +534,7 @@ export class PdfService {
 
     // draw header and footer for every page
     const totalPages = doc.getNumberOfPages();
-    for (let i = 1; i <= totalPages; i++) {
+    for (let i = 2; i <= totalPages; i++) {
       doc.setPage(i);
 
       this.drawRectLeft(
@@ -551,6 +570,25 @@ export class PdfService {
         `Copyright @${new Date().getFullYear()} Żurawicki Design`
       );
     }
+
+    // draw only footer for fisrt page
+    doc.setPage(1);
+    this.drawRectFull(
+      doc,
+      this.pageHeight - 20,
+      10,
+      12,
+      this.colors.white,
+      `Strona 1 z ${totalPages}`
+    );
+    this.drawRectFull(
+      doc,
+      this.pageHeight - 10,
+      10,
+      12,
+      this.colors.white,
+      `Copyright @${new Date().getFullYear()} Żurawicki Design`
+    );
 
     const finalAction: Array<'saveToPC' | 'openInNewCard' | 'sendToFtp'> = [
       // 'saveToPC',
@@ -667,7 +705,7 @@ export class PdfService {
 
     const rectHeight = 20;
     const posY = 0;
-    const padding = 30;
+    // const padding = 30;
     const textWidth = doc.getTextWidth(text);
     const textX = (this.pageWidth - textWidth) / 2;
 
@@ -680,8 +718,21 @@ export class PdfService {
     //   'F'
     // );
 
-    //draw full width rectangle
+    // draw full width rectangle
     // doc.rect(0, posY, this.pageWidth, rectHeight, 'F');
+
+    const textY = posY + rectHeight / 1.5;
+    doc.text(text, textX, textY);
+  }
+
+  drawSummaryTitle(doc: jsPDF, text: string) {
+    doc.setFontSize(50);
+    doc.setTextColor(this.colors.accentDark);
+
+    const rectHeight = 50;
+    const posY = 0;
+    const textWidth = doc.getTextWidth(text);
+    const textX = (this.pageWidth - textWidth) / 2;
 
     const textY = posY + rectHeight / 1.5;
     doc.text(text, textX, textY);
@@ -699,12 +750,13 @@ export class PdfService {
     });
   }
 
-  async getBase64Image(url: string) {
+  async getBase64Image(url: string): Promise<string> {
     const response = await fetch(url);
     const blob = await response.blob();
-    return new Promise((resolve, reject) => {
+
+    return new Promise<string>((resolve, reject) => {
       const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
+      reader.onloadend = () => resolve(reader.result as string);
       reader.onerror = reject;
       reader.readAsDataURL(blob);
     });
