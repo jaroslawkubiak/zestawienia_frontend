@@ -67,11 +67,15 @@ export class AuthService {
       })
       .pipe(
         tap((response) => this.storeUserData(response)),
-        catchError(() =>
-          throwError(
-            () => new Error('Błędne dane logowania. Spróbuj ponownie.')
-          )
-        )
+        catchError((err) => {
+          // BACKEND MESSAGE
+          const backendMsg =
+            err?.error?.message ||
+            err?.error?.error ||
+            'Błędne dane logowania. Spróbuj ponownie.';
+
+          return throwError(() => new Error(backendMsg));
+        })
       );
   }
 

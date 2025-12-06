@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { ILoginUser } from './types/ILoginUser';
 import { AuthService } from './auth.service';
+import { ILoginUser } from './types/ILoginUser';
 
 @Component({
   selector: 'app-login',
