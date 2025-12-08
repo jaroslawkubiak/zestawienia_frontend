@@ -31,14 +31,29 @@
         ></i>
       </a>
 
-      <button
-        class="menu-label-preview"
-        *ngIf="item.preview"
-        type="button"
-        (click)="item.preview(); $event.stopPropagation()"
-      >
-        <i class="pi pi-eye m-2" [pTooltip]="item.previewTooltip"></i>
-      </button>
+      <div class="btn-wrapper">
+        <button
+          class="menu-label-preview"
+          *ngIf="item.preview"
+          type="button"
+          (click)="
+            item.preview(); $event.stopPropagation(); $event.preventDefault()
+          "
+        >
+          <i class="pi pi-eye m-2" [pTooltip]="item.previewTooltip"></i>
+        </button>
+
+        <button
+          class="menu-label-preview"
+          *ngIf="item.preview"
+          type="button"
+          (click)="
+            item.copy(); $event.stopPropagation(); $event.preventDefault()
+          "
+        >
+          <i class="pi pi-copy m-2" [pTooltip]="item.previewCopyTooltip"></i>
+        </button>
+      </div>
     </div>
   </ng-template>
 </p-menubar>

@@ -147,8 +147,10 @@ export class SetMenuComponent {
         label: `${supplier.company}`,
         icon: 'pi pi-truck',
         email: supplier.email,
-        preview: () => this.showPreviewForSupplier(supplier.hash),
+        preview: () => this.openLink('supplier', supplier.hash),
+        copy: () => this.copyLink('supplier', supplier.hash),
         previewTooltip: `Podgląd zestawienia dla ${supplier.company}`,
+        previewCopyTooltip: `Kopiuj link dla ${supplier.company}`,
         sendAt: this.findLastEmailToSupplier(supplier.id),
         command: () => this.sendSetToSupplierViaEmail(supplier),
       };
@@ -170,8 +172,10 @@ export class SetMenuComponent {
             label: `Do klienta`,
             icon: 'pi pi-user',
             email: this.set.clientId.email,
-            preview: () => this.showPreviewForClient(),
+            preview: () => this.openLink('client'),
+            copy: () => this.copyLink('client'),
             previewTooltip: 'Podgląd zestawienia dla klienta',
+            previewCopyTooltip: 'Kopiuj link dla klienta',
             sendAt: this.findLastEmailToClient(),
             command: () => this.sendSetToClientViaEmail(),
           },
@@ -316,24 +320,52 @@ export class SetMenuComponent {
     this.attachmentBadge = files.length;
     this.updateMenuItems();
   }
-  // open preview for client
-  showPreviewForClient() {
-    const link = this.emailsService.createLinkForClient(
-      this.set.id,
-      this.set.hash
-    );
 
-    window.open(link, '_blank');
+  // generate link for client or supplier
+  private getLink(
+    type: 'client' | 'supplier',
+    supplierHash?: string
+  ): string | null {
+    if (type === 'client') {
+      return this.emailsService.createLinkForClient(this.set.id, this.set.hash);
+    } else if (type === 'supplier' && supplierHash) {
+      return this.emailsService.createLinkForSupplier(
+        this.set.id,
+        this.set.hash,
+        supplierHash
+      );
+    }
+
+    return null;
   }
 
-  // open preview for supplier
-  showPreviewForSupplier(supplierHash: string) {
-    const link = this.emailsService.createLinkForSupplier(
-      this.set.id,
-      this.set.hash,
-      supplierHash
-    );
+  // open link in new window
+  openLink(type: 'client' | 'supplier', supplierHash?: string) {
+    const link = this.getLink(type, supplierHash);
+    if (link) {
+      window.open(link, '_blank');
+    }
+  }
 
-    window.open(link, '_blank');
+  // copy link to clipboard
+  copyLink(type: 'client' | 'supplier', supplierHash?: string) {
+    const link = this.getLink(type, supplierHash);
+
+    if (!link) return;
+
+    navigator.clipboard
+      .writeText(link)
+      .then(() => {
+        this.notificationService.showNotification(
+          'info',
+          'Link został skopiowany do schowka'
+        );
+      })
+      .catch(() => {
+        this.notificationService.showNotification(
+          'error',
+          'Link nie został skopiowany do schowka'
+        );
+      });
   }
 }

@@ -74,7 +74,7 @@ export class ForClientComponent implements OnInit {
       this.hash = params.get('hash');
       if (this.setId && this.hash) {
         this.editSetService
-          .validateSetAndHash(this.setId, this.hash)
+          .validateSetAndHashForClient(this.setId, this.hash)
           .subscribe({
             next: (response) => {
               if (!response) {

@@ -42,7 +42,7 @@ export class EmailsService {
   }
 
   createLinkForClient(setId: number, setHash: string): string {
-    return `${environment.FRONT_URL}/${setId}/${setHash}`;
+    return `${environment.FRONT_URL}/open-client/${setId}/${setHash}`;
   }
 
   createLinkForSupplier(
@@ -50,6 +50,6 @@ export class EmailsService {
     setHash: string,
     supplierHash: string
   ): string {
-    return `${environment.FRONT_URL}/${setId}/${setHash}/${supplierHash}`;
+    return `${environment.FRONT_URL}/open-supplier/${setId}/${setHash}/${supplierHash}`;
   }
 }

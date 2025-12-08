@@ -67,15 +67,9 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  getSetForSupplier(setId: number, supplierId: number): Observable<ISet> {
+  validateSetAndHashForClient(setId: number, hash: string): Observable<boolean> {
     return this.http
-      .get<ISet>(`${environment.API_URL}/sets/${setId}/${supplierId}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  validateSetAndHash(setId: number, hash: string): Observable<boolean> {
-    return this.http
-      .get<boolean>(`${environment.API_URL}/sets/${setId}/${hash}`)
+      .get<boolean>(`${environment.API_URL}/clients/${setId}/${hash}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -86,7 +80,7 @@ export class EditSetService {
   ): Observable<{ isValid: boolean; supplierId?: number }> {
     return this.http
       .get<{ isValid: boolean; supplierId?: number }>(
-        `${environment.API_URL}/sets/${setId}/${hash}/${supplierHash}`
+        `${environment.API_URL}/suppliers/${setId}/${hash}/${supplierHash}`
       )
       .pipe(catchError(this.handleError));
   }

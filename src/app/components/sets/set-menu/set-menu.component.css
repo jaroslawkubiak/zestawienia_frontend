@@ -86,7 +86,6 @@
 
 .menu-label-preview {
   padding: 4px;
-  margin-left: 4px;
 }
 
 .menu-label-preview i {
@@ -97,4 +96,11 @@
 
 .menu-label-preview i:hover {
   color: var(--error-color);
+}
+
+.btn-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
