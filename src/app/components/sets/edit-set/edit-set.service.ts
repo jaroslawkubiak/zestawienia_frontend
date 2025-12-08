@@ -78,13 +78,12 @@ export class EditSetService {
   }
 
   validateSetAndHashForSupplier(
-    setId: number,
-    hash: string,
+    setHash: string,
     supplierHash: string
-  ): Observable<{ isValid: boolean; supplierId?: number }> {
+  ): Observable<IValidSet> {
     return this.http
-      .get<{ isValid: boolean; supplierId?: number }>(
-        `${environment.API_URL}/suppliers/${setId}/${hash}/${supplierHash}`
+      .get<IValidSet>(
+        `${environment.API_URL}/suppliers/${setHash}/${supplierHash}`
       )
       .pipe(catchError(this.handleError));
   }

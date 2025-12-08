@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
   calculateBrutto,
@@ -27,8 +27,8 @@ import { ColumnListForSupplier } from './ColumnListForSupplier';
   styleUrl: './forsupplier.component.css',
 })
 export class ForsupplierComponent implements OnInit {
-  setId!: number;
-  hash: string | null = null;
+  setId: number | null = null;
+  setHash: string | null = null;
   supplierHash: string | null = null;
   supplierId: number | undefined = undefined;
   set!: ISet;
@@ -53,90 +53,81 @@ export class ForsupplierComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const setIdParam = params.get('id');
-      this.hash = params.get('hash');
-      this.supplierHash = params.get('supplierHash');
-
-      if (setIdParam && this.hash && this.supplierHash) {
-        const numericSetId = Number(setIdParam);
-
-        // if setId not number - show not found
-        if (isNaN(numericSetId)) {
+    this.route.paramMap
+      .pipe(
+        map((params) => ({
+          setHash: params.get('setHash'),
+          supplierHash: params.get('supplierHash'),
+        })),
+        switchMap(({ setHash, supplierHash }) => {
+          if (!setHash || !supplierHash) {
+            return throwError(() => new Error('Invalid params'));
+          }
+          return this.editSetService.validateSetAndHashForSupplier(
+            setHash,
+            supplierHash
+          );
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response.setId) {
+            this.setId = response.setId;
+            this.supplierId = response.supplierId;
+            this.loadData();
+          } else {
+            this.router.navigate(['/notfound']);
+          }
+        },
+        error: () => {
           this.router.navigate(['/notfound']);
-          return;
-        }
-
-        this.setId = numericSetId;
-
-        this.editSetService
-          .validateSetAndHashForSupplier(
-            this.setId,
-            this.hash,
-            this.supplierHash
-          )
-          .subscribe({
-            next: (response) => {
-              if (!response || !response.isValid) {
-                this.router.navigate(['/notfound']);
-              } else {
-                this.supplierId = response.supplierId;
-                this.loadData();
-              }
-            },
-            error: (err) => {
-              this.router.navigate(['/notfound']);
-            },
-          });
-      } else {
-        this.router.navigate(['/notfound']);
-      }
-    });
+        },
+      });
   }
 
   loadData() {
-    if (this.supplierId)
-      forkJoin({
-        // set: this.editSetService.getSetForSupplier(this.setId, this.supplierId),
-        positions: this.editSetService.getPositionsForSupplier(
-          this.setId,
-          this.supplierId
-        ),
-      }).subscribe(({ positions }) => {
-        // this.set = set;
+    if (!this.setId || !this.supplierId) {
+      this.router.navigate(['/notfound']);
+      return;
+    }
+    forkJoin({
+      positions: this.editSetService.getPositionsForSupplier(
+        this.setId,
+        this.supplierId
+      ),
+    }).subscribe(({ positions }) => {
+      this.positions = positions.map((item) => {
+        const statusObj: IPositionStatus =
+          PositionStatusList.filter(
+            (statusItem) => item.status === statusItem.label
+          )[0] || PositionStatusList[0];
 
-        this.positions = positions.map((item) => {
-          const statusObj: IPositionStatus =
-            PositionStatusList.filter(
-              (statusItem) => item.status === statusItem.label
-            )[0] || PositionStatusList[0];
+        let imageUrl = '';
+        if (item.image) {
+          imageUrl = [
+            this.FILES_URL,
+            'sets',
+            this.setId,
+            'positions',
+            item.id,
+            item.image,
+          ].join('/');
+        }
+        const brutto = calculateBrutto(item.netto);
+        this.isLoading = false;
 
-          let imageUrl = '';
-          if (item.image) {
-            imageUrl = [
-              this.FILES_URL,
-              'sets',
-              this.setId,
-              'positions',
-              item.id,
-              item.image,
-            ].join('/');
-          }
-          const brutto = calculateBrutto(item.netto);
-          this.isLoading = false;
-
-          return {
-            ...item,
-            status: statusObj ? statusObj : item.status,
-            brutto,
-            wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-            wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-            imageUrl,
-          };
-        });
-
-        this.calculateFooterRow();
+        return {
+          ...item,
+          status: statusObj ? statusObj : item.status,
+          brutto,
+          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+          wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+          imageUrl,
+        };
       });
+
+      this.calculateFooterRow();
+    });
   }
 
   // calculate values for footer row

@@ -104,3 +104,7 @@
   align-items: center;
   justify-content: center;
 }
+
+.btn-wrapper i {
+  font-size: 1.8rem;
+}
