@@ -54,10 +54,21 @@ export class ForsupplierComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.setId = Number(params.get('id'));
+      const setIdParam = params.get('id');
       this.hash = params.get('hash');
       this.supplierHash = params.get('supplierHash');
-      if (this.setId && this.hash && this.supplierHash) {
+
+      if (setIdParam && this.hash && this.supplierHash) {
+        const numericSetId = Number(setIdParam);
+
+        // if setId not number - show not found
+        if (isNaN(numericSetId)) {
+          this.router.navigate(['/notfound']);
+          return;
+        }
+
+        this.setId = numericSetId;
+
         this.editSetService
           .validateSetAndHashForSupplier(
             this.setId,
@@ -66,17 +77,19 @@ export class ForsupplierComponent implements OnInit {
           )
           .subscribe({
             next: (response) => {
-              this.supplierId = response.supplierId;
               if (!response || !response.isValid) {
-                this.router.navigate([`/notfound`]);
+                this.router.navigate(['/notfound']);
               } else {
+                this.supplierId = response.supplierId;
                 this.loadData();
               }
             },
             error: (err) => {
-              this.router.navigate([`/notfound`]);
+              this.router.navigate(['/notfound']);
             },
           });
+      } else {
+        this.router.navigate(['/notfound']);
       }
     });
   }
@@ -89,7 +102,7 @@ export class ForsupplierComponent implements OnInit {
           this.setId,
           this.supplierId
         ),
-      }).subscribe(({positions }) => {
+      }).subscribe(({ positions }) => {
         // this.set = set;
 
         this.positions = positions.map((item) => {

@@ -70,23 +70,36 @@ export class ForClientComponent implements OnInit {
 
   ngOnInit() {
     this.route.paramMap.subscribe((params) => {
-      this.setId = Number(params.get('id'));
+      const setIdParam = params.get('id');
       this.hash = params.get('hash');
-      if (this.setId && this.hash) {
+
+      if (setIdParam && this.hash) {
+        const numericSetId = Number(setIdParam);
+
+        // if setId not number - show not found
+        if (isNaN(numericSetId)) {
+          this.router.navigate(['/notfound']);
+          return;
+        }
+
+        this.setId = numericSetId;
+
         this.editSetService
           .validateSetAndHashForClient(this.setId, this.hash)
           .subscribe({
             next: (response) => {
               if (!response) {
-                this.router.navigate([`/notfound`]);
+                this.router.navigate(['/notfound']);
               } else {
                 this.loadData();
               }
             },
             error: (err) => {
-              this.router.navigate([`/notfound`]);
+              this.router.navigate(['/notfound']);
             },
           });
+      } else {
+        this.router.navigate(['/notfound']);
       }
     });
   }
