@@ -20,6 +20,7 @@ import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { PositionStatusList } from '../PositionStatusList';
+import { IValidSet } from '../types/IValidSet';
 
 @Injectable({
   providedIn: 'root',
@@ -67,9 +68,12 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  validateSetAndHashForClient(setId: number, hash: string): Observable<boolean> {
+  validateSetAndHashForClient(
+    setHash: string,
+    clientHash: string
+  ): Observable<IValidSet> {
     return this.http
-      .get<boolean>(`${environment.API_URL}/clients/${setId}/${hash}`)
+      .get<IValidSet>(`${environment.API_URL}/clients/${setHash}/${clientHash}`)
       .pipe(catchError(this.handleError));
   }
 

@@ -41,15 +41,11 @@ export class EmailsService {
     });
   }
 
-  createLinkForClient(setId: number, setHash: string): string {
-    return `${environment.FRONT_URL}/open-client/${setId}/${setHash}`;
-  }
-
-  createLinkForSupplier(
-    setId: number,
+  createExternalLink(
+    type: 'client' | 'supplier',
     setHash: string,
-    supplierHash: string
+    hash: string
   ): string {
-    return `${environment.FRONT_URL}/open-supplier/${setId}/${setHash}/${supplierHash}`;
+    return `${environment.FRONT_URL}/open-${type}/${setHash}/${hash}`;
   }
 }

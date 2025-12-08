@@ -5,7 +5,7 @@ import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
-import { forkJoin } from 'rxjs';
+import { forkJoin, map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
   calculateBrutto,
@@ -18,9 +18,9 @@ import { SendFilesComponent } from '../../files/send-files/send-files.component'
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
+import { LegendComponent } from '../../sets/legend/legend.component';
 import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
-import { LegendComponent } from '../../sets/legend/legend.component';
 import { IPosition } from '../../sets/types/IPosition';
 import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
@@ -43,8 +43,9 @@ import { ISet } from '../../sets/types/ISet';
   styleUrl: './forclient.component.css',
 })
 export class ForClientComponent implements OnInit {
-  setId!: number;
-  hash: string | null = null;
+  setId: number | null = null;
+  setHash: string | null = null;
+  clientHash: string | null = null;
   set!: ISet;
   positions: IPosition[] = [];
   uniquePositionIds: number[] = [];
@@ -69,42 +70,43 @@ export class ForClientComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe((params) => {
-      const setIdParam = params.get('id');
-      this.hash = params.get('hash');
-
-      if (setIdParam && this.hash) {
-        const numericSetId = Number(setIdParam);
-
-        // if setId not number - show not found
-        if (isNaN(numericSetId)) {
+    this.route.paramMap
+      .pipe(
+        map((params) => ({
+          setHash: params.get('setHash'),
+          clientHash: params.get('clientHash'),
+        })),
+        switchMap(({ setHash, clientHash }) => {
+          if (!setHash || !clientHash) {
+            return throwError(() => new Error('Invalid params'));
+          }
+          return this.editSetService.validateSetAndHashForClient(
+            setHash,
+            clientHash
+          );
+        })
+      )
+      .subscribe({
+        next: (response) => {
+          if (response.setId) {
+            this.setId = response.setId;
+            this.loadData();
+          } else {
+            this.router.navigate(['/notfound']);
+          }
+        },
+        error: () => {
           this.router.navigate(['/notfound']);
-          return;
-        }
-
-        this.setId = numericSetId;
-
-        this.editSetService
-          .validateSetAndHashForClient(this.setId, this.hash)
-          .subscribe({
-            next: (response) => {
-              if (!response) {
-                this.router.navigate(['/notfound']);
-              } else {
-                this.loadData();
-              }
-            },
-            error: (err) => {
-              this.router.navigate(['/notfound']);
-            },
-          });
-      } else {
-        this.router.navigate(['/notfound']);
-      }
-    });
+        },
+      });
   }
 
   loadData() {
+    if (this.setId === null) {
+      this.router.navigate(['/notfound']);
+      return;
+    }
+
     forkJoin({
       set: this.editSetService.getSet(this.setId),
       positions: this.editSetService.getPositions(this.setId),

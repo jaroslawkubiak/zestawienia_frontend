@@ -23,6 +23,7 @@ export interface ISet {
     firstName: string;
     email: string;
     company: string;
+    hash: string;
   };
   createdBy: {
     name: string;

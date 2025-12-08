@@ -30,7 +30,7 @@ import { IPositionWithComments } from './types/IPositionWithComments';
   styleUrl: './comments.component.css',
 })
 export class CommentsComponent implements AfterViewInit, OnChanges {
-  @Input() setId!: number;
+  @Input() setId!: number | null;
   @Input() set!: ISet;
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];
@@ -70,7 +70,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   sendComment() {
-    if (!this.newMessage.trim()) return;
+    if (!this.newMessage.trim() || this.setId === null) return;
     // add new comment
     if (!this.editedCommentId) {
       this.commentsService

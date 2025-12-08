@@ -77,8 +77,8 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.supplier) {
       this.newEmail.to = this.supplier.email;
       this.newEmail.subject = `Zamówienie do inwestycji ${this.set.name}`;
-      this.newEmail.link = this.emailsService.createLinkForSupplier(
-        this.set.id,
+      this.newEmail.link = this.emailsService.createExternalLink(
+        'supplier',
         this.set.hash,
         this.supplier.hash
       );
@@ -88,9 +88,10 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     } else {
       this.newEmail.to = this.set.clientId.email;
       this.newEmail.subject = `Inwestycja ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
-      this.newEmail.link = this.emailsService.createLinkForClient(
-        this.set.id,
-        this.set.hash
+      this.newEmail.link = this.emailsService.createExternalLink(
+        'supplier',
+        this.set.hash,
+        this.set.clientId.hash
       );
 
       this.emailMessage = HTMLClient.message;

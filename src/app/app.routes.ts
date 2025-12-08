@@ -81,11 +81,11 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'open-client/:id/:hash',
+    path: 'open-client/:setHash/:clientHash',
     component: ForClientComponent,
   },
   {
-    path: 'open-supplier/:id/:hash/:supplierHash',
+    path: 'open-supplier/:setHash/:supplierHash',
     component: ForsupplierComponent,
   },
   { path: '**', redirectTo: '/notfound' },

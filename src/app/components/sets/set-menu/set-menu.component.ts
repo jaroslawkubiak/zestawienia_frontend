@@ -22,14 +22,15 @@ import { EmailsService } from '../../emails/email.service';
 import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
+import { IDeletedFiles } from '../../files/types/IDeletedFiles';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { IExternalLink } from '../types/IExternalLink';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
-import { IDeletedFiles } from '../../files/types/IDeletedFiles';
 
 @Component({
   selector: 'app-set-menu',
@@ -70,6 +71,7 @@ export class SetMenuComponent {
   suppliersFromSet: ISupplier[] = [];
   emailsList: IEmailsToSet[] = [];
   attachmentBadge: number = 0;
+  clientHash = '';
 
   constructor(
     private router: Router,
@@ -80,6 +82,7 @@ export class SetMenuComponent {
 
   ngOnInit() {
     this.getEmailsList();
+    this.clientHash = this.set.clientId.hash;
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -147,8 +150,8 @@ export class SetMenuComponent {
         label: `${supplier.company}`,
         icon: 'pi pi-truck',
         email: supplier.email,
-        preview: () => this.openLink('supplier', supplier.hash),
-        copy: () => this.copyLink('supplier', supplier.hash),
+        preview: () => this.openLink({ type: 'supplier', hash: supplier.hash }),
+        copy: () => this.copyLink({ type: 'supplier', hash: supplier.hash }),
         previewTooltip: `Podgląd zestawienia dla ${supplier.company}`,
         previewCopyTooltip: `Kopiuj link dla ${supplier.company}`,
         sendAt: this.findLastEmailToSupplier(supplier.id),
@@ -172,8 +175,10 @@ export class SetMenuComponent {
             label: `Do klienta`,
             icon: 'pi pi-user',
             email: this.set.clientId.email,
-            preview: () => this.openLink('client'),
-            copy: () => this.copyLink('client'),
+            preview: () =>
+              this.openLink({ type: 'client', hash: this.clientHash }),
+            copy: () =>
+              this.copyLink({ type: 'client', hash: this.clientHash }),
             previewTooltip: 'Podgląd zestawienia dla klienta',
             previewCopyTooltip: 'Kopiuj link dla klienta',
             sendAt: this.findLastEmailToClient(),
@@ -322,34 +327,23 @@ export class SetMenuComponent {
   }
 
   // generate link for client or supplier
-  private getLink(
-    type: 'client' | 'supplier',
-    supplierHash?: string
-  ): string | null {
-    if (type === 'client') {
-      return this.emailsService.createLinkForClient(this.set.id, this.set.hash);
-    } else if (type === 'supplier' && supplierHash) {
-      return this.emailsService.createLinkForSupplier(
-        this.set.id,
-        this.set.hash,
-        supplierHash
-      );
-    }
+  private getLink(data: IExternalLink): string {
+    const { hash, type } = data;
 
-    return null;
+    return this.emailsService.createExternalLink(type, this.set.hash, hash);
   }
 
   // open link in new window
-  openLink(type: 'client' | 'supplier', supplierHash?: string) {
-    const link = this.getLink(type, supplierHash);
+  openLink(data: IExternalLink) {
+    const link = this.getLink(data);
     if (link) {
       window.open(link, '_blank');
     }
   }
 
   // copy link to clipboard
-  copyLink(type: 'client' | 'supplier', supplierHash?: string) {
-    const link = this.getLink(type, supplierHash);
+  copyLink(data: IExternalLink) {
+    const link = this.getLink(data);
 
     if (!link) return;
 
