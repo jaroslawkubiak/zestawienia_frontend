@@ -1,114 +1,125 @@
-<div class="container">
-  <app-loading-spinner
-    class="image-spinner"
-    [size]="200"
-    *ngIf="isLoading"
-  ></app-loading-spinner>
+<div class="supplier-container" *ngIf="!isLoading">
+  <div class="container">
+    <div class="logo-wrapper">
+      <a href="https://zurawickidesign.pl" target="_blank">
+        <img
+          src="/assets/images/logo-black.png"
+          alt="Żurawicki Design logo"
+          width="400px"
+        />
+      </a>
+    </div>
 
-  <p-table
-    *ngIf="!isLoading"
-    stripedRows
-    dataKey="id"
-    columnResizeMode="expand"
-    class="p-datatable-gridlines"
-    [virtualScroll]="true"
-    [virtualScrollItemSize]="190"
-    [scrollHeight]="'850px'"
-    [resizableColumns]="false"
-    [scrollable]="true"
-    [value]="positions"
-    [reorderableColumns]="true"
-    [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
-  >
-    <!-- table header  -->
-    <ng-template pTemplate="header">
-      <tr>
-        <th style="width: 4rem" class="position-header">LP</th>
-        <th
-          *ngFor="let column of columnList"
-          class="position-header"
-          [ngClass]="column.classHeader"
-          pResizableColumn
-          [ngStyle]="{ width: column?.width + 'px' }"
-        >
-          {{ column.name }}
-        </th>
-      </tr>
-    </ng-template>
-    <!-- table body  -->
-    <ng-template
-      pTemplate="body"
-      let-position
-      let-editing="editing"
-      let-i="rowIndex"
+    <app-loading-spinner
+      class="image-spinner"
+      [size]="200"
+      *ngIf="isLoading"
+    ></app-loading-spinner>
+
+    <p-table
+      stripedRows
+      dataKey="id"
+      columnResizeMode="expand"
+      class="p-datatable-gridlines"
+      [virtualScroll]="true"
+      [virtualScrollItemSize]="190"
+      [scrollHeight]="'1000px'"
+      [resizableColumns]="false"
+      [scrollable]="true"
+      [value]="positions"
+      [reorderableColumns]="true"
+      [tableStyle]="{ 'min-width': '50rem', 'table-layout': 'fixed' }"
     >
-      <tr [ngClass]="position.status?.cssClass || ''">
-        <td class="lp">
-          <span title="{{ position.id }}">{{ i + 1 }}</span>
-        </td>
-        <!-- main content -->
-        <td
-          *ngFor="let column of columnList"
-          [ngClass]="column.classColumn"
-          [ngStyle]="{ width: column?.width + 'px' }"
-        >
-          <p-cellEditor>
-            <ng-template pTemplate="output">
-              <span class="view-mode" [ngSwitch]="column.type">
-                <!-- type = number  -->
-                <div *ngSwitchCase="'number'">
-                  {{ position[column.key] | number : "1.2-2" }}
-                </div>
-                <div *ngSwitchCase="'select'">
-                  {{ column.optionLabel ? position[column.key]?.[column.optionLabel] : position[column.key] }}
-                </div>
-                <!-- type = image  -->
-                <div *ngSwitchCase="'image'">
-                  <img
-                    *ngIf="position['imageUrl']"
-                    [src]="position['imageUrl']"
-                    class="view-mode-image"
-                    alt="image"
-                  />
-                </div>
-                <!-- type = string  -->
-                <div *ngSwitchCase="'string'">
-                  {{ position[column.key] }}
-                </div>
-                <!-- type = link  -->
-                <div *ngSwitchCase="'link'">
-                  <a
-                    [href]="position[column.key]"
-                    target="_blank"
-                    class="link flex-center"
-                    rel="noopener noreferrer"
-                  >
-                    <i class="pi pi-link"></i>LINK
-                  </a>
-                </div>
-                <!-- type = textarea  -->
-                <!-- prettier-ignore -->
-                <div *ngSwitchCase="'textarea'" style="white-space: pre-wrap">{{ position[column.key] }}</div>
-              </span>
-            </ng-template>
-          </p-cellEditor>
-        </td>
-      </tr>
-    </ng-template>
-    <!-- table footer  -->
-    <ng-template pTemplate="footer">
-      <tr>
-        <th
-          *ngFor="let column of footerRow; let i = index"
-          class="position-footer"
-          [innerHTML]="
-            column.key === 'wartoscNetto' || column.key === 'wartoscBrutto'
-              ? (column?.value | number : '1.2-2') + ' PLN'
-              : ''
-          "
-          [ngClass]="column.classFooter"
-        ></th>
-      </tr>
-    </ng-template>
-  </p-table>
+      <!-- table header  -->
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 4rem" class="position-header">LP</th>
+          <th
+            *ngFor="let column of columnList"
+            class="position-header"
+            [ngClass]="column.classHeader"
+            pResizableColumn
+            [ngStyle]="{ width: column?.width + 'px' }"
+          >
+            {{ column.name }}
+          </th>
+        </tr>
+      </ng-template>
+      <!-- table body  -->
+      <ng-template
+        pTemplate="body"
+        let-position
+        let-editing="editing"
+        let-i="rowIndex"
+      >
+        <tr [ngClass]="position.status?.cssClass || ''">
+          <td class="lp">
+            <span title="{{ position.id }}">{{ i + 1 }}</span>
+          </td>
+          <!-- main content -->
+          <td
+            *ngFor="let column of columnList"
+            [ngClass]="column.classColumn"
+            [ngStyle]="{ width: column?.width + 'px' }"
+          >
+            <p-cellEditor>
+              <ng-template pTemplate="output">
+                <span class="view-mode" [ngSwitch]="column.type">
+                  <!-- type = number  -->
+                  <div *ngSwitchCase="'number'">
+                    {{ position[column.key] | number : "1.2-2" }}
+                  </div>
+                  <div *ngSwitchCase="'select'">
+                    {{ column.optionLabel ? position[column.key]?.[column.optionLabel] : position[column.key] }}
+                  </div>
+                  <!-- type = image  -->
+                  <div *ngSwitchCase="'image'">
+                    <img
+                      *ngIf="position['imageUrl']"
+                      [src]="position['imageUrl']"
+                      class="view-mode-image"
+                      alt="image"
+                    />
+                  </div>
+                  <!-- type = string  -->
+                  <div *ngSwitchCase="'string'">
+                    {{ position[column.key] }}
+                  </div>
+                  <!-- type = link  -->
+                  <div *ngSwitchCase="'link'">
+                    <a
+                      [href]="position[column.key]"
+                      target="_blank"
+                      class="link flex-center"
+                      rel="noopener noreferrer"
+                    >
+                      <i class="pi pi-link"></i>LINK
+                    </a>
+                  </div>
+                  <!-- type = textarea  -->
+                  <!-- prettier-ignore -->
+                  <div *ngSwitchCase="'textarea'" style="white-space: pre-wrap">{{ position[column.key] }}</div>
+                </span>
+              </ng-template>
+            </p-cellEditor>
+          </td>
+        </tr>
+      </ng-template>
+      <!-- table footer  -->
+      <ng-template pTemplate="footer">
+        <tr>
+          <th
+            *ngFor="let column of footerRow; let i = index"
+            class="position-footer"
+            [innerHTML]="
+              column.key === 'wartoscNetto' || column.key === 'wartoscBrutto'
+                ? (column?.value | number : '1.2-2') + ' PLN'
+                : ''
+            "
+            [ngClass]="column.classFooter"
+          ></th>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>

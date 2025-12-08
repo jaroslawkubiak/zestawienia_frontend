@@ -1,7 +1,20 @@
+.supplier-container {
+  width: 100%;
+}
+
+.logo-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px 0;
+}
+
+.logo-wrapper img {
+  cursor: pointer;
+}
+
 .container {
   width: 2000px;
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
 }
 
 .image-spinner {

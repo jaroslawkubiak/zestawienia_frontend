@@ -84,13 +84,13 @@ export class ForsupplierComponent implements OnInit {
   loadData() {
     if (this.supplierId)
       forkJoin({
-        set: this.editSetService.getSetForSupplier(this.setId, this.supplierId),
+        // set: this.editSetService.getSetForSupplier(this.setId, this.supplierId),
         positions: this.editSetService.getPositionsForSupplier(
           this.setId,
           this.supplierId
         ),
-      }).subscribe(({ set, positions }) => {
-        this.set = set;
+      }).subscribe(({positions }) => {
+        // this.set = set;
 
         this.positions = positions.map((item) => {
           const statusObj: IPositionStatus =
