@@ -73,4 +73,14 @@ export class ImageClipboardInputComponent {
       },
     });
   }
+
+  getPasteShortcut(): string {
+    const platform = navigator.platform.toLowerCase();
+
+    if (platform.includes('mac')) {
+      return '⌘ + V';
+    } else {
+      return 'Ctrl + V';
+    }
+  }
 }

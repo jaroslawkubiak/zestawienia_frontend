@@ -7,6 +7,7 @@
   all: unset !important;
   width: 100% !important;
   height: 25px !important;
+  text-align: center !important;
 }
 
 .image-preview-container {
