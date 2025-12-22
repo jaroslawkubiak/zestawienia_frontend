@@ -3,6 +3,8 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
+  OnInit,
   Output,
   SimpleChanges,
   ViewChild,
@@ -49,7 +51,7 @@ import { SetStatus } from '../types/set-status.enum';
   styleUrl: './set-menu.component.css',
   standalone: true,
 })
-export class SetMenuComponent {
+export class SetMenuComponent implements OnChanges, OnInit {
   @Input() set!: ISet;
   @Input() positions!: IPosition[];
   @Input() allSuppliers: ISupplier[] = [];
@@ -82,6 +84,7 @@ export class SetMenuComponent {
 
   ngOnInit() {
     this.getEmailsList();
+    this.updateMenuItems();
     this.clientHash = this.set.clientId.hash;
   }
 
@@ -161,7 +164,6 @@ export class SetMenuComponent {
 
     this.menuItems = [
       {
-        description: 'To jest opis edytowania nagłówka',
         label: 'Edytuj zestawienie',
         icon: 'pi pi-file-edit',
         command: () => this.editHeader(),
@@ -219,7 +221,7 @@ export class SetMenuComponent {
         icon: 'pi pi-comments',
         badgeStyleClass: this.set.newComments
           ? 'p-badge-danger'
-          : 'p-badge-contrast',
+          : 'p-badge-secondary',
         badge: this.set.newComments
           ? String(this.set.newComments)
           : String(this.set?.comments?.length),
