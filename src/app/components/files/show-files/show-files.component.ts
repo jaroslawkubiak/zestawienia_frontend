@@ -262,37 +262,81 @@ export class ShowFilesComponent {
   }
 
   generateThumbnailsForFiles() {
-    this.files.forEach((file) => {
-      if (!file.thumbnail) {
-        const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+    // Process only files without thumbnails
+    const filesToProcess = this.files.filter((f) => !f.thumbnail);
 
-        pdfjsLib.getDocument(fullPath).promise.then((pdf: any) => {
-          pdf.getPage(1).then((page: any) => {
+    // Separate images and PDFs
+    const images = filesToProcess.filter((f) => isImage(f));
+    const pdfs = filesToProcess.filter((f) =>
+      f.fileName.toLowerCase().endsWith('.pdf')
+    );
+
+    // Process images - set thumbnail URL directly
+    images.forEach((file) => {
+      const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+      this.files = this.files.map((f) => {
+        if (f.id === file.id) {
+          return { ...f, thumbnail: fullPath };
+        }
+        return f;
+      });
+    });
+
+    // Process PDFs with a slight delay to avoid overloading
+    if (pdfs.length > 0) {
+      this.cd.detectChanges();
+
+      pdfs.forEach((file, index) => {
+        setTimeout(() => {
+          this.generatePdfThumbnail(file);
+        }, index * 300); // Stagger PDF processing by 300ms
+      });
+    } else {
+      this.cd.detectChanges();
+    }
+  }
+
+  private generatePdfThumbnail(file: IFileFullDetails) {
+    const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+
+    pdfjsLib
+      .getDocument(fullPath)
+      .promise.then((pdf: any) => {
+        pdf
+          .getPage(1)
+          .then((page: any) => {
             const canvas = document.createElement('canvas');
             const context = canvas.getContext('2d');
             const viewport = page.getViewport({ scale: 0.3 });
             canvas.height = viewport.height;
             canvas.width = viewport.width;
-            page
+
+            return page
               .render({
                 canvasContext: context,
                 viewport: viewport,
               })
-              .promise.then(() => {
-                const thumbnail = canvas.toDataURL();
-
-                this.files = this.files.map((f) => {
-                  if (f.id === file.id) {
-                    return { ...f, thumbnail };
-                  }
-                  return f;
-                });
-
-                this.cd.detectChanges();
-              });
+              .promise.then(() => canvas.toDataURL());
+          })
+          .then((thumbnail: string) => {
+            this.files = this.files.map((f) => {
+              if (f.id === file.id) {
+                return { ...f, thumbnail };
+              }
+              return f;
+            });
+            this.cd.detectChanges();
+          })
+          .catch((error: any) => {
+            // Silently skip PDF thumbnail if it fails
+            console.debug(
+              `Could not generate PDF thumbnail for: ${file.fileName}`
+            );
           });
-        });
-      }
-    });
+      })
+      .catch((error: any) => {
+        // Silently skip PDF thumbnail if it fails
+        console.debug(`Could not load PDF for: ${file.fileName}`);
+      });
   }
 }
