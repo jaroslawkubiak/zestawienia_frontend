@@ -175,8 +175,11 @@ export class ClientsComponent implements OnInit {
       this.clients = this.clients.filter((val) => val.id !== client.id);
     };
 
+    const clientName =
+      client.company || client.firstName + ' ' + client.lastName;
+
     const confirmMessage: IConfirmationMessage = {
-      message: 'Czy na pewno usunąć klienta ' + client.company + '?',
+      message: 'Czy na pewno usunąć klienta ' + clientName + '?',
       header: 'Potwierdź usunięcie klienta',
       accept,
     };
