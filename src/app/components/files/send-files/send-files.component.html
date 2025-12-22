@@ -3,6 +3,7 @@
   [modal]="true"
   [(visible)]="showSendFilesDialog"
   [style]="{ width: '100rem' }"
+  [dismissableMask]="true"
 >
   <p-progressBar [value]="uploadProgress"></p-progressBar>
   <div class="directory-wrapper" *ngIf="who === 'user'">

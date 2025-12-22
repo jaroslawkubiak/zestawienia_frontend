@@ -4,6 +4,7 @@
   [(visible)]="showFilesDialog"
   [style]="{ width: '100%', maxWidth: '160rem' }"
   class="dialog-header"
+  [dismissableMask]="true"
 >
   <div class="file-wrapper">
     <div class="top-action-btns">
@@ -60,6 +61,7 @@
   [style]="{ width: '80vw' }"
   [modal]="true"
   [closable]="true"
+  [dismissableMask]="true"
   [header]="'Podgląd PDF - ' + displayPdfHeader"
 >
   <iframe
