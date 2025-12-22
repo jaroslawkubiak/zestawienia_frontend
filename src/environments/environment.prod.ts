@@ -1,7 +1,7 @@
 export const environment = {
   production: true,
-  API_URL: 'https://zestawienia.zurawickidesign.pl',
-  FRONT_URL: 'https://zestawienia.zurawickidesign.pl',
-  FILES_URL: 'https://zestawienia.zurawickidesign.pl/uploads/',
+  API_URL: 'http://zestawienia.host355495.stronawcal.pl/api',
+  FRONT_URL: 'http://zestawienia.host355495.stronawcal.pl',
+  FILES_URL: 'http://zestawienia.host355495.stronawcal.pl/uploads',
   FEATURE_FLAG: false,
 };
