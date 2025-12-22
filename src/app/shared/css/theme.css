@@ -171,3 +171,7 @@
 .p-fileupload {
   margin-top: 20px !important;
 }
+
+::ng-deep .p-badge-circle {
+  cursor: pointer !important;
+}

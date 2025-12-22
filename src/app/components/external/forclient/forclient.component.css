@@ -37,7 +37,6 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
   color: var(--accent-color-01);
   transition: color 0.2s ease;
 }
@@ -54,6 +53,7 @@ h3 {
 
 .action-btn-wrapper i {
   font-size: 3rem;
+  padding: 0 20px;
 }
 
 .action-btn-wrapper i,
