@@ -2,4 +2,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  --p-progressspinner-color-1: var(--accent-color-06);
+  --p-progressspinner-color-2: var(--accent-color-08);
+  --p-progressspinner-color-3: var(--accent-color-10);
+  --p-progressspinner-color-4: var(--accent-color-12);
 }
