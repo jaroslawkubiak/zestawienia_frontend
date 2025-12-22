@@ -1,4 +1,9 @@
-.container {
+.new-set-container {
+  display: flex; 
+  justify-content: center; 
+}
+
+.new-set-wrapper {
   display: flex;
   flex-direction: column;
   padding: 40px;

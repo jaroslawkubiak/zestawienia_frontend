@@ -1,69 +1,71 @@
-<form #form="ngForm" (ngSubmit)="onSubmit(form)">
-  <div class="container">
-    <div class="field">
-      <label for="name" class="label">Inwestycja</label>
-      <input
-        type="text"
-        pInputText
-        [(ngModel)]="name"
-        name="name"
-        id="name"
-        size="large"
-        class="form-field"
-      />
-    </div>
-    <div class="field">
-      <label for="address" class="label">Adres inwestycji</label>
-      <textarea
-        rows="5"
-        pTextarea
-        fluid
-        [(ngModel)]="address"
-        name="address"
-        id="address"
-      ></textarea>
-    </div>
-    <div class="field">
-      <label for="client" class="label">Wybierz klienta</label>
-      <p-select
-        [options]="allClients"
-        [(ngModel)]="selectedClient"
-        name="client"
-        id="client"
-        class="form-field"
-        optionLabel="fullName"
-      />
-    </div>
+<div class="new-set-container">
+  <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+    <div class="new-set-wrapper">
+      <div class="field">
+        <label for="name" class="label">Inwestycja</label>
+        <input
+          type="text"
+          pInputText
+          [(ngModel)]="name"
+          name="name"
+          id="name"
+          size="large"
+          class="form-field"
+        />
+      </div>
+      <div class="field">
+        <label for="address" class="label">Adres inwestycji</label>
+        <textarea
+          rows="5"
+          pTextarea
+          fluid
+          [(ngModel)]="address"
+          name="address"
+          id="address"
+        ></textarea>
+      </div>
+      <div class="field">
+        <label for="client" class="label">Wybierz klienta</label>
+        <p-select
+          [options]="allClients"
+          [(ngModel)]="selectedClient"
+          name="client"
+          id="client"
+          class="form-field"
+          optionLabel="fullName"
+        />
+      </div>
 
-    <div class="field">
-      <div class="bookmarks-container">
-        <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
-          <p-checkbox
-            [inputId]="bookmark.id.toString()"
-            name="bookmarks"
-            [value]="bookmark"
-            [(ngModel)]="selectedBookmarks"
-            size="large"
-            class="bookmarks-checkbox"
-          >
-          </p-checkbox>
-          <label [for]="bookmark.id.toString()" class="ml-2">
-            {{ bookmark.name }}
-          </label>
+      <div class="field">
+        <div class="bookmarks-container">
+          <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
+            <p-checkbox
+              [inputId]="bookmark.id.toString()"
+              name="bookmarks"
+              [value]="bookmark"
+              [(ngModel)]="selectedBookmarks"
+              size="large"
+              class="bookmarks-checkbox"
+            >
+            </p-checkbox>
+            <label [for]="bookmark.id.toString()" class="ml-2">
+              {{ bookmark.name }}
+            </label>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex-center">
-      @if(selectedClient && name) {
-      <p-button
-        type="submit"
-        label="Dalej"
-        icon="pi pi-chevron-right"
-        severity="primary"
-        size="large"
-      />
-      }
+      <div class="flex-center">
+        @if(selectedClient && name) {
+        <p-button
+          type="submit"
+          label="Dalej"
+          icon="pi pi-chevron-right"
+          severity="primary"
+          size="large"
+        />
+        }
+      </div>
     </div>
-  </div>
-</form>
+  </form>
+</div>
