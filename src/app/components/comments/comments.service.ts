@@ -92,4 +92,10 @@ export class CommentsService {
       .patch<IComment[]>(`${environment.API_URL}/comments/positions`, body)
       .pipe(catchError(this.handleError));
   }
+
+  unreadComments(): Observable<number> {
+    return this.http
+      .get<number>(`${environment.API_URL}/comments/unread`)
+      .pipe(catchError(this.handleError));
+  }
 }
