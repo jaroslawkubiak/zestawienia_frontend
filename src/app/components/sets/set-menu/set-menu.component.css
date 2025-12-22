@@ -84,20 +84,6 @@
   font-size: 1.4rem;
 }
 
-.menu-label-preview {
-  padding: 4px;
-}
-
-.menu-label-preview i {
-  color: var(--accent-color-13);
-  font-size: 2.4rem;
-  transition: color 0.2s ease;
-}
-
-.menu-label-preview i:hover {
-  color: var(--error-color);
-}
-
 .btn-wrapper {
   display: flex;
   flex-direction: column;
@@ -105,6 +91,17 @@
   justify-content: center;
 }
 
-.btn-wrapper i {
-  font-size: 1.8rem;
+.menu-label-preview {
+  padding: 4px;
 }
+
+.menu-label-preview i {
+  color: var(--accent-color-13);
+  font-size: 1.8rem;
+  transition: color 0.2s ease;
+}
+
+.menu-label-preview i:hover {
+  color: var(--error-color);
+}
+

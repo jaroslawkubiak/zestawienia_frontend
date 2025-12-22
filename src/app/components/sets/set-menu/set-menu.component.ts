@@ -219,15 +219,27 @@ export class SetMenuComponent implements OnChanges, OnInit {
       {
         label: 'Komentarze',
         icon: 'pi pi-comments',
-        badgeStyleClass: this.set.newComments
-          ? 'p-badge-danger'
-          : 'p-badge-secondary',
-        badge: this.set.newComments
-          ? String(this.set.newComments)
-          : String(this.set?.comments?.length),
+        badgeStyleClass: this.getCommentsBadgeClass(),
+        badge: String(this.set?.newComments || this.set?.comments?.length || 0),
         command: () => this.showComments(),
       },
     ];
+  }
+
+  // define comments badge color
+  getCommentsBadgeClass(): string {
+    const commentsCount = this.set?.comments?.length ?? 0;
+    const newComments = this.set?.newComments ?? 0;
+
+    if (newComments > 0) {
+      return 'p-badge-danger';
+    }
+
+    if (commentsCount > 0) {
+      return 'p-badge-contrast';
+    }
+
+    return 'p-badge-secondary';
   }
 
   // open edit set header dialog
@@ -346,22 +358,33 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // copy link to clipboard
   copyLink(data: IExternalLink) {
     const link = this.getLink(data);
-
     if (!link) return;
 
-    navigator.clipboard
-      .writeText(link)
-      .then(() => {
-        this.notificationService.showNotification(
-          'info',
-          'Link został skopiowany do schowka'
-        );
-      })
-      .catch(() => {
-        this.notificationService.showNotification(
-          'error',
-          'Link nie został skopiowany do schowka'
-        );
-      });
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard
+        .writeText(link)
+        .then(() =>
+          this.notificationService.showNotification(
+            'info',
+            'Link został skopiowany'
+          )
+        )
+        .catch(() => this.fallbackCopy(link));
+    } else {
+      this.fallbackCopy(link);
+    }
+  }
+
+  private fallbackCopy(text: string) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    this.notificationService.showNotification('info', 'Link został skopiowany');
   }
 }
