@@ -97,9 +97,29 @@ th {
 }
 
 .view-mode-image {
+  position: relative;
   height: var(--row-height) !important;
   width: 100% !important;
   cursor: pointer;
+}
+
+.show-image-wrapper {
+  position: absolute;
+  top: 0;
+  right: -8px;
+  z-index: 999;
+  padding: 8px;
+  background-color: var(--accent-color-10);
+  border-radius: 50%;
+}
+
+.show-image-wrapper i {
+  font-size: 2rem;
+  color: var(--accent-color-02);
+}
+
+.show-image-wrapper:hover {
+  background-color: var(--accent-color-14);
 }
 
 .edit-mode-image {

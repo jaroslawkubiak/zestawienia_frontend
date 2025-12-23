@@ -1,0 +1,18 @@
+<p-galleria
+  [value]="images"
+  [(visible)]="displayBasic"
+  [(activeIndex)]="activeIndex"
+  [containerStyle]="{ 'max-width': '50%' }"
+  [numVisible]="6"
+  [circular]="true"
+  [fullScreen]="true"
+  [showItemNavigators]="true"
+  [showIndicators]="true"
+>
+  <ng-template #item let-item>
+    <img [src]="item.itemImageSrc" style="width: 100%; display: block" />
+  </ng-template>
+  <ng-template #thumbnail let-item>
+    <img [src]="item.thumbnailImageSrc" style="height: 100px; display: block" />
+  </ng-template>
+</p-galleria>

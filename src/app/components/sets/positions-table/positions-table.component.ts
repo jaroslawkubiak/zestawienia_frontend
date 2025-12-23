@@ -28,6 +28,8 @@ import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
+import { ImageGalleryComponent } from '../../image-gallery/image-gallery.component';
+import { IGalleryList } from '../../image-gallery/types/IGalleryList';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ColumnList } from '../ColumnList';
@@ -57,9 +59,9 @@ import { SetStatus } from '../types/set-status.enum';
     Dialog,
     TextareaModule,
     CommentsComponent,
+    ImageGalleryComponent,
   ],
   standalone: true,
-
   templateUrl: './positions-table.component.html',
   styleUrl: './positions-table.component.css',
 })
@@ -98,6 +100,7 @@ export class PositionsTableComponent implements OnInit {
   header = '';
   comments: IComment[] = [];
   @ViewChild('table') table!: Table;
+  @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
 
   constructor(
     private editSetService: EditSetService,
@@ -469,5 +472,36 @@ export class PositionsTableComponent implements OnInit {
     });
 
     this.updateCommentsForSet();
+  }
+
+  // open gallery with bookmark images
+  onShowImageClick(event: MouseEvent, position: any, columnKey: string) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    const clickedImageUrl = position[columnKey]
+      ? `${this.FILES_URL}${this.set.id}/positions/${position.id}/${position[columnKey]}`
+      : null;
+    if (!clickedImageUrl) return;
+
+    const galleryImages: IGalleryList[] = this.formData
+      .map((pos) => {
+        const key = columnKey;
+        if (pos[key]) {
+          return {
+            itemImageSrc: `${this.FILES_URL}${this.set.id}/positions/${pos.id}/${pos[key]}`,
+            thumbnailImageSrc: `${this.FILES_URL}${this.set.id}/positions/${pos.id}/${pos[key]}`,
+          };
+        }
+        return null;
+      })
+      .filter((img) => img !== null) as IGalleryList[];
+
+    const activeIndex = galleryImages.findIndex(
+      (img) => img.itemImageSrc === clickedImageUrl
+    );
+
+    this.imageGallery.images = galleryImages;
+    this.imageGallery.openGallery(activeIndex);
   }
 }

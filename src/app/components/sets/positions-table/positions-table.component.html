@@ -130,7 +130,8 @@
                 />
                 <app-loading-spinner
                   class="image-spinner"
-                  [size]="70"
+                  [size]="100"
+                  stroke="4"
                 ></app-loading-spinner>
               </div>
               <!-- EDIT MODE -> type = string DEFAULT -->
@@ -191,6 +192,13 @@
                       : ''
                   "
                 />
+                <div
+                  class="show-image-wrapper"
+                  *ngIf="position[column.key]"
+                  (click)="onShowImageClick($event, position, column.key)"
+                >
+                  <i class="pi pi-search-plus"></i>
+                </div>
               </div>
               <!-- VIEW MODE default -> type = string  -->
               <div *ngSwitchCase="'string'">
@@ -238,3 +246,5 @@
     (updateComments)="updateCommentsForPosition($event)"
   />
 </p-dialog>
+
+<app-image-gallery #imageGallery></app-image-gallery>

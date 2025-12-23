@@ -1,0 +1,36 @@
+::ng-deep p-galleriacontent {
+  position: relative !important;
+}
+
+::ng-deep .p-galleria-thumbnail-item {
+  overflow: hidden !important;
+}
+
+::ng-deep .p-galleria-mask .p-galleria-nav-button {
+  position: absolute !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  background-color: var(--accent-color-05) !important;
+  color: var(--accent-color-15) !important;
+  padding: 2px !important;
+}
+
+::ng-deep .p-galleria-mask .p-galleria-nav-button:hover,
+::ng-deep .p-galleria-close-button:hover {
+  background-color: var(--accent-color-15) !important;
+  color: var(--accent-color-02) !important;
+}
+
+::ng-deep .p-galleria-close-button {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  background-color: var(--accent-color-05) !important;
+  color: var(--accent-color-15) !important;
+  padding: 2px !important;
+  z-index: 2;
+}
+
+::ng-deep .p-galleria-indicator-list {
+  background-color: var(--accent-color-05) !important;
+}
