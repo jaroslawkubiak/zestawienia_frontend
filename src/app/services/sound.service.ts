@@ -7,6 +7,6 @@ import { SoundType } from './types/SoundType';
 export class SoundService {
   playSound(soundType: SoundType) {
     const audio = new Audio(`assets/audio/${soundType}`);
-    audio.play();
+    // audio.play();
   }
 }

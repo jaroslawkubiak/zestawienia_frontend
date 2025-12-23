@@ -191,7 +191,9 @@ export class SetMenuComponent implements OnChanges, OnInit {
             icon: 'pi pi-users',
             badge: String(suppliersList.length),
             badgeStyleClass:
-              suppliersList.length === 0 ? 'p-badge-danger' : 'p-badge-primary',
+              suppliersList.length === 0
+                ? 'p-badge-secondary'
+                : 'p-badge-primary',
             items: suppliersList,
           },
         ],
