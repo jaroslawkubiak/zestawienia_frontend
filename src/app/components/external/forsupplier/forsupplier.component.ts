@@ -31,6 +31,7 @@ export class ForsupplierComponent implements OnInit {
   setHash: string | null = null;
   supplierHash: string | null = null;
   supplierId: number | undefined = undefined;
+  supplierCompany: string | undefined = undefined;
   set!: ISet;
   positions: IPosition[] = [];
   FILES_URL = environment.FILES_URL;
@@ -74,6 +75,7 @@ export class ForsupplierComponent implements OnInit {
           if (response.setId) {
             this.setId = response.setId;
             this.supplierId = response.supplierId;
+            this.supplierCompany = response.supplierCompany;
             this.loadData();
           } else {
             this.router.navigate(['/notfound']);

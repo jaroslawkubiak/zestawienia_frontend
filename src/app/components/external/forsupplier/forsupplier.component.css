@@ -2,10 +2,21 @@
   width: 100%;
 }
 
-.logo-wrapper {
+.header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: end;
   padding: 20px 0;
+}
+
+.header p {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--accent-color-12);
+}
+
+.header p span {
+  color: var(--primary-color);
 }
 
 .logo-wrapper img {

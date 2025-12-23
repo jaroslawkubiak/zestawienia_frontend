@@ -1,6 +1,7 @@
 <div class="supplier-container" *ngIf="!isLoading">
   <div class="container">
-    <div class="logo-wrapper">
+    <div class="header">
+      <p><span>Dostawca:</span> {{ supplierCompany }}</p>
       <a href="https://zurawickidesign.pl" target="_blank">
         <img
           src="/assets/images/logo-black.png"
@@ -89,6 +90,7 @@
                   <div *ngSwitchCase="'link'">
                     <a
                       [href]="position[column.key]"
+                      *ngIf="position[column.key]"
                       target="_blank"
                       class="link flex-center"
                       rel="noopener noreferrer"
