@@ -61,9 +61,11 @@ export class ForsupplierComponent implements OnInit {
           supplierHash: params.get('supplierHash'),
         })),
         switchMap(({ setHash, supplierHash }) => {
+          this.setHash = setHash;
           if (!setHash || !supplierHash) {
             return throwError(() => new Error('Invalid params'));
           }
+
           return this.editSetService.validateSetAndHashForSupplier(
             setHash,
             supplierHash
@@ -110,6 +112,7 @@ export class ForsupplierComponent implements OnInit {
             this.FILES_URL,
             'sets',
             this.setId,
+            this.setHash,
             'positions',
             item.id,
             item.image,

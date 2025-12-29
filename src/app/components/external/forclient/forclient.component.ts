@@ -125,6 +125,7 @@ export class ForClientComponent implements OnInit {
             this.FILES_URL,
             'sets',
             this.setId,
+            this.set.hash,
             'positions',
             item.id,
             item.image,
