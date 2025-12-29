@@ -118,18 +118,7 @@
                   [positionId]="position.id"
                   (blur)="applyAction($event, i, column)"
                   [imageUpload]="onImageUpload"
-                  [imagePreview]="
-                    position[column.key]
-                      ? FILES_URL +
-                        set.id +
-                        '/' +
-                        set.hash +
-                        '/positions/' +
-                        position.id +
-                        '/' +
-                        position[column.key]
-                      : ''
-                  "
+                  [imagePreview]="getImagePreviewUrl(position)"
                 />
                 <app-loading-spinner
                   class="image-spinner"
@@ -185,23 +174,12 @@
                   [setId]="+set.id"
                   [setHash]="set.hash"
                   [positionId]="position.id"
-                  [imagePreview]="
-                    position[column.key]
-                      ? FILES_URL +
-                        set.id +
-                        '/' +
-                        set.hash +
-                        '/positions/' +
-                        position.id +
-                        '/' +
-                        position[column.key]
-                      : ''
-                  "
+                  [imagePreview]="getImagePreviewUrl(position)"
                 />
                 <div
                   class="show-image-wrapper"
                   *ngIf="position[column.key]"
-                  (click)="onShowImageClick($event, position, column.key)"
+                  (click)="onShowImageClick($event, position)"
                 >
                   <i class="pi pi-search-plus"></i>
                 </div>

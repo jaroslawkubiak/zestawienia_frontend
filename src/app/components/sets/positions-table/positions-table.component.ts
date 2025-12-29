@@ -76,7 +76,7 @@ export class PositionsTableComponent implements OnInit {
   @Output() updateSetComments = new EventEmitter<IComment[]>();
   formData: IPosition[] = [];
   newOrClonePosition: IPosition | undefined;
-  FILES_URL = environment.FILES_URL + 'sets/';
+  FILES_URL = environment.FILES_URL;
   positionToDelete: number[] = [];
   DEFAULT_COLUMN_WIDTH = 200;
   columnList = ColumnList;
@@ -475,22 +475,19 @@ export class PositionsTableComponent implements OnInit {
   }
 
   // open gallery with bookmark images
-  onShowImageClick(event: MouseEvent, position: any, columnKey: string) {
+  onShowImageClick(event: MouseEvent, position: IPosition) {
     event.stopPropagation();
     event.preventDefault();
 
-    const clickedImageUrl = position[columnKey]
-      ? `${this.FILES_URL}${this.set.id}/positions/${position.id}/${position[columnKey]}`
-      : null;
+    const clickedImageUrl = this.getImagePreviewUrl(position);
     if (!clickedImageUrl) return;
 
     const galleryImages: IGalleryList[] = this.formData
       .map((pos) => {
-        const key = columnKey;
-        if (pos[key]) {
+        if (pos['image']) {
           return {
-            itemImageSrc: `${this.FILES_URL}${this.set.id}/positions/${pos.id}/${pos[key]}`,
-            thumbnailImageSrc: `${this.FILES_URL}${this.set.id}/positions/${pos.id}/${pos[key]}`,
+            itemImageSrc: this.getImagePreviewUrl(pos),
+            thumbnailImageSrc: this.getImagePreviewUrl(pos),
           };
         }
         return null;
@@ -503,5 +500,16 @@ export class PositionsTableComponent implements OnInit {
 
     this.imageGallery.images = galleryImages;
     this.imageGallery.openGallery(activeIndex);
+  }
+
+  // prepare image url
+  getImagePreviewUrl(position: IPosition): string {
+    const fileName = position['image'];
+
+    if (!fileName) {
+      return '';
+    }
+
+    return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
   }
 }
