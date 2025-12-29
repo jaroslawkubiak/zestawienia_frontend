@@ -35,10 +35,7 @@ export class AuthInterceptor implements HttpInterceptor {
           this.authService.setSilentMode(false);
 
           // If in silent mode (app-initializer), don't show modal
-          if (isSilent) {
-            // Silent mode - no modal shown
-          } else {
-            // Otherwise show modal to user
+          if (!isSilent) {
             const confirmMessage = {
               message: 'Twoja sesja wygasła. Zaloguj się ponownie',
               header: 'Wylogowano',
