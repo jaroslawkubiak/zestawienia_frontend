@@ -43,28 +43,26 @@ html {
   --accent-color-19: #0a211c;
   --accent-color-20: #05100d;
 
-  --burgund-color-01: #ffdce6;
-  --burgund-color-02: #fbc4d3;
-  --burgund-color-03: #f3abbc;
-  --burgund-color-04: #e691a4;
-  --burgund-color-05: #d7788d;
-  --burgund-color-06: #c46076;
-  --burgund-color-07: #ad4860;
-  --burgund-color-08: #943049;
-  --burgund-color-09: #7a1a35;
-
-  --burgund-color-10: #600a21;
-
-  --burgund-color-11: #55091e;
-  --burgund-color-12: #4a071a;
-  --burgund-color-13: #3f0617;
-  --burgund-color-14: #350513;
-  --burgund-color-15: #2b040f;
-  --burgund-color-16: #22030c;
-  --burgund-color-17: #1a0209;
-  --burgund-color-18: #120206;
-  --burgund-color-19: #0b0104;
-  --burgund-color-20: #030001;
+  --burgund-color-01: #fff2f6;
+  --burgund-color-02: #ffe1ea;
+  --burgund-color-03: #ffd0de;
+  --burgund-color-04: #ffbfd2;
+  --burgund-color-05: #f9aebe;
+  --burgund-color-06: #f29aa9;
+  --burgund-color-07: #ea8694;
+  --burgund-color-08: #e1727f;
+  --burgund-color-09: #d85e6b;
+  --burgund-color-10: #cd4b57;
+  --burgund-color-11: #bf3945;
+  --burgund-color-12: #ae2a36;
+  --burgund-color-13: #9a1d2a;
+  --burgund-color-14: #7d1224;
+  --burgund-color-15: #600a21; /* kolor bazowy */
+  --burgund-color-16: #52081c;
+  --burgund-color-17: #440717;
+  --burgund-color-18: #360512;
+  --burgund-color-19: #28040d;
+  --burgund-color-20: #1b0309;
 
   --error-color: #e91e63;
   --edit-color: #e691a4;
