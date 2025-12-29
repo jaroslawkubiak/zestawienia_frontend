@@ -20,6 +20,7 @@ export class ImageClipboardInputComponent {
   public imageFile: File | null = null;
   @Input() onPasting = false;
   @Input() setId!: number;
+  @Input() setHash!: string;
   @Input() positionId!: number;
   @Output() blur = new EventEmitter<Event>();
   constructor(
@@ -53,7 +54,7 @@ export class ImageClipboardInputComponent {
       formData.append('image', this.imageFile, this.imageFile.name);
     }
 
-    return this.imageService.saveImage(this.setId, this.positionId, formData);
+    return this.imageService.saveImage(this.setId, this.setHash, this.positionId, formData);
   }
 
   onSubmit() {

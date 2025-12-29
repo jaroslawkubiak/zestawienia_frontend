@@ -114,6 +114,7 @@
                 <app-image-clipboard-input
                   [onPasting]="true"
                   [setId]="+set.id"
+                  [setHash]="set.hash"
                   [positionId]="position.id"
                   (blur)="applyAction($event, i, column)"
                   [imageUpload]="onImageUpload"
@@ -121,6 +122,8 @@
                     position[column.key]
                       ? FILES_URL +
                         set.id +
+                        '/' +
+                        set.hash +
                         '/positions/' +
                         position.id +
                         '/' +
@@ -180,11 +183,14 @@
               <div *ngSwitchCase="'image'" class="view-mode-image">
                 <app-image-clipboard-input
                   [setId]="+set.id"
+                  [setHash]="set.hash"
                   [positionId]="position.id"
                   [imagePreview]="
                     position[column.key]
                       ? FILES_URL +
                         set.id +
+                        '/' +
+                        set.hash +
                         '/positions/' +
                         position.id +
                         '/' +

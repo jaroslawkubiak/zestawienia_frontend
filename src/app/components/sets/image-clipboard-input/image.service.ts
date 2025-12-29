@@ -14,6 +14,7 @@ export class ImageService {
   constructor(private http: HttpClient, private authService: AuthService) {}
   saveImage(
     setId: number,
+    setHash: string,
     positionId: number,
     formData: FormData
   ): Observable<any> {
@@ -24,7 +25,7 @@ export class ImageService {
     return this.http.post<any>(
       `${
         environment.API_URL
-      }/images/${setId}/${positionId}?userId=${this.userId()}`,
+      }/images/${setId}/${setHash}/${positionId}?userId=${this.userId()}`,
       formData,
       {
         headers,
