@@ -14,10 +14,11 @@ import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { NotificationService } from '../../../services/notification.service';
+import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
-import { IFileDirectoryList } from '../types/IFileDirectoryList';
-import { IFileFullDetails } from '../types/IFileFullDetails';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
+import { IFileDirectory } from '../types/IFileDirectory';
+import { IFileFullDetails } from '../types/IFileFullDetails';
 
 @Component({
   selector: 'app-send-files',
@@ -48,15 +49,8 @@ export class SendFilesComponent {
   uploadedFiles: any[] = [];
   uploadProgress = 0;
   fileLimit = 20;
-  selectedDirectory: string | null = null;
-
-  directoryList: IFileDirectoryList[] = Object.entries(EFileDirectoryList).map(
-    ([key, value]) => ({
-      name: key,
-      label: value,
-      icon: key === 'working' ? 'pi pi-eye-slash' : '',
-    })
-  );
+  selectedDirectory!: IFileDirectory;
+  directoryList: IFileDirectory[] = FileDirectoryList;
 
   chooseButtonProps: any = {
     severity: 'primary',
@@ -86,7 +80,10 @@ export class SendFilesComponent {
     this.showSendFilesDialog = true;
 
     if (this.who === 'client') {
-      this.selectedDirectory = 'inspirations';
+      this.selectedDirectory = {
+        label: EFileDirectoryList['inspirations'],
+        icon: 'pi pi-user',
+      };
     }
   }
 
@@ -103,7 +100,9 @@ export class SendFilesComponent {
       const files = event.files;
       const formData = new FormData();
       const uploadFolder =
-        this.who === 'user' ? this.selectedDirectory : 'inspirations';
+        this.who === 'user'
+          ? this.selectedDirectory.label
+          : EFileDirectoryList['inspirations'];
 
       for (let file of files) {
         formData.append('files', file, file.name);

@@ -78,8 +78,7 @@ export class FilesService {
 
   // download file and save on client
   downloadAndSaveFile(file: IFileFullDetails): void {
-    const url = `${environment.FILES_URL}${file.path}/${file.fileName}`;
-
+    const url = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
     this.downloadFile(url).subscribe((fileBlob: Blob) => {
       saveAs(fileBlob, file.fileName);
     });
