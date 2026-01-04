@@ -11,13 +11,25 @@
     <p-select
       name="selectedDirectory"
       optionLabel="label"
-      optionValue="label"
       id="directory"
       class="form-field"
       [options]="directoryList"
       [(ngModel)]="selectedDirectory"
-      (onChange)="changeDirectory()"
-    />
+    >
+      <ng-template pTemplate="item" let-option>
+        <span class="select-span">
+          <span>{{ option.label }}</span>
+          <i *ngIf="option.icon" [class]="option.icon"></i>
+        </span>
+      </ng-template>
+
+      <ng-template pTemplate="selectedItem" let-value>
+        <span class="select-span" *ngIf="value">
+          <span>{{ value.label }}</span>
+          <i *ngIf="value.icon" [class]="value.icon"></i>
+        </span>
+      </ng-template>
+    </p-select>
   </div>
   <div [ngClass]="!selectedDirectory ? 'upload-blocker' : ''"></div>
   <p-fileupload

@@ -42,6 +42,7 @@ export class SendFilesComponent {
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
   showSendFilesDialog = false;
   setId!: number;
+  setHash!: string;
   setName: string = '';
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
@@ -53,6 +54,7 @@ export class SendFilesComponent {
     ([key, value]) => ({
       name: key,
       label: value,
+      icon: key === 'working' ? 'pi pi-eye-slash' : '',
     })
   );
 
@@ -77,8 +79,9 @@ export class SendFilesComponent {
     };
   }
 
-  openSendFilesDialog(setId: number, setName: string) {
+  openSendFilesDialog(setId: number, setHash: string, setName: string) {
     this.setId = setId;
+    this.setHash = setHash;
     this.setName = setName;
     this.showSendFilesDialog = true;
 
@@ -107,7 +110,7 @@ export class SendFilesComponent {
       }
 
       this.filesService
-        .saveFile(+this.setId, formData, uploadFolder)
+        .saveFile(+this.setId, this.setHash, formData, uploadFolder)
         .subscribe((event) => {
           if (event.type === HttpEventType.UploadProgress && event.total) {
             const percentDone = Math.round((100 * event.loaded) / event.total);

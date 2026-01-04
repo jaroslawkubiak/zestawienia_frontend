@@ -49,6 +49,7 @@ export class FilesService {
   // save attached files to set
   saveFile(
     setId: number,
+    setHash: string,
     formData: FormData,
     uploadFolder: string
   ): Observable<any> {
@@ -57,7 +58,7 @@ export class FilesService {
     });
 
     return this.http.post<any>(
-      `${environment.API_URL}/files/upload/${setId}/${uploadFolder}`,
+      `${environment.API_URL}/files/upload/${setId}/${setHash}/${uploadFolder}`,
       formData,
       {
         reportProgress: true,

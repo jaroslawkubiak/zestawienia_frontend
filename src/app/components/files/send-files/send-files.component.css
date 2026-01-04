@@ -86,3 +86,9 @@
 .p-select.p-variant-filled {
   background-image: none !important;
 }
+
+.select-span {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}

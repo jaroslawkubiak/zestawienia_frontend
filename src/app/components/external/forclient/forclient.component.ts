@@ -206,8 +206,8 @@ export class ForClientComponent implements OnInit {
     this.dialogShowFilesComponent.showDialog(preparedSet);
   }
 
-  openSendFilesDialog(setId: number, setName: string) {
-    this.dialogSendFilesComponent.openSendFilesDialog(setId, setName);
+  openSendFilesDialog(setId: number, setHash: string, setName: string) {
+    this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
   assignCommentsToPosition() {

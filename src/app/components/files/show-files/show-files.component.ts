@@ -51,6 +51,7 @@ export class ShowFilesComponent {
   @Input() who!: 'user' | 'client';
   @Output() deleteFiles = new EventEmitter<IDeletedFiles>();
   setId!: number;
+  setHash!: string;
   setName: string = '';
   displayPdf = false;
   displayPdfHeader: string = '';
@@ -63,13 +64,14 @@ export class ShowFilesComponent {
 
   showDialog(set: ISet) {
     this.setId = set.id;
+    this.setHash = set.hash;
     this.setName = set.name;
     this.showFilesDialog = true;
     this.selectedFiles = [];
 
     if (set.files) {
       this.files = set.files.map((file) => {
-        const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+        const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
 
         return { ...file, fullPath };
       });
@@ -203,7 +205,7 @@ export class ShowFilesComponent {
 
   // open pdf preview
   openPdf(file: IFileFullDetails) {
-    const url = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+    const url = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
 
     this.pdfUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
     this.displayPdfHeader = file.fileName;

@@ -289,6 +289,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   openSendFilesDialog(): void {
     this.dialogSendFilesComponent.openSendFilesDialog(
       this.set.id,
+      this.set.hash,
       this.set.name
     );
   }

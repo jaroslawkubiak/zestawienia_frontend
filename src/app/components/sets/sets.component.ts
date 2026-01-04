@@ -161,8 +161,8 @@ export class SetsComponent implements OnInit {
     }
   }
 
-  openSendFilesDialog(setId: number, setName: string) {
-    this.dialogSendFilesComponent.openSendFilesDialog(setId, setName);
+  openSendFilesDialog(setId: number, setHash: string, setName: string) {
+    this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
   showAttachedFiles(set: ISet) {
