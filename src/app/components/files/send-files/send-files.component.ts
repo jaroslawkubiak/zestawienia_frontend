@@ -13,6 +13,7 @@ import { Dialog } from 'primeng/dialog';
 import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
+import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
@@ -29,6 +30,7 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
     ProgressBarModule,
     SelectModule,
     FormsModule,
+    TooltipModule,
   ],
   templateUrl: './send-files.component.html',
   styleUrls: ['./send-files.component.css'],
@@ -65,6 +67,18 @@ export class SendFilesComponent {
     label: 'Anuluj',
     size: 'large',
   };
+
+  onSelectOpen() {
+    requestAnimationFrame(() => {
+      const panel = document.querySelector(
+        '.p-select-overlay .p-select-list-container'
+      ) as HTMLElement;
+
+      if (panel) {
+        panel.style.maxHeight = '300px';
+      }
+    });
+  }
 
   changeDirectory() {
     this.chooseButtonProps = {

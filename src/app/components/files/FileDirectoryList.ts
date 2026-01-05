@@ -11,6 +11,7 @@ export const FileDirectoryList: IFileDirectory[] = [
   {
     label: EFileDirectoryList['inspirations'],
     icon: 'pi pi-user',
+    title: 'Katalog klienta',
   },
   {
     label: EFileDirectoryList['drawings'],
@@ -21,5 +22,6 @@ export const FileDirectoryList: IFileDirectory[] = [
   {
     label: EFileDirectoryList['working'],
     icon: 'pi pi-eye-slash',
+    title: 'Katalog ukryty przed klientem',
   },
 ];

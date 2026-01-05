@@ -12,14 +12,20 @@
       name="selectedDirectory"
       optionLabel="label"
       id="directory"
-      class="form-field"
+      (onShow)="onSelectOpen()"
       [options]="directoryList"
       [(ngModel)]="selectedDirectory"
     >
       <ng-template pTemplate="item" let-option>
         <span class="select-span">
           <span>{{ option.label }}</span>
-          <i *ngIf="option.icon" [class]="option.icon"></i>
+          <i
+            *ngIf="option.icon"
+            [class]="option.icon"
+            pTooltip="{{ option.title }}"
+            tooltipPosition="right"
+            tooltipShowDelay="300"
+          ></i>
         </span>
       </ng-template>
 
