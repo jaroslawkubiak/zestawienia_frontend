@@ -29,6 +29,8 @@ export class IconsViewComponent {
   @Input() downloadFile!: (id: number) => void;
   @Input() openPdf!: (file: IFileFullDetails) => void;
   @Input() addFileToSelected!: (file: IFileFullDetails) => void;
+  @Input() isDeleteDisabled!: boolean;
+
   @Output() downloadFiles = new EventEmitter<any>();
   @Output() deleteFiles = new EventEmitter<void>();
   @Output() selectAll = new EventEmitter<any>();
@@ -41,21 +43,5 @@ export class IconsViewComponent {
 
   filesFilteredByDir(dir: string): IFileFullDetails[] {
     return this.files.filter((file) => file.dir === dir);
-  }
-
-  isDeleteButtonDisabled(): boolean {
-    if (this.selectedFiles.length === 0) {
-      return true;
-    }
-
-    if (this.who === 'user') {
-      return false;
-    }
-
-    if (this.who === 'client') {
-      return !this.selectedFiles.every((file) => file.canDelete === true);
-    }
-
-    return true;
   }
 }

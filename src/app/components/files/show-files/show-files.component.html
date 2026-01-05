@@ -37,6 +37,7 @@
         (deleteFiles)="onDeleteFiles()"
         (downloadFiles)="downloadFiles()"
         (selectAll)="selectAll($event)"
+        [isDeleteDisabled]="isDeleteDisabled"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"
@@ -50,6 +51,7 @@
         (addFileToSelected)="addFileToSelected($event)"
         (selectAll)="selectAll($event)"
         (openPdf)="openPdf($event)"
+        [isDeleteDisabled]="isDeleteDisabled"
       ></app-list-view>
     </div>
     <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>

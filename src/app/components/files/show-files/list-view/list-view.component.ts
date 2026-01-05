@@ -19,7 +19,6 @@ import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.compone
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
-import { EFileDirectoryList } from '../../types/file-directory-list.enum';
 
 @Component({
   selector: 'app-list-view',
@@ -43,6 +42,8 @@ export class ListViewComponent implements OnChanges {
   @Input() who!: 'user' | 'client';
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
+  @Input() isDeleteDisabled!: boolean;
+
   @Output() downloadFile = new EventEmitter<number>();
   @Output() deleteFile = new EventEmitter<number>();
   @Output() deleteFiles = new EventEmitter<void>();
@@ -95,21 +96,5 @@ export class ListViewComponent implements OnChanges {
     } else {
       this.selectedFiles = [];
     }
-  }
-
-  isDeleteButtonDisabled(): boolean {
-    if (this.selectedFiles.length === 0) {
-      return true;
-    }
-
-    if (this.who === 'user') {
-      return false;
-    }
-
-    if (this.who === 'client') {
-      return !this.selectedFiles.every((file) => file.canDelete === true);
-    }
-
-    return true;
   }
 }

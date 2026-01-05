@@ -351,4 +351,20 @@ export class ShowFilesComponent implements OnInit {
         console.debug(`Could not load PDF for: ${file.fileName}`);
       });
   }
+
+  get isDeleteDisabled(): boolean {
+    if (this.selectedFiles.length === 0) {
+      return true;
+    }
+
+    if (this.who === 'user') {
+      return false;
+    }
+
+    if (this.who === 'client') {
+      return !this.selectedFiles.every((file) => file.canDelete === true);
+    }
+
+    return true;
+  }
 }
