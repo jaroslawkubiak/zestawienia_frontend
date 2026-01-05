@@ -1,11 +1,12 @@
 import { ISet } from '../../sets/types/ISet';
+import { EFileDirectoryList } from './file-directory-list.enum';
 
 export interface IFileFullDetails {
   id: number;
   fileName: string;
   type: string;
   path: string;
-  dir: string;
+  dir: EFileDirectoryList;
   description: string;
   size: number;
   width: number;
@@ -15,4 +16,5 @@ export interface IFileFullDetails {
   createdAtTimestamp: number;
   fullPath?: string;
   thumbnail?: string;
+  canDelete?: boolean;
 }

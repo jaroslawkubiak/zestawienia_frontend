@@ -68,7 +68,7 @@
       pTooltip="Usuń plik"
       tooltipPosition="bottom"
       (click)="delete.emit()"
-      [disabled]="canDelete || selectedFiles.length !== 0"
+      [disabled]="!file.canDelete || selectedFiles.length !== 0"
     />
   </div>
 </div>

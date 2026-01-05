@@ -17,13 +17,12 @@
     (click)="downloadFiles.emit()"
   />
   <p-button
-    *ngIf="who === 'user'"
     severity="danger"
     class="m-4"
     icon="pi pi-trash"
     alt="Usuń pliki"
     pTooltip="Usuń pliki"
-    [disabled]="selectedFiles.length === 0"
+    [disabled]="isDeleteButtonDisabled()"
     (click)="deleteFiles.emit()"
   />
 </div>

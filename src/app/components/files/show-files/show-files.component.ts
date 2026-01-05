@@ -21,6 +21,7 @@ import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 import { ISet } from '../../sets/types/ISet';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
+import { EFileDirectoryList } from '../types/file-directory-list.enum';
 import { IDeletedFiles } from '../types/IDeletedFiles';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IconsViewComponent } from './icons-view/icons-view.component';
@@ -79,7 +80,14 @@ export class ShowFilesComponent implements OnInit {
       this.files = set.files.map((file) => {
         const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
 
-        return { ...file, fullPath };
+        return {
+          ...file,
+          fullPath,
+          canDelete:
+            this.who === 'user'
+              ? true
+              : file.dir === EFileDirectoryList.inspirations,
+        };
       });
 
       this.uniqueDir = this.getUniqueDirectory();

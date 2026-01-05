@@ -45,12 +45,4 @@ export class FilePreviewComponent {
   get isSelected(): boolean {
     return this.selectedFiles.some((f) => f.id === this.file.id);
   }
-
-  get canDelete(): boolean {
-    if (this.who === 'user') {
-      return false;
-    } else {
-      return this.file.dir === 'inspirations' ? false : true;
-    }
-  }
 }
