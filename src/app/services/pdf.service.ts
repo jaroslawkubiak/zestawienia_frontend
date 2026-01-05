@@ -272,7 +272,7 @@ export class PdfService {
 
           const imageName = removeMiniSuffix(row.image);
 
-          const imageUrl = `${environment.FILES_URL}sets/${set.id}/positions/${row.id}/${imageName}`;
+          const imageUrl = `${environment.FILES_URL}/sets/${set.id}/${set.hash}/positions/${row.id}/${imageName}`;
           try {
             const base64Image = await this.getBase64Image(imageUrl);
             const { width, height } = await this.getImageSize(

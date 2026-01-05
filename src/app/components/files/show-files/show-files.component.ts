@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -40,7 +41,7 @@ import { ListViewComponent } from './list-view/list-view.component';
   styleUrl: './show-files.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class ShowFilesComponent {
+export class ShowFilesComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private filesService: FilesService,
@@ -62,6 +63,11 @@ export class ShowFilesComponent {
   defaultView = 'list';
   uniqueDir: string[] = [];
 
+  ngOnInit(): void {
+    // forces pdf worker to load .js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/pdfjs/pdf.worker.min.js';
+  }
+
   showDialog(set: ISet) {
     this.setId = set.id;
     this.setHash = set.hash;
@@ -78,10 +84,6 @@ export class ShowFilesComponent {
 
       this.uniqueDir = this.getUniqueDirectory();
 
-      if (!pdfjsLib.GlobalWorkerOptions.workerSrc) {
-        pdfjsLib.GlobalWorkerOptions.workerSrc =
-          'assets/pdfjs/pdf.worker.min.mjs';
-      }
       this.generateThumbnailsForFiles();
     }
   }
@@ -275,7 +277,7 @@ export class ShowFilesComponent {
 
     // Process images - set thumbnail URL directly
     images.forEach((file) => {
-      const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+      const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
       this.files = this.files.map((f) => {
         if (f.id === file.id) {
           return { ...f, thumbnail: fullPath };
@@ -299,7 +301,7 @@ export class ShowFilesComponent {
   }
 
   private generatePdfThumbnail(file: IFileFullDetails) {
-    const fullPath = `${environment.FILES_URL}${file.path}/${file.fileName}`;
+    const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
 
     pdfjsLib
       .getDocument(fullPath)
