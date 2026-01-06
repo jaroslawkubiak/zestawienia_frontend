@@ -7,8 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--accent-color-09);
-  color: var(--secondary-color);
+  background-color: var(--accent-color-03);
+  color: var(--accent-color-18);
   width: 100%;
   padding: 15px;
 }
@@ -22,7 +22,7 @@
 
 .set-header-title {
   font-size: 1.6rem;
-  color: var(--primary-color);
+  color: var(--accent-color-15);
   height: 30px;
 }
 

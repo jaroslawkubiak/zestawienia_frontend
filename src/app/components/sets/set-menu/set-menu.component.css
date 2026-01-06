@@ -1,5 +1,5 @@
 ::ng-deep .p-menubar {
-  border: 2px solid var(--accent-color-09) !important;
+  border: 2px solid var(--accent-color-03) !important;
   border-radius: 0 !important;
   padding: 0 !important;
 }
@@ -18,7 +18,7 @@
 }
 
 ::ng-deep .p-menubar-item-content:hover {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-05) !important;
 }
 
 ::ng-deep .p-menubar-item-content {

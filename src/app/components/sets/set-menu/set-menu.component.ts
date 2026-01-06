@@ -164,7 +164,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
     this.menuItems = [
       {
-        label: 'Edytuj zestawienie',
+        label: 'Edytuj nagłowek zestawienia',
         icon: 'pi pi-file-edit',
         command: () => this.editHeader(),
       },
