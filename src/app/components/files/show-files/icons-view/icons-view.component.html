@@ -29,7 +29,7 @@
 <div class="directory-wrapper" *ngFor="let dir of uniqueDir">
   <h3>
     <i class="pi pi-folder-open"></i>
-    /{{ dir }}
+    {{ dir }}
   </h3>
   <ul class="file-container">
     <li class="file-item" *ngFor="let file of filesFilteredByDir(dir)">

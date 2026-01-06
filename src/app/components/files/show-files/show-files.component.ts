@@ -61,7 +61,7 @@ export class ShowFilesComponent implements OnInit {
   files: IFileFullDetails[] = [];
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
-  defaultView = 'list';
+  defaultView = 'icons';
   uniqueDir: string[] = [];
 
   ngOnInit(): void {

@@ -3,21 +3,30 @@ import { IFileDirectory } from './types/IFileDirectory';
 
 export const FileDirectoryList: IFileDirectory[] = [
   {
-    label: EFileDirectoryList['model3d'],
+    label: EFileDirectoryList['inspirations'],
+    icon: 'pi pi-user',
+    title: 'Katalog klienta',
   },
   {
     label: EFileDirectoryList['moodboard'],
   },
   {
-    label: EFileDirectoryList['inspirations'],
-    icon: 'pi pi-user',
-    title: 'Katalog klienta',
+    label: EFileDirectoryList['functionalLayout'],
+  },
+  {
+    label: EFileDirectoryList['model3d'],
   },
   {
     label: EFileDirectoryList['drawings'],
   },
   {
     label: EFileDirectoryList['visualizations'],
+  },
+  {
+    label: EFileDirectoryList['setPdf'],
+  },
+  {
+    label: EFileDirectoryList['invoice'],
   },
   {
     label: EFileDirectoryList['working'],
