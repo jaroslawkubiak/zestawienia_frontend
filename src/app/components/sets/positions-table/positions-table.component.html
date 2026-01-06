@@ -146,6 +146,15 @@
                 (keydown.enter)="$event.stopPropagation()"
                 (blur)="applyAction($event, i, column)"
               ></textarea>
+              <!-- EDIT MODE -> type = link  -->
+              <textarea
+                *ngSwitchCase="'link'"
+                pTextarea
+                [(ngModel)]="position[column.key]"
+                (focus)="selectAll($event)"
+                (keydown.enter)="$event.stopPropagation()"
+                (blur)="applyAction($event, i, column)"
+              ></textarea>
             </ng-container>
             <!-- if field read only, when edited show view-mode -->
             <ng-container *ngIf="column.readOnly">
@@ -165,6 +174,7 @@
               <div *ngSwitchCase="'number'">
                 {{ position[column.key] | number : "1.2-2" }}
               </div>
+              <!-- VIEW MODE -> type = select  -->
               <div *ngSwitchCase="'select'">
                 {{ column.optionLabel ? position[column.key]?.[column.optionLabel] : position[column.key] }}
               </div>
@@ -189,8 +199,24 @@
                 {{ position[column.key] }}
               </div>
               <!-- VIEW MODE -> type = textarea  -->
-              <!-- prettier-ignore -->
-              <div *ngSwitchCase="'textarea'" class="view-mode-textarea" style="white-space: pre-wrap">{{ position[column.key] }}</div>
+              <div
+                *ngSwitchCase="'textarea'"
+                class="view-mode-textarea"
+                style="white-space: pre-wrap"
+              >
+                {{ position[column.key] }}
+              </div>
+              <!-- VIEW MODE -> type = link  -->
+              <a
+                *ngSwitchCase="'link'"
+                class="view-mode-link"
+                [href]="position[column.key]"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="white-space: pre-wrap"
+              >
+                {{ position[column.key] }}
+              </a>
             </span>
           </ng-template>
         </p-cellEditor>

@@ -107,6 +107,15 @@ th {
   text-align: center;
 }
 
+.view-mode-link {
+  text-align: center;
+  cursor: pointer;
+}
+
+.view-mode-link:hover {
+  color: var(--burgund-color-15);
+}
+
 .show-image-wrapper {
   position: absolute;
   top: 0;
