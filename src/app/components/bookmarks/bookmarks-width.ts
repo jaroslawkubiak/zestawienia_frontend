@@ -62,6 +62,10 @@ export const bookarksDefaultWidth: IBookmarkWidth[] = [
     width: 300,
   },
   {
+    name: 'UWAGI',
+    width: 300,
+  },
+  {
     name: 'ZDJĘCIE',
     width: 200,
   },

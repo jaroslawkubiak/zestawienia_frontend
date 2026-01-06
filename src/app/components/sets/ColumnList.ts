@@ -30,39 +30,29 @@ export const ColumnList: IColumnList[] = [
     pdfWidth: 50,
   },
   {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-    pdfWidth: 50,
-  },
-  {
     name: 'PRODUCENT',
     key: 'producent',
-    type: 'string',
+    type: 'textarea',
     pdfWidth: 50,
   },
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
-    type: 'string',
+    type: 'textarea',
     pdfWidth: 95,
   },
   {
     name: 'NR KATALOGOWY',
     key: 'nrKatalogowy',
-    type: 'string',
+    type: 'textarea',
     pdfWidth: 90,
   },
   {
     name: 'KOLOR',
     key: 'kolor',
-    type: 'string',
+    type: 'textarea',
     pdfWidth: 50,
   },
-
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
@@ -98,12 +88,6 @@ export const ColumnList: IColumnList[] = [
     pdfWidth: 40,
   },
   {
-    name: 'POMIESZCZENIE',
-    key: 'pomieszczenie',
-    type: 'string',
-    pdfWidth: 80,
-  },
-  {
     name: 'DOSTAWCA',
     key: 'supplierId',
     type: 'select',
@@ -112,11 +96,31 @@ export const ColumnList: IColumnList[] = [
     optionLabel: 'company',
     pdfWidth: 50,
   },
-
+  {
+    name: 'POMIESZCZENIE',
+    key: 'pomieszczenie',
+    type: 'textarea',
+    pdfWidth: 80,
+  },
   {
     name: 'LINK',
     key: 'link',
-    type: 'string',
+    type: 'link',
     pdfWidth: 30,
+  },
+  {
+    name: 'STATUS',
+    key: 'status',
+    type: 'select',
+    classColumn: 'select-field',
+    optionList: 'positionStatus',
+    optionLabel: 'label',
+    pdfWidth: 50,
+  },
+  {
+    name: 'UWAGI',
+    key: 'uwagi',
+    type: 'textarea',
+    pdfWidth: 80,
   },
 ];

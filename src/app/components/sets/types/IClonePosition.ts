@@ -16,6 +16,7 @@ export interface IClonePosition {
   kolejnosc: number;
   pomieszczenie: string;
   link: string;
+  uwagi: string;
   status: IPositionStatus | string;
   setId: ISet;
   supplierId: ISupplier;
