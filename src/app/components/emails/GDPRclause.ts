@@ -1,0 +1,6 @@
+export const GDPRClause = `Zgodnie z art. 6 ust. 1 lit. f RODO informujemy, iż Pani/Pana dane osobowe, przekazane nam za pośrednictwem naszej strony internetowej/formularza kontaktowego lub w inny sposób (przekazanie wizytówki, przesłanie poczty elektronicznej, kontakt telefoniczny), są gromadzone, przetwarzane i przechowywane w celu prowadzenia korespondencji z Państwem i w celu, dla którego zostały nam udostępnione. 
+Dane osobowe mogą być ujawnione pracownikom lub współpracownikom żurawicki.design, jak też podmiotom udzielającym wsparcia żurawicki.design na zasadzie zleconych usług i zgodnie z zawartymi umowami powierzenia. Informujemy ponadto, że Pani/Pana dane osobowe nie będą przetwarzane w sposób zautomatyzowany i nie będą profilowane.
+Posiada Pani/Pan prawo dostępu do treści swoich danych, prawo ich sprostowania, usunięcia, ograniczenia przetwarzania, prawo do przenoszenia danych lub do wniesienia sprzeciwu wobec ich przetwarzania. Osoba, której dane dotyczą, ma prawo wniesienia skargi do PUODO, gdy uzna, iż przetwarzanie jej danych osobowych narusza przepisy RODO.
+Podanie danych jest dobrowolne, ale niezbędne do realizacji powyższych celów. Pani/Pana dane będą przetwarzane do czasu ustania celu dla jakiego zostały zgromadzone.
+Administrator Danych Osobowych: Jakub Żurawicki ul. Czerkaska 10/7, 85-641 Bydgoszcz
+`;

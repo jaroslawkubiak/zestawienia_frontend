@@ -23,8 +23,9 @@ import { ISetting } from '../../settings/ISetting';
 import { SettingsService } from '../../settings/settings.service';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { EmailsService } from '../email.service';
-import { createHTMLHeader, HTMLClient, HTMLSupplier } from '../email.template';
+import { createHTMLHeader, EmailDetails, HTMLDetails } from '../email.template';
 import { IEmailDetails } from '../types/IEmailDetails';
+import { EmailType } from '../types/email.type';
 
 @Component({
   selector: 'app-email-send',
@@ -41,13 +42,15 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() getEmailsList = new EventEmitter<any>();
   @Output() hideEmailDialog = new EventEmitter<any>();
 
-  fromEmail = '';
-  rawHTML = '';
-  title = '';
-  emailMessage = '';
-
   private messageInput$ = new Subject<string>();
   private subscription!: Subscription;
+
+  emailTemplate!: EmailDetails<EmailType>;
+
+  senderEmail: string = '';
+  rawHTML = '';
+  title: string = '';
+  emailMessage = '';
 
   newEmail: IEmailDetails = {
     to: '',
@@ -68,34 +71,49 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     this.settingsService.getByType('senderEmail').subscribe({
       next: (response: ISetting) => {
         if (response) {
-          this.fromEmail = response.value;
+          this.senderEmail = response.value;
           this.cd.markForCheck();
         }
       },
     });
 
     if (this.supplier) {
+      const template = HTMLDetails.supplierOffer;
+
+      // option 1 - default supplierOffer
+      this.emailMessage = template.message({});
+
+      // option 2 - supplierOrder
+      // this.emailMessage = template.message({
+      //   client: {
+      //     firstName: this.set.clientId.firstName,
+      //     lastName: this.set.clientId.lastName,
+      //     company: this.set.clientId.company,
+      //   },
+      // });
+
+      this.title = template.subject;
+      this.newEmail.subject = template.subject;
+
       this.newEmail.to = this.supplier.email;
-      this.newEmail.subject = `Zamówienie do inwestycji ${this.set.name}`;
       this.newEmail.link = this.emailsService.createExternalLink(
         'supplier',
         this.set.hash,
         this.supplier.hash
       );
-
-      this.emailMessage = HTMLSupplier.message;
-      this.title = HTMLSupplier.title;
     } else {
+      const template = HTMLDetails.client;
+
+      this.emailMessage = template.message({});
+      this.title = template.subject;
+      this.newEmail.subject = `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
+
       this.newEmail.to = this.set.clientId.email;
-      this.newEmail.subject = `Inwestycja ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
       this.newEmail.link = this.emailsService.createExternalLink(
-        'supplier',
+        'client',
         this.set.hash,
         this.set.clientId.hash
       );
-
-      this.emailMessage = HTMLClient.message;
-      this.title = HTMLClient.title;
     }
 
     this.subscription = this.messageInput$
@@ -123,7 +141,6 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loadPreview() {
     const formattedMessage = this.emailMessage.replace(/\n/g, '<br />');
-
     this.rawHTML = createHTMLHeader({
       title: this.title,
       message: formattedMessage,

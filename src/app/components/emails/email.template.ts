@@ -1,17 +1,49 @@
+import { GDPRClause } from './GDPRclause';
+import { EmailContextMap } from './types/email-template.types';
+import { EmailType } from './types/email.type';
 import { IHTMLTemplateOptions } from './types/IHTMLTemplateOptions';
+
 const ASSETS_URL = 'https://zurawickidesign.pl/assets/images';
+const currentYear = new Date().getFullYear();
+const socialColor = 'accent'; // black or accent
 
-export const HTMLClient = {
-  title: 'Inwestycja',
-  message: 'Przesyłamy link do inwestycji',
-};
+export interface EmailDetails<T extends EmailType> {
+  type: T;
+  subject: string;
+  message: (context: EmailContextMap[T]) => string;
+}
 
-export const HTMLSupplier = {
-  title: 'Zamówienie',
-  message: 'Zamawiamy to co tam w tym linku',
+export const HTMLDetails: {
+  [K in EmailType]: EmailDetails<K>;
+} = {
+  client: {
+    type: 'client',
+    subject: 'Inwestycja',
+    message: () => 'Przesyłamy link do inwestycji',
+  },
+
+  supplierOffer: {
+    type: 'supplierOffer',
+    subject: 'Oferta',
+    message: () => 'Prosimy o przygotowanie oferty, poniżej załączamy link do zestawienia',
+  },
+
+  supplierOrder: {
+    type: 'supplierOrder',
+    subject: 'Zamówienie',
+    message: ({ client }) => `
+Proszę o realizację zamówienia zgodnie z przesłanym zestawieniem.
+Prosimy o wystawienie proformy na poniższe dane:
+Dane klienta:
+${client.firstName} ${client.lastName}
+${client.company}
+`,
+  },
 };
 
 export function createHTMLHeader(options: IHTMLTemplateOptions): string {
+  console.log(`######## options #########`);
+  console.log(options);
   return `
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +58,7 @@ export function createHTMLHeader(options: IHTMLTemplateOptions): string {
     <table align="center" width="700" cellspacing="0" cellpadding="0" border="0" style="margin:20px auto; max-width:700px;">
 
       <!-- LOGO -->
-      <tr style="margin: 30px 0; width: 700px; text-align: right">
+      <tr style="margin: 30px 0; width: 700px; text-align: left">
         <td style="width: 300px">
           <img
             src="${ASSETS_URL}/logo-black.png"
@@ -38,89 +70,89 @@ export function createHTMLHeader(options: IHTMLTemplateOptions): string {
 
       <!-- TITLE -->
       <tr>
-        <td style="padding:10px 0; text-align:center;">
+        <td style="padding:30px 0; text-align:center;">
           <h2 style="margin:0; font-size:24px; font-weight:bold;">${options.title}</h2>
         </td>
       </tr>
 
       <!-- MESSAGE -->
       <tr>
-        <td style="padding:20px; line-height:1.6;">
+        <td style="line-height:1.6;">
           <p>Dzień dobry.</p>
           <p>${options.message}</p>
           <p style="margin-top:20px;">
             <a href="${options.link}" target="_blank" style="color:#3bbfa1; text-decoration:none; font-weight:bold;">
-              ${options.title}
+              Zestawienie
             </a>
           </p>
         </td>
       </tr>
       <!-- FOOTER MESSAGE + SOCIALS -->
       <tr>
-        <td style="padding:20px;">
-          <table width="100%" cellspacing="0" cellpadding="0">
+        <td>
+          <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding:10px 0;">
             <tr>
-              <!-- LEFT SIDE -->
-              <td valign="top" style="width:50%; padding-right:10px;">
-                <p style="margin:0 0 8px 0;">Pozdrawiamy,</p>
-                <p style="margin:0 0 8px 0;">Zespół Żurawicki Design</p>
-                <p style="margin:0 0 8px 0;">Jakub Żurawicki & Joanna Kubiak</p>
-              </td>
-              <!-- RIGHT SIDE (SOCIAL ICONS) -->
-              <td valign="bottom" style="width:50%; text-align:right;">
-
-                <table cellspacing="0" cellpadding="0" border="0" style="display:inline-block;">
-                  <tr>
-
-                    <!-- IG -->
-                    <td style="padding-left:20px;">
-                      <a href="https://www.instagram.com/zurawicki.design/" target="_blank">
-                        <img 
-                        alt="Instagram" 
-                        title="Instagram" 
-                        src="${ASSETS_URL}/social-accent/ig.png"
-                        width="32"
-                        height="32"
-                        >
-                      </a>
-                    </td>
-
-                    <!-- FB -->
-                    <td style="padding-left:20px;">
-                      <a href="https://www.facebook.com/zurawicki.design/?locale=pl_PL" target="_blank">
-                        <img 
-                        alt="Facebook" 
-                        title="Facebook" 
-                        src="${ASSETS_URL}/social-accent/fb.png"
-                        width="32"
-                        height="32">
-                      </a>
-                    </td>
-
-                    <!-- WWW -->
-                    <td style="padding-left:20px;">
-                      <a href="https://zurawickidesign.pl/" target="_blank">
-                      <img
-                        alt="Website"
-                        title="Website"
-                        src="${ASSETS_URL}/social-accent/www.png"
-                        width="32"
-                        height="32"
-                      />
-                      </a>
-                    </td>
-                  </tr>
-                </table>
+              <td valign="top">
+                <p style="margin:0 0 10px 0;">Pozdrawiamy,</p>
+                <p style="margin:0 0 10px 0;">Zespół Żurawicki Design</p>
+                <p style="margin:0 0 20px 0;">Jakub Żurawicki, Joanna Kubiak</p>
+                <p style="margin:0 0 10px 0;">ul. Czerkaska 10/7, 85-641 Bydgoszcz</p>
+                <p style="margin:0 0 20px 0;">E-mail: kontakt@zurawickidesign.pl</p>
               </td>
             </tr>
           </table>
+          <table cellspacing="0" cellpadding="0" border="0" style="display:inline-block;">
+            <tr>
+              <!-- IG -->
+              <td>
+                <a href="https://www.instagram.com/zurawicki.design/" target="_blank">
+                  <img 
+                  alt="Instagram" 
+                  title="Instagram" 
+                  src="${ASSETS_URL}/social-${socialColor}/ig.png"
+                  width="32"
+                  height="32"
+                  >
+                </a>
+              </td>
+              <!-- FB -->
+              <td style="padding-left:20px;">
+                <a href="https://www.facebook.com/zurawicki.design/?locale=pl_PL" target="_blank">
+                  <img 
+                  alt="Facebook" 
+                  title="Facebook" 
+                  src="${ASSETS_URL}/social-${socialColor}/fb.png"
+                  width="32"
+                  height="32">
+                </a>
+              </td>
+              <!-- WWW -->
+              <td style="padding-left:20px;">
+                <a href="https://zurawickidesign.pl/" target="_blank">
+                <img
+                  alt="Website"
+                  title="Website"
+                  src="${ASSETS_URL}/social-${socialColor}/www.png"
+                  width="32"
+                  height="32"
+                />
+                </a>
+              </td>
+            </tr>
+          </table>          
         </td>
       </tr>
-
       <!-- COPYRIGHT -->
       <tr>
-        <td style="padding:30px 0; text-align:center;">
-          <p style="margin:0; font-size:14px;">&copy; 2025 Żurawicki Design</p>
+        <td style="padding:20px 0; text-align:center;">
+          <p style="font-size:14px;">&copy; ${currentYear} Żurawicki Design</p>
+        </td>
+      </tr>
+      </tr>
+      <!-- GDPRClause -->
+      <tr>
+        <td style="padding:10px 0; text-align:left;">
+          <p style="font-size:10px;">${GDPRClause}</p>
         </td>
       </tr>
 
