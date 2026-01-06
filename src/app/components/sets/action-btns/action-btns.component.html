@@ -1,4 +1,28 @@
 <div class="position-actions">
+  <p-button
+    severity="primary"
+    icon="pi pi-plus"
+    class="m-4"
+    alt="Nowa pusta pozycja"
+    pTooltip="Nowa pusta pozycja"
+    (click)="triggerAddEmptyPosition()"
+  />
+  <p-button
+    severity="warn"
+    icon="pi pi-clone"
+    class="m-4"
+    alt="Klonuj pozycję"
+    pTooltip="Klonuj pozycję"
+    (click)="triggerClonePosition()"
+  />
+  <p-button
+    severity="danger"
+    class="m-4"
+    icon="pi pi-trash"
+    alt="Usuń pozycję"
+    pTooltip="Usuń pozycję"
+    (click)="triggerDeletePosition()"
+  />
   <div class="btn-comments-wrapper">
     <p-button
       icon="pi pi-comments"
@@ -26,28 +50,4 @@
       "
     ></p-badge>
   </div>
-  <p-button
-    severity="primary"
-    icon="pi pi-plus"
-    class="m-4"
-    alt="Nowa pusta pozycja"
-    pTooltip="Nowa pusta pozycja"
-    (click)="triggerAddEmptyPosition()"
-  />
-  <p-button
-    severity="warn"
-    icon="pi pi-clone"
-    class="m-4"
-    alt="Klonuj pozycję"
-    pTooltip="Klonuj pozycję"
-    (click)="triggerClonePosition()"
-  />
-  <p-button
-    severity="danger"
-    class="m-4"
-    icon="pi pi-trash"
-    alt="Usuń pozycję"
-    pTooltip="Usuń pozycję"
-    (click)="triggerDeletePosition()"
-  />
 </div>
