@@ -41,7 +41,18 @@
       <div class="set-header-value">{{ set.updatedAt }}</div>
     </div>
   </div>
-  <p-tabs [value]="selectedBookmark" scrollable>
+  <p-tabs [value]="selectedBookmark" scrollable class="bookmarks">
+    <div class="save-btn">
+      @if(setIsDirty) {
+      <p-button
+        label="Zapisz"
+        icon="pi pi-save"
+        size="large"
+        styleClass="btn-xl"
+        (click)="onSubmit()"
+      />
+      }
+    </div>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
       <p-tab
@@ -80,15 +91,4 @@
       }
     </p-tabpanels>
   </p-tabs>
-  <div class="m-10 flex-center">
-    @if(setIsDirty) {
-    <p-button
-      label="Zapisz"
-      icon="pi pi-save"
-      size="large"
-      styleClass="btn-xl"
-      (click)="onSubmit()"
-    />
-    }
-  </div>
 </div>
