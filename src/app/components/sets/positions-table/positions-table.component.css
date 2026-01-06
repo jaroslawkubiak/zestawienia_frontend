@@ -103,6 +103,10 @@ th {
   cursor: pointer;
 }
 
+.view-mode-textarea {
+  text-align: center;
+}
+
 .show-image-wrapper {
   position: absolute;
   top: 0;
