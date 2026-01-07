@@ -33,8 +33,8 @@
   --btn-contrast-bg-hover: #061141;
   --btn-contrast-text: #ecf1f0;
 
-  --btn-success-bg: #4caf50;
-  --btn-success-bg-hover: #4caf50;
+  --btn-success-bg: #b2b2b2;
+  --btn-success-bg-hover: #868686;
   --btn-success-text: #ecf1f0;
 
   --p-button-primary-background: var(--btn-primary-bg) !important;

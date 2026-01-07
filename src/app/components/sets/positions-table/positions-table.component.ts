@@ -43,6 +43,7 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-positions-table',
@@ -60,6 +61,7 @@ import { SetStatus } from '../types/set-status.enum';
     TextareaModule,
     CommentsComponent,
     ImageGalleryComponent,
+    TooltipModule,
   ],
   standalone: true,
   templateUrl: './positions-table.component.html',
