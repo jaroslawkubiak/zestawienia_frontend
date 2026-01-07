@@ -1,10 +1,9 @@
-export interface IEmailDetails {
-  to: string;
+import { EmailContextMap } from "./IEmailContextMap";
+import { EmailAudience } from "./EmailAudience.type";
+
+export interface EmailDetails<TAudience extends EmailAudience> {
+  audience: TAudience;
+  name: string;
   subject: string;
-  content: string;
-  setId?: number;
-  clientId?: number;
-  supplierId?: number;
-  userId?: number;
-  link: string;
+  message: (context: EmailContextMap[TAudience]) => string;
 }

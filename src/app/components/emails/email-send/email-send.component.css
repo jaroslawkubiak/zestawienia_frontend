@@ -104,3 +104,8 @@ textarea {
   height: 600px;
   border: none;
 }
+
+.email-template-wrapper {
+  border: 2px solid red;
+  height: 50px;
+}

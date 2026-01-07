@@ -15,7 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { EmailsService } from './email.service';
-import { IEmailsList } from './types/IEmailsList';
+import { ISendedEmailList } from './types/ISendedEmailList';
 
 @Component({
   selector: 'app-emails',
@@ -42,8 +42,8 @@ export class EmailsComponent {
   isLoading = true;
   emailDialog: boolean = false;
   emailDialogHeader: string = '';
-  emails!: IEmailsList[];
-  email!: IEmailsList;
+  emails!: ISendedEmailList[];
+  email!: ISendedEmailList;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   constructor(

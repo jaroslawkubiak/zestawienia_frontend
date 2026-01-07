@@ -1,50 +1,12 @@
 import { GDPRClause } from './GDPRclause';
-import { EmailContextMap } from './types/email-template.types';
-import { EmailType } from './types/email.type';
 import { IHTMLTemplateOptions } from './types/IHTMLTemplateOptions';
 
 const ASSETS_URL = 'https://zurawickidesign.pl/assets/images';
 const currentYear = new Date().getFullYear();
 const socialColor = 'accent'; // black or accent
 
-export interface EmailDetails<T extends EmailType> {
-  type: T;
-  subject: string;
-  message: (context: EmailContextMap[T]) => string;
-}
-
-export const HTMLDetails: {
-  [K in EmailType]: EmailDetails<K>;
-} = {
-  client: {
-    type: 'client',
-    subject: 'Inwestycja',
-    message: () => 'Przesyłamy link do inwestycji',
-  },
-
-  supplierOffer: {
-    type: 'supplierOffer',
-    subject: 'Oferta',
-    message: () => 'Prosimy o przygotowanie oferty, poniżej załączamy link do zestawienia',
-  },
-
-  supplierOrder: {
-    type: 'supplierOrder',
-    subject: 'Zamówienie',
-    message: ({ client }) => `
-Proszę o realizację zamówienia zgodnie z przesłanym zestawieniem.
-Prosimy o wystawienie proformy na poniższe dane:
-Dane klienta:
-${client.firstName} ${client.lastName}
-${client.company}
-`,
-  },
-};
-
-export function createHTMLHeader(options: IHTMLTemplateOptions): string {
-  console.log(`######## options #########`);
-  console.log(options);
-  return `
+export function createHTMLEmail(options: IHTMLTemplateOptions): string {
+return `
 <!DOCTYPE html>
 <html lang="en">
   <head>

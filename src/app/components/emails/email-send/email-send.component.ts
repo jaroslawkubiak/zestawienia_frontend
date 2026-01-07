@@ -13,6 +13,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
 import { debounceTime, Subject, Subscription } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
@@ -22,14 +23,14 @@ import { ISet } from '../../sets/types/ISet';
 import { ISetting } from '../../settings/ISetting';
 import { SettingsService } from '../../settings/settings.service';
 import { ISupplier } from '../../suppliers/ISupplier';
+import { createHTMLEmail } from '../createHTMLEmail';
 import { EmailsService } from '../email.service';
-import { createHTMLHeader, EmailDetails, HTMLDetails } from '../email.template';
-import { IEmailDetails } from '../types/IEmailDetails';
-import { EmailType } from '../types/email.type';
+import { HTMLDetails } from '../htmlDetails';
+import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
 
 @Component({
   selector: 'app-email-send',
-  imports: [CommonModule, FormsModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TooltipModule, SelectModule],
   templateUrl: './email-send.component.html',
   styleUrl: './email-send.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,14 +46,12 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
   private messageInput$ = new Subject<string>();
   private subscription!: Subscription;
 
-  emailTemplate!: EmailDetails<EmailType>;
-
-  senderEmail: string = '';
+  senderEmail = '';
   rawHTML = '';
-  title: string = '';
+  title = '';
   emailMessage = '';
 
-  newEmail: IEmailDetails = {
+  newEmail: IEmailDetailsToDB = {
     to: '',
     subject: '',
     content: '',
@@ -77,20 +76,20 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
 
+    // SUPPLIER EMAIL
     if (this.supplier) {
-      const template = HTMLDetails.supplierOffer;
+      // const template = HTMLDetails.supplier.supplierOffer;
+      // this.emailMessage = template.message();
 
-      // option 1 - default supplierOffer
-      this.emailMessage = template.message({});
-
-      // option 2 - supplierOrder
-      // this.emailMessage = template.message({
-      //   client: {
-      //     firstName: this.set.clientId.firstName,
-      //     lastName: this.set.clientId.lastName,
-      //     company: this.set.clientId.company,
-      //   },
-      // });
+      // druga wersja
+      const template = HTMLDetails.supplier.supplierOrder;
+      this.emailMessage = template.message({
+        client: {
+          firstName: this.set.clientId.firstName,
+          lastName: this.set.clientId.lastName,
+          company: this.set.clientId.company,
+        },
+      });
 
       this.title = template.subject;
       this.newEmail.subject = template.subject;
@@ -102,9 +101,10 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
         this.supplier.hash
       );
     } else {
-      const template = HTMLDetails.client;
+      // CLIENT EMAIL
+      const template = HTMLDetails.client.welcomeEmail;
 
-      this.emailMessage = template.message({});
+      this.emailMessage = template.message();
       this.title = template.subject;
       this.newEmail.subject = `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
 
@@ -141,7 +141,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
 
   loadPreview() {
     const formattedMessage = this.emailMessage.replace(/\n/g, '<br />');
-    this.rawHTML = createHTMLHeader({
+    this.rawHTML = createHTMLEmail({
       title: this.title,
       message: formattedMessage,
       link: this.newEmail.link,

@@ -1,4 +1,4 @@
-export interface IEmailsList {
+export interface ISendedEmailList {
   id: number;
   to: string;
   link: string;
