@@ -1,5 +1,6 @@
 .container {
   width: 100% !important;
+  border: 2px solid red;
 }
 
 .header-background {
@@ -15,6 +16,7 @@
   align-items: end;
   padding: 20px 0;
   min-width: var(--screen-width);
+  border: 2px solid green;
 }
 
 .set-content {

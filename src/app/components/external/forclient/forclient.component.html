@@ -5,7 +5,7 @@
   <div class="header-background">
     <div class="header">
       <div>
-        <h3>Witamy w inwestycji</h3>
+        <h3>Witamy w zestawieniu do inwestycji</h3>
         <h1>{{ set.name }}</h1>
       </div>
       <div class="header-actions-btn">
@@ -73,23 +73,11 @@
                         (click)="showComments(pos.id)"
                       ></i>
                       <p-badge
-                        [value]="
-                          getRowNewComments(pos.id) || getRowAllComments(pos.id)
-                        "
-                        [severity]="
-                          getRowNewComments(pos.id)
-                            ? 'danger'
-                            : getRowAllComments(pos.id)
-                            ? 'contrast'
-                            : 'secondary'
-                        "
+                        [value]="pos.commentsBadge.value"
+                        [severity]="pos.commentsBadge.severity"
+                        [pTooltip]="pos.commentsBadge.tooltip"
                         class="nr-comments"
                         badgeSize="large"
-                        [pTooltip]="
-                          getRowNewComments(pos.id)
-                            ? 'Ilość nowych komentarzy'
-                            : 'Ilość komentarzy'
-                        "
                       ></p-badge>
                     </div>
                     <div

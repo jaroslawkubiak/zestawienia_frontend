@@ -13,9 +13,11 @@ import {
 } from '../../../shared/helpers/calculate';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
+import { ICommentsBadge } from '../../comments/types/ICommentBadge';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
+import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { LegendComponent } from '../../sets/legend/legend.component';
@@ -23,6 +25,7 @@ import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { IPosition } from '../../sets/types/IPosition';
 import { IPositionStatus } from '../../sets/types/IPositionStatus';
+import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
 
 @Component({
@@ -48,19 +51,19 @@ export class ForClientComponent implements OnInit {
   clientHash: string | null = null;
   set!: ISet;
   positions: IPosition[] = [];
+  positionsWithBadge: IPositionWithBadge[] = [];
+  positionsFromBookmark: IPositionWithBadge[] = [];
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
-  selectedBookmark: number = 0;
-  positionsFromBookmark: IPosition[] = [];
+  selectedBookmark = 0;
   showCommentsDialog = false;
   header = '';
   comments: IComment[] = [];
   positionId!: number;
-  @ViewChild(ShowFilesComponent, { static: false })
-  dialogShowFilesComponent!: ShowFilesComponent;
-  @ViewChild(SendFilesComponent, { static: false })
-  dialogSendFilesComponent!: SendFilesComponent;
+
+  @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
+  @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -95,110 +98,126 @@ export class ForClientComponent implements OnInit {
             this.router.navigate(['/notfound']);
           }
         },
-        error: () => {
-          this.router.navigate(['/notfound']);
-        },
+        error: () => this.router.navigate(['/notfound']),
       });
   }
 
   loadData() {
-    if (this.setId === null) {
-      this.router.navigate(['/notfound']);
-      return;
-    }
+    if (this.setId === null) return;
 
     forkJoin({
       set: this.editSetService.getSet(this.setId),
       positions: this.editSetService.getPositions(this.setId),
     }).subscribe(({ set, positions }) => {
       this.set = set;
-      this.comments = this.set?.comments ?? [];
-      this.positions = positions.map((item) => {
-        const statusObj: IPositionStatus =
-          PositionStatusList.filter(
-            (statusItem) => item.status === statusItem.label
-          )[0] || PositionStatusList[0];
+      this.comments = set.comments ?? [];
 
-        let imageUrl = '';
-        if (item.image) {
-          imageUrl = [
-            this.FILES_URL,
-            'sets',
-            this.setId,
-            this.set.hash,
-            'positions',
-            item.id,
-            item.image,
-          ].join('/');
-        }
-        const brutto = calculateBrutto(item.netto);
+      this.positions = positions.map((pos) => {
+        const statusObj: IPositionStatus =
+          PositionStatusList.find(
+            (statusItem) => pos.status === statusItem.label
+          ) || PositionStatusList[0];
+
+        const brutto = calculateBrutto(pos.netto);
 
         return {
-          ...item,
-          status: statusObj ? statusObj : item.status,
+          ...pos,
+          status: statusObj,
           brutto,
-          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-          imageUrl,
+          wartoscNetto: calculateWartosc(pos.ilosc, pos.netto),
+          wartoscBrutto: calculateWartosc(pos.ilosc, brutto),
+          imageUrl: pos.image
+            ? [
+                this.FILES_URL,
+                'sets',
+                this.setId,
+                this.set.hash,
+                'positions',
+                pos.id,
+                pos.image,
+              ].join('/')
+            : '',
         };
       });
 
-      // mark first (lowest id) bookmark as selected
+      this.assignCommentsToPosition();
+
       this.selectedBookmark = this.set.bookmarks[0].id;
       this.loadContentForBookmark(this.selectedBookmark);
 
-      this.files = (this.set?.files || []).filter(
-        (item) => item.dir !== 'robocze'
+      this.files = (this.set.files || []).filter(
+        (item) => item.dir !== EFileDirectoryList.working
       );
-      this.sortByBookmarkAndOrder(this.positions);
 
       this.uniquePositionIds = [
-        ...new Set(this.comments.map((comment) => comment.positionId?.id)),
+        ...new Set(this.comments.map((c) => c.positionId?.id)),
       ];
-
-      this.assignCommentsToPosition();
     });
   }
 
-  // load positions for a given bookmarkID
+  assignCommentsToPosition() {
+    const map = this.comments.reduce((acc, comment) => {
+      const id = comment.positionId?.id;
+      if (!acc[id]) acc[id] = [];
+      acc[id].push(comment);
+      return acc;
+    }, {} as Record<number, IComment[]>);
+
+    this.positionsWithBadge = this.positions.map((position) => {
+      const relatedComments = map[position.id] || [];
+      const newComments = this.countNewComments(relatedComments);
+
+      return {
+        ...position,
+        comments: relatedComments,
+        newComments,
+        commentsBadge: this.buildCommentsBadge({
+          ...position,
+          comments: relatedComments,
+          newComments,
+        }),
+      };
+    });
+  }
+
   loadContentForBookmark(bookmarkId: number) {
     this.selectedBookmark = bookmarkId;
 
-    this.positionsFromBookmark = [];
-    this.positionsFromBookmark = this.positions
-      .filter((item) => item.bookmarkId?.id === this.selectedBookmark)
+    this.positionsFromBookmark = this.positionsWithBadge
+      .filter((p) => p.bookmarkId?.id === bookmarkId)
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
-      .map((item: IPosition, index: number) => {
-        return {
-          ...item,
-          kolejnosc: index + 1,
-          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
-        };
-      });
+      .map((p, index) => ({
+        ...p,
+        kolejnosc: index + 1,
+      }));
 
     this.cd.detectChanges();
   }
-  // sort position by bookmark id
-  sortByBookmarkAndOrder(data: IPosition[]) {
-    return data.sort((a, b) => {
-      if (a.bookmarkId.id !== b.bookmarkId.id) {
-        return a.bookmarkId.id - b.bookmarkId.id;
-      }
-      return a.kolejnosc - b.kolejnosc;
-    });
+
+  private buildCommentsBadge(pos: IPosition): ICommentsBadge {
+    const newCount = pos.newComments ?? 0;
+    const allCount = pos.comments?.length ?? 0;
+
+    return {
+      value: newCount || allCount,
+      severity: newCount ? 'danger' : allCount ? 'contrast' : 'secondary',
+      tooltip: newCount ? 'Ilość nowych komentarzy' : 'Ilość komentarzy',
+    };
   }
 
-  // check date in pdf file name to download latest pdf file
-  extractDateFromFilename(filename: string): Date {
-    const match = filename.match(/(\d{2}-\d{2}-\d{4}-\d{2}-\d{2}-\d{2})/);
-    if (!match)
-      throw new Error(`Nie znaleziono daty w nazwie pliku: ${filename}`);
+  private countNewComments(comments: IComment[]): number {
+    return comments.filter((c) => c.authorType === 'user' && !c.readByReceiver)
+      .length;
+  }
 
-    const [day, month, year, hour, minute, second] = match[1]
-      .split('-')
-      .map(Number);
-    return new Date(year, month - 1, day, hour, minute, second);
+  showComments(positionId: number) {
+    const position = this.positionsWithBadge.find((p) => p.id === positionId);
+    if (!position) return;
+
+    this.comments = position.comments ?? [];
+    this.positionId = position.id;
+    this.header = `Pozycja ${position.kolejnosc}`;
+    this.showCommentsDialog = true;
   }
 
   showAttachedFiles() {
@@ -210,78 +229,24 @@ export class ForClientComponent implements OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
-  assignCommentsToPosition() {
-    const positionCommentsMap = this.comments.reduce((map, comment) => {
-      const positionId = comment.positionId?.id;
-      if (!map[positionId]) {
-        map[positionId] = [];
-      }
-      map[positionId].push(comment);
-      return map;
-    }, {} as Record<number, IComment[]>);
-
-    this.positions = this.positions.map((position) => {
-      const relatedComments = positionCommentsMap[position.id] || [];
-      return {
-        ...position,
-        comments: relatedComments,
-        newComments: this.countNewComments(relatedComments),
-      };
-    });
-  }
-
-  private countNewComments(comments: IComment[]): number {
-    return comments.filter(
-      (item) => item.authorType === 'user' && !item.readByReceiver
-    ).length;
-  }
-
-  getRowNewComments(positionId: number): number {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    return position?.newComments || 0;
-  }
-
-  getRowAllComments(positionId: number): number {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    return position?.comments?.length || 0;
-  }
-
-  // show comment dialog
-  showComments(positionId: number) {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    if (position?.comments) {
-      this.comments = position.comments;
-      this.positionId = position.id;
-      this.header = `Pozycja ${position.kolejnosc} ${
-        position.produkt ? ' : ' + position.produkt : ''
-      }`;
-      this.showCommentsDialog = true;
-    }
-  }
-
-  // update new comments when changing status
   onUpdateComments(updatedData: IPositionWithComments) {
-    this.positions = this.positions.map((item) => {
-      if (item.id === updatedData.positionId) {
-        return {
-          ...item,
-          comments: updatedData.comments,
-          newComments: this.countNewComments(updatedData.comments),
-        };
-      }
-      return item;
-    });
+    this.positionsWithBadge = this.positionsWithBadge.map((item) =>
+      item.id === updatedData.positionId
+        ? {
+            ...item,
+            comments: updatedData.comments,
+            newComments: this.countNewComments(updatedData.comments),
+          }
+        : item
+    );
   }
 
   getStatusLabel(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status?.label : '';
+    return typeof status === 'object' ? status.label : '';
   }
 
   getStatusCss(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status?.cssClass : '';
+    return typeof status === 'object' ? status.cssClass : '';
   }
 
   get filesCount(): number {
