@@ -30,10 +30,10 @@ import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
 import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
 
 @Component({
-  selector: 'app-email-send',
+  selector: 'app-sended-emails',
   imports: [FormsModule, TooltipModule, SelectModule],
-  templateUrl: './email-send.component.html',
-  styleUrl: './email-send.component.css',
+  templateUrl: './sended-emails.component.html',
+  styleUrl: './sended-emails.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {

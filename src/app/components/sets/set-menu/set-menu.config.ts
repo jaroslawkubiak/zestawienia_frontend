@@ -1,12 +1,12 @@
 import { MenuItem } from 'primeng/api';
-import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
+import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { ISet } from '../types/ISet';
 
 export interface SetMenuParams {
   set: ISet;
   suppliersFromSet: ISupplier[];
-  emailsList: IEmailsToSet[];
+  emailsList: ISendedEmailsFromDB[];
   isEdited: boolean;
   clientHash: string;
   sendSetToClient: () => void;
@@ -49,14 +49,14 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
     previewTooltip: `Podgląd zestawienia dla ${supplier.company}`,
     previewCopyTooltip: `Kopiuj link dla ${supplier.company}`,
     sendAt: (() => {
-      const email = emailsList.find((e) => e.supplierId?.id === supplier.id);
+      const email = emailsList.find((e) => e.supplier?.id === supplier.id);
       return email ? `${email.sendAt} - ${email.sendBy.name}` : 'Nie wysłano';
     })(),
     command: () => sendSetToSupplier(supplier),
   }));
 
   const lastEmailToClient = (() => {
-    const email = emailsList.find((e) => e.clientId?.id === set.clientId.id);
+    const email = emailsList.find((e) => e.client?.id === set.clientId.id);
     return email ? `${email.sendAt} - ${email.sendBy.name}` : 'Nie wysłano';
   })();
 
@@ -84,7 +84,7 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
         },
         {
           label: 'Do dostawców',
-          icon: 'pi pi-users',
+          icon: 'pi pi-truck',
           badge: String(suppliersList.length),
           badgeStyleClass:
             suppliersList.length === 0

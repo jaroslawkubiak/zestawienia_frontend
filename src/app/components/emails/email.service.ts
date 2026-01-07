@@ -5,7 +5,6 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { EmailAudience } from './types/EmailAudience.type';
 import { IEmailDetailsToDB } from './types/IEmailDetailsToDB';
-import { IEmailsToSet } from './types/IEmailsToSet';
 import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
 
 @Injectable({

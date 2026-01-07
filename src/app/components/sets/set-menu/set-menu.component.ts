@@ -19,9 +19,9 @@ import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { EmailSendComponent } from '../../emails/email-send/email-send.component';
 import { EmailsService } from '../../emails/email.service';
-import { IEmailsToSet } from '../../emails/types/IEmailsToSet';
+import { EmailSendComponent } from '../../emails/sended-emails/sended-emails.component';
+import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IDeletedFiles } from '../../files/types/IDeletedFiles';
@@ -73,7 +73,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
   suppliersFromSet: ISupplier[] = [];
-  emailsList: IEmailsToSet[] = [];
+  emailsList: ISendedEmailsFromDB[] = [];
   attachmentBadge: number = 0;
   clientHash = '';
 
@@ -127,7 +127,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // finding the last email date and the user sent to the client
   findLastEmailToClient() {
     const email = this.emailsList.find(
-      (email: IEmailsToSet) => email.clientId?.id === this.set.clientId?.id
+      (email: ISendedEmailsFromDB) => email.client?.id === this.set.clientId?.id
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -139,7 +139,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // finding the last email date and the user sent to the supplier
   findLastEmailToSupplier(supplierId: number) {
     const email = this.emailsList.find(
-      (email: IEmailsToSet) => email.supplierId?.id === supplierId
+      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
