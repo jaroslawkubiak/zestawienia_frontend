@@ -3,9 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { EmailAudience } from './types/EmailAudience.type';
 import { IEmailDetailsToDB } from './types/IEmailDetailsToDB';
-import { ISendedEmailList } from './types/ISendedEmailList';
 import { IEmailsToSet } from './types/IEmailsToSet';
+import { ISendedEmailList } from './types/ISendedEmailList';
 
 @Injectable({
   providedIn: 'root',
@@ -42,7 +43,7 @@ export class EmailsService {
   }
 
   createExternalLink(
-    type: 'client' | 'supplier',
+    type: EmailAudience,
     setHash: string,
     hash: string
   ): string {

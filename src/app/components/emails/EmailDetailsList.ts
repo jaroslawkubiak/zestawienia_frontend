@@ -4,13 +4,19 @@ import {
 } from './types/EmailTemplates.type';
 import { EmailDetails } from './types/IEmailDetails';
 
-export const HTMLDetails = {
+export const EmailDetailsList = {
   client: {
-    welcomeEmail: {
+    welcome: {
       audience: 'client',
-      name: 'welcomeEmail',
+      name: 'welcome',
       subject: 'Inwestycja',
       message: () => 'Przesyłamy link do inwestycji',
+    },
+    info: {
+      audience: 'client',
+      name: 'info',
+      subject: 'Informacja',
+      message: () => 'Przesyłamy nowe informacje o inwestycji',
     },
   },
 

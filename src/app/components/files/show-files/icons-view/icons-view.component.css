@@ -8,19 +8,15 @@
 .file-container .file-item {
   position: relative;
   width: var(--img-container-width);
-  height: 350px;
+  height: 300px;
   padding: 10px 5px;
   border-radius: 5px;
   background-color: var(--accent-color-03) !important;
-  -webkit-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
-  -moz-box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
-  box-shadow: 5px 5px 10px -4px rgba(24, 48, 43, 1);
+  box-shadow: 5px 5px 10px -4px #3bbfa150;
 }
 
 .file-container .file-item:hover {
-  -webkit-box-shadow: 5px 5px 15px -4px var(--accent-color-13);
-  -moz-box-shadow: 5px 5px 15px -4px var(--accent-color-13);
-  box-shadow: 5px 5px 15px -4px var(--accent-color-13);
+  box-shadow: 5px 5px 15px -4px #2b8a7580;
 }
 
 .file-container .file-item i {

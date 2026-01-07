@@ -1,4 +1,6 @@
+import { EmailAudience } from '../../emails/types/EmailAudience.type';
+
 export interface IExternalLink {
-  type: 'client' | 'supplier';
+  type: EmailAudience;
   hash: string;
 }

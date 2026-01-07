@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -25,19 +24,42 @@ import { SettingsService } from '../../settings/settings.service';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { createHTMLEmail } from '../createHTMLEmail';
 import { EmailsService } from '../email.service';
-import { HTMLDetails } from '../htmlDetails';
+import { EmailDetailsList } from '../EmailDetailsList';
+import { EmailAudience } from '../types/EmailAudience.type';
+import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
 import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
 
 @Component({
   selector: 'app-email-send',
-  imports: [CommonModule, FormsModule, TooltipModule, SelectModule],
+  imports: [FormsModule, TooltipModule, SelectModule],
   templateUrl: './email-send.component.html',
   styleUrl: './email-send.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
+  private _supplier?: ISupplier;
   @Input() set!: ISet;
-  @Input() supplier: ISupplier | undefined;
+  @Input()
+  set audienceMode(value: EmailAudience) {
+    this._audienceMode = value;
+    this.onAudienceChange();
+  }
+  @Input()
+  set dialogOpenId(_: number) {
+    this.resetState();
+  }
+
+  @Input()
+  set supplier(value: ISupplier | undefined) {
+    this._supplier = value;
+    this.onAudienceChange();
+  }
+
+  get supplier(): ISupplier | undefined {
+    return this._supplier;
+  }
+  private _audienceMode!: EmailAudience;
+
   @ViewChild('iframeRef') iframeRef!: ElementRef<HTMLIFrameElement>;
 
   @Output() getEmailsList = new EventEmitter<any>();
@@ -45,6 +67,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
 
   private messageInput$ = new Subject<string>();
   private subscription!: Subscription;
+  private viewInitialized = false;
 
   senderEmail = '';
   rawHTML = '';
@@ -57,6 +80,11 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     content: '',
     link: '',
   };
+
+  audience!: EmailAudience;
+
+  templates: (ClientTemplate | SupplierTemplate)[] = [];
+  selectedTemplate!: ClientTemplate | SupplierTemplate;
 
   constructor(
     private settingsService: SettingsService,
@@ -76,13 +104,45 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
 
-    // SUPPLIER EMAIL
-    if (this.supplier) {
-      // const template = HTMLDetails.supplier.supplierOffer;
-      // this.emailMessage = template.message();
+    this.subscription = this.messageInput$
+      .pipe(debounceTime(700))
+      .subscribe(() => {
+        this.loadPreview();
+      });
+  }
 
-      // druga wersja
-      const template = HTMLDetails.supplier.supplierOrder;
+  onAudienceChange() {
+    this.audience = this._audienceMode;
+
+    this.templates =
+      this.audience === 'supplier'
+        ? Object.values(EmailDetailsList.supplier)
+        : Object.values(EmailDetailsList.client);
+
+    this.selectedTemplate = this.templates[0];
+    this.applyTemplate(this.selectedTemplate);
+
+    this.newEmail.to = this.supplier
+      ? this.supplier.email
+      : this.set.clientId.email;
+
+    this.newEmail.link = this.emailsService.createExternalLink(
+      this.audience,
+      this.set.hash,
+      this.supplier ? this.supplier.hash : this.set.clientId.hash
+    );
+  }
+
+  applyTemplate(template: ClientTemplate | SupplierTemplate) {
+    if (template.name === 'welcome') {
+      this.newEmail.subject = `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
+    } else {
+      this.newEmail.subject = template.subject;
+    }
+
+    this.title = template.subject;
+
+    if (template.name === 'supplierOrder') {
       this.emailMessage = template.message({
         client: {
           firstName: this.set.clientId.firstName,
@@ -90,37 +150,13 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
           company: this.set.clientId.company,
         },
       });
-
-      this.title = template.subject;
-      this.newEmail.subject = template.subject;
-
-      this.newEmail.to = this.supplier.email;
-      this.newEmail.link = this.emailsService.createExternalLink(
-        'supplier',
-        this.set.hash,
-        this.supplier.hash
-      );
     } else {
-      // CLIENT EMAIL
-      const template = HTMLDetails.client.welcomeEmail;
-
-      this.emailMessage = template.message();
-      this.title = template.subject;
-      this.newEmail.subject = `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
-
-      this.newEmail.to = this.set.clientId.email;
-      this.newEmail.link = this.emailsService.createExternalLink(
-        'client',
-        this.set.hash,
-        this.set.clientId.hash
-      );
+      this.emailMessage = template.message({});
     }
 
-    this.subscription = this.messageInput$
-      .pipe(debounceTime(700))
-      .subscribe(() => {
-        this.loadPreview();
-      });
+    if (this.viewInitialized) {
+      this.loadPreview();
+    }
   }
 
   ngAfterViewInit() {
@@ -135,6 +171,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     `;
 
     iframe.onload = () => {
+      this.viewInitialized = true;
       this.loadPreview();
     };
   }
@@ -195,5 +232,13 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
         this.notificationService.showNotification('error', sendigError);
       },
     });
+  }
+
+  private resetState() {
+    this.onAudienceChange();
+
+    if (this.viewInitialized) {
+      this.loadPreview();
+    }
   }
 }

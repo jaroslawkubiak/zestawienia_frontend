@@ -1,13 +1,18 @@
 <div class="container">
   <div class="email-template-wrapper">
-            <!-- <p-select
-          [options]="allClients"
-          [(ngModel)]="selectedClient"
-          name="client"
-          id="client"
-          class="form-field"
-          optionLabel="fullName"
-        /> -->
+    <p>
+      Wybierz typ wiadomości dla
+      {{ this.audience === "supplier" ? `dostawcy ${supplier?.company}` : "klienta"
+      }}:
+    </p>
+    <p-select
+      [options]="templates"
+      [(ngModel)]="selectedTemplate"
+      optionLabel="subject"
+      (onChange)="applyTemplate($event.value)"
+      styleClass="w-full"
+    >
+    </p-select>
   </div>
   <div class="header">
     <div class="header-cell">
