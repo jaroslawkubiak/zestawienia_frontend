@@ -2,14 +2,20 @@
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
 
-<div *ngIf="!isLoading" class="card">
+<div *ngIf="!isLoading" class="send-emails-list-wrapper">
   <p-table
     #dt
     [value]="emails"
     [rows]="10"
     [columns]="cols"
     [paginator]="true"
-    [globalFilterFields]="['to', 'company', 'setId.name', 'sendBy.name']"
+    [globalFilterFields]="[
+      'emailTo',
+      'company',
+      'set.name',
+      'sendBy.name',
+      'fullName'
+    ]"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
     class="custom-table"
@@ -24,10 +30,10 @@
             pInputText
             type="text"
             class="search-input"
-            pTooltip="Filtruj emaile"
+            pTooltip="Filtruj e-maile"
             tooltipPosition="bottom"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, email, nazwa inwestycji, wysłał"
+            placeholder="Firma, e-mail, nazwa inwestycji, wysłał"
           />
         </p-iconfield>
       </div>
@@ -35,21 +41,25 @@
     <ng-template #header>
       <tr>
         <th class="flex-center" style="min-width: 3rem">LP</th>
-        <th style="min-width: 5rem">Typ</th>
-        <th pSortableColumn="to" style="min-width: 20rem">
-          Email
-          <p-sortIcon field="to" />
+        <th style="min-width: 5rem; text-align: center">Typ</th>
+        <th pSortableColumn="emailTo" style="min-width: 20rem">
+          E-mail
+          <p-sortIcon field="emailTo" />
         </th>
-        <th pSortableColumn="setId.name" style="min-width: 20rem">
+        <th pSortableColumn="set.name" style="min-width: 20rem">
           Inwestycja
-          <p-sortIcon field="setId.name" />
+          <p-sortIcon field="set.name" />
         </th>
         <th style="min-width: 10rem">Link</th>
         <th pSortableColumn="company" style="min-width: 12rem">
           Firma
           <p-sortIcon field="company" />
         </th>
-        <th pSortableColumn="sendAtTimestamp" style="min-width: 20rem">
+        <th pSortableColumn="fullName" style="min-width: 15rem">
+          Imię i nazwisko
+          <p-sortIcon field="fullName" />
+        </th>
+        <th pSortableColumn="sendAtTimestamp" style="min-width: 15rem">
           Wysłany
           <p-sortIcon field="sendAtTimestamp" />
         </th>
@@ -58,22 +68,25 @@
     <ng-template #body let-email let-index="rowIndex">
       <tr class="row">
         <td class="col-lp">{{ index + 1 }}</td>
-        <td>
-          <div class="email-type">
-            <i class="{{ email.icon }}"></i>
-          </div>
+        <td class="email-type">
+          <i class="{{ email.icon }}"></i>
         </td>
-        <td>
-          {{ email.to }}
+        <td class="no-action">
+          {{ email.emailTo }}
         </td>
-        <td (click)="openSet(email.setId.id)">
-          {{ email.setId.name }}
+        <td class="cursor-pointer" (click)="openSet(email.set.id)">
+          {{ email.set.name }}
         </td>
-        <td class="link">
-          <a href="{{ email.link }}" target="_blank">LINK</a>
+        <td class="cursor-pointer">
+          <a href="{{ email.link }}" target="_blank"
+            ><i class="pi pi-link link"></i
+          ></a>
         </td>
-        <td>
+        <td class="no-action">
           {{ email.company }}
+        </td>
+        <td class="no-action">
+          {{ email.fullName }}
         </td>
         <td class="no-action">{{ email.sendAt }} ({{ email.sendBy.name }})</td>
       </tr>

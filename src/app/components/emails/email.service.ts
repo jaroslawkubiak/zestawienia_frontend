@@ -6,7 +6,7 @@ import { AuthService } from '../../login/auth.service';
 import { EmailAudience } from './types/EmailAudience.type';
 import { IEmailDetailsToDB } from './types/IEmailDetailsToDB';
 import { IEmailsToSet } from './types/IEmailsToSet';
-import { ISendedEmailList } from './types/ISendedEmailList';
+import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
 
 @Injectable({
   providedIn: 'root',
@@ -16,14 +16,17 @@ export class EmailsService {
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
-  getEmails(): Observable<ISendedEmailList[]> {
-    return this.http.get<ISendedEmailList[]>(`${environment.API_URL}/email`, {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  getEmails(): Observable<ISendedEmailsFromDB[]> {
+    return this.http.get<ISendedEmailsFromDB[]>(
+      `${environment.API_URL}/email`,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
   }
 
-  getEmailBySetId(setId: number): Observable<IEmailsToSet[]> {
-    return this.http.get<IEmailsToSet[]>(
+  getEmailBySetId(setId: number): Observable<ISendedEmailsFromDB[]> {
+    return this.http.get<ISendedEmailsFromDB[]>(
       `${environment.API_URL}/email/${setId}`,
       {
         headers: { 'Content-Type': 'application/json' },

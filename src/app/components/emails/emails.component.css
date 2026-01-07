@@ -1,4 +1,4 @@
-.card {
+.send-emails-list-wrapper {
   width: var(--screen-width);
   margin: 10px auto;
 }
@@ -7,13 +7,21 @@
   width: var(--screen-width);
 }
 
-tr {
+.cursor-pointer {
   cursor: pointer;
+}
+
+tr {
   font-size: 1.8rem;
+  padding: 0 !important;
+}
+
+th {
+  padding: 1rem 0.5rem !important;
 }
 
 ::ng-deep .custom-table .p-datatable-tbody > tr > td {
-  padding: 2rem 0.5rem;
+  padding: 1rem 0.5rem;
 }
 
 .total {
@@ -49,7 +57,7 @@ tr {
 
 .link {
   color: var(--accent-color-13);
-  font-weight: 700;
+  font-size: 2rem;
 }
 
 .col-lp {
@@ -57,9 +65,8 @@ tr {
 }
 
 .email-type {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  cursor: auto;
+  text-align: center;
 }
 
 .email-type i {

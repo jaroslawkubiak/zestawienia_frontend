@@ -15,7 +15,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { EmailsService } from './email.service';
-import { ISendedEmailList } from './types/ISendedEmailList';
+import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
 
 @Component({
   selector: 'app-emails',
@@ -42,8 +42,7 @@ export class EmailsComponent {
   isLoading = true;
   emailDialog: boolean = false;
   emailDialogHeader: string = '';
-  emails!: ISendedEmailList[];
-  email!: ISendedEmailList;
+  emails!: ISendedEmailsFromDB[];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   constructor(
@@ -59,25 +58,26 @@ export class EmailsComponent {
   getEmails() {
     this.emailsService.getEmails().subscribe({
       next: (data) => {
-        this.emails = data.map((item) => {
-          const isClient = item.supplierId?.company ? true : false;
+        this.emails = data.map((email) => {
+          const isSupplier = email.supplier?.company ? true : false;
 
-          const icon = isClient
+          const icon = isSupplier
             ? 'pi pi-truck i-supplier'
             : 'pi pi-user i-client';
 
-          let company: string | undefined;
-          if (isClient) {
-            company = item.supplierId?.company;
-          } else if (item.clientId?.company) {
-            company = item.clientId?.company;
-          } else {
-            const firstName = item.clientId?.firstName ?? '';
-            const lastName = item.clientId?.lastName ?? '';
-            company = firstName + ' ' + lastName;
-          }
+          const company = isSupplier
+            ? email.supplier?.company
+            : email.client?.company;
 
-          return { ...item, company, icon };
+          const emailTo = isSupplier
+            ? email.supplier?.email
+            : email.client?.email;
+
+          const fullName = isSupplier
+            ? `${email.supplier?.firstName}  ${email.supplier?.lastName}`
+            : `${email.client?.firstName}  ${email.client?.lastName}`;
+
+          return { ...email, company, icon, fullName, emailTo };
         });
 
         this.isLoading = false;
