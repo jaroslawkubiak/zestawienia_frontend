@@ -33,6 +33,7 @@ import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
+import { buildSetMenu } from './set-menu.config';
 
 @Component({
   selector: 'app-set-menu',
@@ -66,7 +67,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @ViewChild(ShowFilesComponent, { static: false })
   dialogShowFilesComponent!: ShowFilesComponent;
   showEmailTemplate = false;
-  currentSupplier!: ISupplier;
+  emailDialogOpenId = 0;
+  currentSupplier?: ISupplier;
   editHeaderDialog = false;
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
@@ -148,84 +150,23 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   // create and update menu if set is edited or number of unique supplier is changed
   updateMenuItems(): void {
-    const suppliersList: MenuItem[] = this.suppliersFromSet.map((supplier) => {
-      return {
-        label: `${supplier.company}`,
-        icon: 'pi pi-truck',
-        email: supplier.email,
-        preview: () => this.openLink({ type: 'supplier', hash: supplier.hash }),
-        copy: () => this.copyLink({ type: 'supplier', hash: supplier.hash }),
-        previewTooltip: `Podgląd zestawienia dla ${supplier.company}`,
-        previewCopyTooltip: `Kopiuj link dla ${supplier.company}`,
-        sendAt: this.findLastEmailToSupplier(supplier.id),
-        command: () => this.sendSetToSupplierViaEmail(supplier),
-      };
+    this.menuItems = buildSetMenu({
+      set: this.set,
+      suppliersFromSet: this.suppliersFromSet,
+      emailsList: this.emailsList,
+      isEdited: this.isEdited,
+      clientHash: this.clientHash,
+      sendSetToClient: () => this.sendSetToClientViaEmail(),
+      sendSetToSupplier: (supplier) => this.sendSetToSupplierViaEmail(supplier),
+      openLink: (type, hash) => this.openLink({ type, hash }),
+      copyLink: (type, hash) => this.copyLink({ type, hash }),
+      editHeader: () => this.editHeader(),
+      generatePDF: () => this.generatePDF(),
+      showAttachedFiles: () => this.showAttachedFiles(),
+      openSendFilesDialog: () => this.openSendFilesDialog(),
+      getCommentsBadgeClass: () => this.getCommentsBadgeClass(),
+      showComments: () => this.showComments(),
     });
-
-    this.menuItems = [
-      {
-        label: 'Edytuj nagłowek zestawienia',
-        icon: 'pi pi-file-edit',
-        command: () => this.editHeader(),
-      },
-      {
-        label: 'Wyślij email',
-        icon: 'pi pi-envelope',
-        disabled: this.isEdited,
-        items: [
-          {
-            label: `Do klienta`,
-            icon: 'pi pi-user',
-            email: this.set.clientId.email,
-            preview: () =>
-              this.openLink({ type: 'client', hash: this.clientHash }),
-            copy: () =>
-              this.copyLink({ type: 'client', hash: this.clientHash }),
-            previewTooltip: 'Podgląd zestawienia dla klienta',
-            previewCopyTooltip: 'Kopiuj link dla klienta',
-            sendAt: this.findLastEmailToClient(),
-            command: () => this.sendSetToClientViaEmail(),
-          },
-          {
-            label: 'Do dostawców',
-            icon: 'pi pi-users',
-            badge: String(suppliersList.length),
-            badgeStyleClass:
-              suppliersList.length === 0
-                ? 'p-badge-secondary'
-                : 'p-badge-primary',
-            items: suppliersList,
-          },
-        ],
-      },
-      {
-        label: 'Stwórz PDF',
-        icon: 'pi pi-file-pdf',
-        disabled: this.isEdited,
-        command: () => this.generatePDF(),
-      },
-      {
-        label: 'Załączniki',
-        icon: 'pi pi-cloud',
-        badge: String(this.attachmentBadge),
-        badgeStyleClass: this.attachmentBadge
-          ? 'p-badge-contrast'
-          : 'p-badge-secondary',
-        command: () => this.showAttachedFiles(),
-      },
-      {
-        label: 'Prześlij pliki',
-        icon: 'pi pi-paperclip',
-        command: () => this.openSendFilesDialog(),
-      },
-      {
-        label: 'Komentarze',
-        icon: 'pi pi-comments',
-        badgeStyleClass: this.getCommentsBadgeClass(),
-        badge: String(this.set?.newComments || this.set?.comments?.length || 0),
-        command: () => this.showComments(),
-      },
-    ];
   }
 
   // define comments badge color
@@ -389,5 +330,27 @@ export class SetMenuComponent implements OnChanges, OnInit {
     document.body.removeChild(textarea);
 
     this.notificationService.showNotification('info', 'Link został skopiowany');
+  }
+
+  onEmailDialogOpen() {
+    this.emailDialogOpenId++;
+
+    this.currentSupplier = this.currentSupplier
+      ? { ...this.currentSupplier }
+      : undefined;
+  }
+
+  onEmailDialogClose() {
+    this.currentSupplier = undefined;
+  }
+
+  get emailDialogHeader(): string {
+    if (this.currentSupplier) {
+      return `Nowa wiadomość e-mail dla dostawcy: ${this.currentSupplier.company}`;
+    } else if (this.set?.clientId) {
+      return `Nowa wiadomość e-mail dla klienta: ${this.set.clientId.firstName} ${this.set.clientId.lastName}`;
+    } else {
+      return 'Nowa wiadomość e-mail';
+    }
   }
 }

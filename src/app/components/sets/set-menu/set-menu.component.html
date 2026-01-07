@@ -76,15 +76,18 @@
 
 <p-dialog
   [(visible)]="showEmailTemplate"
-  [style]="{ width: '1000px', height: '95%' }"
-  header="Nowa wiadomość e-mail"
+  [style]="{ width: '1000px', height: '100%' }"
+  [header]="emailDialogHeader"
   [modal]="true"
   [dismissableMask]="true"
+  (onShow)="onEmailDialogOpen()"
+  (onHide)="onEmailDialogClose()"
 >
   <ng-template #content>
     <app-email-send
       [set]="set"
       [supplier]="currentSupplier"
+      [audienceMode]="currentSupplier ? 'supplier' : 'client'"
       (getEmailsList)="getEmailsList()"
       (hideEmailDialog)="hideEmailDialog()"
     />
