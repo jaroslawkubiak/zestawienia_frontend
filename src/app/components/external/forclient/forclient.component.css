@@ -1,6 +1,5 @@
 .container {
   width: 100% !important;
-  border: 2px solid red;
 }
 
 .header-background {
@@ -16,7 +15,6 @@
   align-items: end;
   padding: 20px 0;
   min-width: var(--screen-width);
-  border: 2px solid green;
 }
 
 .set-content {
@@ -63,90 +61,13 @@ h3 {
   color: inherit;
 }
 
-.title {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: 10px;
-}
-
-.title-header {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  gap: 20px;
-}
-
-.room-name {
-  font-size: 1.6rem;
-}
-
 .positions-item {
   display: grid;
   padding: 20px 0;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: auto repeat(4, 1fr);
   background-color: var(--accent-color-01);
   border-bottom: 3px solid var(--accent-color-09);
-  gap: 10px;
-}
-
-.status-wrapper {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  padding: 10px;
-  border-radius: 5px;
-  color: var(--primary-color) !important;
-}
-
-.position-action-btn {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  gap: 30px;
-}
-
-.link {
-  gap: 5px;
-  font-size: 2rem;
-  color: var(--accent-color-09);
-  font-weight: 700;
-  transition: color 0.2s ease;
-}
-
-.link i,
-.comments-cell i {
-  font-size: 3rem;
-  color: var(--accent-color-09);
-  transition: color 0.2s ease;
-}
-
-.link:hover,
-.link:hover i,
-.comments-cell:hover i {
-  color: var(--primary-color);
-}
-
-.link-cell {
-  width: 100px;
-  height: 40px;
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
-.comments-cell {
-  position: relative;
-  width: 40px;
-  height: 40px;
-}
-
-.nr-comments {
-  position: absolute;
-  top: -7px;
-  right: -7px;
-  cursor: auto;
+  gap: 0px;
 }
 
 .nr-files {
@@ -154,42 +75,6 @@ h3 {
   top: -7px;
   right: -20px;
   cursor: auto;
-}
-
-.product-img {
-  background-color: rgb(255, 255, 255) !important;
-}
-
-.product-img img {
-  width: 200px;
-  height: 200px;
-  object-fit: contain;
-  border-radius: 10px;
-}
-
-.product-details {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.product-group {
-  display: flex;
-  flex-direction: column;
-  padding: 10px 0;
-  gap: 5px;
-  height: 80px;
-}
-
-.product-title {
-  color: var(--primary-color);
-  font-size: 1.2rem;
-}
-
-.product-name {
-  font-size: 2rem;
-  color: var(--accent-color-13);
-  /* white-space: pre-wrap; */
 }
 
 .disabled {

@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
-import { Dialog } from 'primeng/dialog';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin, map, switchMap, throwError } from 'rxjs';
@@ -11,10 +10,8 @@ import {
   calculateBrutto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
-import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { ICommentsBadge } from '../../comments/types/ICommentBadge';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
@@ -27,6 +24,7 @@ import { IPosition } from '../../sets/types/IPosition';
 import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
+import { ProductComponent } from './product/product.component';
 
 @Component({
   selector: 'app-setforclient',
@@ -36,11 +34,10 @@ import { ISet } from '../../sets/types/ISet';
     SendFilesComponent,
     ShowFilesComponent,
     BadgeModule,
-    Dialog,
     TabsModule,
-    CommentsComponent,
     SummaryComponent,
     LegendComponent,
+    ProductComponent,
   ],
   templateUrl: './forclient.component.html',
   styleUrl: './forclient.component.css',
@@ -57,10 +54,7 @@ export class ForClientComponent implements OnInit {
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
   selectedBookmark = 0;
-  showCommentsDialog = false;
-  header = '';
   comments: IComment[] = [];
-  positionId!: number;
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
@@ -205,19 +199,9 @@ export class ForClientComponent implements OnInit {
     };
   }
 
-  private countNewComments(comments: IComment[]): number {
+  countNewComments(comments: IComment[]): number {
     return comments.filter((c) => c.authorType === 'user' && !c.readByReceiver)
       .length;
-  }
-
-  showComments(positionId: number) {
-    const position = this.positionsWithBadge.find((p) => p.id === positionId);
-    if (!position) return;
-
-    this.comments = position.comments ?? [];
-    this.positionId = position.id;
-    this.header = `Pozycja ${position.kolejnosc}`;
-    this.showCommentsDialog = true;
   }
 
   showAttachedFiles() {
@@ -229,29 +213,11 @@ export class ForClientComponent implements OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
-  onUpdateComments(updatedData: IPositionWithComments) {
-    this.positionsWithBadge = this.positionsWithBadge.map((item) =>
-      item.id === updatedData.positionId
-        ? {
-            ...item,
-            comments: updatedData.comments,
-            newComments: this.countNewComments(updatedData.comments),
-          }
-        : item
-    );
-  }
-
-  getStatusLabel(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status.label : '';
-  }
-
-  getStatusCss(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status.cssClass : '';
-  }
-
   get filesCount(): number {
     const files =
-      this.set?.files?.filter((file) => file.dir !== 'robocze') ?? [];
+      this.set?.files?.filter(
+        (file) => file.dir !== EFileDirectoryList.working
+      ) ?? [];
 
     return files.length;
   }

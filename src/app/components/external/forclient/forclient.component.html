@@ -50,124 +50,17 @@
           } @else {
           <!-- other bookmarks -->
           <ng-container *ngIf="selectedBookmark === bookmark.id">
-            <div>
-              <li
-                *ngFor="let pos of positionsFromBookmark"
+            <li *ngFor="let pos of positionsFromBookmark; let i = index">
+              <app-product
                 class="positions-item"
-              >
-                <!-- -->
-                <div class="title">
-                  <div class="title-header">
-                    <span class="room-name">{{ pos.pomieszczenie }}</span>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">PRODUKT</li>
-                    <li class="product-name">{{ pos.produkt }}</li>
-                  </div>
-                  <div class="position-action-btn">
-                    <div class="comments-cell flex-center">
-                      <i
-                        class="pi pi-comments"
-                        pTooltip="Dodaj komentarz"
-                        tooltipPosition="bottom"
-                        (click)="showComments(pos.id)"
-                      ></i>
-                      <p-badge
-                        [value]="pos.commentsBadge.value"
-                        [severity]="pos.commentsBadge.severity"
-                        [pTooltip]="pos.commentsBadge.tooltip"
-                        class="nr-comments"
-                        badgeSize="large"
-                      ></p-badge>
-                    </div>
-                    <div
-                      class="{{
-                        pos.link ? 'cursor-pointer' : ''
-                      }} flex-center link-cell "
-                    >
-                      @if(pos.link) {
-                      <a
-                        href="{{ pos.link }}"
-                        class="link flex-center"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        ><i class="pi pi-link"></i>LINK</a
-                      >
-                      }
-                    </div>
-                  </div>
-                </div>
-                <div class="product-img flex-center">
-                  <img
-                    [src]="pos['imageUrl']"
-                    alt="image"
-                    *ngIf="pos['imageUrl']"
-                  />
-                </div>
-                <ul class="product-details">
-                  <div class="product-group">
-                    <li class="product-title">PRODUCENT</li>
-                    <li class="product-name">{{ pos.producent }}</li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">KOLEKCJA</li>
-                    <li class="product-name">{{ pos.kolekcja }}</li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">STATUS</li>
-                    <li
-                      class="product-name status-wrapper {{
-                        getStatusCss(pos.status)
-                      }} "
-                    >
-                      {{ getStatusLabel(pos.status) }}
-                    </li>
-                  </div>
-                </ul>
-                <ul class="product-details">
-                  <div class="product-group">
-                    <li class="product-title">NR KATALOGOWY</li>
-                    <li class="product-name">{{ pos.nrKatalogowy }}</li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">KOLOR</li>
-                    <li class="product-name">{{ pos.kolor }}</li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">DOSTAWCA</li>
-                    <li class="product-name">
-                      {{ pos.supplierId ? pos.supplierId["company"] : "" }}
-                    </li>
-                  </div>
-                </ul>
-                <div class="product-details">
-                  <div class="product-group">
-                    <li class="product-title">ILOŚĆ</li>
-                    <li class="product-name">
-                      {{ pos.ilosc | number : "1.2-2" }}
-                    </li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">CENA NETTO</li>
-                    <li class="product-name">
-                      {{
-                        pos.netto ? (pos.netto | number : "1.2-2") + " PLN" : ""
-                      }}
-                    </li>
-                  </div>
-                  <div class="product-group">
-                    <li class="product-title">WARTOŚĆ NETTO</li>
-                    <li class="product-name">
-                      {{
-                        pos.wartoscNetto
-                          ? (pos.wartoscNetto | number : "1.2-2") + " PLN"
-                          : ""
-                      }}
-                    </li>
-                  </div>
-                </div>
-              </li>
-            </div>
+                [position]="pos"
+                [index]="i + 1"
+                [positionsWithBadge]="positionsWithBadge"
+                [comments]="comments"
+                [set]="set"
+                [countNewComments]="countNewComments"
+              />
+            </li>
           </ng-container>
           }
         </p-tabpanel>
@@ -177,21 +70,3 @@
     <app-legend></app-legend>
   </div>
 </div>
-
-<p-dialog
-  [header]="header"
-  [modal]="true"
-  [(visible)]="showCommentsDialog"
-  [style]="{ width: '70rem' }"
-  [dismissableMask]="true"
->
-  <app-comments
-    [comments]="comments"
-    [positionId]="positionId"
-    [setId]="setId"
-    [set]="set"
-    [isUser]="false"
-    [commentsDialog]="showCommentsDialog"
-    (updateComments)="onUpdateComments($event)"
-  />
-</p-dialog>
