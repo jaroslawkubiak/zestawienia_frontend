@@ -19,6 +19,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
 import { ISet } from '../../sets/types/ISet';
+import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
@@ -62,7 +63,7 @@ export class ShowFilesComponent implements OnInit {
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
   defaultView = 'icons';
-  uniqueDir: string[] = [];
+  uniqueDir: EFileDirectoryList[] = [];
 
   ngOnInit(): void {
     // forces pdf worker to load .js
@@ -266,11 +267,12 @@ export class ShowFilesComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  getUniqueDirectory() {
-    const sortedFiles = [...this.files];
-    sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+  getUniqueDirectory(): EFileDirectoryList[] {
+    const dirsSet = new Set(this.files.map((f) => f.dir));
 
-    return [...new Set(sortedFiles.map((item) => item.dir))];
+    return FileDirectoryList.map((fd) => fd.label as EFileDirectoryList).filter(
+      (label) => dirsSet.has(label)
+    );
   }
 
   generateThumbnailsForFiles() {
