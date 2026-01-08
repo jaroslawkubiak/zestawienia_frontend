@@ -1,4 +1,8 @@
-<app-send-files who="client" />
+<app-send-files
+  who="client"
+  (uploadFinished)="uploadFinished($event)"
+  (updateFileList)="updateAttachedFiles($event)"
+/>
 <app-show-files who="client" />
 
 <div class="container" *ngIf="set">

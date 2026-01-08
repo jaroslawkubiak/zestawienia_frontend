@@ -15,7 +15,6 @@ import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
-import { NotificationService } from '../../../services/notification.service';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
@@ -40,7 +39,6 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 export class SendFilesComponent {
   constructor(
     private filesService: FilesService,
-    private notificationService: NotificationService,
     private breakpointObserver: BreakpointObserver
   ) {
     this.breakpointObserver
@@ -52,6 +50,8 @@ export class SendFilesComponent {
 
   @Input() who!: 'user' | 'client';
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
+  @Output() uploadFinished = new EventEmitter<string>();
+
   showSendFilesDialog = false;
   setId!: number;
   setHash!: string;
@@ -139,16 +139,14 @@ export class SendFilesComponent {
             const percentDone = Math.round((100 * event.loaded) / event.total);
             this.uploadProgress = percentDone;
           } else if (event.type === HttpEventType.Response) {
-            this.notificationService.showNotification(
-              'info',
-              event.body.message
-            );
             this.fileUploader.clear();
             this.uploadProgress = 0;
             this.showSendFilesDialog = false;
 
             const files: IFileFullDetails[] = event.body.files;
             this.updateFileList.emit(files);
+            //emit info about finish to parent
+            this.uploadFinished.emit(event.body.message);
           }
         });
     }

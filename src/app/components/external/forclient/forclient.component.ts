@@ -25,6 +25,7 @@ import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
 import { ProductComponent } from './product/product.component';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-setforclient',
@@ -62,6 +63,7 @@ export class ForClientComponent implements OnInit {
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
   constructor(
+    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
@@ -239,5 +241,15 @@ export class ForClientComponent implements OnInit {
     } else {
       this.mobileMenuOpen = true;
     }
+  }
+
+  // update attached files after sending new files to server
+  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
+    this.set.files = [...this.set.files || [], ...uploadedFiles];
+    this.filesCount;
+  }
+
+  uploadFinished(message: string) {
+    this.notificationService.showNotification('info', message);
   }
 }
