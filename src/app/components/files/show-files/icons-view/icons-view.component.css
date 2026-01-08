@@ -25,9 +25,13 @@
   cursor: default;
 }
 
-.directory-wrapper {
-  display: flex;
+.show-file-directory-wrapper {
   flex-direction: column;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  padding-top: 30px;
 }
 
 h3 {
@@ -47,8 +51,48 @@ h3 i {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 15px;
+  gap: 25px;
   top: 14px;
   right: 200px;
   height: 45px;
+}
+/* MOBILE  */
+@media (max-width: 768px) {
+  .file-container {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 0 auto;
+  }
+
+  .show-file-directory-wrapper {
+    gap: 10px;
+    width: 100%;
+    padding-top: 20px;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+  }
+
+  h3 i {
+    font-size: 1rem;
+    margin-right: 5px;
+  }
+
+  .icons-top-action-btns {
+    gap: 10px;
+    top: 14px;
+    right: 130px;
+  }
+
+  .file-container .file-item {
+    width: 150px;
+    height: 200px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  .file-container .file-item i {
+    font-size: 60px !important;
+  }
 }

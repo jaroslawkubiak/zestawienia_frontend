@@ -1,74 +1,83 @@
 <div class="preview">
-  <div *ngIf="file | isImage">
-    <p-image
-      [src]="file.fullPath"
-      [preview]="true"
-      alt="Załączony plik"
-      pTooltip="Powiększ"
-    >
-      <ng-template #indicator>
-        <i class="pi pi-search-plus indicator"></i>
-      </ng-template>
-      <ng-template #image>
-        <img [src]="file.fullPath" alt="Załączony plik" />
-      </ng-template>
-      <ng-template
-        #preview
-        let-style="style"
-        let-previewCallback="previewCallback"
+  <div class="preview-image">
+    <div *ngIf="file | isImage">
+      <p-image
+        [src]="file.fullPath"
+        [preview]="true"
+        alt="Załączony plik"
+        pTooltip="Powiększ"
       >
-        <img
-          [src]="file.fullPath"
-          alt="Załączony plik"
-          [style]="style"
-          (click)="previewCallback()"
-        />
-      </ng-template>
-    </p-image>
+        <ng-template #indicator>
+          <i class="pi pi-search-plus indicator"></i>
+        </ng-template>
+        <ng-template #image>
+          <img [src]="file.fullPath" alt="Załączony plik" />
+        </ng-template>
+        <ng-template
+          #preview
+          let-style="style"
+          let-previewCallback="previewCallback"
+        >
+          <img
+            [src]="file.fullPath"
+            alt="Załączony plik"
+            [style]="style"
+            (click)="previewCallback()"
+          />
+        </ng-template>
+      </p-image>
+    </div>
+
+    <div class="file-pdf" *ngIf="file | isPdf">
+      <app-pdf-thumbnail
+        [file]="file"
+        (click)="openPdf.emit(file)"
+      ></app-pdf-thumbnail>
+    </div>
+
+    <div class="file-other" *ngIf="!(file | isImage) && !(file | isPdf)">
+      <i class="pi pi-file"></i>
+    </div>
   </div>
 
-  <div class="file-pdf" *ngIf="file | isPdf">
-    <app-pdf-thumbnail
-      [file]="file"
-      (click)="openPdf.emit(file)"
-    ></app-pdf-thumbnail>
-  </div>
-
-  <div class="file-other" *ngIf="!(file | isImage) && !(file | isPdf)">
-    <i class="pi pi-file"></i>
-  </div>
-
-  <p [ngClass]="{ textBold: isSelected }">
-    {{ file.fileName }}
-  </p>
-
-  <div class="action-btns">
-    <p-button
-      severity="info"
-      class="m-4"
-      icon="pi pi-download"
-      alt="Pobierz plik"
-      pTooltip="Pobierz plik"
+  <div class="preview-footer">
+    <p
+      class="file-name-label"
+      [ngClass]="{ textBold: isSelected }"
+      pTooltip="{{ file.fileName.length > 40 ? file.fileName : '' }}"
       tooltipPosition="bottom"
-      (click)="download.emit()"
-    />
-    <p-checkbox
-      (click)="addFileToSelected.emit(file)"
-      [binary]="true"
-      size="large"
-      pTooltip="Zaznacz plik"
-      tooltipPosition="bottom"
-      [ngModel]="isSelected"
-    />
-    <p-button
-      severity="danger"
-      class="m-4"
-      icon="pi pi-trash"
-      alt="Usuń plik"
-      pTooltip="Usuń plik"
-      tooltipPosition="bottom"
-      (click)="delete.emit()"
-      [disabled]="!file.canDelete || selectedFiles.length !== 0"
-    />
+    >
+      {{ file.fileName }}
+    </p>
+
+    <div class="action-btns">
+      <p-button
+        severity="info"
+        class="m-4"
+        icon="pi pi-download"
+        alt="Pobierz plik"
+        pTooltip="Pobierz plik"
+        tooltipPosition="bottom"
+        (click)="download.emit()"
+      />
+      <p-checkbox
+        (click)="addFileToSelected.emit(file)"
+        [binary]="true"
+        size="large"
+        pTooltip="Zaznacz plik"
+        tooltipPosition="bottom"
+        [ngModel]="isSelected"
+      />
+      <p-button
+        severity="danger"
+        class="m-4"
+        icon="pi pi-trash"
+        alt="Usuń plik"
+        pTooltip="Usuń plik"
+        tooltipPosition="bottom"
+        (click)="delete.emit()"
+        [disabled]="!file.canDelete || selectedFiles.length !== 0"
+      />
+    </div>
   </div>
 </div>

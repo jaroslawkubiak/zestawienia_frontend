@@ -91,3 +91,30 @@
   flex-direction: column;
   width: 750px !important;
 }
+/* MOBILE  */
+@media (max-width: 768px) {
+  .mobile-full-dialog.p-dialog {
+    width: 100vw !important;
+    height: 100dvh !important;
+    max-height: 100dvh !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+
+  /* 3. CONTENT – scroll wewnątrz */
+  /* .mobile-full-dialog .p-dialog-content {
+    flex: 1 1 auto;
+    overflow: auto;
+  } */
+
+  .top-action-btns {
+    top: 19px;
+    right: 0px;
+    gap: 0.5rem;
+    margin: 0 5rem;
+  }
+
+  .top-action-btns i {
+    font-size: 2rem;
+  }
+}

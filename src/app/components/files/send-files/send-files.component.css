@@ -25,7 +25,7 @@
   color: var(--error-color);
 }
 
-.directory-wrapper {
+.send-file-directory-wrapper {
   display: flex;
   align-items: center;
   gap: 20px;
@@ -33,7 +33,7 @@
   width: 100%;
 }
 
-.directory-wrapper label {
+.send-file-directory-wrapper label {
   color: var(--accent-color-10);
   font-size: 2rem;
 }

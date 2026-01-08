@@ -1,7 +1,6 @@
 <div class="icons-top-action-btns">
   <p-checkbox
     size="large"
-    class="m-4"
     pTooltip="Zaznacz wszystkie pliki"
     tooltipPosition="bottom"
     (click)="selectAll.emit($event)"
@@ -9,7 +8,6 @@
   />
   <p-button
     severity="info"
-    class="m-4"
     icon="pi pi-download"
     alt="Pobierz pliki"
     pTooltip="Pobierz pliki"
@@ -18,7 +16,6 @@
   />
   <p-button
     severity="danger"
-    class="m-4"
     icon="pi pi-trash"
     alt="Usuń pliki"
     pTooltip="Usuń pliki"
@@ -26,7 +23,8 @@
     (click)="deleteFiles.emit()"
   />
 </div>
-<div class="directory-wrapper" *ngFor="let dir of uniqueDir">
+
+<div class="show-file-directory-wrapper" *ngFor="let dir of uniqueDir">
   <h3>
     <i class="pi pi-folder-open"></i>
     {{ dir }}

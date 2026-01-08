@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
@@ -49,8 +50,16 @@ export class ShowFilesComponent implements OnInit {
     private filesService: FilesService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
-    private cd: ChangeDetectorRef
-  ) {}
+    private cd: ChangeDetectorRef,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver
+      .observe(['(max-width: 640px)'])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+  }
+
   @Input() who!: 'user' | 'client';
   @Output() deleteFiles = new EventEmitter<IDeletedFiles>();
   setId!: number;
@@ -64,6 +73,7 @@ export class ShowFilesComponent implements OnInit {
   showFilesDialog = false;
   defaultView = 'icons';
   uniqueDir: EFileDirectoryList[] = [];
+  isMobile = false;
 
   ngOnInit(): void {
     // forces pdf worker to load .js
