@@ -2,20 +2,20 @@
   <p-table
     [value]="summaryData"
     showGridlines
-    [tableStyle]="{ 'min-width': '50rem' }"
+    [tableStyle]="{ 'min-width': '20rem' }"
   >
     <ng-template #header>
       <tr>
-        <th style="width: 1rem" class="lp background">LP</th>
-        <th style="width: 5rem" class="background">KATEGORIA</th>
-        <th style="width: 4rem" class="background">WARTOŚĆ [zł/brutto]</th>
+        <th class="col-lp background">LP</th>
+        <th class="col-category background">KATEGORIA</th>
+        <th class="col-value background">WARTOŚĆ [zł/brutto]</th>
       </tr>
     </ng-template>
     <ng-template #body let-summaryData let-rowIndex="rowIndex">
       <tr class="{{ summaryData.bookmarkId === 1 ? 'background' : '' }}">
-        <td class="lp background">{{ summaryData.columnLp }}</td>
-        <td>{{ summaryData.bookmarkName }}</td>
-        <td>{{ summaryData.value | number : "1.2-2" }}</td>
+        <td class="col-lp background">{{ summaryData.columnLp }}</td>
+        <td class="col-category">{{ summaryData.bookmarkName }}</td>
+        <td class="col-value">{{ summaryData.value | number : "1.2-2" }}</td>
       </tr>
     </ng-template>
   </p-table>

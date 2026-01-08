@@ -2,11 +2,37 @@
   width: 1000px;
 }
 
-.lp {
+.col-lp {
   text-align: center;
+}
+
+.col-value {
+  text-align: right;
 }
 
 .background {
   font-weight: 700;
   background-color: var(--table-header-bc);
+}
+
+/* MOBILE  */
+@media (max-width: 768px) {
+  .wrapper {
+    width: 100%;
+  }
+
+  .col-lp {
+    width: 30px;
+  }
+  .col-category {
+    width: 60%;
+  }
+
+  .col-value {
+    width: auto;
+  }
+  th,
+  td {
+    font-size: 1rem;
+  }
 }
