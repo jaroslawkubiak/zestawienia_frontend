@@ -200,4 +200,8 @@ export class SetsComponent implements OnInit {
       item.id === setId ? { ...item, files: files } : item
     );
   }
+
+  uploadFinished(message: string) {
+    this.notificationService.showNotification('info', message);
+  }
 }

@@ -1,4 +1,8 @@
-<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
+<app-send-files
+  who="user"
+  (updateFileList)="updateAttachedFiles($event)"
+  (uploadFinished)="uploadFinished($event)"
+/>
 <app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
 
 <p-menubar [model]="menuItems">

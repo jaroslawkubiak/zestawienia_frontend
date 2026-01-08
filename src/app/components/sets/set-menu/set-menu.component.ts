@@ -353,4 +353,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
       return 'Nowa wiadomość e-mail';
     }
   }
+
+  uploadFinished(message: string) {
+    this.notificationService.showNotification('info', message);
+  }
 }
