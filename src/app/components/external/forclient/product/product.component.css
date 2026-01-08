@@ -1,3 +1,13 @@
+.positions-item {
+  display: grid;
+  padding: 20px 0;
+  grid-template-columns: auto repeat(4, 1fr);
+  background-color: var(--accent-color-01);
+  border-bottom: 3px solid var(--accent-color-09);
+  gap: 0px;
+  display: none;
+}
+
 .product-lp {
   display: flex;
   align-items: center;
@@ -52,7 +62,6 @@
 .product-name {
   font-size: 2rem;
   color: var(--accent-color-13);
-  /* white-space: pre-wrap; */
 }
 
 .position-action-btn {

@@ -55,6 +55,8 @@ export class ForClientComponent implements OnInit {
   FILES_URL = environment.FILES_URL;
   selectedBookmark = 0;
   comments: IComment[] = [];
+  mobileMenuOpen = false;
+  mobileMenuClosing = false;
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
@@ -224,5 +226,18 @@ export class ForClientComponent implements OnInit {
 
   get filesSeverity(): 'danger' | 'secondary' {
     return this.filesCount === 0 ? 'secondary' : 'danger';
+  }
+
+  toggleMobileMenu() {
+    if (this.mobileMenuOpen) {
+      this.mobileMenuClosing = true;
+
+      setTimeout(() => {
+        this.mobileMenuOpen = false;
+        this.mobileMenuClosing = false;
+      }, 300); // MUSI = czas animacji
+    } else {
+      this.mobileMenuOpen = true;
+    }
   }
 }

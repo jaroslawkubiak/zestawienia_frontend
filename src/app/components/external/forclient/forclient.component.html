@@ -3,11 +3,63 @@
 
 <div class="container" *ngIf="set">
   <div class="header-background">
+    <!-- MOBILE MENU -->
+    <div
+      class="mobile-menu"
+      *ngIf="mobileMenuOpen"
+      [class.closing]="mobileMenuClosing"
+      (click)="$event.stopPropagation()"
+    >
+      <!-- mobile menu header  -->
+      <div class="mobile-menu-header">
+        <div class="mobile-menu-actions">
+          <div class="attachment-icon">
+            <i
+              class="pi pi-cloud"
+              (click)="showAttachedFiles(); toggleMobileMenu()"
+            ></i>
+            <p-badge
+              [value]="filesCount"
+              [severity]="filesSeverity"
+              class="mobile-nr-files"
+              badgeSize="small"
+              [pTooltip]="'Ilość załączonych plików'"
+            ></p-badge>
+          </div>
+          <i
+            class="pi pi-paperclip"
+            (click)="
+              openSendFilesDialog(set.id, set.hash, set.name);
+              toggleMobileMenu()
+            "
+          ></i>
+        </div>
+        <i class="pi pi-times close-icon" (click)="toggleMobileMenu()"></i>
+      </div>
+
+      <!-- mobile menu bookmarks -->
+      <ul class="mobile-menu-list">
+        @for (bookmark of set.bookmarks; track bookmark.id) {
+        <li (click)="loadContentForBookmark(bookmark.id); toggleMobileMenu()">
+          {{ bookmark.name }}
+        </li>
+        }
+      </ul>
+    </div>
+
     <div class="header">
       <div>
-        <h3>Witamy w zestawieniu do inwestycji</h3>
-        <h1>{{ set.name }}</h1>
+        <div class="header-title-desktop">
+          <h3>Witamy w zestawieniu do inwestycji</h3>
+          <h1>{{ set.name }}</h1>
+        </div>
+        <div class="header-title-mobile">Zestawienie {{ set.name }}</div>
       </div>
+
+      <div class="mobile-menu-icon-wrapper" (click)="toggleMobileMenu()">
+        <i class="pi pi-bars"></i>
+      </div>
+
       <div class="header-actions-btn">
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
           <i class="pi pi-cloud"></i>
@@ -46,13 +98,12 @@
         <p-tabpanel [value]="bookmark.id">
           <!-- bookmark = summary -->
           @if(selectedBookmark === 1) {
-          <app-summary [set]="set" [positions]="positions"></app-summary>
+          <!-- <app-summary [set]="set" [positions]="positions"></app-summary> -->
           } @else {
           <!-- other bookmarks -->
           <ng-container *ngIf="selectedBookmark === bookmark.id">
             <li *ngFor="let pos of positionsFromBookmark; let i = index">
               <app-product
-                class="positions-item"
                 [position]="pos"
                 [index]="i + 1"
                 [positionsWithBadge]="positionsWithBadge"
@@ -67,6 +118,6 @@
         }
       </p-tabpanels>
     </p-tabs>
-    <app-legend></app-legend>
+    <!-- <app-legend></app-legend> -->
   </div>
 </div>
