@@ -53,7 +53,7 @@ export class ForClientComponent implements OnInit {
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
-  selectedBookmark = 0;
+  selectedBookmarkId = 0;
   comments: IComment[] = [];
   mobileMenuOpen = false;
   mobileMenuClosing = false;
@@ -138,9 +138,9 @@ export class ForClientComponent implements OnInit {
 
       this.assignCommentsToPosition();
 
-      this.selectedBookmark = this.set.bookmarks[0].id;
-      this.loadContentForBookmark(this.selectedBookmark);
-
+      this.selectedBookmarkId = this.set.bookmarks[0].id;
+      this.loadContentForBookmark(this.selectedBookmarkId);
+      console.log(this.set);
       this.files = (this.set.files || []).filter(
         (item) => item.dir !== EFileDirectoryList.working
       );
@@ -177,7 +177,7 @@ export class ForClientComponent implements OnInit {
   }
 
   loadContentForBookmark(bookmarkId: number) {
-    this.selectedBookmark = bookmarkId;
+    this.selectedBookmarkId = bookmarkId;
 
     this.positionsFromBookmark = this.positionsWithBadge
       .filter((p) => p.bookmarkId?.id === bookmarkId)

@@ -111,6 +111,10 @@ h3 {
   background-color: var(--accent-color-07) !important;
 }
 
+.mobile-bookmark-name {
+  display: none;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .header {
@@ -235,6 +239,16 @@ h3 {
 
   .mobile-menu-list li:hover {
     color: var(--accent-color-08);
+  }
+
+  .mobile-bookmark-name {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 10px;
+    color: var(--accent-color-17);
+    background-color: var(--accent-color-04);
+    border-bottom: 3px solid var(--accent-color-09);
   }
 }
 

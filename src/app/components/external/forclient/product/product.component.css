@@ -5,7 +5,6 @@
   background-color: var(--accent-color-01);
   border-bottom: 3px solid var(--accent-color-09);
   gap: 0px;
-  display: none;
 }
 
 .product-lp {

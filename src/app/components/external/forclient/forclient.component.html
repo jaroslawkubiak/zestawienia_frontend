@@ -83,7 +83,7 @@
     </div>
   </div>
   <div class="set-content">
-    <p-tabs [value]="selectedBookmark" scrollable>
+    <p-tabs [value]="selectedBookmarkId" scrollable>
       <p-tablist>
         @for (bookmark of set.bookmarks; track bookmark.id) {
         <p-tab
@@ -96,12 +96,15 @@
       <p-tabpanels>
         @for (bookmark of set.bookmarks; track bookmark.id) {
         <p-tabpanel [value]="bookmark.id">
+          <div class="mobile-bookmark-name">
+            {{ bookmark.name }}
+          </div>
           <!-- bookmark = summary -->
-          @if(selectedBookmark === 1) {
-          <!-- <app-summary [set]="set" [positions]="positions"></app-summary> -->
+          @if(selectedBookmarkId === 1) {
+          <app-summary [set]="set" [positions]="positions"></app-summary>
           } @else {
           <!-- other bookmarks -->
-          <ng-container *ngIf="selectedBookmark === bookmark.id">
+          <ng-container *ngIf="selectedBookmarkId === bookmark.id">
             <li *ngFor="let pos of positionsFromBookmark; let i = index">
               <app-product
                 [position]="pos"
