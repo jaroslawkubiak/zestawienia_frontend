@@ -140,7 +140,7 @@ export class ForClientComponent implements OnInit {
 
       this.selectedBookmarkId = this.set.bookmarks[0].id;
       this.loadContentForBookmark(this.selectedBookmarkId);
-      console.log(this.set);
+
       this.files = (this.set.files || []).filter(
         (item) => item.dir !== EFileDirectoryList.working
       );

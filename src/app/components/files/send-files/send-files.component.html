@@ -1,10 +1,19 @@
 <p-dialog
-  header="Dołącz pliki do zestawienia: {{ setName }}"
+  [style]="{ width: '100rem' }"
+  [breakpoints]="{
+    '640px': '100vw'
+  }"
   [modal]="true"
   [(visible)]="showSendFilesDialog"
-  [style]="{ width: '100rem' }"
   [dismissableMask]="true"
 >
+  <ng-template pTemplate="header">
+    <span class="dialog-header" *ngIf="!isMobile"
+      >Prześlij pliki do zestawienia: {{ setName }}</span
+    >
+    <span class="dialog-header" *ngIf="isMobile">Pliki: {{ setName }}</span>
+  </ng-template>
+
   <p-progressBar [value]="uploadProgress"></p-progressBar>
   <div class="directory-wrapper" *ngIf="who === 'user'">
     <label for="directory" class="label">Wybierz katalog docelowy</label>

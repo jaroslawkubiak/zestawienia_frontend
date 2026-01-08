@@ -1,3 +1,4 @@
+import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import {
@@ -39,8 +40,16 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 export class SendFilesComponent {
   constructor(
     private filesService: FilesService,
-    private notificationService: NotificationService
-  ) {}
+    private notificationService: NotificationService,
+    private breakpointObserver: BreakpointObserver
+  ) {
+    this.breakpointObserver
+      .observe(['(max-width: 640px)'])
+      .subscribe((result) => {
+        this.isMobile = result.matches;
+      });
+  }
+
   @Input() who!: 'user' | 'client';
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
   showSendFilesDialog = false;
@@ -53,6 +62,7 @@ export class SendFilesComponent {
   fileLimit = 20;
   selectedDirectory!: IFileDirectory;
   directoryList: IFileDirectory[] = FileDirectoryList;
+  isMobile = false;
 
   chooseButtonProps: any = {
     severity: 'primary',
