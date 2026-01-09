@@ -92,6 +92,14 @@
   z-index: 9999;
   width: 750px !important;
 }
+
+.delete-file-wrapper span {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .mobile-full-dialog.p-dialog {
