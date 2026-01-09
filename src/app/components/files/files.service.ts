@@ -4,6 +4,7 @@ import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { NotificationService } from '../../services/notification.service';
 import { IFileFullDetails } from './types/IFileFullDetails';
 
 @Injectable({
@@ -13,9 +14,13 @@ export class FilesService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private notificationService: NotificationService
+  ) {}
 
-  // save created pdf from set
+  // save created zip from set files
   downloadFiles(ids: number[]): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
@@ -68,19 +73,21 @@ export class FilesService {
     );
   }
 
-  // download file as blob
-  downloadFile(url: string): Observable<Blob> {
-    return this.http.get(url, {
-      headers: new HttpHeaders(),
-      responseType: 'blob',
-    });
-  }
-
   // download file and save on client
   downloadAndSaveFile(file: IFileFullDetails): void {
-    const url = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
-    this.downloadFile(url).subscribe((fileBlob: Blob) => {
-      saveAs(fileBlob, file.fileName);
+    const url = `${environment.API_URL}/files/download/${file.setId.id}/${file.id}`;
+
+    this.http.get(url, { responseType: 'blob' }).subscribe({
+      next: (fileBlob) => {
+        saveAs(fileBlob, file.fileName);
+      },
+      error: async (err) => {
+        if (err.error instanceof Blob) {
+          const text = await err.error.text();
+          const json = JSON.parse(text);
+          this.notificationService.showNotification('error', json.message);
+        }
+      },
     });
   }
 
