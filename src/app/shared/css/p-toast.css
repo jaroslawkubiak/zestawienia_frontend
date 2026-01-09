@@ -1,7 +1,7 @@
 /* notification position and size */
 ::ng-deep .p-toast {
   top: 20px !important;
-  width: 400px !important;
+  width: 350px !important;
 }
 /* header font size */
 ::ng-deep .p-toast-summary {
@@ -18,12 +18,20 @@
 }
 /* flex gap */
 ::ng-deep .p-toast-message-content {
-  gap: 25px !important;
+  gap: 15px !important;
+  align-items: flex-start;
+  justify-content: center;
 }
 /* left icon size */
 ::ng-deep .p-iconwrapper svg {
   width: 20px !important;
   height: 20px !important;
+}
+/* left icon size */
+::ng-deep .p-toast-message-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ### success notification ### */
