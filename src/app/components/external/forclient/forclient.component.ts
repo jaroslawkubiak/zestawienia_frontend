@@ -6,6 +6,7 @@ import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin, map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { NotificationService } from '../../../services/notification.service';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -25,7 +26,6 @@ import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
 import { ProductComponent } from './product/product.component';
-import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-setforclient',
@@ -245,7 +245,7 @@ export class ForClientComponent implements OnInit {
 
   // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    this.set.files = [...this.set.files || [], ...uploadedFiles];
+    this.set.files = [...(this.set.files || []), ...uploadedFiles];
     this.filesCount;
   }
 

@@ -34,5 +34,22 @@ export class ConfirmationModalService {
       rejectVisible: rejectVisible,
       accept,
     });
+
+    // for mobile need to set width manually
+    setTimeout(() => {
+      const dialogEl = document.querySelector(
+        '.p-confirmdialog.p-dialog'
+      ) as HTMLElement;
+      if (dialogEl) {
+        dialogEl.style.visibility = 'hidden';
+
+        if (window.innerWidth <= 768) {
+          dialogEl.style.width = '90vw';
+          dialogEl.style.maxWidth = '90vw';
+        }
+
+        dialogEl.style.visibility = 'visible';
+      }
+    }, 0);
   }
 }

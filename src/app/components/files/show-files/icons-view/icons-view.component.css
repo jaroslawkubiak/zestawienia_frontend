@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 25px;
-  margin: 0 auto;
 }
 
 .file-container .file-item {
@@ -80,9 +79,9 @@ h3 i {
   }
 
   .icons-top-action-btns {
-    gap: 10px;
+    gap: 20px;
     top: 14px;
-    right: 130px;
+    right: 60px;
   }
 
   .file-container .file-item {

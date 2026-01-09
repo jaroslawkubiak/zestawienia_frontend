@@ -156,7 +156,8 @@ export class ShowFilesComponent implements OnInit {
     const confirmMessage: IConfirmationMessage = {
       header: 'Potwierdź usunięcie',
       message: `<div class="delete-file-wrapper">
-      Czy na pewno usunąć plik ${file.fileName}? 
+      <span>Czy na pewno usunąć plik?</span>
+      <span>${file.fileName}</span>
       ${deleteFilePreview}
       </div>`,
       accept,

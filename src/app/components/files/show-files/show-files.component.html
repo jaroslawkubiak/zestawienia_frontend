@@ -16,7 +16,7 @@
   </ng-template>
 
   <div class="file-wrapper">
-    <div class="top-action-btns">
+    <div class="top-action-btns" *ngIf="!isMobile">
       <i
         class="pi pi-th-large"
         (click)="changeView('icons')"
