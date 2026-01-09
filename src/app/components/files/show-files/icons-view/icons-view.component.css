@@ -10,12 +10,12 @@
   height: 300px;
   padding: 10px 5px;
   border-radius: 5px;
-  background-color: var(--accent-color-03) !important;
-  box-shadow: 5px 5px 10px -4px #3bbfa150;
+  background-color: var(--neutral-color-01);
+  box-shadow: 5px 5px 10px -4px #9c9c9c50;
 }
 
 .file-container .file-item:hover {
-  box-shadow: 5px 5px 15px -4px #2b8a7580;
+  box-shadow: 0px 0px 10px -1px #000000;
 }
 
 .file-container .file-item i {

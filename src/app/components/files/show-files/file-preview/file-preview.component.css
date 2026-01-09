@@ -66,6 +66,24 @@
   width: 100%;
 }
 
+.p-image-preview {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 100vh !important;
+  overflow: visible !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-image-preview img {
+  width: auto !important;
+  max-width: 100% !important;
+  height: auto !important;
+  max-height: 90vh !important;
+  object-fit: contain !important;
+}
 /* MOBILE  */
 @media (max-width: 768px) {
   .action-btns {
