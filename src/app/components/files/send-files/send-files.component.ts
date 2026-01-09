@@ -20,6 +20,7 @@ import { FilesService } from '../files.service';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
 import { IFileDirectory } from '../types/IFileDirectory';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-send-files',
@@ -39,6 +40,7 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 export class SendFilesComponent {
   constructor(
     private filesService: FilesService,
+    private notificationService: NotificationService,
     private breakpointObserver: BreakpointObserver
   ) {
     this.breakpointObserver
@@ -50,7 +52,6 @@ export class SendFilesComponent {
 
   @Input() who!: 'user' | 'client';
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
-  @Output() uploadFinished = new EventEmitter<string>();
 
   showSendFilesDialog = false;
   setId!: number;
@@ -120,35 +121,60 @@ export class SendFilesComponent {
   }
 
   uploadFiles(event: FileUploadHandlerEvent) {
-    if (this.selectedDirectory) {
-      const files = event.files;
-      const formData = new FormData();
-      const uploadFolder =
-        this.who === 'user'
-          ? this.selectedDirectory.label
-          : EFileDirectoryList['inspirations'];
+    if (!this.selectedDirectory) {
+      return;
+    }
 
-      for (let file of files) {
-        formData.append('files', file, file.name);
-      }
+    const files = event.files;
+    const formData = new FormData();
+    const uploadFolder =
+      this.who === 'user'
+        ? this.selectedDirectory.label
+        : EFileDirectoryList['inspirations'];
 
-      this.filesService
-        .saveFile(+this.setId, this.setHash, formData, uploadFolder)
-        .subscribe((event) => {
+    for (let file of files) {
+      formData.append('files', file, file.name);
+    }
+
+    this.filesService
+      .saveFile(+this.setId, this.setHash, formData, uploadFolder)
+      .subscribe({
+        next: (event) => {
           if (event.type === HttpEventType.UploadProgress && event.total) {
-            const percentDone = Math.round((100 * event.loaded) / event.total);
-            this.uploadProgress = percentDone;
-          } else if (event.type === HttpEventType.Response) {
+            this.uploadProgress = Math.round(
+              (100 * event.loaded) / event.total
+            );
+          }
+
+          if (event.type === HttpEventType.Response) {
             this.fileUploader.clear();
             this.uploadProgress = 0;
             this.showSendFilesDialog = false;
 
             const files: IFileFullDetails[] = event.body.files;
             this.updateFileList.emit(files);
-            //emit info about finish to parent
-            this.uploadFinished.emit(event.body.message);
+
+            // success - file saved
+            this.notificationService.showNotification(
+              'success',
+              event.body.message
+            );
           }
-        });
-    }
+        },
+
+        error: (err) => {
+          this.uploadProgress = 0;
+
+          let message = 'Wystąpił błąd podczas przesyłania pliku';
+
+          if (err.error?.message) {
+            message = Array.isArray(err.error.message)
+              ? err.error.message.join(', ')
+              : err.error.message;
+          }
+
+          this.notificationService.showNotification('error', message);
+        },
+      });
   }
 }

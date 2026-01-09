@@ -7,7 +7,7 @@ export interface IFileFullDetails {
   type: string;
   path: string;
   dir: EFileDirectoryList;
-  description: string;
+  originalName: string;
   size: number;
   width: number;
   height: number;

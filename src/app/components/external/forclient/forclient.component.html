@@ -1,8 +1,4 @@
-<app-send-files
-  who="client"
-  (uploadFinished)="uploadFinished($event)"
-  (updateFileList)="updateAttachedFiles($event)"
-/>
+<app-send-files who="client" (updateFileList)="updateAttachedFiles($event)" />
 <app-show-files who="client" />
 
 <div class="container" *ngIf="set">
@@ -86,7 +82,7 @@
       </div>
     </div>
   </div>
-  
+
   <div class="set-content">
     <p-tabs [value]="selectedBookmarkId" scrollable>
       <p-tablist>

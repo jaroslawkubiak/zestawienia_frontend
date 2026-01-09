@@ -6,7 +6,6 @@ import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { forkJoin, map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { NotificationService } from '../../../services/notification.service';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -63,7 +62,6 @@ export class ForClientComponent implements OnInit {
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
   constructor(
-    private notificationService: NotificationService,
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
@@ -247,9 +245,5 @@ export class ForClientComponent implements OnInit {
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     this.set.files = [...(this.set.files || []), ...uploadedFiles];
     this.filesCount;
-  }
-
-  uploadFinished(message: string) {
-    this.notificationService.showNotification('info', message);
   }
 }

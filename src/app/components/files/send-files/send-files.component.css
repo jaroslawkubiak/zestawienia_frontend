@@ -97,3 +97,17 @@
 .select-span i {
   font-size: 16px;
 }
+
+.p-message-content {
+  background-color: var(--error-color);
+  border-radius: 5px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-message-text {
+  color: var(--white-color);
+  font-size: 2rem;
+}
