@@ -55,6 +55,29 @@ The frontend serves as the **primary user interface** for:
 
 ---
 
+# SCREENSHOTS
+
+<table width="600" border="0">
+  <tr>
+    <td width="50%" valign="top">
+    <p>Set edit view on summary tab</p>
+    <img src="example-files/screenshots/set-edit-summary-tab.jpg" width="400" alt="Set edit view on bookmark page"><br><br><br><br>
+    <p>Set edit view - bathroom tab</p>
+    <img src="example-files/screenshots/set-edit-bathroom-tab.jpg" width="400" alt="Set edit view - bathroom tab"><br><br><br><br>
+    <p>Status select menu - every status has different row color</p>
+    <img src="example-files/screenshots/status-list.jpg" width="400" alt="Status select menu"><br><br><br><br>
+    </td>
+    <td width="50%" valign="top">
+    <p>Client list view</p>
+    <img src="example-files/screenshots/client-list-view.jpg" width="400" alt="Client list view"><br><br><br><br>
+    <p>Edit client modal</p>
+    <img src="example-files/screenshots/client-edit-page.jpg" width="400" alt="Edit client modal"><br><br><br><br>
+    <p>Notification popup</p>
+    <img src="example-files/screenshots/notification-popup.jpg" width="400" alt="Notification popup">
+    </td>
+  </tr>
+</table>
+
 ### 🖼️ Media & Attachments
 
 - pasting images directly from the clipboard,
@@ -65,6 +88,27 @@ The frontend serves as the **primary user interface** for:
 
 ---
 
+# SCREENSHOTS
+
+<table width="600">
+  <tr>
+    <td width="50%" valign="top">
+    <p>Send files modal with directory to select</p>
+    <img src="example-files/screenshots/send-files-modal.jpg" width="400" alt="Send files modal with directory to select"><br><br><br><br>
+    <p>Send files modal with selected files to send</p>
+    <img src="example-files/screenshots/send-files-modal-with-selected-files.jpg" width="400" alt="Send files modal with selected files to send">
+    </td>
+    <td width="50%" valign="top">
+    <p>Show files modal - icon view</p>
+    <img src="example-files/screenshots/show-files-modal-icon-view.jpg" width="400" alt="Show files modal - icon view"><br><br><br><br>
+    <p>Show files modal - list view</p>
+    <img src="example-files/screenshots/show-files-modal-list-view.jpg" width="400" alt="Show files modal - list view"><br><br><br><br>
+    <p>Delete secelted files</p>
+    <img src="example-files/screenshots/delete-files-confirmation-popup.jpg" width="400" alt="Delete selected files">
+    </td>
+  </tr>
+</table>
+
 ### 💬 Comment System
 
 - comments assigned to specific items,
@@ -74,6 +118,16 @@ The frontend serves as the **primary user interface** for:
 - chat-like threaded conversations.
 
 ---
+
+# SCREENSHOTS
+
+<table width="600">
+  <tr>
+    <td width="100%" valign="top">
+    <p>Comments section on every set position - works like text messages</p>
+    <img src="example-files/screenshots/comments-on-every-position.jpg" width="400" alt="Comments section on every set positiont">
+  </tr>
+</table>
 
 ### 📄 PDF Generation
 
@@ -106,6 +160,20 @@ The frontend serves as the **primary user interface** for:
 - full browsing functionality for project specifications.
 
 ---
+# SCREENSHOTS
+
+<table width="600" border="0">
+  <tr>
+    <td width="100%" valign="top">
+    <p>Link for client in mobile view</p>
+    <img src="example-files/screenshots/client-mobile-view.jpg" width="400" alt="Link for client in mobile view"><br><br><br><br>
+    <p>Set menu - mobile view</p>
+    <img src="example-files/screenshots/client-mobile-menu.jpg" width="400" alt="Set menu - mobile view"><br><br><br><br>
+    <p>Show attachments - mobile view</p>
+    <img src="example-files/screenshots/client-mobile-view-show-files.jpg" width="400" alt="Show attachments - mobile view">
+    </td>
+  </tr>
+</table>
 
 ## 👁️ Public Views (No Login Required)
 
