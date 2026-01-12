@@ -271,16 +271,18 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   //update set file list
   updateAttachedFiles(files: IFileFullDetails[]): void {
-    const currentFileCount = this.set?.files?.length || 0;
-    this.attachmentBadge = currentFileCount + files.length;
+    this.set.files = [...(this.set.files ?? []), ...files];
     this.updateMenuItems();
     this.updateFileList.emit(files);
   }
 
   //delete
   onDeleteFile(deletedFiles: IDeletedFiles) {
-    const { files } = deletedFiles;
-    this.attachmentBadge = files.length;
+    const deletedIds = new Set(deletedFiles.files.map((file) => file.id));
+
+    this.set.files = (this.set.files ?? []).filter((file) =>
+      deletedIds.has(file.id)
+    );
     this.updateMenuItems();
   }
 
