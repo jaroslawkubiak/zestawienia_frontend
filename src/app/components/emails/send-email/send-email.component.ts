@@ -30,13 +30,13 @@ import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
 import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
 
 @Component({
-  selector: 'app-sended-emails',
+  selector: 'app-send-email',
   imports: [FormsModule, TooltipModule, SelectModule],
-  templateUrl: './sended-emails.component.html',
-  styleUrl: './sended-emails.component.css',
+  templateUrl: './send-email.component.html',
+  styleUrl: './send-email.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
+export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   private _supplier?: ISupplier;
   @Input() set!: ISet;
   @Input()
@@ -91,7 +91,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     private emailsService: EmailsService,
     private soundService: SoundService,
     private notificationService: NotificationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -129,7 +129,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
     this.newEmail.link = this.emailsService.createExternalLink(
       this.audience,
       this.set.hash,
-      this.supplier ? this.supplier.hash : this.set.clientId.hash
+      this.supplier ? this.supplier.hash : this.set.clientId.hash,
     );
   }
 
@@ -217,7 +217,7 @@ export class EmailSendComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (response) => {
         this.notificationService.showNotification(
           'success',
-          `Email na adres ${response.accepted[0]} został wysłany poprawnie`
+          `Email na adres ${response.accepted[0]} został wysłany poprawnie`,
         );
 
         this.soundService.playSound(SoundType.emailSending);

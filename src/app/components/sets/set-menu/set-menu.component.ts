@@ -20,7 +20,7 @@ import { PdfService } from '../../../services/pdf.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { EmailsService } from '../../emails/email.service';
-import { EmailSendComponent } from '../../emails/sended-emails/sended-emails.component';
+import { SendEmailComponent } from '../../emails/send-email/send-email.component';
 import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
@@ -46,7 +46,7 @@ import { buildSetMenu } from './set-menu.config';
     ShowFilesComponent,
     TooltipModule,
     BadgeModule,
-    EmailSendComponent,
+    SendEmailComponent,
   ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
@@ -81,7 +81,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
     private router: Router,
     private notificationService: NotificationService,
     private emailsService: EmailsService,
-    private pdfService: PdfService
+    private pdfService: PdfService,
   ) {}
 
   ngOnInit() {
@@ -120,14 +120,15 @@ export class SetMenuComponent implements OnChanges, OnInit {
     });
 
     this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
-      uniqueSupplierIds.includes(supplier.id)
+      uniqueSupplierIds.includes(supplier.id),
     );
   }
 
   // finding the last email date and the user sent to the client
   findLastEmailToClient() {
     const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) => email.client?.id === this.set.clientId?.id
+      (email: ISendedEmailsFromDB) =>
+        email.client?.id === this.set.clientId?.id,
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -139,7 +140,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // finding the last email date and the user sent to the supplier
   findLastEmailToSupplier(supplierId: number) {
     const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId
+      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId,
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -204,14 +205,14 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // change data after set header
   onSetHeaderChange(headerData: ISetHeader): void {
     const originalMap = new Map(
-      this.set.bookmarks.map((item: IBookmark) => [item.id, item])
+      this.set.bookmarks.map((item: IBookmark) => [item.id, item]),
     );
 
     this.set.bookmarks = headerData.selectedBookmarks.map(
       (item: IBookmark) => ({
         ...item,
         width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
-      })
+      }),
     );
     this.updateBookmarks.emit();
 
@@ -221,7 +222,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
     this.notificationService.showNotification(
       'info',
-      'Nagłówek zestawienia został zmieniony'
+      'Nagłówek zestawienia został zmieniony',
     );
     this.editStarted.emit();
   }
@@ -231,7 +232,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(
       this.set.id,
       this.set.hash,
-      this.set.name
+      this.set.name,
     );
   }
 
@@ -281,7 +282,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
     const deletedIds = new Set(deletedFiles.files.map((file) => file.id));
 
     this.set.files = (this.set.files ?? []).filter((file) =>
-      deletedIds.has(file.id)
+      deletedIds.has(file.id),
     );
     this.updateMenuItems();
   }
@@ -312,8 +313,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
         .then(() =>
           this.notificationService.showNotification(
             'info',
-            'Link został skopiowany'
-          )
+            'Link został skopiowany',
+          ),
         )
         .catch(() => this.fallbackCopy(link));
     } else {

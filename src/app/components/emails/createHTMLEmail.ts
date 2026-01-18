@@ -1,7 +1,7 @@
 import { GDPRClause } from './GDPRclause';
 import { IHTMLTemplateOptions } from './types/IHTMLTemplateOptions';
 
-const ASSETS_URL = 'https://zurawickidesign.pl/assets/images';
+const ASSETS_URL = 'https://zestawienia.zurawickidesign.pl/assets/images';
 const currentYear = new Date().getFullYear();
 const socialColor = 'accent'; // black or accent
 

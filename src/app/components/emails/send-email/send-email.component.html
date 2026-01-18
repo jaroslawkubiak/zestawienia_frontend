@@ -2,7 +2,10 @@
   <div class="email-template-wrapper">
     <p>
       Wybierz typ wiadomości dla
-      {{ this.audience === "supplier" ? `dostawcy ${supplier?.company}` : "klienta"
+      {{
+        this.audience === "supplier"
+          ? `dostawcy ${supplier?.company}`
+          : "klienta"
       }}:
     </p>
     <p-select
