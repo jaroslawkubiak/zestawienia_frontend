@@ -51,7 +51,7 @@ export class ShowFilesComponent implements OnInit {
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
     private cd: ChangeDetectorRef,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.breakpointObserver
       .observe(['(max-width: 640px)'])
@@ -129,7 +129,7 @@ export class ShowFilesComponent implements OnInit {
         next: (response) => {
           this.notificationService.showNotification(
             response.severity,
-            response.message
+            response.message,
           );
           this.files = this.files.filter((file) => file.id !== id);
           this.uniqueDir = this.getUniqueDirectory();
@@ -187,7 +187,7 @@ export class ShowFilesComponent implements OnInit {
 
           this.notificationService.showNotification(
             'success',
-            `Pomyślnie usunięto ${ids.length} ${messageOptions}`
+            `Pomyślnie usunięto ${ids.length} ${messageOptions}`,
           );
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
@@ -282,7 +282,7 @@ export class ShowFilesComponent implements OnInit {
     const dirsSet = new Set(this.files.map((f) => f.dir));
 
     return FileDirectoryList.map((fd) => fd.label as EFileDirectoryList).filter(
-      (label) => dirsSet.has(label)
+      (label) => dirsSet.has(label),
     );
   }
 
@@ -293,7 +293,7 @@ export class ShowFilesComponent implements OnInit {
     // Separate images and PDFs
     const images = filesToProcess.filter((f) => isImage(f));
     const pdfs = filesToProcess.filter((f) =>
-      f.fileName.toLowerCase().endsWith('.pdf')
+      f.fileName.toLowerCase().endsWith('.pdf'),
     );
 
     // Process images - set thumbnail URL directly
@@ -355,7 +355,7 @@ export class ShowFilesComponent implements OnInit {
           .catch((error: any) => {
             // Silently skip PDF thumbnail if it fails
             console.debug(
-              `Could not generate PDF thumbnail for: ${file.fileName}`
+              `Could not generate PDF thumbnail for: ${file.fileName}`,
             );
           });
       })

@@ -65,7 +65,7 @@ export class ForClientComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -81,9 +81,9 @@ export class ForClientComponent implements OnInit {
           }
           return this.editSetService.validateSetAndHashForClient(
             setHash,
-            clientHash
+            clientHash,
           );
-        })
+        }),
       )
       .subscribe({
         next: (response) => {
@@ -111,7 +111,7 @@ export class ForClientComponent implements OnInit {
       this.positions = positions.map((pos) => {
         const statusObj: IPositionStatus =
           PositionStatusList.find(
-            (statusItem) => pos.status === statusItem.label
+            (statusItem) => pos.status === statusItem.label,
           ) || PositionStatusList[0];
 
         const brutto = calculateBrutto(pos.netto);
@@ -142,7 +142,7 @@ export class ForClientComponent implements OnInit {
       this.loadContentForBookmark(this.selectedBookmarkId);
 
       this.files = (this.set.files || []).filter(
-        (item) => item.dir !== EFileDirectoryList.working
+        (item) => item.dir !== EFileDirectoryList.working,
       );
 
       this.uniquePositionIds = [
@@ -152,12 +152,15 @@ export class ForClientComponent implements OnInit {
   }
 
   assignCommentsToPosition() {
-    const map = this.comments.reduce((acc, comment) => {
-      const id = comment.positionId?.id;
-      if (!acc[id]) acc[id] = [];
-      acc[id].push(comment);
-      return acc;
-    }, {} as Record<number, IComment[]>);
+    const map = this.comments.reduce(
+      (acc, comment) => {
+        const id = comment.positionId?.id;
+        if (!acc[id]) acc[id] = [];
+        acc[id].push(comment);
+        return acc;
+      },
+      {} as Record<number, IComment[]>,
+    );
 
     this.positionsWithBadge = this.positions.map((position) => {
       const relatedComments = map[position.id] || [];
@@ -207,8 +210,12 @@ export class ForClientComponent implements OnInit {
   }
 
   showAttachedFiles() {
-    const preparedSet = { ...this.set, files: this.files };
-    this.dialogShowFilesComponent.showDialog(preparedSet);
+    this.dialogShowFilesComponent.showDialog({
+      id: this.set.id,
+      hash: this.set.hash,
+      name: this.set.name,
+      files: this.files,
+    } as ISet);
   }
 
   openSendFilesDialog(setId: number, setHash: string, setName: string) {
@@ -217,15 +224,14 @@ export class ForClientComponent implements OnInit {
 
   get filesCount(): number {
     const files =
-      this.set?.files?.filter(
-        (file) => file.dir !== EFileDirectoryList.working
-      ) ?? [];
+      this.files.filter((file) => file.dir !== EFileDirectoryList.working) ??
+      [];
 
     return files.length;
   }
 
-  get filesSeverity(): 'danger' | 'secondary' {
-    return this.filesCount === 0 ? 'secondary' : 'danger';
+  get filesSeverity(): 'contrast' | 'secondary' {
+    return this.filesCount === 0 ? 'secondary' : 'contrast';
   }
 
   toggleMobileMenu() {
@@ -243,7 +249,7 @@ export class ForClientComponent implements OnInit {
 
   // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    this.set.files = [...(this.set.files || []), ...uploadedFiles];
+    this.files = [...(this.set.files || []), ...uploadedFiles];
     this.filesCount;
   }
 }

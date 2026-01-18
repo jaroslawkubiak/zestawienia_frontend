@@ -41,7 +41,7 @@ export class SendFilesComponent {
   constructor(
     private filesService: FilesService,
     private notificationService: NotificationService,
-    private breakpointObserver: BreakpointObserver
+    private breakpointObserver: BreakpointObserver,
   ) {
     this.breakpointObserver
       .observe(['(max-width: 640px)'])
@@ -82,7 +82,7 @@ export class SendFilesComponent {
   onSelectOpen() {
     requestAnimationFrame(() => {
       const panel = document.querySelector(
-        '.p-select-overlay .p-select-list-container'
+        '.p-select-overlay .p-select-list-container',
       ) as HTMLElement;
 
       if (panel) {
@@ -142,7 +142,7 @@ export class SendFilesComponent {
         next: (event) => {
           if (event.type === HttpEventType.UploadProgress && event.total) {
             this.uploadProgress = Math.round(
-              (100 * event.loaded) / event.total
+              (100 * event.loaded) / event.total,
             );
           }
 
@@ -157,7 +157,7 @@ export class SendFilesComponent {
             // success - file saved
             this.notificationService.showNotification(
               'success',
-              event.body.message
+              event.body.message,
             );
           }
         },
