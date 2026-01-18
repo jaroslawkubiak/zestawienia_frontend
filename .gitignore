@@ -2,10 +2,7 @@
 
 # Compiled output
 /dist
-/tmp
-/out-tsc
-/bazel-out
-/help-files
+/demo
 
 # Node
 /node_modules
