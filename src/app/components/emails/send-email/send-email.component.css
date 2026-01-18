@@ -1,19 +1,19 @@
-.container {
+.send-email-container {
   width: 100%;
   border: 1px solid var(--accent-color-13);
 }
 
-.header {
+.send-email-header {
   display: flex;
   flex-direction: column;
   align-items: start;
 }
 
-.header p {
+.send-email-header p {
   margin: 0;
 }
 
-.header-cell {
+.send-email-header-cell {
   display: grid;
   grid-template-columns: 110px auto;
   width: 100%;
@@ -21,7 +21,7 @@
   border-bottom: 1px solid var(--accent-color-13);
 }
 
-.title {
+.send-email-title {
   font-size: 1.8rem;
   padding: 0.75rem 1.5rem;
   background-color: var(--accent-color-13);
@@ -29,7 +29,7 @@
   border-bottom: 1px solid var(--secondary-color);
 }
 
-.email {
+.send-email-email {
   display: flex;
   justify-content: start;
   align-items: center;
@@ -38,34 +38,34 @@
   background-color: var(--accent-color-03);
 }
 
-.content-container {
+.send-email-content-container {
   width: 100%;
 }
 
-.editor {
+.send-email-editor {
   width: 100%;
   height: 300px;
 }
 
-label {
+.send-email-label {
   display: flex;
   justify-content: center;
   font-weight: 700;
   padding: 1.5rem;
+  position: relative;
 }
 
-.label-edit {
+.send-email-label-edit {
   color: var(--error-color);
   background-color: var(--accent-color-20);
 }
 
-.label-preview {
+.send-email-label-preview {
   color: var(--secondary-color);
   background-color: var(--accent-color-13);
-  position: relative;
 }
 
-textarea {
+.send-email-textarea {
   all: unset !important;
   padding: 10px !important;
   width: calc(100% - 20px) !important;
@@ -77,12 +77,12 @@ textarea {
   background-color: var(--edit-color) !important;
 }
 
-.preview-container {
+.send-email-preview-container {
   position: relative;
   width: 100%;
 }
 
-.footer {
+.send-email-footer {
   position: absolute;
   top: 0;
   right: 0;
@@ -90,26 +90,30 @@ textarea {
   background-color: var(--accent-color-13);
 }
 
-.footer i {
+.send-email-footer i {
   font-size: 3rem;
   color: var(--secondary-color);
 }
 
-.footer i:hover {
+.send-email-footer i:hover {
   color: var(--error-color);
 }
 
-.email-preview-iframe {
+.send-email-preview-iframe {
   width: 100%;
   height: 600px;
   border: none;
 }
 
-.email-template-wrapper {
+.send-email-template-wrapper {
   display: flex;
   gap: 10px;
   align-items: center;
   justify-content: flex-end;
   background-color: var(--accent-color-13);
   color: var(--secondary-color);
+}
+
+.send-email-to-off i {
+  color: var(--error-color);
 }

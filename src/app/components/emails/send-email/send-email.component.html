@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="email-template-wrapper">
+<div class="send-email-container">
+  <div class="send-email-template-wrapper">
     <p>
       Wybierz typ wiadomości dla
       {{
@@ -17,24 +17,27 @@
     >
     </p-select>
   </div>
-  <div class="header">
-    <div class="header-cell">
-      <p class="title flex-center">Nadawca</p>
-      <p class="email">{{ senderEmail }}</p>
+  <div class="send-email-header">
+    <div class="send-email-header-cell">
+      <p class="send-email-title flex-center">Nadawca</p>
+      <p class="send-email-email">{{ senderEmail }}</p>
     </div>
-    <div class="header-cell">
-      <p class="title flex-center">Odbiorca</p>
-      <p class="email">{{ newEmail.to }}</p>
+    <div class="send-email-header-cell">
+      <p class="send-email-title flex-center">Odbiorca</p>
+      <p class="send-email-email">{{ newEmail.to }}</p>
     </div>
-    <div class="header-cell">
-      <p class="title flex-center">Temat</p>
-      <p class="email">{{ newEmail.subject }}</p>
+    <div class="send-email-header-cell">
+      <p class="send-email-title flex-center">Temat</p>
+      <p class="send-email-email">{{ newEmail.subject }}</p>
     </div>
   </div>
-  <div class="content-container">
-    <div class="editor">
-      <label for="message" class="label-edit">Edytuj treść wiadomości</label>
+  <div class="send-email-content-container">
+    <div class="send-email-editor">
+      <label for="message" class="send-email-label send-email-label-edit"
+        >Edytuj treść wiadomości</label
+      >
       <textarea
+        class="send-email-textarea"
         id="message"
         [(ngModel)]="emailMessage"
         (ngModelChange)="onMessageChange($event)"
@@ -42,18 +45,27 @@
       ></textarea>
     </div>
 
-    <div class="preview-container">
-      <label class="label-preview">Podgląd treści wiadomości</label>
+    <div class="send-email-preview-container">
+      <label class="send-email-label send-email-label-preview"
+        >Podgląd treści wiadomości</label
+      >
 
-      <div class="footer">
+      <div
+        class="send-email-footer {{
+          emailNofitication ? '' : 'send-email-to-off'
+        }}"
+      >
         <i
           class="pi pi-send"
           (click)="sendEmail()"
-          pTooltip="Wyślij e-mail"
+          tooltipPosition="left"
+          pTooltip="{{
+            emailNofitication ? 'Wyślij e-mail' : 'Wysyłanie wyłączone'
+          }} "
         ></i>
       </div>
 
-      <iframe #iframeRef class="email-preview-iframe"></iframe>
+      <iframe #iframeRef class="send-email-preview-iframe"></iframe>
     </div>
   </div>
 </div>

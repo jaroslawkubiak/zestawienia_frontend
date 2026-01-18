@@ -13,14 +13,17 @@ import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
 export class EmailsService {
   userId = () => this.authService.getUserId();
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   getEmails(): Observable<ISendedEmailsFromDB[]> {
     return this.http.get<ISendedEmailsFromDB[]>(
       `${environment.API_URL}/email`,
       {
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
     );
   }
 
@@ -29,7 +32,7 @@ export class EmailsService {
       `${environment.API_URL}/email/${setId}`,
       {
         headers: { 'Content-Type': 'application/json' },
-      }
+      },
     );
   }
 
@@ -47,7 +50,7 @@ export class EmailsService {
   createExternalLink(
     type: EmailAudience,
     setHash: string,
-    hash: string
+    hash: string,
   ): string {
     return `${environment.FRONT_URL}/open-${type}/${setHash}/${hash}`;
   }

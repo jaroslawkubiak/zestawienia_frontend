@@ -41,10 +41,16 @@ export class SettingsComponent implements OnInit {
         routerLink: 'notification',
         requiredRole: 'admin',
       },
+      {
+        label: 'DB Settings',
+        icon: 'pi pi-database',
+        routerLink: 'db-settings',
+        requiredRole: 'admin',
+      },
     ];
 
     this.items = allItems.filter(
-      (item) => !item.requiredRole || item.requiredRole === role
+      (item) => !item.requiredRole || item.requiredRole === role,
     );
   }
   constructor(private authService: AuthService) {}

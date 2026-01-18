@@ -2,8 +2,8 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { ISetting } from './ISetting';
 import { IChangePassword } from './types/IChangePassword';
+import { DbSettings } from './types/IDbSettings';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +17,29 @@ export class SettingsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getByType(type: string): Observable<ISetting> {
+  getByName(name: string): Observable<DbSettings> {
     return this.http
-      .get<ISetting>(`${environment.API_URL}/settings/${type}`)
+      .get<DbSettings>(`${environment.API_URL}/settings/${name}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  findAll(): Observable<DbSettings[]> {
+    return this.http
+      .get<DbSettings[]>(`${environment.API_URL}/settings`)
       .pipe(catchError(this.handleError));
   }
 
   changePassword(payload: IChangePassword): Observable<{ message: string }> {
     return this.http.post<{ message: string }>(
       `${environment.API_URL}/auth/passwordChange`,
-      payload
+      payload,
+    );
+  }
+
+  saveSettings(payload: DbSettings[]): Observable<{ message: string }> {
+    return this.http.patch<{ message: string }>(
+      `${environment.API_URL}/settings`,
+      payload,
     );
   }
 }

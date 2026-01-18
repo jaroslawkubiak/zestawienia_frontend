@@ -1,0 +1,36 @@
+<form *ngIf="formReady" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="settings-container">
+    <div class="settings-item" *ngFor="let setting of settingList">
+      <label for="{{ setting.name }}" class="settings-label">{{
+        setting.name
+      }}</label>
+      <div class="settings-input-wrapper">
+        <i class="pi pi-asterisk"></i>
+        <input
+          autocomplete="off"
+          type="text"
+          id="{{ setting.name }}"
+          pInputText
+          [formControlName]="setting.name"
+          fluid
+        />
+      </div>
+
+      <p
+        class="settings-error-messages"
+        *ngFor="let error of getFieldErrors(setting.name)"
+      >
+        {{ error }}
+      </p>
+    </div>
+    <div class="settings-submit-wrapper">
+      <p-button
+        label="Zapisz"
+        icon="pi pi-save"
+        type="submit"
+        size="large"
+        [disabled]="form.invalid"
+      />
+    </div>
+  </div>
+</form>

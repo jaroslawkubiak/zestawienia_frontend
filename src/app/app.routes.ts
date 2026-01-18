@@ -9,6 +9,7 @@ import { EditSetComponent } from './components/sets/edit-set/edit-set.component'
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
 import { ColorsComponent } from './components/settings/colors/colors.component';
+import { DbSettingsComponent } from './components/settings/db-settings/db-settings.component';
 import { NotificationComponent } from './components/settings/notification/notification.component';
 import { PasswordChangeComponent } from './components/settings/password-change/password-change.component';
 import { SettingsComponent } from './components/settings/settings.component';
@@ -77,6 +78,10 @@ export const routes: Routes = [
       {
         path: 'colors',
         component: ColorsComponent,
+      },
+      {
+        path: 'db-settings',
+        component: DbSettingsComponent,
       },
     ],
   },

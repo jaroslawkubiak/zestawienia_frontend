@@ -28,6 +28,7 @@ import { EmailDetailsList } from '../EmailDetailsList';
 import { EmailAudience } from '../types/EmailAudience.type';
 import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
 import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
+import { DbSettings } from '../../settings/types/IDbSettings';
 
 @Component({
   selector: 'app-send-email',
@@ -86,6 +87,8 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   templates: (ClientTemplate | SupplierTemplate)[] = [];
   selectedTemplate!: ClientTemplate | SupplierTemplate;
 
+  emailNofitication!: boolean;
+
   constructor(
     private settingsService: SettingsService,
     private emailsService: EmailsService,
@@ -95,11 +98,19 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.settingsService.getByType('senderEmail').subscribe({
-      next: (response: ISetting) => {
+    this.settingsService.getByName('senderEmail').subscribe({
+      next: (response: DbSettings) => {
         if (response) {
           this.senderEmail = response.value;
           this.cd.markForCheck();
+        }
+      },
+    });
+
+    this.settingsService.getByName('email-notification').subscribe({
+      next: (response: DbSettings) => {
+        if (response) {
+          this.emailNofitication = response.value === 'true';
         }
       },
     });
@@ -204,6 +215,16 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   sendEmail() {
+    if (!this.emailNofitication) {
+      this.notificationService.showNotification(
+        'warn',
+        `Wysyłanie emaili jest wyłączone`,
+      );
+      this.hideEmailDialog.emit();
+
+      return;
+    }
+
     this.newEmail.content = this.rawHTML;
     this.newEmail.setId = this.set.id;
 
@@ -217,7 +238,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       next: (response) => {
         this.notificationService.showNotification(
           'success',
-          `Email na adres ${response.accepted[0]} został wysłany poprawnie`,
+          `Email na adres ${response?.accepted[0]} został wysłany poprawnie`,
         );
 
         this.soundService.playSound(SoundType.emailSending);

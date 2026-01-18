@@ -1,0 +1,69 @@
+.settings-container {
+  max-width: 550px;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+}
+
+.settings-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  padding: 0 16px 50px 16px;
+}
+
+.settings-submit-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.settings-label {
+  display: block;
+  color: var(--accent-color-15);
+  font-size: 2rem;
+}
+
+.p-inputtext {
+  all: unset !important;
+  padding: 8px 16px !important;
+  font-size: 2rem !important;
+  border: 1px solid var(--accent-color-15) !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+.p-inputtext:focus,
+.p-inputtext:hover,
+.p-inputtext:active {
+  background-color: var(--accent-color-03) !important;
+}
+
+.button[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.settings-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.settings-item i {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  color: var(--error-color);
+  font-size: 16px;
+}
+
+.settings-error-messages {
+  position: absolute;
+  bottom: 25px;
+  left: 16px;
+  color: var(--error-color);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
