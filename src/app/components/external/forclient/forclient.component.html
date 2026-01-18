@@ -40,9 +40,9 @@
       <!-- mobile menu bookmarks -->
       <ul class="mobile-menu-list">
         @for (bookmark of set.bookmarks; track bookmark.id) {
-        <li (click)="loadContentForBookmark(bookmark.id); toggleMobileMenu()">
-          {{ bookmark.name }}
-        </li>
+          <li (click)="loadContentForBookmark(bookmark.id); toggleMobileMenu()">
+            {{ bookmark.name }}
+          </li>
         }
       </ul>
     </div>
@@ -87,38 +87,42 @@
     <p-tabs [value]="selectedBookmarkId" scrollable>
       <p-tablist>
         @for (bookmark of set.bookmarks; track bookmark.id) {
-        <p-tab
-          [value]="bookmark.id"
-          (click)="loadContentForBookmark(bookmark.id)"
-          >{{ bookmark.name }}</p-tab
-        >
+          <p-tab
+            [value]="bookmark.id"
+            (click)="loadContentForBookmark(bookmark.id)"
+            >{{ bookmark.name }}</p-tab
+          >
         }
       </p-tablist>
       <p-tabpanels>
         @for (bookmark of set.bookmarks; track bookmark.id) {
-        <p-tabpanel [value]="bookmark.id">
-          <div class="mobile-bookmark-name">
-            {{ bookmark.name }}
-          </div>
-          <!-- bookmark = summary -->
-          @if(selectedBookmarkId === 1) {
-          <app-summary [set]="set" [positions]="positions"></app-summary>
-          } @else {
-          <!-- other bookmarks -->
-          <ng-container *ngIf="selectedBookmarkId === bookmark.id">
-            <li *ngFor="let pos of positionsFromBookmark; let i = index">
-              <app-product
-                [position]="pos"
-                [index]="i + 1"
-                [positionsWithBadge]="positionsWithBadge"
-                [comments]="comments"
+          <p-tabpanel [value]="bookmark.id">
+            <div class="mobile-bookmark-name">
+              {{ bookmark.name }}
+            </div>
+            <!-- bookmark = summary -->
+            @if (selectedBookmarkId === 1) {
+              <app-summary
                 [set]="set"
-                [countNewComments]="countNewComments"
+                [positions]="positions"
+                (bookmarkSelected)="loadContentForBookmark($event)"
               />
-            </li>
-          </ng-container>
-          }
-        </p-tabpanel>
+            } @else {
+              <!-- other bookmarks -->
+              <ng-container *ngIf="selectedBookmarkId === bookmark.id">
+                <li *ngFor="let pos of positionsFromBookmark; let i = index">
+                  <app-product
+                    [position]="pos"
+                    [index]="i + 1"
+                    [positionsWithBadge]="positionsWithBadge"
+                    [comments]="comments"
+                    [set]="set"
+                    [countNewComments]="countNewComments"
+                  />
+                </li>
+              </ng-container>
+            }
+          </p-tabpanel>
         }
       </p-tabpanels>
     </p-tabs>

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
@@ -14,6 +14,7 @@ import { SummaryData } from '../types/ISummaryData';
 export class SummaryComponent implements OnInit {
   @Input() set!: ISet;
   @Input() positions!: IPosition[];
+  @Output() bookmarkSelected = new EventEmitter<number>();
   summaryData: SummaryData[] = [];
 
   ngOnInit(): void {
@@ -49,5 +50,9 @@ export class SummaryComponent implements OnInit {
       bookmarkName: 'WARTOŚĆ CAŁKOWITA suma [zł/brutto]',
       value: total,
     });
+  }
+
+  selectBookmark(bookmarkId: number) {
+    this.bookmarkSelected.emit(bookmarkId);
   }
 }

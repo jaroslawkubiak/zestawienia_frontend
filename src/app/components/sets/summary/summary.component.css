@@ -15,6 +15,14 @@
   background-color: var(--table-header-bc);
 }
 
+.bookmark-link {
+  cursor: pointer;
+}
+
+.bookmark-link:hover {
+  font-weight: 700;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .wrapper {

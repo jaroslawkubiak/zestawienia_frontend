@@ -59,3 +59,11 @@
 .textBold {
   font-weight: 700;
 }
+
+.dispay-none {
+  display: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

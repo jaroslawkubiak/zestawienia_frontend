@@ -86,7 +86,7 @@ export class EditSetComponent
     private confirmationModalService: ConfirmationModalService,
     private editSetService: EditSetService,
     private notificationService: NotificationService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -204,7 +204,7 @@ export class EditSetComponent
 
         this.notificationService.showNotification(
           'success',
-          'Dane zestawienia zostały zapisane'
+          'Dane zestawienia zostały zapisane',
         );
       },
       error: (error) => {
@@ -222,7 +222,7 @@ export class EditSetComponent
       .filter(
         (item) =>
           item.bookmarkId?.id === bookmarkId &&
-          !this.positionsTableComponent?.positionToDelete.includes(item.id)
+          !this.positionsTableComponent?.positionToDelete.includes(item.id),
       )
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((item: IPosition, index: number) => {
@@ -252,7 +252,7 @@ export class EditSetComponent
     const allComments: IComment[] = [];
     this.positions = this.positions.map((item: IPosition) => {
       const commentsByPositionId = commentsFromSelectedBookmark.filter(
-        (comment) => comment.positionId.id === item.id
+        (comment) => comment.positionId.id === item.id,
       );
 
       if (commentsByPositionId.length > 0) {
@@ -275,7 +275,7 @@ export class EditSetComponent
   // count new - unreaded comments
   countNewComments(
     comments: IComment[],
-    authorType: 'user' | 'client'
+    authorType: 'user' | 'client',
   ): number {
     const newComments = comments.reduce((acc, item) => {
       if (!item.readByReceiver && item.authorType !== authorType) {
@@ -292,7 +292,7 @@ export class EditSetComponent
     if (this.positionsTableComponent) {
       this.latestFormData = this.positionsTableComponent.formData;
       this.positionsTableComponent.positionToDelete.forEach((n) =>
-        this.positionToDelete.add(n)
+        this.positionToDelete.add(n),
       );
     }
 
@@ -304,7 +304,7 @@ export class EditSetComponent
     this.positions = this.editSetService.updatePosition(
       this.positions,
       this.latestFormData,
-      this.positionToDelete
+      this.positionToDelete,
     );
 
     this.positionsTableComponent?.updateFooter();

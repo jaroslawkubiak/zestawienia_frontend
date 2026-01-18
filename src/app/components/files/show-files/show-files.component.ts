@@ -266,14 +266,10 @@ export class ShowFilesComponent implements OnInit {
     }
   }
 
-  selectAll(event: any) {
+  selectAll(event: PointerEvent): void {
     const checked = (event.target as HTMLInputElement).checked;
 
-    if (checked) {
-      this.selectedFiles = [...this.files];
-    } else {
-      this.selectedFiles = [];
-    }
+    this.selectedFiles = checked ? this.files : [];
 
     this.cd.markForCheck();
   }

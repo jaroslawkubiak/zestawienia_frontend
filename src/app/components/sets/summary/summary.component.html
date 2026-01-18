@@ -14,8 +14,13 @@
     <ng-template #body let-summaryData let-rowIndex="rowIndex">
       <tr class="{{ summaryData.bookmarkId === 1 ? 'background' : '' }}">
         <td class="col-lp background">{{ summaryData.columnLp }}</td>
-        <td class="col-category">{{ summaryData.bookmarkName }}</td>
-        <td class="col-value">{{ summaryData.value | number : "1.2-2" }}</td>
+        <td
+          class="col-category bookmark-link"
+          (click)="selectBookmark(summaryData.bookmarkId)"
+        >
+          {{ summaryData.bookmarkName }}
+        </td>
+        <td class="col-value">{{ summaryData.value | number: "1.2-2" }}</td>
       </tr>
     </ng-template>
   </p-table>

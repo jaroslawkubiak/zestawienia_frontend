@@ -43,51 +43,55 @@
   </div>
   <p-tabs [value]="selectedBookmark" scrollable class="bookmarks">
     <div class="save-btn">
-      @if(setIsDirty) {
-      <p-button
-        label="Zapisz"
-        icon="pi pi-save"
-        size="large"
-        styleClass="btn-xl"
-        (click)="onSubmit()"
-      />
+      @if (setIsDirty) {
+        <p-button
+          label="Zapisz"
+          icon="pi pi-save"
+          size="large"
+          styleClass="btn-xl"
+          (click)="onSubmit()"
+        />
       }
     </div>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
-      <p-tab
-        [value]="bookmark.id"
-        (click)="loadContentForBookmark(bookmark.id)"
-        >{{ bookmark.name }}</p-tab
-      >
+        <p-tab
+          [value]="bookmark.id"
+          (click)="loadContentForBookmark(bookmark.id)"
+          >{{ bookmark.name }}</p-tab
+        >
       }
     </p-tablist>
     <p-tabpanels>
       @for (bookmark of set.bookmarks; track bookmark.id) {
-      <p-tabpanel [value]="bookmark.id">
-        <ng-container *ngIf="selectedBookmark === bookmark.id">
-          <div
-            [ngClass]="{ 'form-dirty': setIsDirty }"
-            class="position-container"
-          >
-            <!-- bookmark = podsumowanie -->
-            @if(bookmark.id === 1) {
-            <app-summary [set]="set" [positions]="positions" />
-            } @else {
-            <app-positions-table
-              [set]="set"
-              [positionsFromBookmark]="positionsFromBookmark"
-              [selectedBookmark]="selectedBookmark"
-              [allSuppliers]="allSuppliers"
-              (isEdited)="isEdited($event)"
-              (updateSetPositions)="updatePositions()"
-              (updateSetComments)="updateCommentsForSet($event)"
-            />
-            }
-          </div>
-          <app-legend></app-legend>
-        </ng-container>
-      </p-tabpanel>
+        <p-tabpanel [value]="bookmark.id">
+          <ng-container *ngIf="selectedBookmark === bookmark.id">
+            <div
+              [ngClass]="{ 'form-dirty': setIsDirty }"
+              class="position-container"
+            >
+              <!-- bookmark = podsumowanie -->
+              @if (bookmark.id === 1) {
+                <app-summary
+                  [set]="set"
+                  [positions]="positions"
+                  (bookmarkSelected)="loadContentForBookmark($event)"
+                />
+              } @else {
+                <app-positions-table
+                  [set]="set"
+                  [positionsFromBookmark]="positionsFromBookmark"
+                  [selectedBookmark]="selectedBookmark"
+                  [allSuppliers]="allSuppliers"
+                  (isEdited)="isEdited($event)"
+                  (updateSetPositions)="updatePositions()"
+                  (updateSetComments)="updateCommentsForSet($event)"
+                />
+              }
+            </div>
+            <app-legend></app-legend>
+          </ng-container>
+        </p-tabpanel>
       }
     </p-tabpanels>
   </p-tabs>
