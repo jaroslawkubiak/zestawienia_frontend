@@ -1,23 +1,33 @@
-<div class="color-container">
-  <p class="color-accent-title">Accent color</p>
-  <div class="color-row">
+<div class="settings-color-container">
+  <p class="settings-color-accent-title">Accent color</p>
+  <div class="settings-color-row">
     <div
-      class="color-wrapper"
+      class="settings-color-wrapper"
       *ngFor="let color of accentColors; let i = index"
     >
-      <span [ngClass]="i == 9 ? 'color-border' : ''"> {{ color.name }}</span>
-      <div class="color-item" [style.background-color]="color.color"></div>
+      <span [ngClass]="i == 9 ? 'settings-color-border' : ''">
+        {{ color.name }}</span
+      >
+      <div
+        class="settings-color-item"
+        [style.background-color]="color.color"
+      ></div>
     </div>
   </div>
 
-  <p class="color-burgund-title">Burgund color</p>
-  <div class="color-row">
+  <p class="settings-color-burgund-title">Burgund color</p>
+  <div class="settings-color-row">
     <div
-      class="color-wrapper"
+      class="settings-color-wrapper"
       *ngFor="let color of burgundColors; let i = index"
     >
-      <span [ngClass]="i == 14 ? 'color-border' : ''"> {{ color.name }}</span>
-      <div class="color-item" [style.background-color]="color.color"></div>
+      <span [ngClass]="i == 14 ? 'settings-color-border' : ''">
+        {{ color.name }}</span
+      >
+      <div
+        class="settings-color-item"
+        [style.background-color]="color.color"
+      ></div>
     </div>
   </div>
 </div>

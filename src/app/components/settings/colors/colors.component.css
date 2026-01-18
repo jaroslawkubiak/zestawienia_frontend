@@ -1,47 +1,48 @@
-.color-container {
+.settings-color-container {
   display: flex;
   justify-content: center;
   flex-direction: column;
   gap: 50px;
+  padding: 20px 0;
 }
 
-.color-row {
+.settings-color-row {
   display: flex;
   flex-direction: row;
   gap: 10px;
 }
 
-.color-wrapper {
+.settings-color-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
 }
 
-.color-wrapper span {
+.settings-color-wrapper span {
   padding: 10px;
 }
 
-.color-item {
+.settings-color-item {
   width: 50px;
   height: 150px;
   margin: 2px;
 }
 
-.color-container p {
+.settings-color-container p {
   font-size: 4rem;
   font-weight: 800;
 }
 
-.color-accent-title {
+.settings-color-accent-title {
   color: var(--accent-color-10);
 }
 
-.color-burgund-title {
+.settings-color-burgund-title {
   color: var(--burgund-color-10);
 }
 
-.color-border {
+.settings-color-border {
   background-color: var(--primary-color);
   color: var(--secondary-color);
 }

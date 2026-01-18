@@ -1,21 +1,21 @@
-.container {
+.settings-ui-container {
   display: flex;
   gap: 100px;
-  padding: 0;
+  padding: 20px 0;
 }
 
-.btn-container {
+.settings-ui-btn-container {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
 
-.btn-container p {
+.settings-ui-btn-container p {
   display: flex;
   justify-content: center;
 }
 
-.wrapper {
+.settings-ui-wrapper {
   display: flex;
   gap: 30px;
   justify-content: space-between;

@@ -1,5 +1,5 @@
-.wrapper {
+.settings-notification-wrapper {
   display: flex;
   gap: 100px;
+  padding: 20px 0;
 }
-
