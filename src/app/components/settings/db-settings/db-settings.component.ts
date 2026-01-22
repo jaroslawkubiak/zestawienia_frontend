@@ -126,8 +126,6 @@ export class DbSettingsComponent {
       value: formValue[setting.name],
     }));
 
-    console.log(payload);
-
     this.settingsService.saveSettings(payload).subscribe({
       next: (response) => {
         this.notificationService.showNotification('success', response?.message);

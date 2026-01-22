@@ -45,7 +45,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     private commentsService: CommentsService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
-    private soundService: SoundService
+    private soundService: SoundService,
   ) {}
 
   ngAfterViewInit() {
@@ -84,6 +84,13 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
               this.scrollToBottom();
             }, 100);
 
+            if (!response.notificationSend) {
+              this.notificationService.showNotification(
+                'warn',
+                `Powiadomienia o nowych komantarzach są wyłączone.`,
+              );
+            }
+
             this.onUpdateComments();
           },
           error: (error) => {
@@ -102,7 +109,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       this.commentsService.editComment(editedComment).subscribe({
         next: (response) => {
           const commentIndex = this.comments.findIndex(
-            (item) => item.id === this.editedCommentId
+            (item) => item.id === this.editedCommentId,
           );
 
           if (commentIndex !== -1) {
@@ -162,12 +169,12 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           'info',
           `Komentarz został oznaczony jako ${
             updatedComment.readByReceiver ? 'przeczytany' : 'nieprzeczytany'
-          }`
+          }`,
         );
         this.comments = this.comments.map((item) =>
           item.id === updatedComment.id
             ? { ...item, readByReceiver: updatedComment.readByReceiver }
-            : item
+            : item,
         );
 
         this.onUpdateComments();
@@ -184,7 +191,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       .subscribe({
         next: (updatedComments) => {
           const firstClientComment = updatedComments.find(
-            (comment) => comment.authorType === 'client'
+            (comment) => comment.authorType === 'client',
           );
 
           this.notificationService.showNotification(
@@ -193,7 +200,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
               firstClientComment?.readByReceiver
                 ? 'przeczytane'
                 : 'nieprzeczytane'
-            }`
+            }`,
           );
           this.comments = updatedComments;
 

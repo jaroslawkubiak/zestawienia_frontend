@@ -12,4 +12,5 @@ export interface IComment {
   positionId: IPosition;
   setId: ISet;
   authorName?: string;
+  notificationSend?: boolean;
 }
