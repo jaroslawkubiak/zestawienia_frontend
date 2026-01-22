@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -19,8 +20,8 @@ import { NotificationService } from '../../../services/notification.service';
 import { SoundService } from '../../../services/sound.service';
 import { SoundType } from '../../../services/types/SoundType';
 import { ISet } from '../../sets/types/ISet';
-import { ISetting } from '../../settings/ISetting';
 import { SettingsService } from '../../settings/settings.service';
+import { DbSettings } from '../../settings/types/IDbSettings';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { createHTMLEmail } from '../createHTMLEmail';
 import { EmailsService } from '../email.service';
@@ -28,11 +29,10 @@ import { EmailDetailsList } from '../EmailDetailsList';
 import { EmailAudience } from '../types/EmailAudience.type';
 import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
 import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
-import { DbSettings } from '../../settings/types/IDbSettings';
 
 @Component({
   selector: 'app-send-email',
-  imports: [FormsModule, TooltipModule, SelectModule],
+  imports: [FormsModule, TooltipModule, SelectModule, CommonModule],
   templateUrl: './send-email.component.html',
   styleUrl: './send-email.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -87,7 +87,8 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   templates: (ClientTemplate | SupplierTemplate)[] = [];
   selectedTemplate!: ClientTemplate | SupplierTemplate;
 
-  emailNofitication!: boolean;
+  sendingEmailsToClient!: boolean;
+  sendingEmailsToSuppliers!: boolean;
 
   constructor(
     private settingsService: SettingsService,
@@ -107,10 +108,18 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
 
-    this.settingsService.getByName('email-notification').subscribe({
+    this.settingsService.getByName('sendingEmailsToClient').subscribe({
       next: (response: DbSettings) => {
         if (response) {
-          this.emailNofitication = response.value === 'true';
+          this.sendingEmailsToClient = response.value === 'true';
+        }
+      },
+    });
+
+    this.settingsService.getByName('sendingEmailToCustomers').subscribe({
+      next: (response: DbSettings) => {
+        if (response) {
+          this.sendingEmailsToSuppliers = response.value === 'true';
         }
       },
     });
@@ -214,14 +223,33 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.subscription?.unsubscribe();
   }
 
-  sendEmail() {
-    if (!this.emailNofitication) {
-      this.notificationService.showNotification(
-        'warn',
-        `Wysyłanie emaili jest wyłączone`,
-      );
-      this.hideEmailDialog.emit();
+  get isSendingDisabled(): boolean {
+    return (
+      (this.audience === 'client' && !this.sendingEmailsToClient) ||
+      (this.audience === 'supplier' && !this.sendingEmailsToSuppliers)
+    );
+  }
 
+  get tooltipText(): string {
+    return this.isSendingDisabled ? 'Wysyłanie wyłączone' : 'Wyślij e-mail';
+  }
+
+  get disabledMessage(): string {
+    switch (this.audience) {
+      case 'client':
+        return 'Wysyłanie emaili do klientów jest wyłączone';
+      case 'supplier':
+        return 'Wysyłanie emaili do dostawców jest wyłączone';
+      default:
+        return 'Wysyłanie jest wyłączone';
+    }
+  }
+
+  sendEmail() {
+    if (this.isSendingDisabled) {
+      this.notificationService.showNotification('warn', this.disabledMessage);
+
+      this.hideEmailDialog.emit();
       return;
     }
 

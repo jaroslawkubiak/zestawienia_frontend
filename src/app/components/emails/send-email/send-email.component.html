@@ -51,17 +51,14 @@
       >
 
       <div
-        class="send-email-footer {{
-          emailNofitication ? '' : 'send-email-to-off'
-        }}"
+        class="send-email-footer"
+        [class.send-email-to-off]="isSendingDisabled"
       >
         <i
           class="pi pi-send"
           (click)="sendEmail()"
           tooltipPosition="left"
-          pTooltip="{{
-            emailNofitication ? 'Wyślij e-mail' : 'Wysyłanie wyłączone'
-          }} "
+          pTooltip="{{ tooltipText }}"
         ></i>
       </div>
 
