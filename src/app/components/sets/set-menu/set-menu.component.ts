@@ -34,6 +34,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
 import { buildSetMenu } from './set-menu.config';
+import { countNewComments } from '../../../shared/helpers/countNewComments';
 
 @Component({
   selector: 'app-set-menu',
@@ -99,56 +100,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
     }
   }
 
-  getEmailsList() {
-    this.emailsService.getEmailBySetId(this.set.id).subscribe({
-      next: (response) => {
-        this.emailsList = response;
-        this.updateMenuItems();
-      },
-    });
-  }
-
-  // find all unique supplier to show in menu
-  findUniqueSuppliers(): void {
-    const uniqueSupplierIds: number[] = [];
-
-    this.positions.forEach((pos) => {
-      const supplier = pos.supplierId;
-      if (supplier && !uniqueSupplierIds.includes(supplier.id)) {
-        uniqueSupplierIds.push(supplier.id);
-      }
-    });
-
-    this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
-      uniqueSupplierIds.includes(supplier.id),
-    );
-  }
-
-  // finding the last email date and the user sent to the client
-  findLastEmailToClient() {
-    const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) =>
-        email.client?.id === this.set.clientId?.id,
-    );
-    if (email) {
-      return `${email.sendAt} - ${email.sendBy.name}`;
-    }
-
-    return 'Nie wysłano';
-  }
-
-  // finding the last email date and the user sent to the supplier
-  findLastEmailToSupplier(supplierId: number) {
-    const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId,
-    );
-    if (email) {
-      return `${email.sendAt} - ${email.sendBy.name}`;
-    }
-
-    return 'Nie wysłano';
-  }
-
   // create and update menu if set is edited or number of unique supplier is changed
   updateMenuItems(): void {
     this.menuItems = buildSetMenu({
@@ -166,6 +117,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
       showAttachedFiles: () => this.showAttachedFiles(),
       openSendFilesDialog: () => this.openSendFilesDialog(),
       getCommentsBadgeClass: () => this.getCommentsBadgeClass(),
+      badgeValue: () => this.badgeValue(),
       showComments: () => this.showComments(),
     });
   }
@@ -173,17 +125,19 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // define comments badge color
   getCommentsBadgeClass(): string {
     const commentsCount = this.set?.comments?.length ?? 0;
-    const newComments = this.set?.newComments ?? 0;
+    const newComments = this.badgeValue();
 
     if (newComments > 0) {
       return 'p-badge-danger';
-    }
-
-    if (commentsCount > 0) {
+    } else if (commentsCount > 0) {
       return 'p-badge-contrast';
+    } else {
+      return 'p-badge-secondary';
     }
+  }
 
-    return 'p-badge-secondary';
+  badgeValue(): number {
+    return countNewComments(this.set.comments || [], 'client');
   }
 
   // open edit set header dialog
@@ -359,5 +313,55 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   uploadFinished(message: string) {
     this.notificationService.showNotification('info', message);
+  }
+
+  getEmailsList() {
+    this.emailsService.getEmailBySetId(this.set.id).subscribe({
+      next: (response) => {
+        this.emailsList = response;
+        this.updateMenuItems();
+      },
+    });
+  }
+
+  // find all unique supplier to show in menu
+  findUniqueSuppliers(): void {
+    const uniqueSupplierIds: number[] = [];
+
+    this.positions.forEach((pos) => {
+      const supplier = pos.supplierId;
+      if (supplier && !uniqueSupplierIds.includes(supplier.id)) {
+        uniqueSupplierIds.push(supplier.id);
+      }
+    });
+
+    this.suppliersFromSet = this.allSuppliers.filter((supplier) =>
+      uniqueSupplierIds.includes(supplier.id),
+    );
+  }
+
+  // finding the last email date and the user sent to the client
+  findLastEmailToClient() {
+    const email = this.emailsList.find(
+      (email: ISendedEmailsFromDB) =>
+        email.client?.id === this.set.clientId?.id,
+    );
+    if (email) {
+      return `${email.sendAt} - ${email.sendBy.name}`;
+    }
+
+    return 'Nie wysłano';
+  }
+
+  // finding the last email date and the user sent to the supplier
+  findLastEmailToSupplier(supplierId: number) {
+    const email = this.emailsList.find(
+      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId,
+    );
+    if (email) {
+      return `${email.sendAt} - ${email.sendBy.name}`;
+    }
+
+    return 'Nie wysłano';
   }
 }

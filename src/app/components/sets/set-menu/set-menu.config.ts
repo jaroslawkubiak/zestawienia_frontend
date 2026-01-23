@@ -18,6 +18,7 @@ export interface SetMenuParams {
   showAttachedFiles: () => void;
   openSendFilesDialog: () => void;
   getCommentsBadgeClass: () => string;
+  badgeValue: () => number;
   showComments: () => void;
 }
 
@@ -37,6 +38,7 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
     showAttachedFiles,
     openSendFilesDialog,
     getCommentsBadgeClass,
+    badgeValue,
     showComments,
   } = params;
 
@@ -118,7 +120,7 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
       label: 'Komentarze',
       icon: 'pi pi-comments',
       badgeStyleClass: getCommentsBadgeClass(),
-      badge: String(set?.newComments || set?.comments?.length || 0),
+      badge: badgeValue().toString(),
       command: showComments,
     },
   ];
