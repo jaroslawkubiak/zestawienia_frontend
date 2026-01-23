@@ -116,7 +116,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       },
     });
 
-    this.settingsService.getByName('sendingEmailToCustomers').subscribe({
+    this.settingsService.getByName('sendingEmailToSupplier').subscribe({
       next: (response: DbSettings) => {
         if (response) {
           this.sendingEmailsToSuppliers = response.value === 'true';

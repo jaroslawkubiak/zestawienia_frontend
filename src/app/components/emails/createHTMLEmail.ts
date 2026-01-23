@@ -48,7 +48,7 @@ const HTMLheader = `
 
 <body style="margin:0; padding:20px; background:#fafafa; font-family:Arial, sans-serif; font-size:16px; color:#0a0a0a;">
 
-<table align="center" width="800px" cellspacing="0" cellpadding="0" border="1" style="margin:20px auto; max-width:800px;">
+<table align="center" width="800px" cellspacing="0" cellpadding="0" border="0" style="margin:20px auto; max-width:800px;">
 
   <!-- LOGO -->
   <tr style="margin: 30px 0; width: 800px; text-align: left">
