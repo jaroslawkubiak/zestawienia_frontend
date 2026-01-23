@@ -251,7 +251,7 @@ export class ForClientComponent implements OnInit {
     this.filesCount;
   }
 
-  onProductCommentsUpdated() {
+  commentsUpdated() {
     if (!this.setId) return;
 
     this.editSetService.getSet(this.setId).subscribe({

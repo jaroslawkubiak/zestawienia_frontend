@@ -28,10 +28,7 @@ export class ProductComponent implements OnInit {
   @Input() comments: IComment[] = [];
   @Input() set!: ISet;
   @Input() countNewComments!: (comments: IComment[]) => number;
-  @Output() commentsUpdated = new EventEmitter<{
-    positionId: number;
-    comments: IComment[];
-  }>();
+  @Output() commentsUpdated = new EventEmitter<IComment[]>();
 
   positionId!: number;
   setId!: number;
@@ -62,9 +59,6 @@ export class ProductComponent implements OnInit {
   }
 
   onDialogClosed() {
-    this.commentsUpdated.emit({
-      positionId: this.positionId,
-      comments: this.comments,
-    });
+    this.commentsUpdated.emit(this.comments);
   }
 }

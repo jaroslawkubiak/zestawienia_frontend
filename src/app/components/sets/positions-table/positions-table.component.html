@@ -248,6 +248,7 @@
   [header]="header"
   [modal]="true"
   [(visible)]="showCommentsDialog"
+  (onHide)="onDialogClosed()"
   [style]="{ width: '70rem' }"
   [dismissableMask]="true"
 >

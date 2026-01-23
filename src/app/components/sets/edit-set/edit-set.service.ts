@@ -9,8 +9,9 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmark } from '../../bookmarks/IBookmark';
+import { IComment } from '../../comments/types/IComment';
 import { SuppliersService } from '../../suppliers/suppliers.service';
-import { SetsService } from '../sets.service';
+import { PositionStatusList } from '../PositionStatusList';
 import { IClonePosition } from '../types/IClonePosition';
 import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -19,7 +20,6 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { PositionStatusList } from '../PositionStatusList';
 import { IValidSet } from '../types/IValidSet';
 
 @Injectable({
@@ -34,12 +34,11 @@ export class EditSetService {
     private http: HttpClient,
     private supplierService: SuppliersService,
     private authService: AuthService,
-    private setsService: SetsService
   ) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(
-        () => new Error('Zestawienie o takiej nazwie już istnieje!')
+        () => new Error('Zestawienie o takiej nazwie już istnieje!'),
       );
     }
     return throwError(() => new Error('Wystąpił błąd serwera.'));
@@ -51,14 +50,20 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
+  getCommentsForSet(setId: number): Observable<IComment[]> {
+    return this.http
+      .get<IComment[]>(`${environment.API_URL}/comments/set/${setId}`)
+      .pipe(catchError(this.handleError));
+  }
+
   getPositionsForSupplier(
     setId: number,
-    supplierId: number
+    supplierId: number,
   ): Observable<IPosition[]> {
     return this.http
-      .get<IPosition[]>(
-        `${environment.API_URL}/positions/${setId}/${supplierId}`
-      )
+      .get<
+        IPosition[]
+      >(`${environment.API_URL}/positions/${setId}/${supplierId}`)
       .pipe(catchError(this.handleError));
   }
 
@@ -70,7 +75,7 @@ export class EditSetService {
 
   validateSetAndHashForClient(
     setHash: string,
-    clientHash: string
+    clientHash: string,
   ): Observable<IValidSet> {
     return this.http
       .get<IValidSet>(`${environment.API_URL}/clients/${setHash}/${clientHash}`)
@@ -79,11 +84,11 @@ export class EditSetService {
 
   validateSetAndHashForSupplier(
     setHash: string,
-    supplierHash: string
+    supplierHash: string,
   ): Observable<IValidSet> {
     return this.http
       .get<IValidSet>(
-        `${environment.API_URL}/suppliers/${setHash}/${supplierHash}`
+        `${environment.API_URL}/suppliers/${setHash}/${supplierHash}`,
       )
       .pipe(catchError(this.handleError));
   }
@@ -96,32 +101,25 @@ export class EditSetService {
     }).pipe(
       map(({ set, positions, suppliers }) => {
         const updatedPositions = positions.map((position) => {
-          const comments =
-            set.comments?.filter(
-              (comment) => comment.positionId?.id === position.id
-            ) || [];
-
           return {
             ...position,
-            comments,
-            // newComments,
             status: position.status
               ? this.positionStatus.find(
-                  (item) => position.status === item.label
+                  (item) => position.status === item.label,
                 ) || ''
               : position.status,
           };
         });
 
         return { set, positions: updatedPositions, suppliers };
-      })
+      }),
     );
   }
 
   addEmptyPosition(
     set: ISet,
     selectedBookmarkId: number,
-    kolejnosc: number
+    kolejnosc: number,
   ): Observable<IPosition> {
     const bookmark = set.bookmarks.find((b) => b.id === selectedBookmarkId);
 
@@ -153,20 +151,20 @@ export class EditSetService {
     formData: IPosition[],
     bookmarks: IBookmark[],
     selectedBookmarkId: number,
-    setId: number
+    setId: number,
   ): Observable<IPosition> {
     const original = formData.find((p) => p.id === positionId);
 
     if (!original) {
       return throwError(
-        () => new Error(`Position with ID ${positionId} not found`)
+        () => new Error(`Position with ID ${positionId} not found`),
       );
     }
 
     const bookmark = bookmarks.find((b) => b.id === selectedBookmarkId);
     if (!bookmark) {
       return throwError(
-        () => new Error(`Bookmark with ID ${selectedBookmarkId} not found`)
+        () => new Error(`Bookmark with ID ${selectedBookmarkId} not found`),
       );
     }
 
@@ -197,23 +195,24 @@ export class EditSetService {
       .post<IPosition>(
         `${environment.API_URL}/positions/clone`,
         newClonePosition,
-        { headers }
+        { headers },
       )
       .pipe(
         map((response: IPosition) => {
           // if response.status = string — change for object from list
           if (response.status) {
             const statusObj = this.positionStatus.find(
-              (s) => s.label === response.status
+              (s) => s.label === response.status,
             );
             response.status = (statusObj as IPositionStatus) || '';
           }
 
           return response;
         }),
-        catchError(this.handleError)
+        catchError(this.handleError),
       );
   }
+
   saveSet(savedSet: IUpdateSet): Observable<INewSet> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
@@ -230,7 +229,7 @@ export class EditSetService {
         createSavedSet,
         {
           headers,
-        }
+        },
       )
       .pipe(catchError(this.handleError));
   }
@@ -239,10 +238,10 @@ export class EditSetService {
   updatePosition(
     positions: IPosition[],
     formData: IPosition[],
-    positionToDelete: Set<number>
+    positionToDelete: Set<number>,
   ): IPosition[] {
     const formDataMap = new Map(
-      formData.map((form: IPosition) => [form.id, form])
+      formData.map((form: IPosition) => [form.id, form]),
     );
 
     // update data from form to all set positions and filter out deleted positions

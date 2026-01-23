@@ -4,12 +4,10 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  EventEmitter,
   Input,
   OnChanges,
-  Output,
   SimpleChanges,
-  ViewChild,
+  ViewChild
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
@@ -22,7 +20,6 @@ import { ISet } from '../sets/types/ISet';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
 import { IEditedComment } from './types/IEditedComment';
-import { IPositionWithComments } from './types/IPositionWithComments';
 
 @Component({
   selector: 'app-comments',
@@ -46,7 +43,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
     private soundService: SoundService,
-    private cdr: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit() {
@@ -98,7 +95,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
               );
             }
 
-            this.cdr.detectChanges();
+            this.cd.detectChanges();
           },
           error: (error) => {
             console.error(error);
@@ -130,7 +127,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             this.scrollToBottom();
           }, 100);
 
-          this.cdr.detectChanges();
+          this.cd.detectChanges();
         },
         error: (error) => {
           console.error(error);
@@ -151,7 +148,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         next: () => {
           this.comments = this.comments.filter((item) => item.id !== id);
           this.soundService.playSound(SoundType.trash);
-          this.cdr.detectChanges();
+          this.cd.detectChanges();
         },
         error: (error) => {
           console.error(error);
@@ -183,7 +180,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             ? { ...item, needsAttention: updatedComment.needsAttention }
             : item,
         );
-        this.cdr.detectChanges();
+        this.cd.detectChanges();
       },
       error: (error) => {
         console.error(error);
@@ -212,7 +209,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             }`,
           );
           this.comments = updatedComments;
-          this.cdr.detectChanges();
+          this.cd.detectChanges();
         },
         error: (err) => {
           console.error(err);

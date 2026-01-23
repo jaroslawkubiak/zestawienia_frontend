@@ -75,6 +75,7 @@ export class PositionsTableComponent implements OnInit {
   @Output() isEdited = new EventEmitter<boolean>();
   @Output() updateSetPositions = new EventEmitter<IPosition>();
   @Output() updateSetComments = new EventEmitter<IComment[]>();
+
   formData: IPosition[] = [];
   newOrClonePosition: IPosition | undefined;
   FILES_URL = environment.FILES_URL;
@@ -122,17 +123,7 @@ export class PositionsTableComponent implements OnInit {
 
     this.setId = this.set.id;
 
-    this.positionsFromBookmark = this.positionsFromBookmark.map((position) => {
-      if (!position.comments) {
-        return position;
-      }
-
-      const newComments = this.conutNewCommentsForAllPositions(
-        position.comments,
-      );
-
-      return { ...position, newComments };
-    });
+    this.assignCommentsToPosition(this.set.comments || []);
   }
 
   scrollToPosition(positionNumber: number) {
@@ -443,7 +434,7 @@ export class PositionsTableComponent implements OnInit {
       }
     });
 
-    this.updateSetComments.emit(allComments);
+    // this.updateSetComments.emit(allComments);
   }
 
   // show dialog with comments for current position
@@ -507,5 +498,38 @@ export class PositionsTableComponent implements OnInit {
     }
 
     return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
+  }
+
+  // on close dialog with comments
+  onDialogClosed() {
+    this.editSetService.getCommentsForSet(this.set.id).subscribe({
+      next: (comments) => {
+        this.set = {
+          ...this.set,
+          comments,
+        };
+
+        this.assignCommentsToPosition(this.set.comments || []);
+        this.cd.detectChanges();
+      },
+    });
+  }
+
+  // get comments table and assign to position
+  assignCommentsToPosition(comments: IComment[]) {
+    this.positionsFromBookmark = this.positionsFromBookmark.map((position) => {
+      const commentsForPosition =
+        comments.filter((comment) => comment.positionId?.id === position.id) ??
+        [];
+
+      const newComments =
+        this.conutNewCommentsForAllPositions(commentsForPosition);
+
+      return {
+        ...position,
+        comments: commentsForPosition,
+        newComments,
+      };
+    });
   }
 }
