@@ -110,16 +110,16 @@
             } @else {
               <!-- other bookmarks -->
               <ng-container *ngIf="selectedBookmarkId === bookmark.id">
-                <li *ngFor="let pos of positionsFromBookmark; let i = index">
-                  <app-product
-                    [position]="pos"
-                    [index]="i + 1"
-                    [positionsWithBadge]="positionsWithBadge"
-                    [comments]="comments"
-                    [set]="set"
-                    [countNewComments]="countNewComments"
-                  />
-                </li>
+                <app-product
+                  *ngFor="let position of positionsFromBookmark; let i = index"
+                  [position]="position"
+                  [index]="i + 1"
+                  [positionsWithBadge]="positionsWithBadge"
+                  [set]="set"
+                  [countNewComments]="countNewComments"
+                  (commentsUpdated)="onProductCommentsUpdated()"
+                >
+                </app-product>
               </ng-container>
             }
           </p-tabpanel>

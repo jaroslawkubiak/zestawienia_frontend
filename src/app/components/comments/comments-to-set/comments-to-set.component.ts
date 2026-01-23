@@ -85,7 +85,7 @@ export class CommentsToSetComponent implements OnInit {
 
   private countNewComments(comments: IComment[]): number {
     return comments.filter(
-      (item) => item.authorType === 'client' && !item.readByReceiver
+      (item) => item.authorType === 'client' && !item.needsAttention
     ).length;
   }
 

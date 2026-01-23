@@ -72,7 +72,7 @@ export class SetsService {
     authorType: 'user' | 'client'
   ): number {
     const newComments = comments.reduce((acc, item) => {
-      if (!item.readByReceiver && item.authorType !== authorType) {
+      if (!item.needsAttention && item.authorType !== authorType) {
         acc += 1;
       }
       return acc;

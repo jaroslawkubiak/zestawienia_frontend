@@ -2,33 +2,24 @@
   <div
     *ngFor="let comment of comments"
     class="message-wrapper"
-    [ngClass]="{
-      'from-client': isUser
-        ? comment.authorType === 'client'
-        : comment.authorType === 'user',
-      'from-user': isUser
-        ? comment.authorType === 'user'
-        : comment.authorType === 'client'
-    }"
+    [class.from-client]="isClientMessage(comment)"
+    [class.from-user]="!isClientMessage(comment)"
   >
     <div class="message-bubble">
       <i
         [pTooltip]="
-          !comment.readByReceiver &&
-          comment.authorType !== (isUser ? 'user' : 'client')
+          isUnread(comment)
             ? 'Oznacz jako przeczytane'
             : 'Oznacz jako nieprzeczytane'
         "
         tooltipPosition="top"
         class="pi pi-comment comment-icon"
         [ngClass]="
-          !comment.readByReceiver &&
-          comment.authorType !== (isUser ? 'user' : 'client')
-            ? 'comment-icon-unread'
-            : 'comment-icon-read'
+          isUnread(comment) ? 'comment-icon-unread' : 'comment-icon-read'
         "
         (click)="toggleCommentRead(comment.id)"
       ></i>
+
       <i
         class="pi pi-pencil edit-icon"
         (click)="markCommentToEdit(comment.id)"
@@ -51,21 +42,21 @@
 
 <div class="new-message-input-wrapper">
   <div class="all-comments">
-    <div class="comment-read flex-center">
-      <i
-        class="pi pi-comments"
-        pTooltip="Oznacz wszystkie jako przeczytane"
-        tooltipPosition="top"
-        (click)="markAllComments(true, isUser ? 'client' : 'user')"
-      ></i>
+    <div
+      class="comment-read flex-center cursor-pointer"
+      pTooltip="Oznacz wszystkie jako przeczytane"
+      tooltipPosition="top"
+      (click)="markAllComments(true, isUser ? 'client' : 'user')"
+    >
+      <i class="pi pi-comments"></i>
     </div>
-    <div class="comment-unread flex-center">
-      <i
-        class="pi pi-comments"
-        pTooltip="Oznacz wszystkie jako nieprzeczytane"
-        tooltipPosition="top"
-        (click)="markAllComments(false, isUser ? 'client' : 'user')"
-      ></i>
+    <div
+      class="comment-unread flex-center cursor-pointer"
+      pTooltip="Oznacz wszystkie jako nieprzeczytane"
+      tooltipPosition="top"
+      (click)="markAllComments(false, isUser ? 'client' : 'user')"
+    >
+      <i class="pi pi-comments"></i>
     </div>
   </div>
   <input
@@ -74,6 +65,7 @@
     class="new-message-input"
     placeholder="Napisz wiadomość..."
     (keyup.enter)="sendComment()"
+    name="new-message"
   />
   <div class="send-btn-wrapper flex-center">
     <button

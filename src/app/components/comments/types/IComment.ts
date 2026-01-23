@@ -6,7 +6,8 @@ export interface IComment {
   comment: string;
   authorType: 'client' | 'user';
   authorId: number;
-  readByReceiver: boolean;
+  seenAt: Date;
+  needsAttention: boolean;
   createdAt: string;
   createdAtTimestamp: number;
   positionId: IPosition;

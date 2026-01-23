@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
@@ -22,13 +22,18 @@ import { ISet } from '../../../sets/types/ISet';
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
-export class ProductComponent {
+export class ProductComponent implements OnInit {
   @Input() position!: IPositionWithBadge;
   @Input() index!: number;
   @Input() positionsWithBadge: IPositionWithBadge[] = [];
   @Input() comments: IComment[] = [];
   @Input() set!: ISet;
   @Input() countNewComments!: (comments: IComment[]) => number;
+  @Output() commentsUpdated = new EventEmitter<{
+    positionId: number;
+    comments: IComment[];
+  }>();
+
   positionId!: number;
   setId!: number;
   showCommentsDialog = false;
@@ -45,7 +50,7 @@ export class ProductComponent {
 
     this.comments = position.comments ?? [];
     this.positionId = position.id;
-    this.header = `Pozycja ${position.kolejnosc}`;
+    this.header = `Pozycja ${position.kolejnosc} - ${position.produkt}`;
     this.showCommentsDialog = true;
   }
 
@@ -59,6 +64,11 @@ export class ProductComponent {
           }
         : item,
     );
+
+    this.commentsUpdated.emit({
+      positionId: updatedData.positionId,
+      comments: updatedData.comments,
+    });
   }
 
   getStatusLabel(status: IPositionStatus | string): string {
@@ -67,5 +77,12 @@ export class ProductComponent {
 
   getStatusCss(status: IPositionStatus | string): string {
     return typeof status === 'object' ? status.cssClass : '';
+  }
+
+  onDialogClosed() {
+    this.commentsUpdated.emit({
+      positionId: this.positionId,
+      comments: this.comments,
+    });
   }
 }

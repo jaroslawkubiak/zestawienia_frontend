@@ -17,7 +17,6 @@ import { ShowFilesComponent } from '../../files/show-files/show-files.component'
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
-import { LegendComponent } from '../../sets/legend/legend.component';
 import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { IPosition } from '../../sets/types/IPosition';
@@ -36,7 +35,6 @@ import { ProductComponent } from './product/product.component';
     BadgeModule,
     TabsModule,
     SummaryComponent,
-    LegendComponent,
     ProductComponent,
   ],
   templateUrl: './forclient.component.html',
@@ -54,7 +52,6 @@ export class ForClientComponent implements OnInit {
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
   selectedBookmarkId = 0;
-  comments: IComment[] = [];
   mobileMenuOpen = false;
   mobileMenuClosing = false;
 
@@ -106,7 +103,6 @@ export class ForClientComponent implements OnInit {
       positions: this.editSetService.getPositions(this.setId),
     }).subscribe(({ set, positions }) => {
       this.set = set;
-      this.comments = set.comments ?? [];
 
       this.positions = positions.map((pos) => {
         const statusObj: IPositionStatus =
@@ -146,21 +142,22 @@ export class ForClientComponent implements OnInit {
       );
 
       this.uniquePositionIds = [
-        ...new Set(this.comments.map((c) => c.positionId?.id)),
+        ...new Set(this.set.comments?.map((c) => c.positionId?.id)),
       ];
     });
   }
 
   assignCommentsToPosition() {
-    const map = this.comments.reduce(
-      (acc, comment) => {
-        const id = comment.positionId?.id;
-        if (!acc[id]) acc[id] = [];
-        acc[id].push(comment);
-        return acc;
-      },
-      {} as Record<number, IComment[]>,
-    );
+    const map =
+      this.set.comments?.reduce(
+        (acc, comment) => {
+          const id = comment.positionId?.id;
+          if (!acc[id]) acc[id] = [];
+          acc[id].push(comment);
+          return acc;
+        },
+        {} as Record<number, IComment[]>,
+      ) || {};
 
     this.positionsWithBadge = this.positions.map((position) => {
       const relatedComments = map[position.id] || [];
@@ -205,8 +202,9 @@ export class ForClientComponent implements OnInit {
   }
 
   countNewComments(comments: IComment[]): number {
-    return comments.filter((c) => c.authorType === 'user' && !c.readByReceiver)
-      .length;
+    return comments.filter(
+      (c) => c.authorType === 'user' && (!c.seenAt || c.needsAttention),
+    ).length;
   }
 
   showAttachedFiles() {
@@ -251,5 +249,59 @@ export class ForClientComponent implements OnInit {
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     this.files = [...(this.set.files || []), ...uploadedFiles];
     this.filesCount;
+  }
+
+  onProductCommentsUpdated() {
+    if (!this.setId) return;
+
+    this.editSetService.getSet(this.setId).subscribe({
+      next: (updatedSet) => {
+        this.set = updatedSet;
+
+        const map =
+          this.set.comments?.reduce(
+            (acc, comment) => {
+              const id = comment.positionId?.id;
+              if (!acc[id]) acc[id] = [];
+              acc[id].push(comment);
+              return acc;
+            },
+            {} as Record<number, IComment[]>,
+          ) || {};
+
+        this.positionsWithBadge = this.positionsWithBadge.map((p) => {
+          const relatedComments = map[p.id] || [];
+          const newCommentsCount = this.countNewComments(relatedComments);
+          return {
+            ...p,
+            comments: relatedComments,
+            newComments: newCommentsCount,
+            commentsBadge: this.buildCommentsBadge({
+              ...p,
+              comments: relatedComments,
+              newComments: newCommentsCount,
+            }),
+          };
+        });
+
+        this.positionsFromBookmark = this.positionsFromBookmark.map((p) => {
+          const relatedComments = map[p.id] || [];
+          const newCommentsCount = this.countNewComments(relatedComments);
+
+          return {
+            ...p,
+            comments: relatedComments,
+            newComments: newCommentsCount,
+            commentsBadge: this.buildCommentsBadge({
+              ...p,
+              comments: relatedComments,
+              newComments: newCommentsCount,
+            }),
+          };
+        });
+
+        this.cd.detectChanges();
+      },
+    });
   }
 }

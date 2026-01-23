@@ -55,8 +55,13 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes['commentsDialog'] && this.commentsDialog) {
+    if (
+      changes['commentsDialog'] &&
+      changes['commentsDialog'].currentValue === true
+    ) {
       setTimeout(() => this.scrollToBottom(), 0);
+
+      this.markCommentsAsSeen(this.positionId);
     }
   }
 
@@ -90,8 +95,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
                 `Powiadomienia o nowych komantarzach są wyłączone.`,
               );
             }
-
-            this.onUpdateComments();
           },
           error: (error) => {
             console.error(error);
@@ -122,8 +125,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);
-
-          this.onUpdateComments();
         },
         error: (error) => {
           console.error(error);
@@ -141,10 +142,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   deleteComment(id: number) {
     const accept = () => {
       this.commentsService.deleteComment(id).subscribe({
-        next: (response) => {
+        next: () => {
           this.comments = this.comments.filter((item) => item.id !== id);
           this.soundService.playSound(SoundType.trash);
-          this.onUpdateComments();
         },
         error: (error) => {
           console.error(error);
@@ -168,16 +168,14 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         this.notificationService.showNotification(
           'info',
           `Komentarz został oznaczony jako ${
-            updatedComment.readByReceiver ? 'przeczytany' : 'nieprzeczytany'
+            updatedComment.needsAttention ? 'przeczytany' : 'nieprzeczytany'
           }`,
         );
         this.comments = this.comments.map((item) =>
           item.id === updatedComment.id
-            ? { ...item, readByReceiver: updatedComment.readByReceiver }
+            ? { ...item, needsAttention: updatedComment.needsAttention }
             : item,
         );
-
-        this.onUpdateComments();
       },
       error: (error) => {
         console.error(error);
@@ -197,14 +195,12 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           this.notificationService.showNotification(
             'info',
             `Wszystkie komentarze zostały oznaczone jako ${
-              firstClientComment?.readByReceiver
+              firstClientComment?.needsAttention
                 ? 'przeczytane'
                 : 'nieprzeczytane'
             }`,
           );
           this.comments = updatedComments;
-
-          this.onUpdateComments();
         },
         error: (err) => {
           console.error(err);
@@ -212,12 +208,26 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       });
   }
 
-  onUpdateComments() {
-    const positionWithComments: IPositionWithComments = {
-      positionId: this.positionId,
-      comments: this.comments,
-    };
+  markCommentsAsSeen(positionId: number) {
+    const unseenComments = this.comments.filter((comment) => !comment.seenAt);
 
-    this.updateComments.emit(positionWithComments);
+    if (unseenComments.length === 0) return;
+
+    const authorType = this.isUser ? 'user' : 'client';
+
+    this.commentsService.markCommentsAsSeen(positionId, authorType).subscribe();
+  }
+
+  isClientMessage(comment: IComment): boolean {
+    return this.isUser
+      ? comment.authorType === 'client'
+      : comment.authorType === 'user';
+  }
+
+  isUnread(comment: IComment): boolean {
+    return (
+      (!comment.seenAt || comment.needsAttention) &&
+      comment.authorType !== (this.isUser ? 'user' : 'client')
+    );
   }
 }

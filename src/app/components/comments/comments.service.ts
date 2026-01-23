@@ -15,7 +15,10 @@ import { IUpdatedComment } from './types/IUpdatedComment';
 export class CommentsService {
   userId = () => this.authService.getUserId();
   userName = () => this.authService.getUserName();
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
   private handleError(error: HttpErrorResponse) {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
@@ -24,7 +27,7 @@ export class CommentsService {
     comment: string,
     setId: number,
     positionId: number,
-    set: ISet
+    set: ISet,
   ): Observable<IComment> {
     const isClient = !!set?.clientId?.id;
     const newComment: INewComment = {
@@ -80,7 +83,7 @@ export class CommentsService {
   markAllComments(
     positionId: number,
     readState: boolean,
-    authorType: 'user' | 'client'
+    authorType: 'user' | 'client',
   ): Observable<IComment[]> {
     const body = {
       positionId,
@@ -97,5 +100,12 @@ export class CommentsService {
     return this.http
       .get<number>(`${environment.API_URL}/comments/unread`)
       .pipe(catchError(this.handleError));
+  }
+
+  markCommentsAsSeen(positionId: number, authorType: 'user' | 'client',) {
+    return this.http.post<void>(`${environment.API_URL}/comments/seen`, {
+      positionId,
+      authorType
+    });
   }
 }

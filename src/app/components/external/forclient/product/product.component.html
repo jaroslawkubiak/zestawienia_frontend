@@ -18,9 +18,10 @@
         class="comments-wrapper"
         pTooltip="Dodaj komentarz"
         tooltipPosition="bottom"
+        (click)="showComments(position.id)"
       >
         <div class="comments-cell flex-center">
-          <i class="pi pi-comments" (click)="showComments(position.id)"></i>
+          <i class="pi pi-comments"></i>
           <p-badge
             [value]="position.commentsBadge.value"
             [severity]="position.commentsBadge.severity"
@@ -107,7 +108,10 @@
         }}
       </li>
     </div>
-    <div class="product-group" *ngIf="!isMobile || getStatusCss(position.status)">
+    <div
+      class="product-group"
+      *ngIf="!isMobile || getStatusCss(position.status)"
+    >
       <li class="product-title">STATUS</li>
       <li
         class="product-name status-wrapper {{ getStatusCss(position.status) }} "
@@ -122,6 +126,7 @@
   [header]="header"
   [modal]="true"
   [(visible)]="showCommentsDialog"
+  (onHide)="onDialogClosed()"
   [style]="{ width: '70rem' }"
   [dismissableMask]="true"
 >

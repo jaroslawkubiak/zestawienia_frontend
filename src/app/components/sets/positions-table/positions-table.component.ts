@@ -460,7 +460,7 @@ export class PositionsTableComponent implements OnInit {
         item.id === positionWithComments.positionId
       ) {
         const newCommentsCount = positionWithComments.comments.filter(
-          (c: IComment) => !c.readByReceiver && c.authorType !== 'user'
+          (c: IComment) => !c.needsAttention && c.authorType !== 'user'
         ).length;
 
         return {
