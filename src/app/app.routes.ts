@@ -2,8 +2,8 @@ import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { CommentsToSetComponent } from './components/comments/comments-to-set/comments-to-set.component';
 import { EmailsComponent } from './components/emails/emails.component';
-import { ForClientComponent } from './components/external/forclient/forclient.component';
-import { ForsupplierComponent } from './components/external/forsupplier/forsupplier.component';
+import { ForClientComponent } from './components/external/for-client/for-client.component';
+import { ForSupplierComponent } from './components/external/for-supplier/for-supplier.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
@@ -86,12 +86,12 @@ export const routes: Routes = [
     ],
   },
   {
-    path: 'open-client/:setHash/:clientHash',
+    path: 'open-for-client/:setHash/:clientHash',
     component: ForClientComponent,
   },
   {
-    path: 'open-supplier/:setHash/:supplierHash',
-    component: ForsupplierComponent,
+    path: 'open-for-supplier/:setHash/:supplierHash',
+    component: ForSupplierComponent,
   },
   { path: '**', redirectTo: '/notfound' },
 ];

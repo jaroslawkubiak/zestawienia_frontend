@@ -19,14 +19,14 @@ import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
 
 @Component({
-  selector: 'app-forsupplier',
+  selector: 'app-for-supplier',
   imports: [TableModule, CommonModule, LoadingSpinnerComponent],
   standalone: true,
 
-  templateUrl: './forsupplier.component.html',
-  styleUrl: './forsupplier.component.css',
+  templateUrl: './for-supplier.component.html',
+  styleUrl: './for-supplier.component.css',
 })
-export class ForsupplierComponent implements OnInit {
+export class ForSupplierComponent implements OnInit {
   setId: number | null = null;
   setHash: string | null = null;
   supplierHash: string | null = null;
@@ -50,7 +50,7 @@ export class ForsupplierComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
-    private footerService: FooterService
+    private footerService: FooterService,
   ) {}
 
   ngOnInit() {
@@ -68,9 +68,9 @@ export class ForsupplierComponent implements OnInit {
 
           return this.editSetService.validateSetAndHashForSupplier(
             setHash,
-            supplierHash
+            supplierHash,
           );
-        })
+        }),
       )
       .subscribe({
         next: (response) => {
@@ -97,13 +97,13 @@ export class ForsupplierComponent implements OnInit {
     forkJoin({
       positions: this.editSetService.getPositionsForSupplier(
         this.setId,
-        this.supplierId
+        this.supplierId,
       ),
     }).subscribe(({ positions }) => {
       this.positions = positions.map((item) => {
         const statusObj: IPositionStatus =
           PositionStatusList.filter(
-            (statusItem) => item.status === statusItem.label
+            (statusItem) => item.status === statusItem.label,
           )[0] || PositionStatusList[0];
 
         let imageUrl = '';
@@ -139,7 +139,7 @@ export class ForsupplierComponent implements OnInit {
   calculateFooterRow(): void {
     this.footerRow = this.footerService.calculateFooterRow(
       this.footerRow,
-      this.positions
+      this.positions,
     );
   }
 }

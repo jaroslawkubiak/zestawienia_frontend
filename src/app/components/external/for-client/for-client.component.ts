@@ -26,7 +26,7 @@ import { ISet } from '../../sets/types/ISet';
 import { ProductComponent } from './product/product.component';
 
 @Component({
-  selector: 'app-setforclient',
+  selector: 'app-for-client',
   imports: [
     CommonModule,
     TooltipModule,
@@ -37,8 +37,8 @@ import { ProductComponent } from './product/product.component';
     SummaryComponent,
     ProductComponent,
   ],
-  templateUrl: './forclient.component.html',
-  styleUrl: './forclient.component.css',
+  templateUrl: './for-client.component.html',
+  styleUrl: './for-client.component.css',
 })
 export class ForClientComponent implements OnInit {
   setId: number | null = null;

@@ -52,6 +52,6 @@ export class EmailsService {
     setHash: string,
     hash: string,
   ): string {
-    return `${environment.FRONT_URL}/open-${type}/${setHash}/${hash}`;
+    return `${environment.FRONT_URL}/open-for-${type}/${setHash}/${hash}`;
   }
 }
