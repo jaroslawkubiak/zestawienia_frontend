@@ -20,7 +20,7 @@ export class EmailsService {
 
   getEmails(): Observable<ISendedEmailsFromDB[]> {
     return this.http.get<ISendedEmailsFromDB[]>(
-      `${environment.API_URL}/email`,
+      `${environment.API_URL}/email/getEmails`,
       {
         headers: { 'Content-Type': 'application/json' },
       },

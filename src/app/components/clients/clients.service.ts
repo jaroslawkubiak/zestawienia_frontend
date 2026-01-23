@@ -32,7 +32,7 @@ export class ClientsService {
     });
 
     return this.http
-      .get<IClient[]>(`${environment.API_URL}/clients`, {
+      .get<IClient[]>(`${environment.API_URL}/clients/getClients`, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -46,7 +46,7 @@ export class ClientsService {
     const { id, ...newClient } = client as Partial<IClient>;
 
     return this.http
-      .post<IClient>(`${environment.API_URL}/clients`, newClient, {
+      .post<IClient>(`${environment.API_URL}/clients/addClient`, newClient, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -59,7 +59,7 @@ export class ClientsService {
     const { id, ...updatedClient } = client as Partial<IClient>;
 
     return this.http
-      .patch<IClient>(`${environment.API_URL}/clients/${id}`, updatedClient, {
+      .patch<IClient>(`${environment.API_URL}/clients/${id}/saveClient`, updatedClient, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -71,7 +71,7 @@ export class ClientsService {
     });
 
     return this.http
-      .request('delete', `${environment.API_URL}/clients/`, {
+      .request('delete', `${environment.API_URL}/clients/deleteClient`, {
         body: { ids },
         headers,
       })

@@ -17,7 +17,7 @@ export class FilesService {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   // save created zip from set files
@@ -32,7 +32,7 @@ export class FilesService {
       {
         headers,
         responseType: 'blob',
-      }
+      },
     );
   }
 
@@ -47,7 +47,7 @@ export class FilesService {
       formData,
       {
         headers,
-      }
+      },
     );
   }
 
@@ -56,7 +56,7 @@ export class FilesService {
     setId: number,
     setHash: string,
     formData: FormData,
-    uploadFolder: string
+    uploadFolder: string,
   ): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
@@ -69,7 +69,7 @@ export class FilesService {
         reportProgress: true,
         observe: 'events',
         headers,
-      }
+      },
     );
   }
 
@@ -97,9 +97,12 @@ export class FilesService {
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    return this.http.delete<any>(`${environment.API_URL}/files/${id}`, {
-      headers,
-    });
+    return this.http.delete<any>(
+      `${environment.API_URL}/files/${id}/deleteFile`,
+      {
+        headers,
+      },
+    );
   }
 
   // batch delete files
@@ -108,9 +111,12 @@ export class FilesService {
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    return this.http.delete<any>(`${environment.API_URL}/files`, {
-      headers,
-      body: { ids },
-    });
+    return this.http.delete<any>(
+      `${environment.API_URL}/files/deleteSomeFiles`,
+      {
+        headers,
+        body: { ids },
+      },
+    );
   }
 }

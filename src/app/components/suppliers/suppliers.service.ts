@@ -47,7 +47,7 @@ export class SuppliersService {
     const { id, ...newSupplier } = supplier as Partial<ISupplier>;
 
     return this.http
-      .post<ISupplier>(`${environment.API_URL}/suppliers`, newSupplier, {
+      .post<ISupplier>(`${environment.API_URL}/suppliers/addSupplier`, newSupplier, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -59,7 +59,7 @@ export class SuppliersService {
     });
 
     return this.http
-      .request('delete', `${environment.API_URL}/suppliers/`, {
+      .request('delete', `${environment.API_URL}/suppliers/deleteSupplier`, {
         body: { ids },
         headers,
       })
@@ -74,7 +74,7 @@ export class SuppliersService {
 
     return this.http
       .patch<ISupplier>(
-        `${environment.API_URL}/suppliers/${id}`,
+        `${environment.API_URL}/suppliers/${id}/saveSupplier`,
         updatedSupplier,
         {
           headers,
