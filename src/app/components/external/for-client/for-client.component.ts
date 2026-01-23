@@ -10,6 +10,7 @@ import {
   calculateBrutto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
+import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { IComment } from '../../comments/types/IComment';
 import { ICommentsBadge } from '../../comments/types/ICommentBadge';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
@@ -161,7 +162,7 @@ export class ForClientComponent implements OnInit {
 
     this.positionsWithBadge = this.positions.map((position) => {
       const relatedComments = map[position.id] || [];
-      const newComments = this.countNewComments(relatedComments);
+      const newComments = countNewComments(relatedComments, 'user');
 
       return {
         ...position,
@@ -199,12 +200,6 @@ export class ForClientComponent implements OnInit {
       severity: newCount ? 'danger' : allCount ? 'contrast' : 'secondary',
       tooltip: newCount ? 'Ilość nowych komentarzy' : 'Ilość komentarzy',
     };
-  }
-
-  countNewComments(comments: IComment[]): number {
-    return comments.filter(
-      (c) => c.authorType === 'user' && (!c.seenAt || c.needsAttention),
-    ).length;
   }
 
   showAttachedFiles() {
@@ -271,7 +266,7 @@ export class ForClientComponent implements OnInit {
 
         this.positionsWithBadge = this.positionsWithBadge.map((p) => {
           const relatedComments = map[p.id] || [];
-          const newCommentsCount = this.countNewComments(relatedComments);
+          const newCommentsCount = countNewComments(relatedComments, 'user');
           return {
             ...p,
             comments: relatedComments,
@@ -286,7 +281,7 @@ export class ForClientComponent implements OnInit {
 
         this.positionsFromBookmark = this.positionsFromBookmark.map((p) => {
           const relatedComments = map[p.id] || [];
-          const newCommentsCount = this.countNewComments(relatedComments);
+          const newCommentsCount = countNewComments(relatedComments, 'user');
 
           return {
             ...p,

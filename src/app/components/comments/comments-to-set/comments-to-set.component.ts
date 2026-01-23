@@ -3,12 +3,12 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { BehaviorSubject, forkJoin } from 'rxjs';
+import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
 import { CommentsComponent } from '../comments.component';
 import { IComment } from '../types/IComment';
-import { IPositionWithComments } from '../types/IPositionWithComments';
 
 interface IPositionsWithComments {
   position: IPosition;
@@ -75,7 +75,7 @@ export class CommentsToSetComponent implements OnInit {
         return {
           position,
           comments: relatedComments,
-          newComments: this.countNewComments(relatedComments),
+          newComments: countNewComments(relatedComments, 'client'),
         };
       })
       .filter((item): item is IPositionsWithComments => item !== null);
@@ -83,31 +83,7 @@ export class CommentsToSetComponent implements OnInit {
     this.positionsWithComments$.next(positionsWithComments);
   }
 
-  private countNewComments(comments: IComment[]): number {
-    return comments.filter(
-      (item) => item.authorType === 'client' && !item.needsAttention
-    ).length;
-  }
-
   back() {
     this.router.navigate([this.backPath]);
-  }
-
-  // update comments when status change
-  onUpdateComments(updatedData: IPositionWithComments) {
-    const currentPositions = this.positionsWithComments$.value;
-
-    const updatedPositions = currentPositions.map((pos) => {
-      if (pos.position.id === updatedData.positionId) {
-        return {
-          ...pos,
-          comments: updatedData.comments,
-          newComments: this.countNewComments(updatedData.comments),
-        };
-      }
-      return pos;
-    });
-
-    this.positionsWithComments$.next(updatedPositions);
   }
 }

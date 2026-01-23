@@ -27,7 +27,6 @@ export class ProductComponent implements OnInit {
   @Input() positionsWithBadge: IPositionWithBadge[] = [];
   @Input() comments: IComment[] = [];
   @Input() set!: ISet;
-  @Input() countNewComments!: (comments: IComment[]) => number;
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
 
   positionId!: number;

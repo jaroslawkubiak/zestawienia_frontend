@@ -7,7 +7,6 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { IComment } from '../comments/types/IComment';
 import { INewSet } from './types/INewSet';
 import { ISavedSet } from './types/ISavedSet';
 import { ISet } from './types/ISet';
@@ -19,11 +18,14 @@ export class SetsService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(
-        () => new Error('Zestawienie o takiej nazwie już istnieje!')
+        () => new Error('Zestawienie o takiej nazwie już istnieje!'),
       );
     }
     return throwError(() => new Error('Wystąpił błąd serwera.'));
@@ -65,19 +67,5 @@ export class SetsService {
         headers,
       })
       .pipe(catchError(this.handleError));
-  }
-
-  countNewComments(
-    comments: IComment[],
-    authorType: 'user' | 'client'
-  ): number {
-    const newComments = comments.reduce((acc, item) => {
-      if (!item.needsAttention && item.authorType !== authorType) {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-
-    return newComments;
   }
 }

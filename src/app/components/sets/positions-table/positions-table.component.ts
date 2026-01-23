@@ -23,6 +23,7 @@ import {
   calculateNetto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
+import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
@@ -425,7 +426,7 @@ export class PositionsTableComponent implements OnInit {
     }, 1);
   }
 
-  // update comments for set, and count newComments property for badge
+  // update comments for set
   updateCommentsForSet() {
     const allComments: IComment[] = [];
     this.positionsFromBookmark.forEach((item: IPosition) => {
@@ -433,8 +434,6 @@ export class PositionsTableComponent implements OnInit {
         allComments.push(...item.comments);
       }
     });
-
-    // this.updateSetComments.emit(allComments);
   }
 
   // show dialog with comments for current position
@@ -451,14 +450,6 @@ export class PositionsTableComponent implements OnInit {
       }`;
       this.showCommentsDialog = true;
     }
-  }
-
-  // count new comments - no date in seenAt column or true in needsAttention
-  conutNewCommentsForAllPositions(comments: IComment[]): number {
-    return comments.filter(
-      (c: IComment) =>
-        (!c.seenAt || c.needsAttention) && c.authorType === 'client',
-    ).length;
   }
 
   // open gallery with bookmark images
@@ -515,20 +506,25 @@ export class PositionsTableComponent implements OnInit {
     });
   }
 
-  // get comments table and assign to position
   assignCommentsToPosition(comments: IComment[]) {
+    let totalNewComments = 0;
+
     this.positionsFromBookmark = this.positionsFromBookmark.map((position) => {
       const commentsForPosition =
         comments.filter((comment) => comment.positionId?.id === position.id) ??
         [];
 
-      const newComments =
-        this.conutNewCommentsForAllPositions(commentsForPosition);
+      const newCommentsForPosition = countNewComments(
+        commentsForPosition,
+        'client',
+      );
+
+      totalNewComments += newCommentsForPosition;
 
       return {
         ...position,
         comments: commentsForPosition,
-        newComments,
+        newComments: newCommentsForPosition,
       };
     });
   }

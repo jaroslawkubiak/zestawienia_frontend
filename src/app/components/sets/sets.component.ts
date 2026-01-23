@@ -19,14 +19,15 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
+import { countNewComments } from '../../shared/helpers/countNewComments';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
+import { IDeletedFiles } from '../files/types/IDeletedFiles';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
-import { IDeletedFiles } from '../files/types/IDeletedFiles';
 
 @Component({
   selector: 'app-sets',
@@ -77,7 +78,7 @@ export class SetsComponent implements OnInit {
     private setsService: SetsService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -95,7 +96,7 @@ export class SetsComponent implements OnInit {
         this.sets = this.sets.map((set) => ({
           ...set,
           newComments: set.comments
-            ? this.setsService.countNewComments(set.comments, 'user')
+            ? countNewComments(set.comments, 'client')
             : undefined,
         }));
 
@@ -131,7 +132,7 @@ export class SetsComponent implements OnInit {
         next: (data) => {
           this.notificationService.showNotification(
             'success',
-            'Zestawienie zostało usunięte'
+            'Zestawienie zostało usunięte',
           );
           this.sets = this.sets.filter((val) => val.id !== id);
         },
@@ -175,7 +176,7 @@ export class SetsComponent implements OnInit {
     this.sets = this.sets.map((set) =>
       set.id === uploadedSetId
         ? { ...set, files: [...(set.files || []), ...uploadedFiles] }
-        : set
+        : set,
     );
   }
 
@@ -197,7 +198,7 @@ export class SetsComponent implements OnInit {
     const { setId, files } = deletedFiles;
 
     this.sets = this.sets.map((item) =>
-      item.id === setId ? { ...item, files: files } : item
+      item.id === setId ? { ...item, files: files } : item,
     );
   }
 
