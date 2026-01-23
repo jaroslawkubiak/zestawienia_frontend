@@ -80,7 +80,7 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  markAllComments(
+  markAllCommentsAsNeedsAttention(
     positionId: number,
     readState: boolean,
     authorType: 'user' | 'client',

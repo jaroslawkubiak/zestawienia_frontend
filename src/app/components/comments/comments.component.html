@@ -19,7 +19,6 @@
         "
         (click)="toggleCommentRead(comment.id)"
       ></i>
-
       <i
         class="pi pi-pencil edit-icon"
         (click)="markCommentToEdit(comment.id)"
@@ -46,7 +45,9 @@
       class="comment-read flex-center cursor-pointer"
       pTooltip="Oznacz wszystkie jako przeczytane"
       tooltipPosition="top"
-      (click)="markAllComments(true, isUser ? 'client' : 'user')"
+      (click)="
+        markAllCommentsAsNeedsAttention(false, isUser ? 'client' : 'user')
+      "
     >
       <i class="pi pi-comments"></i>
     </div>
@@ -54,7 +55,9 @@
       class="comment-unread flex-center cursor-pointer"
       pTooltip="Oznacz wszystkie jako nieprzeczytane"
       tooltipPosition="top"
-      (click)="markAllComments(false, isUser ? 'client' : 'user')"
+      (click)="
+        markAllCommentsAsNeedsAttention(true, isUser ? 'client' : 'user')
+      "
     >
       <i class="pi pi-comments"></i>
     </div>

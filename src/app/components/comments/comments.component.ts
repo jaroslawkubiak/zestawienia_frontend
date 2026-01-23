@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -46,6 +47,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
     private soundService: SoundService,
+    private cdr: ChangeDetectorRef,
   ) {}
 
   ngAfterViewInit() {
@@ -145,6 +147,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         next: () => {
           this.comments = this.comments.filter((item) => item.id !== id);
           this.soundService.playSound(SoundType.trash);
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error(error);
@@ -176,6 +179,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             ? { ...item, needsAttention: updatedComment.needsAttention }
             : item,
         );
+        this.cdr.detectChanges();
       },
       error: (error) => {
         console.error(error);
@@ -183,9 +187,12 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     });
   }
 
-  markAllComments(state: boolean, authorType: 'user' | 'client') {
+  markAllCommentsAsNeedsAttention(
+    state: boolean,
+    authorType: 'user' | 'client',
+  ) {
     this.commentsService
-      .markAllComments(this.positionId, state, authorType)
+      .markAllCommentsAsNeedsAttention(this.positionId, state, authorType)
       .subscribe({
         next: (updatedComments) => {
           const firstClientComment = updatedComments.find(
@@ -196,11 +203,12 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             'info',
             `Wszystkie komentarze zostały oznaczone jako ${
               firstClientComment?.needsAttention
-                ? 'przeczytane'
-                : 'nieprzeczytane'
+                ? 'nieprzeczytane'
+                : 'przeczytane'
             }`,
           );
           this.comments = updatedComments;
+          this.cdr.detectChanges();
         },
         error: (err) => {
           console.error(err);
