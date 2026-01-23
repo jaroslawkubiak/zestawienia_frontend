@@ -35,7 +35,7 @@ export class EditSetService {
     private supplierService: SuppliersService,
     private authService: AuthService,
   ) {}
-  
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(
@@ -47,13 +47,9 @@ export class EditSetService {
 
   getPositions(setId: number): Observable<IPosition[]> {
     return this.http
-      .get<IPosition[]>(`${environment.API_URL}/positions/${setId}`)
-      .pipe(catchError(this.handleError));
-  }
-
-  getCommentsForSet(setId: number): Observable<IComment[]> {
-    return this.http
-      .get<IComment[]>(`${environment.API_URL}/comments/set/${setId}`)
+      .get<
+        IPosition[]
+      >(`${environment.API_URL}/positions/${setId}/getPositions`)
       .pipe(catchError(this.handleError));
   }
 
@@ -70,7 +66,7 @@ export class EditSetService {
 
   getSet(setId: number): Observable<ISet> {
     return this.http
-      .get<ISet>(`${environment.API_URL}/sets/${setId}`)
+      .get<ISet>(`${environment.API_URL}/sets/${setId}/getSet`)
       .pipe(catchError(this.handleError));
   }
 
@@ -141,7 +137,7 @@ export class EditSetService {
     });
 
     return this.http
-      .post<IPosition>(`${environment.API_URL}/positions/new`, newPosition, {
+      .post<IPosition>(`${environment.API_URL}/positions/addNew`, newPosition, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -226,7 +222,7 @@ export class EditSetService {
 
     return this.http
       .patch<INewSet>(
-        `${environment.API_URL}/sets/${savedSet.set.id}`,
+        `${environment.API_URL}/sets/${savedSet.set.id}/saveSet`,
         createSavedSet,
         {
           headers,

@@ -37,7 +37,7 @@ export class SetsService {
     });
 
     return this.http
-      .get<ISet[]>(`${environment.API_URL}/sets`, {
+      .get<ISet[]>(`${environment.API_URL}/sets/getSets`, {
         headers,
       })
       .pipe(catchError(this.handleError));

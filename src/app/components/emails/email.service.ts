@@ -29,7 +29,7 @@ export class EmailsService {
 
   getEmailBySetId(setId: number): Observable<ISendedEmailsFromDB[]> {
     return this.http.get<ISendedEmailsFromDB[]>(
-      `${environment.API_URL}/email/${setId}`,
+      `${environment.API_URL}/email/${setId}/getEmailListForSet`,
       {
         headers: { 'Content-Type': 'application/json' },
       },

@@ -15,7 +15,10 @@ import { ISupplier } from './ISupplier';
 export class SuppliersService {
   authorizationToken = () => this.authService.getAuthorizationToken();
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
@@ -30,7 +33,7 @@ export class SuppliersService {
     });
 
     return this.http
-      .get<ISupplier[]>(`${environment.API_URL}/suppliers`, {
+      .get<ISupplier[]>(`${environment.API_URL}/suppliers/getSuppliers`, {
         headers,
       })
       .pipe(catchError(this.handleError));
@@ -75,7 +78,7 @@ export class SuppliersService {
         updatedSupplier,
         {
           headers,
-        }
+        },
       )
       .pipe(catchError(this.handleError));
   }
