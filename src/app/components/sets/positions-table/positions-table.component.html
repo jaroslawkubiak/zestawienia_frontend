@@ -159,10 +159,10 @@
             <!-- if field read only, when edited show view-mode -->
             <ng-container *ngIf="column.readOnly">
               <span class="view-mode">
-                @if(column.type === 'number') {
-                {{ position[column.key] | number : "1.2-2" }}
+                @if (column.type === "number") {
+                  {{ position[column.key] | number: "1.2-2" }}
                 } @else {
-                {{ position[column.key] }}
+                  {{ position[column.key] }}
                 }
               </span>
             </ng-container>
@@ -172,11 +172,15 @@
             <span class="view-mode" [ngSwitch]="column.type">
               <!-- VIEW MODE -> type = number  -->
               <div *ngSwitchCase="'number'">
-                {{ position[column.key] | number : "1.2-2" }}
+                {{ position[column.key] | number: "1.2-2" }}
               </div>
               <!-- VIEW MODE -> type = select  -->
               <div *ngSwitchCase="'select'">
-                {{ column.optionLabel ? position[column.key]?.[column.optionLabel] : position[column.key] }}
+                {{
+                  column.optionLabel
+                    ? position[column.key]?.[column.optionLabel]
+                    : position[column.key]
+                }}
               </div>
               <!-- VIEW MODE -> type = image  -->
               <div *ngSwitchCase="'image'" class="view-mode-image">
@@ -231,7 +235,7 @@
         class="position-footer"
         [innerHTML]="
           column.key === 'wartoscNetto' || column.key === 'wartoscBrutto'
-            ? (column?.value | number : '1.2-2') + ' PLN'
+            ? (column?.value | number: '1.2-2') + ' PLN'
             : ''
         "
         [ngClass]="column.classFooter"
@@ -248,12 +252,11 @@
   [dismissableMask]="true"
 >
   <app-comments
-    [comments]="comments"
+    [comments]="set.comments || []"
     [positionId]="positionId"
     [setId]="setId"
     [commentsDialog]="showCommentsDialog"
     [isUser]="true"
-    (updateComments)="updateCommentsForPosition($event)"
   />
 </p-dialog>
 

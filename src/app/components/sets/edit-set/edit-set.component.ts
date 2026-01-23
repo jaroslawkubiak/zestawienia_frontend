@@ -266,25 +266,6 @@ export class EditSetComponent
     });
 
     this.set.comments = allComments;
-
-    this.set.newComments = allComments
-      ? this.countNewComments(this.set.comments, 'user')
-      : undefined;
-  }
-
-  // count new - unreaded comments
-  countNewComments(
-    comments: IComment[],
-    authorType: 'user' | 'client',
-  ): number {
-    const newComments = comments.reduce((acc, item) => {
-      if (!item.needsAttention && item.authorType !== authorType) {
-        acc += 1;
-      }
-      return acc;
-    }, 0);
-
-    return newComments;
   }
 
   // take edited data from form and update this.position array

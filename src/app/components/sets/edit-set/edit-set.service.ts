@@ -101,15 +101,10 @@ export class EditSetService {
               (comment) => comment.positionId?.id === position.id
             ) || [];
 
-          const newComments =
-            comments.length > 0
-              ? this.setsService.countNewComments(comments, 'user')
-              : undefined;
-
           return {
             ...position,
             comments,
-            newComments,
+            // newComments,
             status: position.status
               ? this.positionStatus.find(
                   (item) => position.status === item.label
@@ -117,14 +112,6 @@ export class EditSetService {
               : position.status,
           };
         });
-
-        if (set.comments) {
-          const newComments = this.setsService.countNewComments(
-            set.comments,
-            'user'
-          );
-          set = { ...set, newComments };
-        }
 
         return { set, positions: updatedPositions, suppliers };
       })

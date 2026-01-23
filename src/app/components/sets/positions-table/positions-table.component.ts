@@ -15,6 +15,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { Table, TableColResizeEvent, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
+import { TooltipModule } from 'primeng/tooltip';
 import { environment } from '../../../../environments/environment';
 import { NotificationService } from '../../../services/notification.service';
 import {
@@ -27,7 +28,6 @@ import { IBookmark } from '../../bookmarks/IBookmark';
 import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { ImageGalleryComponent } from '../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../image-gallery/types/IGalleryList';
 import { ISupplier } from '../../suppliers/ISupplier';
@@ -43,7 +43,6 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-positions-table',
@@ -100,7 +99,6 @@ export class PositionsTableComponent implements OnInit {
   positionId: number = 0;
   showCommentsDialog = false;
   header = '';
-  comments: IComment[] = [];
   @ViewChild('table') table!: Table;
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
 
@@ -108,7 +106,7 @@ export class PositionsTableComponent implements OnInit {
     private editSetService: EditSetService,
     private notificationService: NotificationService,
     private footerService: FooterService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
   }
@@ -123,6 +121,18 @@ export class PositionsTableComponent implements OnInit {
     }
 
     this.setId = this.set.id;
+
+    this.positionsFromBookmark = this.positionsFromBookmark.map((position) => {
+      if (!position.comments) {
+        return position;
+      }
+
+      const newComments = this.conutNewCommentsForAllPositions(
+        position.comments,
+      );
+
+      return { ...position, newComments };
+    });
   }
 
   scrollToPosition(positionNumber: number) {
@@ -191,7 +201,7 @@ export class PositionsTableComponent implements OnInit {
 
           this.notificationService.showNotification(
             'success',
-            'Pusta pozycja została dodana'
+            'Pusta pozycja została dodana',
           );
         },
         error: (error) => {
@@ -209,7 +219,7 @@ export class PositionsTableComponent implements OnInit {
         this.formData,
         this.set.bookmarks,
         this.selectedBookmark,
-        this.set.id
+        this.set.id,
       )
       .subscribe({
         next: (response) => {
@@ -235,7 +245,7 @@ export class PositionsTableComponent implements OnInit {
 
           this.notificationService.showNotification(
             'success',
-            'Pozycja została sklonowana'
+            'Pozycja została sklonowana',
           );
         },
         error: (error) => {
@@ -250,7 +260,7 @@ export class PositionsTableComponent implements OnInit {
     // remove position from formData and positionsFromBookmark
     this.formData = this.formData.filter((item) => item.id !== positionId);
     this.positionsFromBookmark = this.positionsFromBookmark.filter(
-      (item) => item.id !== positionId
+      (item) => item.id !== positionId,
     );
 
     // mark position id to be deleted after submit form
@@ -261,7 +271,7 @@ export class PositionsTableComponent implements OnInit {
 
     this.notificationService.showNotification(
       'warn',
-      `Pozycja o ID=${positionId} oznaczona do usunięcia.`
+      `Pozycja o ID=${positionId} oznaczona do usunięcia.`,
     );
   }
 
@@ -269,7 +279,7 @@ export class PositionsTableComponent implements OnInit {
   getColumnWidthToSelectedBookmark() {
     const selectedBookmark: IBookmarkWidth[] | undefined =
       this.set?.bookmarks.find(
-        (bookmark) => bookmark.id === this.selectedBookmark
+        (bookmark) => bookmark.id === this.selectedBookmark,
       )?.width;
 
     if (selectedBookmark && Array.isArray(selectedBookmark)) {
@@ -309,11 +319,11 @@ export class PositionsTableComponent implements OnInit {
       case 'ilosc':
         this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
           ilosc,
-          netto
+          netto,
         );
         this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
           ilosc,
-          calculateBrutto(netto)
+          calculateBrutto(netto),
         );
         break;
 
@@ -323,11 +333,11 @@ export class PositionsTableComponent implements OnInit {
         this.formData[rowIndex]['brutto'] = newBrutto;
         this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
           ilosc,
-          +newValue
+          +newValue,
         );
         this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
           ilosc,
-          newBrutto
+          newBrutto,
         );
         break;
 
@@ -337,11 +347,11 @@ export class PositionsTableComponent implements OnInit {
         this.formData[rowIndex]['netto'] = newNetto;
         this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
           ilosc,
-          +newValue
+          +newValue,
         );
         this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
           ilosc,
-          newNetto
+          newNetto,
         );
         break;
     }
@@ -369,7 +379,7 @@ export class PositionsTableComponent implements OnInit {
     this.cd.markForCheck();
     const columnName = event.element.innerText;
     const oldSize: IColumnList | undefined = this.columnList.find(
-      (item: IColumnList) => item.name === columnName
+      (item: IColumnList) => item.name === columnName,
     );
 
     if (oldSize?.width) {
@@ -378,7 +388,7 @@ export class PositionsTableComponent implements OnInit {
 
       // update current this.columnList
       this.columnList = this.columnList.map((item: IColumnList) =>
-        item.name === columnName ? { ...item, width: newSize } : item
+        item.name === columnName ? { ...item, width: newSize } : item,
       );
 
       // update this.set.bookmarks
@@ -392,7 +402,7 @@ export class PositionsTableComponent implements OnInit {
       this.set.bookmarks = this.set.bookmarks.map((item: IBookmark) =>
         item.id === this.selectedBookmark
           ? { ...item, width: updatedColumnList }
-          : item
+          : item,
       );
     }
   }
@@ -413,7 +423,7 @@ export class PositionsTableComponent implements OnInit {
   calculateFooterRow(): void {
     this.footerRow = this.footerService.calculateFooterRow(
       this.footerRow,
-      this.formData
+      this.formData,
     );
   }
 
@@ -440,11 +450,11 @@ export class PositionsTableComponent implements OnInit {
   showComments(positionId: number) {
     this.positionId = positionId;
     const position = this.positionsFromBookmark.find(
-      (item) => item.id === positionId
+      (item) => item.id === positionId,
     );
 
     if (position?.comments) {
-      this.comments = position.comments;
+      this.set.comments = position.comments;
       this.header = `Pozycja ${position.kolejnosc} ${
         position.produkt ? ' : ' + position.produkt : ''
       }`;
@@ -452,28 +462,12 @@ export class PositionsTableComponent implements OnInit {
     }
   }
 
-  // update comments for current position
-  updateCommentsForPosition(positionWithComments: IPositionWithComments) {
-    this.positionsFromBookmark = this.positionsFromBookmark.map((item) => {
-      if (
-        positionWithComments.comments &&
-        item.id === positionWithComments.positionId
-      ) {
-        const newCommentsCount = positionWithComments.comments.filter(
-          (c: IComment) => !c.needsAttention && c.authorType !== 'user'
-        ).length;
-
-        return {
-          ...item,
-          comments: positionWithComments.comments,
-          newComments: newCommentsCount,
-        };
-      }
-
-      return { ...item };
-    });
-
-    this.updateCommentsForSet();
+  // count new comments - no date in seenAt column or true in needsAttention
+  conutNewCommentsForAllPositions(comments: IComment[]): number {
+    return comments.filter(
+      (c: IComment) =>
+        (!c.seenAt || c.needsAttention) && c.authorType === 'client',
+    ).length;
   }
 
   // open gallery with bookmark images
@@ -497,7 +491,7 @@ export class PositionsTableComponent implements OnInit {
       .filter((img) => img !== null) as IGalleryList[];
 
     const activeIndex = galleryImages.findIndex(
-      (img) => img.itemImageSrc === clickedImageUrl
+      (img) => img.itemImageSrc === clickedImageUrl,
     );
 
     this.imageGallery.images = galleryImages;

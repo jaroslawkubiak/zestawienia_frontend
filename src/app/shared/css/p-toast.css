@@ -1,7 +1,7 @@
 /* notification position and size */
 ::ng-deep .p-toast {
   top: 20px !important;
-  width: 350px !important;
+  width: 550px !important;
 }
 /* header font size */
 ::ng-deep .p-toast-summary {

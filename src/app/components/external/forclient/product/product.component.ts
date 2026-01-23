@@ -5,7 +5,6 @@ import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { IComment } from '../../../comments/types/IComment';
-import { IPositionWithComments } from '../../../comments/types/IPositionWithComments';
 import { IPositionStatus } from '../../../sets/types/IPositionStatus';
 import { IPositionWithBadge } from '../../../sets/types/IPositionWithBadge';
 import { ISet } from '../../../sets/types/ISet';
@@ -52,23 +51,6 @@ export class ProductComponent implements OnInit {
     this.positionId = position.id;
     this.header = `Pozycja ${position.kolejnosc} - ${position.produkt}`;
     this.showCommentsDialog = true;
-  }
-
-  onUpdateComments(updatedData: IPositionWithComments) {
-    this.positionsWithBadge = this.positionsWithBadge.map((item) =>
-      item.id === updatedData.positionId
-        ? {
-            ...item,
-            comments: updatedData.comments,
-            newComments: this.countNewComments(updatedData.comments),
-          }
-        : item,
-    );
-
-    this.commentsUpdated.emit({
-      positionId: updatedData.positionId,
-      comments: updatedData.comments,
-    });
   }
 
   getStatusLabel(status: IPositionStatus | string): string {

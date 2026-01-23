@@ -37,7 +37,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
   @Input() isUser: boolean = true;
-  @Output() updateComments = new EventEmitter<IPositionWithComments>();
   newMessage: string = '';
   editedCommentId: number | null = null;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
@@ -84,8 +83,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         .addComment(this.newMessage, this.setId, this.positionId, this.set)
         .subscribe({
           next: (response) => {
-            this.comments.push(response);
+            this.comments = [...this.comments, response];
             this.newMessage = '';
+
             this.soundService.playSound(SoundType.messageSending);
             setTimeout(() => {
               this.scrollToBottom();
@@ -97,6 +97,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
                 `Powiadomienia o nowych komantarzach są wyłączone.`,
               );
             }
+
+            this.cdr.detectChanges();
           },
           error: (error) => {
             console.error(error);
@@ -127,6 +129,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           setTimeout(() => {
             this.scrollToBottom();
           }, 100);
+
+          this.cdr.detectChanges();
         },
         error: (error) => {
           console.error(error);
