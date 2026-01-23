@@ -7,6 +7,11 @@
         alt="image"
         *ngIf="position['imageUrl']"
       />
+      <i
+        class="pi pi-image"
+        *ngIf="!position['imageUrl']"
+        pTooltip="Brak obrazu"
+      ></i>
     </div>
     <div class="position-action-btn">
       <div
@@ -21,36 +26,36 @@
             [severity]="position.commentsBadge.severity"
             [pTooltip]="position.commentsBadge.tooltip"
             class="nr-comments"
-            badgeSize="large"
+            [badgeSize]="isMobile ? 'small' : 'large'"
           ></p-badge>
         </div>
         Komentarze
       </div>
       <div class="{{ position.link ? 'cursor-pointer' : '' }} flex-center">
-        @if(position.link) {
-        <a
-          href="{{ position.link }}"
-          class="link flex-center"
-          target="_blank"
-          rel="noopener noreferrer"
-          pTooltip="Otwórz link do produktu"
-          tooltipPosition="bottom"
-          ><i class="pi pi-link"></i>LINK</a
-        >
+        @if (position.link) {
+          <a
+            href="{{ position.link }}"
+            class="link flex-center"
+            target="_blank"
+            rel="noopener noreferrer"
+            pTooltip="Otwórz link do produktu"
+            tooltipPosition="bottom"
+            ><i class="pi pi-link"></i>LINK</a
+          >
         }
       </div>
     </div>
   </div>
   <div class="product-details">
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.produkt">
       <li class="product-title">PRODUKT</li>
       <li class="product-name">{{ position.produkt }}</li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.producent">
       <li class="product-title">PRODUCENT</li>
       <li class="product-name">{{ position.producent }}</li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.supplierId">
       <li class="product-title">DOSTAWCA</li>
       <li class="product-name">
         {{ position.supplierId ? position.supplierId["company"] : "" }}
@@ -58,45 +63,51 @@
     </div>
   </div>
   <div class="product-details">
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.kolekcja">
       <li class="product-title">KOLEKCJA</li>
-      <li class="product-name">{{ position.kolekcja }}</li>
+      <li class="product-name">
+        {{ position.kolekcja }}
+      </li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.nrKatalogowy">
       <li class="product-title">NR KATALOGOWY</li>
-      <li class="product-name">{{ position.nrKatalogowy }}</li>
+      <li class="product-name">
+        {{ position.nrKatalogowy }}
+      </li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.kolor">
       <li class="product-title">KOLOR</li>
-      <li class="product-name">{{ position.kolor }}</li>
+      <li class="product-name">
+        {{ position.kolor }}
+      </li>
     </div>
   </div>
   <div class="product-details">
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.ilosc">
       <li class="product-title">ILOŚĆ</li>
       <li class="product-name">
-        {{ position.ilosc | number : "1.2-2" }}
+        {{ position.ilosc | number: "1.2-2" }}
       </li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.brutto">
       <li class="product-title">CENA BRUTTO</li>
       <li class="product-name">
         {{
-          position.brutto ? (position.brutto | number : "1.2-2") + " PLN" : ""
+          position.brutto ? (position.brutto | number: "1.2-2") + " PLN" : ""
         }}
       </li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || position.wartoscBrutto">
       <li class="product-title">WARTOŚĆ BRUTTO</li>
       <li class="product-name">
         {{
           position.wartoscBrutto
-            ? (position.wartoscBrutto | number : "1.2-2") + " PLN"
+            ? (position.wartoscBrutto | number: "1.2-2") + " PLN"
             : ""
         }}
       </li>
     </div>
-    <div class="product-group">
+    <div class="product-group" *ngIf="!isMobile || getStatusCss(position.status)">
       <li class="product-title">STATUS</li>
       <li
         class="product-name status-wrapper {{ getStatusCss(position.status) }} "

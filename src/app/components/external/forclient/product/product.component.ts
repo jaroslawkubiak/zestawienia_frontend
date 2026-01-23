@@ -33,6 +33,7 @@ export class ProductComponent {
   setId!: number;
   showCommentsDialog = false;
   header = '';
+  isMobile = window.innerWidth < 768;
 
   ngOnInit() {
     this.setId = this.set.id;
@@ -56,7 +57,7 @@ export class ProductComponent {
             comments: updatedData.comments,
             newComments: this.countNewComments(updatedData.comments),
           }
-        : item
+        : item,
     );
   }
 
