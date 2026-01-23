@@ -22,7 +22,6 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { calculateWartosc } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmark } from '../../bookmarks/IBookmark';
-import { IComment } from '../../comments/types/IComment';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
@@ -137,6 +136,8 @@ export class EditSetComponent
             }, 0);
           }
         }
+
+        this.cd.detectChanges();
       },
       error: (err) => console.error('Error loading data', err),
     });
@@ -248,24 +249,12 @@ export class EditSetComponent
   }
 
   // update comments for set, and count newComments property for badge
-  updateCommentsForSet(commentsFromSelectedBookmark: IComment[]) {
-    const allComments: IComment[] = [];
-    this.positions = this.positions.map((item: IPosition) => {
-      const commentsByPositionId = commentsFromSelectedBookmark.filter(
-        (comment) => comment.positionId.id === item.id,
-      );
+  updateDataForSet() {
+    this.loadData();
 
-      if (commentsByPositionId.length > 0) {
-        allComments.push(...commentsByPositionId);
-        return { ...item, comments: commentsByPositionId };
-      } else if (item.comments && item.comments.length !== 0) {
-        allComments.push(...item.comments);
-      }
-
-      return { ...item };
-    });
-
-    this.set.comments = allComments;
+    this.loadContentForBookmark(this.selectedBookmark);
+    this.setMenuComponent.updateMenuItems();
+    this.cd.detectChanges();
   }
 
   // take edited data from form and update this.position array

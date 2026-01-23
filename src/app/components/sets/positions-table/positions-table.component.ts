@@ -4,6 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
   ViewChild,
@@ -67,7 +68,7 @@ import { SetStatus } from '../types/set-status.enum';
   templateUrl: './positions-table.component.html',
   styleUrl: './positions-table.component.css',
 })
-export class PositionsTableComponent implements OnInit {
+export class PositionsTableComponent implements OnInit, OnChanges {
   @Input() set!: ISet;
   @Input() selectedBookmark!: number;
   @Input() positionsFromBookmark: IPosition[] = [];
@@ -75,7 +76,7 @@ export class PositionsTableComponent implements OnInit {
   @Input() dropwownColumnOptions: { [key: string]: any[] } = {};
   @Output() isEdited = new EventEmitter<boolean>();
   @Output() updateSetPositions = new EventEmitter<IPosition>();
-  @Output() updateSetComments = new EventEmitter<IComment[]>();
+  @Output() updateSetComments = new EventEmitter();
 
   formData: IPosition[] = [];
   newOrClonePosition: IPosition | undefined;
@@ -123,7 +124,9 @@ export class PositionsTableComponent implements OnInit {
     }
 
     this.setId = this.set.id;
+  }
 
+  ngOnChanges() {
     this.assignCommentsToPosition(this.set.comments || []);
   }
 
@@ -426,16 +429,6 @@ export class PositionsTableComponent implements OnInit {
     }, 1);
   }
 
-  // update comments for set
-  updateCommentsForSet() {
-    const allComments: IComment[] = [];
-    this.positionsFromBookmark.forEach((item: IPosition) => {
-      if (item.comments && item.comments.length !== 0) {
-        allComments.push(...item.comments);
-      }
-    });
-  }
-
   // show dialog with comments for current position
   showComments(positionId: number) {
     this.positionId = positionId;
@@ -493,17 +486,7 @@ export class PositionsTableComponent implements OnInit {
 
   // on close dialog with comments
   onDialogClosed() {
-    this.editSetService.getCommentsForSet(this.set.id).subscribe({
-      next: (comments) => {
-        this.set = {
-          ...this.set,
-          comments,
-        };
-
-        this.assignCommentsToPosition(this.set.comments || []);
-        this.cd.detectChanges();
-      },
-    });
+    this.updateSetComments.emit();
   }
 
   assignCommentsToPosition(comments: IComment[]) {

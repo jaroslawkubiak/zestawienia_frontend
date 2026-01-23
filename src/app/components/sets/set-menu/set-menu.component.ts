@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -17,6 +18,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
+import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmark } from '../../bookmarks/IBookmark';
 import { EmailsService } from '../../emails/email.service';
@@ -34,7 +36,6 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
 import { buildSetMenu } from './set-menu.config';
-import { countNewComments } from '../../../shared/helpers/countNewComments';
 
 @Component({
   selector: 'app-set-menu',
@@ -78,11 +79,15 @@ export class SetMenuComponent implements OnChanges, OnInit {
   attachmentBadge: number = 0;
   clientHash = '';
 
+  newComments = 0;
+  allComments = 0;
+
   constructor(
     private router: Router,
     private notificationService: NotificationService,
     private emailsService: EmailsService,
     private pdfService: PdfService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -93,6 +98,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.attachmentBadge = this.set?.files?.length || 0;
+    this.allComments = this.set?.comments?.length ?? 0;
+    this.newComments = countNewComments(this.set?.comments || [], 'client');
 
     if (this.set && this.positions?.length && this.allSuppliers?.length) {
       this.findUniqueSuppliers();
@@ -117,27 +124,20 @@ export class SetMenuComponent implements OnChanges, OnInit {
       showAttachedFiles: () => this.showAttachedFiles(),
       openSendFilesDialog: () => this.openSendFilesDialog(),
       getCommentsBadgeClass: () => this.getCommentsBadgeClass(),
-      badgeValue: () => this.badgeValue(),
+      badgeValue: () => this.newComments || this.allComments,
       showComments: () => this.showComments(),
     });
   }
 
   // define comments badge color
   getCommentsBadgeClass(): string {
-    const commentsCount = this.set?.comments?.length ?? 0;
-    const newComments = this.badgeValue();
-
-    if (newComments > 0) {
+    if (this.newComments > 0) {
       return 'p-badge-danger';
-    } else if (commentsCount > 0) {
+    } else if (this.allComments > 0) {
       return 'p-badge-contrast';
     } else {
       return 'p-badge-secondary';
     }
-  }
-
-  badgeValue(): number {
-    return countNewComments(this.set.comments || [], 'client');
   }
 
   // open edit set header dialog
