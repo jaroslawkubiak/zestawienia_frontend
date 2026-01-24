@@ -74,6 +74,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   rawHTML = '';
   title = '';
   emailMessage = '';
+  GDPRClause = '';
 
   newEmail: IEmailDetailsToDB = {
     to: '',
@@ -90,6 +91,13 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   sendingEmailsToClient!: boolean;
   sendingEmailsToSuppliers!: boolean;
 
+  settingsNames = [
+    'sendingEmailsToClient',
+    'sendingEmailsToSupplier',
+    'senderEmail',
+    'GDPRClause',
+  ];
+
   constructor(
     private settingsService: SettingsService,
     private emailsService: EmailsService,
@@ -99,28 +107,25 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.settingsService.getByName('senderEmail').subscribe({
-      next: (response: DbSettings) => {
-        if (response) {
-          this.senderEmail = response.value;
-          this.cd.markForCheck();
-        }
-      },
-    });
+    this.settingsService.getSettingByNames(this.settingsNames).subscribe({
+      next: (settings: DbSettings[]) => {
+        for (const setting of settings) {
+          if (setting.name === 'sendingEmailsToClient') {
+            this.sendingEmailsToClient = setting.value === 'true';
+          }
 
-    this.settingsService.getByName('sendingEmailsToClient').subscribe({
-      next: (response: DbSettings) => {
-        if (response) {
-          this.sendingEmailsToClient = response.value === 'true';
+          if (setting.name === 'sendingEmailsToSupplier') {
+            this.sendingEmailsToSuppliers = setting.value === 'true';
+          }
+          if (setting.name === 'senderEmail') {
+            this.senderEmail = setting.value;
+          }
+          if (setting.name === 'GDPRClause') {
+            this.GDPRClause = setting.value;
+          }
         }
-      },
-    });
 
-    this.settingsService.getByName('sendingEmailToSupplier').subscribe({
-      next: (response: DbSettings) => {
-        if (response) {
-          this.sendingEmailsToSuppliers = response.value === 'true';
-        }
+        this.cd.markForCheck();
       },
     });
 
@@ -202,6 +207,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       title: this.title,
       message: formattedMessage,
       link: this.newEmail.link,
+      GDPRClause: this.GDPRClause,
     });
 
     const iframe = this.iframeRef.nativeElement;

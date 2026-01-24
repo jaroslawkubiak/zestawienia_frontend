@@ -17,6 +17,12 @@ export class SettingsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
+  getSettingByNames(names: string[]): Observable<DbSettings[]> {
+    return this.http
+      .post<DbSettings[]>(`${environment.API_URL}/settings/getSettingByNames`, names)
+      .pipe(catchError(this.handleError));
+  }
+
   getByName(name: string): Observable<DbSettings> {
     return this.http
       .get<DbSettings>(`${environment.API_URL}/settings/${name}`)
