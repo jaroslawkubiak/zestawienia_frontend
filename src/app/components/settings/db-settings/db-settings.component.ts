@@ -1,21 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import {
-  AbstractControl,
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { RadioButtonModule } from 'primeng/radiobutton';
+import { TextareaModule } from 'primeng/textarea';
 import { NotificationService } from '../../../services/notification.service';
 import { SettingsService } from '../settings.service';
 import { DbSettings } from '../types/IDbSettings';
 
 @Component({
   selector: 'app-db-settings',
-  imports: [CommonModule, ReactiveFormsModule, InputTextModule, ButtonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    InputTextModule,
+    ButtonModule,
+    TextareaModule,
+    RadioButtonModule,
+  ],
   templateUrl: './db-settings.component.html',
   styleUrl: './db-settings.component.css',
 })
@@ -23,6 +31,11 @@ export class DbSettingsComponent {
   form!: FormGroup;
   settingList!: DbSettings[];
   formReady = false;
+
+  booleanType = [
+    { name: 'True', value: true },
+    { name: 'False', value: false },
+  ];
 
   constructor(
     private fb: FormBuilder,
@@ -42,44 +55,37 @@ export class DbSettingsComponent {
 
   private buildForm(settings: DbSettings[]) {
     const group: Record<string, any> = {};
+
     settings.forEach((setting) => {
       const validators = [Validators.required];
+      let value: any = setting.value ?? '';
 
-      // add validator depending on field type
       switch (setting.type) {
         case 'email':
           validators.push(Validators.email);
           break;
+
         case 'number':
           validators.push(Validators.pattern(/^\d+$/));
           break;
+
         case 'boolean':
-          validators.push(this.booleanStringValidator);
+          value = setting.value === 'true';
           break;
+
+        case 'textarea':
+          break;
+
         case 'string':
         default:
           validators.push(Validators.maxLength(150));
           break;
       }
 
-      group[setting.name] = [setting.value ?? '', validators];
+      group[setting.name] = [value, validators];
     });
 
     this.form = this.fb.group(group);
-  }
-
-  private booleanStringValidator(control: AbstractControl) {
-    const val = control.value;
-
-    if (val === null || val === undefined || val === '') {
-      return null;
-    }
-
-    if (val === 'true' || val === 'false') {
-      return null;
-    }
-
-    return { booleanString: true };
   }
 
   getFieldErrors(name: string) {
@@ -98,9 +104,6 @@ export class DbSettingsComponent {
     if (control.errors['pattern']) {
       errors.push('Nieprawidłowy format liczby.');
     }
-    if (control.errors['booleanString']) {
-      errors.push('Pole musi być "true" lub "false".');
-    }
     if (control.errors['maxlength']) {
       errors.push(
         `Maksymalna długość to ${control.errors['maxlength'].requiredLength} znaków.`,
@@ -117,14 +120,21 @@ export class DbSettingsComponent {
       return;
     }
 
-    const formValue = this.form.value;
+    const payload: DbSettings[] = this.settingList.map((setting) => {
+      let value = this.form.value[setting.name];
 
-    const payload: DbSettings[] = this.settingList.map((setting) => ({
-      id: setting.id,
-      name: setting.name,
-      type: setting.type,
-      value: formValue[setting.name],
-    }));
+      if (setting.type === 'boolean') {
+        value = value ? 'true' : 'false';
+      }
+
+      return {
+        id: setting.id,
+        name: setting.name,
+        type: setting.type,
+        value,
+      };
+    });
+    console.log(payload);
 
     this.settingsService.saveSettings(payload).subscribe({
       next: (response) => {

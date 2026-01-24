@@ -1,21 +1,47 @@
 <form *ngIf="formReady" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="settings-container">
     <div class="settings-item" *ngFor="let setting of settingList">
-      <label for="{{ setting.name }}" class="settings-label">{{
-        setting.name
-      }}</label>
-      <div class="settings-input-wrapper">
-        <i class="pi pi-asterisk"></i>
-        <input
-          autocomplete="off"
-          type="text"
-          id="{{ setting.name }}"
-          pInputText
-          [formControlName]="setting.name"
-          fluid
-        />
+      <div>
+        <label for="{{ setting.name }}" class="settings-label"
+          >{{ setting.name }}
+          <i class="pi pi-asterisk"></i>
+        </label>
       </div>
+      <div [ngSwitch]="setting.type">
+        <div class="settings-input-wrapper" *ngSwitchCase="'textarea'">
+          <textarea
+            id="{{ setting.name }}"
+            pTextarea
+            [formControlName]="setting.name"
+            fluid
+          ></textarea>
+        </div>
+        <div class="settings-input-wrapper" *ngSwitchCase="'boolean'">
+          <div class="settings-boolean-wrapper">
+            <div *ngFor="let cat of booleanType">
+              <p-radiobutton
+                [inputId]="setting.name + '-' + cat.value"
+                [value]="cat.value"
+                [formControlName]="setting.name"
+              ></p-radiobutton>
 
+              <label [for]="setting.name + '-' + cat.value">
+                {{ cat.name }}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="settings-input-wrapper" *ngSwitchDefault>
+          <input
+            autocomplete="off"
+            type="text"
+            id="{{ setting.name }}"
+            pInputText
+            [formControlName]="setting.name"
+            fluid
+          />
+        </div>
+      </div>
       <p
         class="settings-error-messages"
         *ngFor="let error of getFieldErrors(setting.name)"

@@ -104,6 +104,10 @@
   --p-button-contrast-color: var(--btn-contrast-text) !important;
   --p-button-contrast-hover-color: var(--btn-contrast-text) !important;
   --p-button-contrast-active-color: var(--p-button-contrast-color) !important;
+
+  --p-radiobutton-icon-checked-color: var(--accent-color-10) !important;
+  --p-radiobutton-checked-background: var(--accent-color-10) !important;
+  --p-radiobutton-border-color: var(--accent-color-10) !important;
 }
 
 /* primeNG custom elements style  */

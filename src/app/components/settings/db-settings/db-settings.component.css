@@ -1,5 +1,5 @@
 .settings-container {
-  max-width: 550px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   padding: 20px 0;
@@ -21,7 +21,7 @@
 }
 
 .settings-label {
-  display: block;
+  position: relative;
   color: var(--accent-color-15);
   font-size: 2rem;
 }
@@ -37,7 +37,10 @@
 
 .p-inputtext:focus,
 .p-inputtext:hover,
-.p-inputtext:active {
+.p-inputtext:active,
+.p-textarea:focus,
+.p-textarea:hover,
+.p-textarea:active {
   background-color: var(--accent-color-03) !important;
 }
 
@@ -54,7 +57,7 @@
 .settings-item i {
   position: absolute;
   top: -10px;
-  right: -10px;
+  right: -15px;
   color: var(--error-color);
   font-size: 16px;
 }
@@ -66,4 +69,37 @@
   color: var(--error-color);
   font-size: 1.6rem;
   font-weight: 700;
+}
+
+.settings-boolean-wrapper {
+  position: relative;
+  display: flex;
+  gap: 40px;
+  padding: 10px;
+  width: 250px;
+}
+
+.settings-boolean-wrapper label {
+  margin-left: 10px;
+}
+
+.p-inputtext {
+  border: 1px solid var(--accent-color-13) !important;
+}
+
+.p-textarea {
+  width: 100% !important;
+  height: 300px !important;
+  resize: none;
+  border-radius: 0px;
+  padding: 8px 16px !important;
+  font-size: 2rem !important;
+  border: 1px solid var(--accent-color-13) !important;
+}
+
+::ng-deep
+  .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover)
+  .p-radiobutton-box {
+  border-color: var(--accent-color-10) !important;
+  background-color: var(--accent-color-10) !important;
 }
