@@ -9,10 +9,10 @@ import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ISetHeader } from '../types/ISetHeader';
-import { SetStatus } from '../types/set-status.enum';
 import { ISetStatus } from '../types/ISetStatus';
+import { SetStatus } from '../types/set-status.enum';
 
 @Component({
   selector: 'app-edit-header',
@@ -36,8 +36,8 @@ export class EditHeaderComponent implements OnInit {
   name: string = '';
   address: string = '';
   selectedStatus: string = '';
-  selectedBookmarks: IBookmark[] = [];
-  allBookmarks: IBookmark[] = [];
+  selectedBookmarks: IBookmarksWithTableColumns[] = [];
+  allBookmarks: IBookmarksWithTableColumns[] = [];
   setStatus: string = '';
   isLoading = true;
   statuses: ISetStatus[] = Object.entries(SetStatus).map(([key, value]) => ({

@@ -10,11 +10,11 @@ import { TextareaModule } from 'primeng/textarea';
 import { NotificationService } from '../../../services/notification.service';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
-import { IBookmark } from '../../bookmarks/IBookmark';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/types/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 
 @Component({
   selector: 'app-new-set',
@@ -36,15 +36,15 @@ export class NewSetComponent implements OnInit {
   address: string = '';
   allClients: IClient[] = [];
   selectedClient = '';
-  allBookmarks: IBookmark[] = [];
-  selectedBookmarks: IBookmark[] = [];
+  allBookmarks: IBookmarksWithTableColumns[] = [];
+  selectedBookmarks: IBookmarksWithTableColumns[] = [];
 
   constructor(
     private bookmarksService: BookmarksService,
     private router: Router,
     private setsService: SetsService,
     private clientsService: ClientsService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
@@ -80,9 +80,10 @@ export class NewSetComponent implements OnInit {
       ...formData.form.controls['bookmarks'].value,
     };
 
-    const bookmarks: IBookmark[] = Object.values(bookmarksData);
-    bookmarks.map((item: IBookmark) => {
-      item.width = bookarksDefaultWidth;
+    const bookmarks: IBookmarksWithTableColumns[] =
+      Object.values(bookmarksData);
+    bookmarks.map((item: IBookmarksWithTableColumns) => {
+      item.columnWidth = bookarksDefaultWidth;
       delete item.default;
     });
 
@@ -98,7 +99,7 @@ export class NewSetComponent implements OnInit {
       next: (response) => {
         this.notificationService.showNotification(
           'success',
-          'Nowe zestawienie zostało dodane'
+          'Nowe zestawienie zostało dodane',
         );
         this.router.navigate([`/sets/${response.id}`]);
       },

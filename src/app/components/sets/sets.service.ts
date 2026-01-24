@@ -51,7 +51,7 @@ export class SetsService {
     const createSet: INewSet = { ...newSet, createdBy: Number(this.userId()) };
 
     return this.http
-      .post<ISavedSet>(`${environment.API_URL}/sets/new`, createSet, {
+      .post<ISavedSet>(`${environment.API_URL}/sets/addNew`, createSet, {
         headers,
       })
       .pipe(catchError(this.handleError));

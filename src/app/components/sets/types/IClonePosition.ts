@@ -1,5 +1,5 @@
 import { IUser } from '../../../login/types/IUser';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { IPositionStatus } from './IPositionStatus';
 import { ISet } from './ISet';
@@ -20,7 +20,7 @@ export interface IClonePosition {
   status: IPositionStatus | string;
   setId: ISet;
   supplierId: ISupplier;
-  bookmarkId: IBookmark;
+  bookmarkId: IBookmarksWithTableColumns;
   createdBy?: IUser;
   updatedBy?: IUser;
 }

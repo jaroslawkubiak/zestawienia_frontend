@@ -8,8 +8,7 @@ import { catchError, forkJoin, map, Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
-import { IBookmark } from '../../bookmarks/IBookmark';
-import { IComment } from '../../comments/types/IComment';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { PositionStatusList } from '../PositionStatusList';
 import { IClonePosition } from '../types/IClonePosition';
@@ -146,7 +145,7 @@ export class EditSetService {
   cloneAndPreparePosition(
     positionId: number,
     formData: IPosition[],
-    bookmarks: IBookmark[],
+    bookmarks: IBookmarksWithTableColumns[],
     selectedBookmarkId: number,
     setId: number,
   ): Observable<IPosition> {

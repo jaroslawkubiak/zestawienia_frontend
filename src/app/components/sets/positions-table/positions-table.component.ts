@@ -26,8 +26,8 @@ import {
 } from '../../../shared/helpers/calculate';
 import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { IBookmark } from '../../bookmarks/IBookmark';
-import { IBookmarkWidth } from '../../bookmarks/IBookmarksWidth';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
+import { ITableColumnWidth } from '../../bookmarks/types/ITableColumnWidth';
 import { CommentsComponent } from '../../comments/comments.component';
 import { IComment } from '../../comments/types/IComment';
 import { ImageGalleryComponent } from '../../image-gallery/image-gallery.component';
@@ -272,10 +272,10 @@ export class PositionsTableComponent implements OnInit, OnChanges {
 
   // get column width from set object
   getColumnWidthToSelectedBookmark() {
-    const selectedBookmark: IBookmarkWidth[] | undefined =
+    const selectedBookmark: ITableColumnWidth[] | undefined =
       this.set?.bookmarks.find(
         (bookmark) => bookmark.id === this.selectedBookmark,
-      )?.width;
+      )?.columnWidth;
 
     if (selectedBookmark && Array.isArray(selectedBookmark)) {
       this.columnList = this.columnList.map((col: IColumnList) => {
@@ -394,10 +394,11 @@ export class PositionsTableComponent implements OnInit, OnChanges {
           width: item.width as number,
         }));
 
-      this.set.bookmarks = this.set.bookmarks.map((item: IBookmark) =>
-        item.id === this.selectedBookmark
-          ? { ...item, width: updatedColumnList }
-          : item,
+      this.set.bookmarks = this.set.bookmarks.map(
+        (item: IBookmarksWithTableColumns) =>
+          item.id === this.selectedBookmark
+            ? { ...item, width: updatedColumnList }
+            : item,
       );
     }
   }

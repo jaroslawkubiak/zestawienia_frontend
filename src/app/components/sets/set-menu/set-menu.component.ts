@@ -20,7 +20,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { EmailsService } from '../../emails/email.service';
 import { SendEmailComponent } from '../../emails/send-email/send-email.component';
 import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
@@ -58,7 +58,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @Input() set!: ISet;
   @Input() positions!: IPosition[];
   @Input() allSuppliers: ISupplier[] = [];
-  @Input() selectedBookmarks!: IBookmark[];
+  @Input() selectedBookmarks!: IBookmarksWithTableColumns[];
   @Input() isEdited: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
@@ -159,13 +159,17 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // change data after set header
   onSetHeaderChange(headerData: ISetHeader): void {
     const originalMap = new Map(
-      this.set.bookmarks.map((item: IBookmark) => [item.id, item]),
+      this.set.bookmarks.map((item: IBookmarksWithTableColumns) => [
+        item.id,
+        item,
+      ]),
     );
 
     this.set.bookmarks = headerData.selectedBookmarks.map(
-      (item: IBookmark) => ({
+      (item: IBookmarksWithTableColumns) => ({
         ...item,
-        width: originalMap.get(item.id)?.width || bookarksDefaultWidth,
+        columnWidth:
+          originalMap.get(item.id)?.columnWidth || bookarksDefaultWidth,
       }),
     );
     this.updateBookmarks.emit();

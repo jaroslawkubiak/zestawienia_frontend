@@ -1,11 +1,11 @@
 import { IUser } from '../../../login/types/IUser';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ISet } from './ISet';
 
 export interface INewEmptyPosition {
   kolejnosc: number;
   setId: ISet;
-  bookmarkId: IBookmark;
+  bookmarkId: IBookmarksWithTableColumns;
   createdBy?: IUser;
   updatedBy?: IUser;
 }

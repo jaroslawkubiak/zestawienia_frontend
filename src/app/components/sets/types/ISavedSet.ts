@@ -1,10 +1,10 @@
-import { IBookmark } from "../../bookmarks/IBookmark";
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 
 export interface ISavedSet {
   id: number;
   name: string;
   clientId: number;
-  bookmarks: IBookmark[];
+  bookmarks: IBookmarksWithTableColumns[];
   hash: string;
   status: string;
   createdAt: string;

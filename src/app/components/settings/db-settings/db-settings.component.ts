@@ -134,7 +134,6 @@ export class DbSettingsComponent {
         value,
       };
     });
-    console.log(payload);
 
     this.settingsService.saveSettings(payload).subscribe({
       next: (response) => {

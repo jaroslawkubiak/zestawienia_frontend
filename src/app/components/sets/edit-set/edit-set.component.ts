@@ -21,7 +21,7 @@ import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { calculateWartosc } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
@@ -63,7 +63,7 @@ export class EditSetComponent
   positionsFromBookmark: IPosition[] = [];
   latestFormData: IPosition[] = [];
   selectedBookmark: number = 0;
-  selectedBookmarks: IBookmark[] = [];
+  selectedBookmarks: IBookmarksWithTableColumns[] = [];
   pendingNavigation: Function | null = null;
   destination: string | undefined;
   isLoading = true;
@@ -155,12 +155,13 @@ export class EditSetComponent
     this.set.bookmarks.sort((a, b) => a.id - b.id);
 
     // mark first (lowest id) bookmark as selected
-    this.selectedBookmark = this.set.bookmarks[0].id;
+    this.selectedBookmark =
+      this.set.lastBookmark.id || this.set.bookmarks[0].id;
 
     // make copy of bookmarks for header edit
     this.selectedBookmarks = JSON.parse(JSON.stringify(this.set.bookmarks));
     this.selectedBookmarks.forEach((item) => {
-      delete item.width;
+      delete item.columnWidth;
       return (item.default = true);
     });
 
@@ -185,8 +186,13 @@ export class EditSetComponent
       status: item.status?.label || item.status,
     }));
 
+    const updatedSet: ISet = {
+      ...this.set,
+      lastBookmark: { id: this.selectedBookmark },
+    };
+
     const savedSet: IUpdateSet = {
-      set: this.set,
+      set: updatedSet,
       positions: updatedPositions,
       positionToDelete: [...this.positionToDelete],
     };

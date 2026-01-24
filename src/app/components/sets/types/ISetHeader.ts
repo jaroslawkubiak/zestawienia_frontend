@@ -1,8 +1,8 @@
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 
 export interface ISetHeader {
   name: string;
   address: string;
   selectedStatus: string;
-  selectedBookmarks: IBookmark[];
+  selectedBookmarks: IBookmarksWithTableColumns[];
 }

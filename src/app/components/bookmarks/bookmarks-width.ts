@@ -1,6 +1,6 @@
-import { IBookmarkWidth } from './IBookmarksWidth';
+import { ITableColumnWidth } from './types/ITableColumnWidth';
 
-export const bookarksDefaultWidth: IBookmarkWidth[] = [
+export const bookarksDefaultWidth: ITableColumnWidth[] = [
   {
     name: 'id',
     width: 10,

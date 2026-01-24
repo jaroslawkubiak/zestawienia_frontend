@@ -1,4 +1,4 @@
-import { IBookmark } from '../../bookmarks/IBookmark';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { IComment } from '../../comments/types/IComment';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 
@@ -12,7 +12,10 @@ export interface ISet {
   updatedAt: string;
   updatedAtTimestamp: number;
   hash: string;
-  bookmarks: IBookmark[];
+  bookmarks: IBookmarksWithTableColumns[];
+  lastBookmark: {
+    id: number;
+  };
   files?: IFileFullDetails[];
   comments?: IComment[];
   newComments?: number;
