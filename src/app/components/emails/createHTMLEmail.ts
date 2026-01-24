@@ -1,4 +1,3 @@
-import { GDPRClause } from './GDPRclause';
 import { IHTMLTemplateOptions } from './types/IHTMLTemplateOptions';
 
 const ASSETS_URL = 'https://zestawienia.zurawickidesign.pl/assets/images';
@@ -6,12 +5,14 @@ const currentYear = new Date().getFullYear();
 const socialColor = 'accent'; // black or accent
 
 export function createHTMLEmail(options: IHTMLTemplateOptions): string {
+  const { GDPRClause, message, link, title } = { ...options };
+
   return `
   ${HTMLheader}
   <!-- TITLE -->
   <tr>
     <td style="padding:30px 0; text-align:center;">
-      <h2 style="margin:0; font-size:24px; font-weight:bold;">${options.title}</h2>
+      <h2 style="margin:0; font-size:24px; font-weight:bold;">${title}</h2>
     </td>
   </tr>
 
@@ -19,9 +20,9 @@ export function createHTMLEmail(options: IHTMLTemplateOptions): string {
       <tr>
         <td style="line-height:1.6;">
           <p>Dzień dobry.</p>
-          <p>${options.message}</p>
+          <p>${message}</p>
           <p style="margin-top:20px;">
-            <a href="${options.link}" target="_blank" style="color:#3bbfa1; text-decoration:none; font-weight:bold;">
+            <a href="${link}" target="_blank" style="color:#3bbfa1; text-decoration:none; font-weight:bold;">
               Zestawienie
             </a>
           </p>
@@ -29,7 +30,7 @@ export function createHTMLEmail(options: IHTMLTemplateOptions): string {
       </tr>
 
       <!-- FOOTER MESSAGE + SOCIALS -->
-      ${HTMLfooter}
+      ${HTMLfooter(GDPRClause)}
 
     </table>
   </body>
@@ -62,7 +63,8 @@ const HTMLheader = `
   </tr>
 `;
 
-const HTMLfooter = `
+function HTMLfooter(GDPRClause: string) {
+  return `
 <!-- FOOTER MESSAGE + SOCIALS -->
 <tr>
   <td>
@@ -132,3 +134,4 @@ const HTMLfooter = `
   </td>
 </tr>
 `;
+}
