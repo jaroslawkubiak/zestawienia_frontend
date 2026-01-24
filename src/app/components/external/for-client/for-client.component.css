@@ -12,10 +12,20 @@
 }
 
 .header-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: var(--accent-color-10);
+  height: 100px;
+}
+
+.header-placeholder {
+  height: 100px;
+  width: 100%;
 }
 
 .header {
@@ -117,6 +127,33 @@ h3 {
 
 /* MOBILE  */
 @media (max-width: 768px) {
+  .header-background.mobile-sticky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    animation: slideFromTop 0.55s ease;
+  }
+
+  .header-background {
+    height: 60px;
+    transition: transform 0.25s ease;
+  }
+
+  .header-placeholder {
+    height: 60px;
+  }
+
+  @keyframes slideFromTop {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
   .header {
     min-width: auto;
     padding: 15px;

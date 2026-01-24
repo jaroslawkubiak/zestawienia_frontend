@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
@@ -55,6 +61,7 @@ export class ForClientComponent implements OnInit {
   selectedBookmarkId = 0;
   mobileMenuOpen = false;
   mobileMenuClosing = false;
+  isMobileSticky = false;
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
@@ -65,6 +72,13 @@ export class ForClientComponent implements OnInit {
     private editSetService: EditSetService,
     private cd: ChangeDetectorRef,
   ) {}
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    if (window.innerWidth <= 768) {
+      this.isMobileSticky = window.scrollY >= 400;
+    }
+  }
 
   ngOnInit() {
     this.route.paramMap

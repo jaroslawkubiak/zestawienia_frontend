@@ -2,7 +2,8 @@
 <app-show-files who="client" />
 
 <div class="container" *ngIf="set">
-  <div class="header-background">
+  <div class="header-placeholder"></div>
+  <div class="header-background" [class.mobile-sticky]="isMobileSticky">
     <!-- MOBILE MENU -->
     <div
       class="mobile-menu"
@@ -53,7 +54,7 @@
           <h3>Witamy w zestawieniu do inwestycji</h3>
           <h1>{{ set.name }}</h1>
         </div>
-        <div class="header-title-mobile">Zestawienie {{ set.name }}</div>
+        <div class="header-title-mobile">{{ set.name }}</div>
       </div>
 
       <div class="mobile-menu-icon-wrapper" (click)="toggleMobileMenu()">
