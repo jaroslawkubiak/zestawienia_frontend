@@ -128,11 +128,11 @@
     </div>
     <div
       class="product-group product-status"
-      *ngIf="!isMobile || getStatusCss(position.status)"
+      *ngIf="!isMobile ? '' : getStatusCss(position.status)"
     >
       <li
         class="product-title"
-        [class]="!isMobile || getStatusCss(position.status)"
+        [class]="!isMobile ? '' : getStatusCss(position.status)"
       >
         STATUS
       </li>
