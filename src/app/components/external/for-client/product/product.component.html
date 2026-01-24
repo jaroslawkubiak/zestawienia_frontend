@@ -15,7 +15,7 @@
     </div>
     <div class="position-action-btn">
       <div
-        class="comments-wrapper"
+        class="comments-wrapper product-buttons flex-center"
         pTooltip="Dodaj komentarz"
         tooltipPosition="bottom"
         (click)="showComments(position.id)"
@@ -32,15 +32,19 @@
         </div>
         Komentarze
       </div>
-      <div class="{{ position.link ? 'cursor-pointer' : '' }} flex-center">
+      <div
+        class="{{
+          position.link ? 'cursor-pointer' : ''
+        }} flex-center product-buttons"
+        pTooltip="Otwórz link do produktu"
+        tooltipPosition="bottom"
+      >
         @if (position.link) {
           <a
             href="{{ position.link }}"
             class="link flex-center"
             target="_blank"
             rel="noopener noreferrer"
-            pTooltip="Otwórz link do produktu"
-            tooltipPosition="bottom"
             ><i class="pi pi-link"></i>LINK</a
           >
         }
@@ -83,14 +87,25 @@
       </li>
     </div>
   </div>
-  <div class="product-details">
-    <div class="product-group" *ngIf="!isMobile || position.ilosc">
+  <div
+    class="product-details product-price"
+    [style.margin-bottom]="
+      isMobile && getStatusCss(position.status) ? '60px' : '0px'
+    "
+  >
+    <div
+      class="product-group product-group-price"
+      *ngIf="!isMobile || position.ilosc"
+    >
       <li class="product-title">ILOŚĆ</li>
       <li class="product-name">
         {{ position.ilosc | number: "1.2-2" }}
       </li>
     </div>
-    <div class="product-group" *ngIf="!isMobile || position.brutto">
+    <div
+      class="product-group product-group-price"
+      *ngIf="!isMobile || position.brutto"
+    >
       <li class="product-title">CENA BRUTTO</li>
       <li class="product-name">
         {{
@@ -98,7 +113,10 @@
         }}
       </li>
     </div>
-    <div class="product-group" *ngIf="!isMobile || position.wartoscBrutto">
+    <div
+      class="product-group product-group-price"
+      *ngIf="!isMobile || position.wartoscBrutto"
+    >
       <li class="product-title">WARTOŚĆ BRUTTO</li>
       <li class="product-name">
         {{
@@ -109,10 +127,15 @@
       </li>
     </div>
     <div
-      class="product-group"
+      class="product-group product-status"
       *ngIf="!isMobile || getStatusCss(position.status)"
     >
-      <li class="product-title">STATUS</li>
+      <li
+        class="product-title"
+        [class]="!isMobile || getStatusCss(position.status)"
+      >
+        STATUS
+      </li>
       <li
         class="product-name status-wrapper {{ getStatusCss(position.status) }} "
       >
@@ -137,6 +160,5 @@
     [set]="set"
     [isUser]="false"
     [commentsDialog]="showCommentsDialog"
-    
   />
 </p-dialog>

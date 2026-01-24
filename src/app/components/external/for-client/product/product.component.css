@@ -60,7 +60,7 @@
   flex-direction: column;
   padding: 10px 0;
   gap: 5px;
-  height: 80px;
+  height: 100px;
 }
 
 .product-title {
@@ -75,9 +75,10 @@
 
 .position-action-btn {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   width: 100%;
-  padding: 10px;
+  gap: 10px;
+  padding: 0;
 }
 
 .comments-wrapper {
@@ -119,13 +120,6 @@
   transition: color 0.2s ease;
 }
 
-.link:hover,
-.link:hover i,
-.comments-wrapper:hover,
-.comments-wrapper:hover i {
-  color: var(--accent-color-15);
-}
-
 .cursor-pointer {
   cursor: pointer;
 }
@@ -137,6 +131,20 @@
   padding: 10px;
   border-radius: 5px;
   color: var(--primary-color) !important;
+}
+
+.product-buttons {
+  width: 50%;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--neutral-color-01);
+  border: 1px solid #606060 !important;
+  box-shadow: 0px 0px 10px -4px #c4c4c450;
+}
+
+.product-buttons:hover {
+  border: 1px solid #000000 !important;
+  box-shadow: 0px 0px 10px -4px #000000;
 }
 
 /* MOBILE  */
@@ -172,33 +180,69 @@
     padding: 0;
   }
 
+  .product-price {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(0, 0, 0) !important;
+    padding: 10px;
+  }
+
   .product-group {
     padding: 10px 0 0 0;
     height: auto;
+    width: 100%;
+  }
+
+  .product-status {
+    position: absolute;
+    bottom: -60px;
+    gap: 0;
+    padding: 0;
+  }
+
+  .product-status .product-title {
+    padding-top: 10px;
+  }
+
+  .product-group-price {
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-group-price .product-title {
+    color: var(--white-color);
+  }
+
+  .product-group-price .product-name {
+    color: var(--accent-color-05);
   }
 
   .product-title {
-    font-size: 0.6rem;
+    font-size: 1rem;
     padding: 0 10px;
   }
 
   .product-name {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     padding: 0 10px;
   }
+
   .comments-wrapper {
-    font-size: 1rem;
-    gap: 5px;
+    font-size: 1.8rem;
+    gap: 10px;
   }
 
   .link {
-    gap: 5px;
-    font-size: 1rem;
+    gap: 10px;
+    font-size: 1.8rem;
   }
 
   .link i,
   .comments-cell i {
-    font-size: 1.4rem;
+    font-size: 2rem;
   }
 
   .comments-cell {
@@ -209,5 +253,13 @@
   .status-wrapper {
     border-radius: 0px;
     padding: 10px;
+  }
+
+  .position-action-btn {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    gap: 10px;
+    padding: 0;
   }
 }
