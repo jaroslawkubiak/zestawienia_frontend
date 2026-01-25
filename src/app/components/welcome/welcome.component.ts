@@ -9,29 +9,54 @@ import { CommentsService } from '../comments/comments.service';
   imports: [],
 })
 export class WelcomeComponent implements OnInit {
-  message: string = '';
+  messageUnread: string = '';
+  messageNeedsAttention: string = '';
+  user = computed(() => this.authService.user());
 
   constructor(
     private authService: AuthService,
-    private commentsService: CommentsService
+    private commentsService: CommentsService,
   ) {}
 
   ngOnInit(): void {
-    this.commentsService.unreadComments().subscribe((count) => {
-      switch (true) {
-        case count === 1:
-          this.message = `Masz ${count} nowy komentarz`;
-          break;
+    this.commentsService.unreadComments().subscribe((unreadComments) => {
+      const { unread, needsAttention } = { ...unreadComments };
 
-        case count > 1 && count < 5:
-          this.message = `Masz ${count} nowe komentarze`;
-          break;
+      this.messageUnread = `Masz ${unread} ${this.pluralize(
+        unread,
+        'nowy komentarz',
+        'nowe komentarze',
+        'nowych komentarzy',
+      )}`;
 
-        default:
-          this.message = `Masz ${count} nowych komentarzy`;
-      }
+      this.messageNeedsAttention = `Masz ${needsAttention} ${this.pluralize(
+        needsAttention,
+        'komentarz oznaczony jako ważny',
+        'komentarze oznaczone jako ważne',
+        'komentarzy oznaczonych jako ważne',
+      )}`;
     });
   }
 
-  user = computed(() => this.authService.user());
+
+  private pluralize(
+    count: number,
+    one: string,
+    few: string,
+    many: string,
+  ): string {
+    if (count === 1) {
+      return one;
+    }
+
+    if (
+      count % 10 >= 2 &&
+      count % 10 <= 4 &&
+      !(count % 100 >= 12 && count % 100 <= 14)
+    ) {
+      return few;
+    }
+
+    return many;
+  }
 }

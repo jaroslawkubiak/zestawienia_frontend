@@ -1,2 +1,5 @@
 <p class="welcome">Witaj {{ user() }}!</p>
-<p class="unread-comments">{{ message }}</p>
+<div class="unread-comments-wrapper">
+  <p class="unread-comments">{{ messageUnread }}</p>
+  <p class="unread-comments">{{ messageNeedsAttention }}</p>
+</div>

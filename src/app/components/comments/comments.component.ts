@@ -7,7 +7,7 @@ import {
   Input,
   OnChanges,
   SimpleChanges,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TooltipModule } from 'primeng/tooltip';
@@ -88,7 +88,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
               this.scrollToBottom();
             }, 100);
 
-            if (!response.notificationSend) {
+            if (!response.notificationSend && this.isUser) {
               this.notificationService.showNotification(
                 'warn',
                 `Powiadomienia o nowych komantarzach są wyłączone.`,
@@ -172,7 +172,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         this.notificationService.showNotification(
           'info',
           `Komentarz został oznaczony jako ${
-            updatedComment.needsAttention ? 'przeczytany' : 'nieprzeczytany'
+            updatedComment.needsAttention ? 'ważny' : 'przeczytany'
           }`,
         );
         this.comments = this.comments.map((item) =>
@@ -203,9 +203,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           this.notificationService.showNotification(
             'info',
             `Wszystkie komentarze zostały oznaczone jako ${
-              firstClientComment?.needsAttention
-                ? 'nieprzeczytane'
-                : 'przeczytane'
+              firstClientComment?.needsAttention ? 'ważne' : 'przeczytane'
             }`,
           );
           this.comments = updatedComments;

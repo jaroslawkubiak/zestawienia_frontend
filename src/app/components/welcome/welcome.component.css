@@ -4,10 +4,15 @@
   font-size: 3rem;
   margin-top: 8rem;
 }
+
+.unread-comments-wrapper {
+  margin-top: 4rem;
+}
+
 .unread-comments {
   display: flex;
   justify-content: center;
   font-size: 2rem;
-  margin-top: 4rem;
+  padding: 5px;
   color: var(--neutral-color-08);
 }

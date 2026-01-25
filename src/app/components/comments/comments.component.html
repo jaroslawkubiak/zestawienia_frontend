@@ -9,8 +9,8 @@
       <i
         [pTooltip]="
           isUnread(comment)
-            ? 'Oznacz jako przeczytane'
-            : 'Oznacz jako nieprzeczytane'
+            ? 'Oznacz jako przeczytany'
+            : 'Oznacz jako ważny'
         "
         tooltipPosition="top"
         class="pi pi-comment comment-icon"
@@ -53,7 +53,7 @@
     </div>
     <div
       class="comment-unread flex-center cursor-pointer"
-      pTooltip="Oznacz wszystkie jako nieprzeczytane"
+      pTooltip="Oznacz wszystkie jako ważne"
       tooltipPosition="top"
       (click)="
         markAllCommentsAsNeedsAttention(true, isUser ? 'client' : 'user')

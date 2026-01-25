@@ -7,6 +7,7 @@ import { ISet } from '../sets/types/ISet';
 import { IComment } from './types/IComment';
 import { IEditedComment } from './types/IEditedComment';
 import { INewComment } from './types/INewComment';
+import { IUnreadComments } from './types/IUnreadComments';
 import { IUpdatedComment } from './types/IUpdatedComment';
 
 @Injectable({
@@ -96,16 +97,16 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  unreadComments(): Observable<number> {
+  unreadComments(): Observable<IUnreadComments> {
     return this.http
-      .get<number>(`${environment.API_URL}/comments/unread`)
+      .get<IUnreadComments>(`${environment.API_URL}/comments/unreadComments`)
       .pipe(catchError(this.handleError));
   }
 
-  markCommentsAsSeen(positionId: number, authorType: 'user' | 'client',) {
+  markCommentsAsSeen(positionId: number, authorType: 'user' | 'client') {
     return this.http.post<void>(`${environment.API_URL}/comments/seen`, {
       positionId,
-      authorType
+      authorType,
     });
   }
 }
