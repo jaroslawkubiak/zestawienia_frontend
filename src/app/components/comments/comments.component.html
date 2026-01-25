@@ -8,9 +8,7 @@
     <div class="message-bubble">
       <i
         [pTooltip]="
-          isUnread(comment)
-            ? 'Oznacz jako przeczytany'
-            : 'Oznacz jako ważny'
+          isUnread(comment) ? 'Oznacz jako przeczytany' : 'Oznacz jako ważny'
         "
         tooltipPosition="top"
         class="pi pi-comment comment-icon"
@@ -62,14 +60,16 @@
       <i class="pi pi-comments"></i>
     </div>
   </div>
-  <input
-    type="text"
+  <textarea
     [(ngModel)]="newMessage"
-    class="new-message-input"
+    class="new-message-textarea"
     placeholder="Napisz wiadomość..."
+    (input)="adjustTextareaHeight($event)"
     (keyup.enter)="sendComment()"
-    name="new-message"
-  />
+    rows="1"
+    pTextarea
+    fluid
+  ></textarea>
   <div class="send-btn-wrapper flex-center">
     <button
       class="send-btn"

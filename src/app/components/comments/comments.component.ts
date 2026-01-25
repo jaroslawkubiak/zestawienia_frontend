@@ -10,6 +10,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Textarea } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
@@ -23,7 +24,7 @@ import { IEditedComment } from './types/IEditedComment';
 
 @Component({
   selector: 'app-comments',
-  imports: [CommonModule, FormsModule, TooltipModule],
+  imports: [CommonModule, FormsModule, TooltipModule, Textarea],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css',
 })
@@ -236,5 +237,11 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       (!comment.seenAt || comment.needsAttention) &&
       comment.authorType !== (this.isUser ? 'user' : 'client')
     );
+  }
+
+  adjustTextareaHeight(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
   }
 }
