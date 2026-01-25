@@ -1,6 +1,6 @@
 import { ITableColumnWidth } from './types/ITableColumnWidth';
 
-export const bookarksDefaultWidth: ITableColumnWidth[] = [
+export const bookarksDefaultColumnWidth: ITableColumnWidth[] = [
   {
     name: 'id',
     width: 10,
@@ -15,15 +15,15 @@ export const bookarksDefaultWidth: ITableColumnWidth[] = [
   },
   {
     name: 'PRODUCENT',
-    width: 100,
+    width: 120,
   },
   {
     name: 'KOLEKCJA/SERIA',
-    width: 110,
+    width: 140,
   },
   {
     name: 'NR KATALOGOWY',
-    width: 120,
+    width: 150,
   },
   {
     name: 'KOLOR',
@@ -31,11 +31,11 @@ export const bookarksDefaultWidth: ITableColumnWidth[] = [
   },
   {
     name: 'ILOŚĆ',
-    width: 140,
+    width: 100,
   },
   {
     name: 'CENA NETTO',
-    width: 130,
+    width: 120,
   },
   {
     name: 'CENA BRUTTO',
@@ -43,7 +43,7 @@ export const bookarksDefaultWidth: ITableColumnWidth[] = [
   },
   {
     name: 'WARTOŚĆ NETTO',
-    width: 140,
+    width: 150,
   },
   {
     name: 'WARTOŚĆ BRUTTO',

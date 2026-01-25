@@ -9,6 +9,7 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
+import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { FooterService } from '../../sets/edit-set/footer.service';
 import { PositionStatusList } from '../../sets/PositionStatusList';
@@ -36,7 +37,6 @@ export class ForSupplierComponent implements OnInit {
   positions: IPosition[] = [];
   FILES_URL = environment.FILES_URL;
   isLoading = true;
-  columnList = ColumnListForSupplier;
   footerRow: IFooterRow[] = [
     {
       name: 'lp',
@@ -46,6 +46,24 @@ export class ForSupplierComponent implements OnInit {
     ...ColumnListForSupplier,
   ];
 
+  defaultColumnWidth = 120;
+  linkColumnWidth = 90;
+
+  columnWidthMap = new Map(
+    bookarksDefaultColumnWidth.map((col) => [col.name, col.width]),
+  );
+
+  columnListForSupplierWithWidth = ColumnListForSupplier.map((col) => {
+    console.log(col);
+    return {
+      ...col,
+      width:
+        col.name === 'LINK'
+          ? this.linkColumnWidth
+          : (this.columnWidthMap.get(col.name) ?? this.defaultColumnWidth),
+    };
+  });
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -54,6 +72,7 @@ export class ForSupplierComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log(this.columnListForSupplierWithWidth);
     this.route.paramMap
       .pipe(
         map((params) => ({

@@ -8,7 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
 import { TextareaModule } from 'primeng/textarea';
 import { NotificationService } from '../../../services/notification.service';
-import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
+import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/types/IClient';
@@ -83,7 +83,7 @@ export class NewSetComponent implements OnInit {
     const bookmarks: IBookmarksWithTableColumns[] =
       Object.values(bookmarksData);
     bookmarks.map((item: IBookmarksWithTableColumns) => {
-      item.columnWidth = bookarksDefaultWidth;
+      item.columnWidth = bookarksDefaultColumnWidth;
       delete item.default;
     });
 

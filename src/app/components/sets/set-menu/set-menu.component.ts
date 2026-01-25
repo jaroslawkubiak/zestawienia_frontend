@@ -19,7 +19,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
 import { countNewComments } from '../../../shared/helpers/countNewComments';
-import { bookarksDefaultWidth } from '../../bookmarks/bookmarks-width';
+import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { EmailsService } from '../../emails/email.service';
 import { SendEmailComponent } from '../../emails/send-email/send-email.component';
@@ -169,7 +169,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
       (item: IBookmarksWithTableColumns) => ({
         ...item,
         columnWidth:
-          originalMap.get(item.id)?.columnWidth || bookarksDefaultWidth,
+          originalMap.get(item.id)?.columnWidth || bookarksDefaultColumnWidth,
       }),
     );
     this.updateBookmarks.emit();
