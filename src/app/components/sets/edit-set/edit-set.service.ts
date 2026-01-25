@@ -20,6 +20,7 @@ import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { IValidSet } from '../types/IValidSet';
+import { IValidSetForSupplier } from '../types/IValidSetForSupplier';
 
 @Injectable({
   providedIn: 'root',
@@ -59,7 +60,7 @@ export class EditSetService {
     return this.http
       .get<
         IPosition[]
-      >(`${environment.API_URL}/positions/${setId}/${supplierId}`)
+      >(`${environment.API_URL}/positions/${setId}/${supplierId}/getPositionList`)
       .pipe(catchError(this.handleError));
   }
 
@@ -72,19 +73,19 @@ export class EditSetService {
   validateSetAndHashForClient(
     setHash: string,
     clientHash: string,
-  ): Observable<IValidSet> {
+  ): Observable<any> {
     return this.http
-      .get<IValidSet>(`${environment.API_URL}/clients/${setHash}/${clientHash}`)
+      .get<any>(`${environment.API_URL}/clients/${setHash}/${clientHash}`)
       .pipe(catchError(this.handleError));
   }
 
   validateSetAndHashForSupplier(
     setHash: string,
     supplierHash: string,
-  ): Observable<IValidSet> {
+  ): Observable<IValidSetForSupplier> {
     return this.http
-      .get<IValidSet>(
-        `${environment.API_URL}/suppliers/${setHash}/${supplierHash}`,
+      .get<IValidSetForSupplier>(
+        `${environment.API_URL}/sets/${setHash}/${supplierHash}`,
       )
       .pipe(catchError(this.handleError));
   }

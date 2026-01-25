@@ -1,14 +1,27 @@
 <div class="supplier-container" *ngIf="!isLoading">
   <div class="container">
     <div class="header">
-      <p><span>Dostawca:</span> {{ supplierCompany }}</p>
-      <a href="https://zurawickidesign.pl" target="_blank">
-        <img
-          src="/assets/images/logo-black.png"
-          alt="Żurawicki Design logo"
-          width="400px"
-        />
-      </a>
+      <div class="header-cell-client">
+        <p class="header-title">Dane klienta</p>
+        <p>
+          <strong>Imię i nazwisko: </strong
+          >{{ client.firstName + " " + client.lastName }}
+        </p>
+        <p><strong>Firma: </strong>{{ client.company }}</p>
+      </div>
+      <div>
+        <p class="header-title">Dostawca</p>
+        <p><strong>Firma: </strong>{{ supplierCompany }}</p>
+      </div>
+      <div class="header-cell-logo">
+        <a href="https://zurawickidesign.pl" target="_blank">
+          <img
+            src="/assets/images/logo-black.png"
+            alt="Żurawicki Design logo"
+            width="400px"
+          />
+        </a>
+      </div>
     </div>
 
     <app-loading-spinner

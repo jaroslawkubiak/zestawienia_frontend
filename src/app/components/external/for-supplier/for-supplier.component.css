@@ -3,20 +3,33 @@
 }
 
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: end;
-  padding: 20px 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-bottom: 30px;
 }
 
-.header p {
+.header-cell-client {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--primary-color);
+}
+
+.client-data {
+  display: flex; 
+  flex-direction: column;
+}
+
+.header-cell-logo {
+  display: flex;
+  justify-content: end;
+}
+
+.header-title {
   font-size: 3rem;
   font-weight: 700;
   color: var(--accent-color-12);
-}
-
-.header p span {
-  color: var(--primary-color);
+  margin-bottom: 20px;
 }
 
 .logo-wrapper img {

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
-import { forkJoin, map, switchMap, throwError } from 'rxjs';
+import { map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
   calculateBrutto,
@@ -18,6 +18,7 @@ import { IPosition } from '../../sets/types/IPosition';
 import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
+import { IClientData } from './types/IClientData';
 
 @Component({
   selector: 'app-for-supplier',
@@ -46,6 +47,8 @@ export class ForSupplierComponent implements OnInit {
     ...ColumnListForSupplier,
   ];
 
+  client!: IClientData;
+
   defaultColumnWidth = 120;
   linkColumnWidth = 90;
 
@@ -53,16 +56,13 @@ export class ForSupplierComponent implements OnInit {
     bookarksDefaultColumnWidth.map((col) => [col.name, col.width]),
   );
 
-  columnListForSupplierWithWidth = ColumnListForSupplier.map((col) => {
-    console.log(col);
-    return {
-      ...col,
-      width:
-        col.name === 'LINK'
-          ? this.linkColumnWidth
-          : (this.columnWidthMap.get(col.name) ?? this.defaultColumnWidth),
-    };
-  });
+  columnListForSupplierWithWidth = ColumnListForSupplier.map((col) => ({
+    ...col,
+    width:
+      col.name === 'LINK'
+        ? this.linkColumnWidth
+        : (this.columnWidthMap.get(col.name) ?? this.defaultColumnWidth),
+  }));
 
   constructor(
     private route: ActivatedRoute,
@@ -72,7 +72,6 @@ export class ForSupplierComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log(this.columnListForSupplierWithWidth);
     this.route.paramMap
       .pipe(
         map((params) => ({
@@ -93,11 +92,18 @@ export class ForSupplierComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          if (response.setId) {
+          if (!response) {
+            this.router.navigate(['/notfound']);
+          }
+
+          if (response.valid && response.setId) {
             this.setId = response.setId;
-            this.supplierId = response.supplierId;
-            this.supplierCompany = response.supplierCompany;
-            this.loadData();
+            this.supplierId = response.supplier.id;
+            this.supplierCompany = response.supplier.company;
+
+            this.client = { ...response.client };
+
+            this.modifyData(response.positions);
           } else {
             this.router.navigate(['/notfound']);
           }
@@ -108,50 +114,40 @@ export class ForSupplierComponent implements OnInit {
       });
   }
 
-  loadData() {
-    if (!this.setId || !this.supplierId) {
-      this.router.navigate(['/notfound']);
-      return;
-    }
-    forkJoin({
-      positions: this.editSetService.getPositionsForSupplier(
-        this.setId,
-        this.supplierId,
-      ),
-    }).subscribe(({ positions }) => {
-      this.positions = positions.map((item) => {
-        const statusObj: IPositionStatus =
-          PositionStatusList.filter(
-            (statusItem) => item.status === statusItem.label,
-          )[0] || PositionStatusList[0];
+  // modify positions data: get status, image url, calculate brutto
+  modifyData(positions: IPosition[]) {
+    this.positions = positions.map((item) => {
+      const statusObj: IPositionStatus =
+        PositionStatusList.filter(
+          (statusItem) => item.status === statusItem.label,
+        )[0] || PositionStatusList[0];
 
-        let imageUrl = '';
-        if (item.image) {
-          imageUrl = [
-            this.FILES_URL,
-            'sets',
-            this.setId,
-            this.setHash,
-            'positions',
-            item.id,
-            item.image,
-          ].join('/');
-        }
-        const brutto = calculateBrutto(item.netto);
-        this.isLoading = false;
+      let imageUrl = '';
+      if (item.image) {
+        imageUrl = [
+          this.FILES_URL,
+          'sets',
+          this.setId,
+          this.setHash,
+          'positions',
+          item.id,
+          item.image,
+        ].join('/');
+      }
+      const brutto = calculateBrutto(item.netto);
+      this.isLoading = false;
 
-        return {
-          ...item,
-          status: statusObj ? statusObj : item.status,
-          brutto,
-          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, brutto),
-          imageUrl,
-        };
-      });
-
-      this.calculateFooterRow();
+      return {
+        ...item,
+        status: statusObj ? statusObj : item.status,
+        brutto,
+        wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+        wartoscBrutto: calculateWartosc(item.ilosc, brutto),
+        imageUrl,
+      };
     });
+
+    this.calculateFooterRow();
   }
 
   // calculate values for footer row
