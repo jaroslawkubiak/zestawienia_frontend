@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
-import { forkJoin, map, switchMap, throwError } from 'rxjs';
+import { map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import {
   calculateBrutto,
@@ -30,6 +30,7 @@ import { IPosition } from '../../sets/types/IPosition';
 import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
+import { IClientData } from '../for-supplier/types/IClientData';
 import { ProductComponent } from './product/product.component';
 
 @Component({
@@ -48,13 +49,12 @@ import { ProductComponent } from './product/product.component';
   styleUrl: './for-client.component.css',
 })
 export class ForClientComponent implements OnInit {
-  setId: number | null = null;
-  setHash: string | null = null;
   clientHash: string | null = null;
   set!: ISet;
   positions: IPosition[] = [];
   positionsWithBadge: IPositionWithBadge[] = [];
   positionsFromBookmark: IPositionWithBadge[] = [];
+  client!: IClientData;
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
@@ -99,9 +99,11 @@ export class ForClientComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          if (response.setId) {
-            this.setId = response.setId;
-            this.loadData();
+          if (response && response.valid) {
+            this.set = response.set;
+            this.client = { ...response.set.clientId };
+
+            this.modifyData(response.positions);
           } else {
             this.router.navigate(['/notfound']);
           }
@@ -110,56 +112,47 @@ export class ForClientComponent implements OnInit {
       });
   }
 
-  loadData() {
-    if (this.setId === null) return;
+  modifyData(positions: IPosition[]) {
+    this.positions = positions.map((pos) => {
+      const statusObj: IPositionStatus =
+        PositionStatusList.find(
+          (statusItem) => pos.status === statusItem.label,
+        ) || PositionStatusList[0];
 
-    forkJoin({
-      set: this.editSetService.getSet(this.setId),
-      positions: this.editSetService.getPositions(this.setId),
-    }).subscribe(({ set, positions }) => {
-      this.set = set;
+      const brutto = calculateBrutto(pos.netto);
 
-      this.positions = positions.map((pos) => {
-        const statusObj: IPositionStatus =
-          PositionStatusList.find(
-            (statusItem) => pos.status === statusItem.label,
-          ) || PositionStatusList[0];
-
-        const brutto = calculateBrutto(pos.netto);
-
-        return {
-          ...pos,
-          status: statusObj,
-          brutto,
-          wartoscNetto: calculateWartosc(pos.ilosc, pos.netto),
-          wartoscBrutto: calculateWartosc(pos.ilosc, brutto),
-          imageUrl: pos.image
-            ? [
-                this.FILES_URL,
-                'sets',
-                this.setId,
-                this.set.hash,
-                'positions',
-                pos.id,
-                pos.image,
-              ].join('/')
-            : '',
-        };
-      });
-
-      this.assignCommentsToPosition();
-
-      this.selectedBookmarkId = this.set.bookmarks[0].id;
-      this.loadContentForBookmark(this.selectedBookmarkId);
-
-      this.files = (this.set.files || []).filter(
-        (item) => item.dir !== EFileDirectoryList.working,
-      );
-
-      this.uniquePositionIds = [
-        ...new Set(this.set.comments?.map((c) => c.positionId?.id)),
-      ];
+      return {
+        ...pos,
+        status: statusObj,
+        brutto,
+        wartoscNetto: calculateWartosc(pos.ilosc, pos.netto),
+        wartoscBrutto: calculateWartosc(pos.ilosc, brutto),
+        imageUrl: pos.image
+          ? [
+              this.FILES_URL,
+              'sets',
+              this.set.id,
+              this.set.hash,
+              'positions',
+              pos.id,
+              pos.image,
+            ].join('/')
+          : '',
+      };
     });
+
+    this.assignCommentsToPosition();
+
+    this.selectedBookmarkId = this.set.bookmarks[0].id;
+    this.loadContentForBookmark(this.selectedBookmarkId);
+
+    this.files = (this.set.files || []).filter(
+      (item) => item.dir !== EFileDirectoryList.working,
+    );
+
+    this.uniquePositionIds = [
+      ...new Set(this.set.comments?.map((c) => c.positionId?.id)),
+    ];
   }
 
   assignCommentsToPosition() {
@@ -261,9 +254,9 @@ export class ForClientComponent implements OnInit {
   }
 
   commentsUpdated() {
-    if (!this.setId) return;
+    if (!this.set.id) return;
 
-    this.editSetService.getSet(this.setId).subscribe({
+    this.editSetService.getSet(this.set.id).subscribe({
       next: (updatedSet) => {
         this.set = updatedSet;
 

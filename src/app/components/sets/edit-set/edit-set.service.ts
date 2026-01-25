@@ -19,8 +19,8 @@ import { IPosition } from '../types/IPosition';
 import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { IValidSet } from '../types/IValidSet';
 import { IValidSetForSupplier } from '../types/IValidSetForSupplier';
+import { IValidSetForClient } from '../types/IValidSetForClient';
 
 @Injectable({
   providedIn: 'root',
@@ -73,19 +73,21 @@ export class EditSetService {
   validateSetAndHashForClient(
     setHash: string,
     clientHash: string,
-  ): Observable<any> {
+  ): Observable<IValidSetForClient | null> {
     return this.http
-      .get<any>(`${environment.API_URL}/clients/${setHash}/${clientHash}`)
+      .get<IValidSetForClient | null>(
+        `${environment.API_URL}/sets/open-for-client/${setHash}/${clientHash}`,
+      )
       .pipe(catchError(this.handleError));
   }
 
   validateSetAndHashForSupplier(
     setHash: string,
     supplierHash: string,
-  ): Observable<IValidSetForSupplier> {
+  ): Observable<IValidSetForSupplier | null> {
     return this.http
-      .get<IValidSetForSupplier>(
-        `${environment.API_URL}/sets/${setHash}/${supplierHash}`,
+      .get<IValidSetForSupplier | null>(
+        `${environment.API_URL}/sets/open-for-supplier/${setHash}/${supplierHash}`,
       )
       .pipe(catchError(this.handleError));
   }

@@ -29,9 +29,11 @@ export interface ISet {
     hash: string;
   };
   createdBy: {
+    id: number;
     name: string;
   };
   updatedBy: {
+    id: number;
     name: string;
   };
 }
