@@ -13,7 +13,9 @@
         pTooltip="Brak obrazu"
       ></i>
     </div>
+    <!-- ACTION BUTTONS - COMMENTS AND PRODUCT LINK -->
     <div class="position-action-btn">
+      <!-- COMMENTS WRAPPER -->
       <div
         class="comments-wrapper product-buttons flex-center"
         pTooltip="Dodaj komentarz"
@@ -32,10 +34,11 @@
         </div>
         Komentarze
       </div>
+      <!-- PRODUCT LINK WRAPPER -->
       <div
-        class="{{
-          position.link ? 'cursor-pointer' : ''
-        }} flex-center product-buttons"
+        class="link-wrapper {{
+          position.link ? 'cursor-pointer product-buttons flex-center' : ''
+        }}"
         pTooltip="Otwórz link do produktu"
         tooltipPosition="bottom"
       >
@@ -51,15 +54,19 @@
       </div>
     </div>
   </div>
+  <!-- GROUP - PRODUKT PRODUCENT DOSTAWCA-->
   <div class="product-details">
+    <!-- PRODUKT -->
     <div class="product-group" *ngIf="!isMobile || position.produkt">
       <li class="product-title">PRODUKT</li>
       <li class="product-name">{{ position.produkt }}</li>
     </div>
+    <!-- PRODUCENT -->
     <div class="product-group" *ngIf="!isMobile || position.producent">
       <li class="product-title">PRODUCENT</li>
       <li class="product-name">{{ position.producent }}</li>
     </div>
+    <!-- DOSTAWCA -->
     <div class="product-group" *ngIf="!isMobile || position.supplierId">
       <li class="product-title">DOSTAWCA</li>
       <li class="product-name">
@@ -67,19 +74,23 @@
       </li>
     </div>
   </div>
+  <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
   <div class="product-details">
+    <!-- KOLEKCJA -->
     <div class="product-group" *ngIf="!isMobile || position.kolekcja">
       <li class="product-title">KOLEKCJA</li>
       <li class="product-name">
         {{ position.kolekcja }}
       </li>
     </div>
+    <!-- NR KATALOGOWY -->
     <div class="product-group" *ngIf="!isMobile || position.nrKatalogowy">
       <li class="product-title">NR KATALOGOWY</li>
       <li class="product-name">
         {{ position.nrKatalogowy }}
       </li>
     </div>
+    <!-- KOLOR -->
     <div class="product-group" *ngIf="!isMobile || position.kolor">
       <li class="product-title">KOLOR</li>
       <li class="product-name">
@@ -87,12 +98,14 @@
       </li>
     </div>
   </div>
+  <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO STATUS-->
   <div
     class="product-details product-price"
     [style.margin-bottom]="
       isMobile && getStatusCss(position.status) ? '60px' : '0px'
     "
   >
+    <!-- ILOŚĆ -->
     <div
       class="product-group product-group-price"
       *ngIf="!isMobile || position.ilosc"
@@ -102,6 +115,7 @@
         {{ position.ilosc | number: "1.2-2" }}
       </li>
     </div>
+    <!-- CENA BRUTTO -->
     <div
       class="product-group product-group-price"
       *ngIf="!isMobile || position.brutto"
@@ -113,6 +127,7 @@
         }}
       </li>
     </div>
+    <!-- WARTOŚĆ BRUTTO -->
     <div
       class="product-group product-group-price"
       *ngIf="!isMobile || position.wartoscBrutto"
@@ -126,9 +141,10 @@
         }}
       </li>
     </div>
+    <!-- STATUS  -->
     <div
       class="product-group product-status"
-      *ngIf="!isMobile ? '' : getStatusCss(position.status)"
+      *ngIf="position.status ? getStatusCss(position.status) : ''"
     >
       <li
         class="product-title"
