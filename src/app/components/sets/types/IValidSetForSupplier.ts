@@ -1,4 +1,4 @@
-import { IPosition } from "./IPosition";
+import { IPosition } from './IPosition';
 
 export interface IValidSetForSupplier {
   valid: boolean;
@@ -6,6 +6,8 @@ export interface IValidSetForSupplier {
   supplier: {
     id: number;
     company: string;
+    firstName: string;
+    lastName: string;
   };
   client: {
     id: number;

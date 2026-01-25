@@ -19,6 +19,7 @@ import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
 import { IClientData } from './types/IClientData';
+import { ISupplierData } from './types/ISupplierDAta';
 
 @Component({
   selector: 'app-for-supplier',
@@ -31,10 +32,9 @@ import { IClientData } from './types/IClientData';
 export class ForSupplierComponent implements OnInit {
   setId: number | null = null;
   setHash: string | null = null;
-  supplierHash: string | null = null;
-  supplierId: number | undefined = undefined;
-  supplierCompany: string | undefined = undefined;
   set!: ISet;
+  client!: IClientData;
+  supplier!: ISupplierData;
   positions: IPosition[] = [];
   FILES_URL = environment.FILES_URL;
   isLoading = true;
@@ -46,8 +46,6 @@ export class ForSupplierComponent implements OnInit {
     },
     ...ColumnListForSupplier,
   ];
-
-  client!: IClientData;
 
   defaultColumnWidth = 120;
   linkColumnWidth = 90;
@@ -92,16 +90,11 @@ export class ForSupplierComponent implements OnInit {
       )
       .subscribe({
         next: (response) => {
-          if (!response) {
-            this.router.navigate(['/notfound']);
-          }
-
-          if (response.valid && response.setId) {
+          if (response && response.valid && response.setId) {
             this.setId = response.setId;
-            this.supplierId = response.supplier.id;
-            this.supplierCompany = response.supplier.company;
 
             this.client = { ...response.client };
+            this.supplier = { ...response.supplier };
 
             this.modifyData(response.positions);
           } else {
