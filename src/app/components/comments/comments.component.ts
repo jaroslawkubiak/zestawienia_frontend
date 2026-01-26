@@ -12,6 +12,8 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
+import emojiData from 'unicode-emoji-json/data-ordered-emoji.json';
+import { EmojiConvertPipe } from '../../pipe/emoji-convert.pipe';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { SoundService } from '../../services/sound.service';
@@ -24,7 +26,13 @@ import { IEditedComment } from './types/IEditedComment';
 
 @Component({
   selector: 'app-comments',
-  imports: [CommonModule, FormsModule, TooltipModule, Textarea],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TooltipModule,
+    Textarea,
+    EmojiConvertPipe,
+  ],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.css',
 })
@@ -47,7 +55,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     private cd: ChangeDetectorRef,
   ) {}
 
-  ngOnInit() {}
   ngAfterViewInit() {
     if (this.commentsDialog) {
       setTimeout(() => this.scrollToBottom(), 0);

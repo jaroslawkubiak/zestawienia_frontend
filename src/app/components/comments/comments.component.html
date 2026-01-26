@@ -29,11 +29,18 @@
         class="pi pi-trash delete-icon"
         (click)="deleteComment(comment.id)"
       ></i>
-      <p class="text" [innerHTML]="parseTextWithLinks(comment.comment)"></p>
+      <p
+        class="message-text"
+        [innerHTML]="parseTextWithLinks(comment.comment) | emojiConvert"
+      ></p>
       <span class="timestamp">
         {{ comment.authorName }}, {{ comment.createdAt }}
       </span>
-      <div class="avatar-wrapper" [class]="comment.authorType==='user' ? 'avatar-user' : 'avatar-client'">
+      <div
+        class="avatar-wrapper"
+        [class.avatar-user]="isClientMessage(comment)"
+        [class.avatar-client]="!isClientMessage(comment)"
+      >
         <img
           [src]="comment?.avatar || 'assets/images/avatars/default.png'"
           alt="avatar"
