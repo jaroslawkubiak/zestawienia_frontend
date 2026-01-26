@@ -1,9 +1,11 @@
 :host {
-  --client-bg: #e9e9eb;
-  --user-bg: #1e8cff;
-  --btn-color: #1e8cff;
-  --btn-color-hover: #155da9;
+  --outgoing-message-bg-color: #e9e9eb;
+  --incoming-message-bg-color: #1e8cff;
+  --send-btn-color: #1e8cff;
+  --send-btn-color-hover: #155da9;
   --chat-bg: #ffffff;
+  --link-hover-on-blue: rgba(201, 201, 201, 0.8);
+  --link-hover-on-light: #155da9;
 }
 
 .chat-container {
@@ -27,14 +29,14 @@
   max-width: 70%;
 }
 
-.message-wrapper.from-user {
+.message-wrapper.outgoing {
   position: relative;
   z-index: 1;
   align-self: flex-end;
   justify-content: flex-end;
 }
 
-.message-wrapper.from-client {
+.message-wrapper.incoming {
   position: relative;
   z-index: 1;
   align-self: flex-start;
@@ -47,33 +49,51 @@
   border-radius: 1.25rem;
 }
 
-.message-wrapper.from-client .message-bubble {
+.message-wrapper.incoming .message-bubble {
   position: relative;
-  background-color: var(--client-bg);
+  background-color: var(--outgoing-message-bg-color);
   color: var(--neutral-color-10);
   z-index: 3;
 }
 
-.message-wrapper.from-user .message-bubble {
+.message-wrapper.outgoing .message-bubble {
   position: relative;
-  background-color: var(--user-bg);
+  background-color: var(--incoming-message-bg-color);
   color: var(--neutral-color-01);
   z-index: 3;
 }
 
-.message-wrapper.from-user::before {
+:host ::ng-deep .message-link {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+:host ::ng-deep .message-wrapper.incoming .message-link:hover {
+  color: var(--link-hover-on-light);
+}
+
+:host ::ng-deep .message-wrapper.outgoing .message-link:hover {
+  color: var(--link-hover-on-blue);
+}
+
+.message-wrapper.outgoing::before {
   content: "";
   position: absolute;
   bottom: 10px;
   right: -15px;
   width: 40px;
   height: 40px;
-  background-color: var(--user-bg);
+  background-color: var(--incoming-message-bg-color);
   border-radius: 50%;
   z-index: 1;
 }
 
-.message-wrapper.from-user::after {
+.message-wrapper.outgoing::after {
   content: "";
   position: absolute;
   bottom: 10px;
@@ -85,19 +105,19 @@
   z-index: 2;
 }
 
-.message-wrapper.from-client::before {
+.message-wrapper.incoming::before {
   content: "";
   position: absolute;
   bottom: 10px;
   left: -15px;
   width: 40px;
   height: 40px;
-  background-color: var(--client-bg);
+  background-color: var(--outgoing-message-bg-color);
   border-radius: 50%;
   z-index: 1;
 }
 
-.message-wrapper.from-client::after {
+.message-wrapper.incoming::after {
   content: "";
   position: absolute;
   bottom: 10px;
@@ -124,62 +144,9 @@
   text-align: right;
 }
 
-.message-wrapper.from-client .timestamp {
+.message-wrapper.incoming .timestamp {
   text-align: left;
   opacity: 0.5;
-}
-
-.new-message-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  min-height: 40px;
-}
-
-.new-message-textarea {
-  all: unset;
-  flex: 1;
-  background-color: var(--accent-color-03);
-  color: var(--accent-color-13);
-  outline: none;
-  resize: none;
-  overflow: hidden;
-  min-height: 40px;
-  max-height: 120px;
-  padding: 8px 16px !important;
-  font-size: 2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
-}
-
-.send-btn-wrapper {
-  height: 100%;
-  aspect-ratio: 1/1;
-}
-
-.send-btn {
-  background-color: var(--btn-color);
-  color: var(--secondary-color);
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 100%;
-  height: 30px;
-  aspect-ratio: 1/1;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-
-.disabled {
-  background-color: rgb(216, 216, 216);
-}
-
-.send-button:hover {
-  background-color: var(--btn-color-hover);
-}
-
-.send-icon {
-  font-size: 1.6rem;
 }
 
 .edit-icon,
@@ -216,13 +183,13 @@
   background-color: var(--error-color);
 }
 
-.message-wrapper.from-user:hover .edit-icon,
-.message-wrapper.from-user:hover .delete-icon {
+.message-wrapper.outgoing:hover .edit-icon,
+.message-wrapper.outgoing:hover .delete-icon {
   opacity: 1;
   visibility: visible;
 }
 
-.message-wrapper.from-user .comment-icon {
+.message-wrapper.outgoing .comment-icon {
   display: none;
 }
 
@@ -259,34 +226,93 @@
   background-color: var(--error-color);
 }
 
-.all-comments {
-  height: 30px;
-  display: flex;
-  gap: 10px;
-  margin-left: 10px;
-  color: var(--secondary-color);
+.new-message-input-wrapper {
+  display: grid;
+  grid-template-columns: 50px auto 50px;
+  gap: 1rem;
+  width: 100%;
+  min-height: 60px;
 }
 
-.all-comments i {
+.new-message-textarea {
+  all: unset;
+  background-color: var(--accent-color-03);
+  color: var(--accent-color-13);
+  outline: none;
+  resize: none;
+  overflow: hidden;
+  min-height: 60px;
+  max-height: 120px;
+  padding: 8px 16px !important;
+  font-size: 2rem !important;
+  width: auto;
+  border: 1px solid var(--accent-color-13) !important;
+}
+
+.new-message-send-btn-wrapper {
+  width: 100%;
+}
+
+.send-btn {
+  background-color: var(--send-btn-color);
+  color: var(--secondary-color);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  height: 40px;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.disabled {
+  background-color: rgb(216, 216, 216);
+}
+
+.send-icon {
   font-size: 1.6rem;
 }
 
-.comment-read,
-.comment-unread {
-  height: 100%;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
+.new-message-all-comments {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  color: var(--secondary-color);
 }
 
-.comment-read {
+.new-message-all-comments i {
+  font-size: 1.6rem;
+}
+
+.comment-read-btn,
+.comment-unread-btn {
+  width: 35px;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.comment-read-btn {
   background-color: var(--accent-color-10);
 }
 
-.comment-unread {
+.comment-unread-btn {
   background-color: var(--error-color);
 }
-
-.comment-unread:hover,
-.comment-read:hover {
-  box-shadow: 0px 0px 3px 3px #494949;
+.send-btn:hover,
+.comment-read-btn:hover,
+.comment-unread-btn:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 4px 10px rgba(0, 0, 0, 0.18),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.comment-read-btn:active,
+.comment-unread-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }

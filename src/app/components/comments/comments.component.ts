@@ -244,4 +244,35 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     textarea.style.height = 'auto';
     textarea.style.height = textarea.scrollHeight + 'px';
   }
+
+  parseTextWithLinks(text: string): string {
+    const HTMLlinkAttribute =
+      ' target="_blank" class="message-link" rel="noopener noreferrer" ';
+    const httpLinkRegex = /^https?:\/\/[^\s]+$/i;
+    const domainLinkRegex = /^(www\.)?[\w-]+\.[a-z]{2,}(\/[^\s]*)?$/i;
+    const trailingPunctuationRegex = /[.,!?;:]+$/;
+
+    const words = text.split(/\s+/);
+
+    const result = words.map((word) => {
+      const trailing = word.match(trailingPunctuationRegex)?.[0] ?? '';
+      const cleanWord = word.replace(trailingPunctuationRegex, '');
+
+      if (httpLinkRegex.test(cleanWord)) {
+        return {
+          value: `<a href="${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`,
+        };
+      }
+
+      if (domainLinkRegex.test(cleanWord)) {
+        return {
+          value: `<a href="http://${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`,
+        };
+      }
+
+      return { value: word };
+    });
+
+    return result.map((item) => item.value).join(' ');
+  }
 }

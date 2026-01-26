@@ -2,8 +2,8 @@
   <div
     *ngFor="let comment of comments"
     class="message-wrapper"
-    [class.from-client]="isClientMessage(comment)"
-    [class.from-user]="!isClientMessage(comment)"
+    [class.incoming]="isClientMessage(comment)"
+    [class.outgoing]="!isClientMessage(comment)"
   >
     <div class="message-bubble">
       <i
@@ -29,7 +29,7 @@
         class="pi pi-trash delete-icon"
         (click)="deleteComment(comment.id)"
       ></i>
-      <p class="text">{{ comment.comment }}</p>
+      <p class="text" [innerHTML]="parseTextWithLinks(comment.comment)"></p>
       <span class="timestamp">
         {{ comment.authorName }}, {{ comment.createdAt }}
       </span>
@@ -38,9 +38,9 @@
 </div>
 
 <div class="new-message-input-wrapper">
-  <div class="all-comments">
+  <div class="new-message-all-comments flex-center">
     <div
-      class="comment-read flex-center cursor-pointer"
+      class="comment-read-btn flex-center cursor-pointer"
       pTooltip="Oznacz wszystkie jako przeczytane"
       tooltipPosition="top"
       (click)="
@@ -50,7 +50,7 @@
       <i class="pi pi-comments"></i>
     </div>
     <div
-      class="comment-unread flex-center cursor-pointer"
+      class="comment-unread-btn flex-center cursor-pointer"
       pTooltip="Oznacz wszystkie jako ważne"
       tooltipPosition="top"
       (click)="
@@ -69,8 +69,9 @@
     rows="1"
     pTextarea
     fluid
+    id="new-message"
   ></textarea>
-  <div class="send-btn-wrapper flex-center">
+  <div class="new-message-send-btn-wrapper flex-center">
     <button
       class="send-btn"
       (click)="sendComment()"
