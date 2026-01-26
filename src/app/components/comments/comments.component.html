@@ -33,6 +33,13 @@
       <span class="timestamp">
         {{ comment.authorName }}, {{ comment.createdAt }}
       </span>
+      <div class="avatar-wrapper" [class]="comment.authorType==='user' ? 'avatar-user' : 'avatar-client'">
+        <img
+          [src]="comment?.avatar || 'assets/images/avatars/default.png'"
+          alt="avatar"
+          class="avatar-image"
+        />
+      </div>
     </div>
   </div>
 </div>

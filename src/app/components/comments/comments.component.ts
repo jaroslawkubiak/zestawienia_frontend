@@ -47,6 +47,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     private cd: ChangeDetectorRef,
   ) {}
 
+  ngOnInit() {}
   ngAfterViewInit() {
     if (this.commentsDialog) {
       setTimeout(() => this.scrollToBottom(), 0);
@@ -59,6 +60,15 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       changes['commentsDialog'].currentValue === true
     ) {
       setTimeout(() => this.scrollToBottom(), 0);
+
+      this.comments = this.comments.map((comment) => {
+        if (comment.authorType === 'user') {
+          return {
+            ...comment,
+            avatar: `assets/images/avatars/${comment.authorId}.png`,
+          };
+        } else return { ...comment };
+      });
 
       this.markCommentsAsSeen(this.positionId);
     }
