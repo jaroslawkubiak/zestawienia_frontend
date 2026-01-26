@@ -42,7 +42,11 @@
         [class.avatar-client]="!isClientMessage(comment)"
       >
         <img
-          [src]="comment?.avatar || 'assets/images/avatars/default.png'"
+          [src]="
+            comment?.avatar
+              ? 'assets/images/avatars/' + comment.avatar + '.png'
+              : 'assets/images/avatars/default.png'
+          "
           alt="avatar"
           class="avatar-image"
         />

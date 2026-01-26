@@ -58,44 +58,44 @@
   <div class="product-details">
     <!-- PRODUKT -->
     <div class="product-group" *ngIf="!isMobile || position.produkt">
-      <li class="product-title">PRODUKT</li>
-      <li class="product-name">{{ position.produkt }}</li>
+      <div class="product-title">PRODUKT</div>
+      <div class="product-name">{{ position.produkt }}</div>
     </div>
     <!-- PRODUCENT -->
     <div class="product-group" *ngIf="!isMobile || position.producent">
-      <li class="product-title">PRODUCENT</li>
-      <li class="product-name">{{ position.producent }}</li>
+      <div class="product-title">PRODUCENT</div>
+      <div class="product-name">{{ position.producent }}</div>
     </div>
     <!-- DOSTAWCA -->
     <div class="product-group" *ngIf="!isMobile || position.supplierId">
-      <li class="product-title">DOSTAWCA</li>
-      <li class="product-name">
+      <div class="product-title">DOSTAWCA</div>
+      <div class="product-name">
         {{ position.supplierId ? position.supplierId["company"] : "" }}
-      </li>
+      </div>
     </div>
   </div>
   <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
   <div class="product-details">
     <!-- KOLEKCJA -->
     <div class="product-group" *ngIf="!isMobile || position.kolekcja">
-      <li class="product-title">KOLEKCJA</li>
-      <li class="product-name">
+      <div class="product-title">KOLEKCJA</div>
+      <div class="product-name">
         {{ position.kolekcja }}
-      </li>
+      </div>
     </div>
     <!-- NR KATALOGOWY -->
     <div class="product-group" *ngIf="!isMobile || position.nrKatalogowy">
-      <li class="product-title">NR KATALOGOWY</li>
-      <li class="product-name">
+      <div class="product-title">NR KATALOGOWY</div>
+      <div class="product-name">
         {{ position.nrKatalogowy }}
-      </li>
+      </div>
     </div>
     <!-- KOLOR -->
     <div class="product-group" *ngIf="!isMobile || position.kolor">
-      <li class="product-title">KOLOR</li>
-      <li class="product-name">
+      <div class="product-title">KOLOR</div>
+      <div class="product-name">
         {{ position.kolor }}
-      </li>
+      </div>
     </div>
   </div>
   <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO STATUS-->
@@ -110,53 +110,53 @@
       class="product-group product-group-price"
       *ngIf="!isMobile || position.ilosc"
     >
-      <li class="product-title">ILOŚĆ</li>
-      <li class="product-name">
+      <div class="product-title">ILOŚĆ</div>
+      <div class="product-name">
         {{ position.ilosc | number: "1.2-2" }}
-      </li>
+      </div>
     </div>
     <!-- CENA BRUTTO -->
     <div
       class="product-group product-group-price"
       *ngIf="!isMobile || position.brutto"
     >
-      <li class="product-title">CENA BRUTTO</li>
-      <li class="product-name">
+      <div class="product-title">CENA BRUTTO</div>
+      <div class="product-name">
         {{
           position.brutto ? (position.brutto | number: "1.2-2") + " PLN" : ""
         }}
-      </li>
+      </div>
     </div>
     <!-- WARTOŚĆ BRUTTO -->
     <div
       class="product-group product-group-price"
       *ngIf="!isMobile || position.wartoscBrutto"
     >
-      <li class="product-title">WARTOŚĆ BRUTTO</li>
-      <li class="product-name">
+      <div class="product-title">WARTOŚĆ BRUTTO</div>
+      <div class="product-name">
         {{
           position.wartoscBrutto
             ? (position.wartoscBrutto | number: "1.2-2") + " PLN"
             : ""
         }}
-      </li>
+      </div>
     </div>
     <!-- STATUS  -->
     <div
       class="product-group product-status"
       *ngIf="position.status ? getStatusCss(position.status) : ''"
     >
-      <li
+      <div
         class="product-title"
         [class]="!isMobile ? '' : getStatusCss(position.status)"
       >
         STATUS
-      </li>
-      <li
+      </div>
+      <div
         class="product-name status-wrapper {{ getStatusCss(position.status) }} "
       >
         {{ getStatusLabel(position.status) }}
-      </li>
+      </div>
     </div>
   </div>
 </div>

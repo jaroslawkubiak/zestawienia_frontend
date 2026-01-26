@@ -12,7 +12,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
-import emojiData from 'unicode-emoji-json/data-ordered-emoji.json';
 import { EmojiConvertPipe } from '../../pipe/emoji-convert.pipe';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
@@ -67,15 +66,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       changes['commentsDialog'].currentValue === true
     ) {
       setTimeout(() => this.scrollToBottom(), 0);
-
-      this.comments = this.comments.map((comment) => {
-        if (comment.authorType === 'user') {
-          return {
-            ...comment,
-            avatar: `assets/images/avatars/${comment.authorId}.png`,
-          };
-        } else return { ...comment };
-      });
 
       this.markCommentsAsSeen(this.positionId);
     }

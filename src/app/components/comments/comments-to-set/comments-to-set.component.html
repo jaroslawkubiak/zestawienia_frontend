@@ -1,44 +1,113 @@
-<div class="container">
-  <div class="set-header-wrapper flex-center" *ngIf="set">
-    <div class="set-header-cell">
-      <div class="set-header-title">Zestawienie</div>
-      <div class="set-header-value">{{ set.name }}</div>
-    </div>
-    <div class="history-back" (click)="back()" pTooltip="Powrót">
-      <i class="pi pi-times"></i>
-    </div>
-    <div class="set-header-cell">
-      <div class="set-header-title">Klient</div>
-      <div class="set-header-value">
-        {{
-          set.clientId.company
-            ? set.clientId.company
-            : set.clientId.firstName + " " + set.clientId.lastName
-        }}
+<div class="comments-to-set-container">
+  <div
+    class="comments-to-set-wrapper"
+    *ngFor="let pos of positionsWithComments$ | async"
+  >
+    <div class="comments-to-set-position-info-wrapper">
+      <div class="comments-to-set-product-name-wrapper">
+        <p>
+          {{ pos.position.kolejnosc }}
+        </p>
+        <div class="comments-to-set-product-name" *ngIf="pos.position.produkt">
+          {{ pos.position.produkt }}
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="comments" *ngFor="let pos of positionsWithComments$ | async">
-    <div class="position-info-wrapper">
-      <div class="position-info">
-        {{ pos.position.bookmarkId.name }}: Pozycja {{ pos.position.kolejnosc }}
-        <span *ngIf="pos.position.produkt"> - {{ pos.position.produkt }}</span>
-      </div>
-      <a
-        class="link-to-position"
-        [routerLink]="['/sets', set.id]"
-        [queryParams]="{
-          bookmark: pos.position.bookmarkId.id,
-          position: pos.position.kolejnosc
-        }"
-      >
-        <i class="pi pi-arrow-right" pTooltip="Pokaż pozycję"></i>
-      </a>
-      <div class="new-comments" *ngIf="pos.newComments !== 0">
-        Liczba nieprzeczytanych komentarzy: {{ pos.newComments }}
-      </div>
-    </div>
 
+      <div class="comments-to-set-img-wrapper">
+        <a
+          href="{{ pos.position.link }}"
+          target="_blank"
+          class="comments-to-set-product-link"
+        >
+          <div class="comments-to-set-img" *ngIf="pos.position.image">
+            <img [src]="getImagePreviewUrl(pos.position)" alt="image" />
+          </div>
+        </a>
+        <i
+          class="pi pi-image"
+          *ngIf="!pos.position.image"
+          pTooltip="Brak obrazu"
+        ></i>
+      </div>
+      <!-- GROUP - PRODUCENT DOSTAWCA LINK-->
+      <div class="product-details">
+        <!-- PRODUCENT -->
+        <div class="product-group">
+          <div class="product-title">PRODUCENT</div>
+          <div class="product-name">{{ pos.position.producent }}</div>
+        </div>
+        <!-- DOSTAWCA -->
+        <div class="product-group">
+          <div class="product-title">DOSTAWCA</div>
+          <div class="product-name">
+            {{
+              pos.position.supplierId ? pos.position.supplierId["company"] : ""
+            }}
+          </div>
+        </div>
+        <!-- STATUS  -->
+        <div
+          class="product-group status-wrapper"
+          [class]="getStatusCss(pos.position.status)"
+        >
+          <div class="product-title">STATUS</div>
+          <div class="product-name">
+            {{ getStatusLabel(pos.position.status) }}
+          </div>
+        </div>
+      </div>
+      <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
+      <div class="product-details">
+        <!-- KOLEKCJA -->
+        <div class="product-group">
+          <div class="product-title">KOLEKCJA</div>
+          <div class="product-name">{{ pos.position.kolekcja }}</div>
+        </div>
+        <!-- NR KATALOGOWY -->
+        <div class="product-group">
+          <div class="product-title">NR KATALOGOWY</div>
+          <div class="product-name">{{ pos.position.nrKatalogowy }}</div>
+        </div>
+        <!-- KOLOR -->
+        <div class="product-group">
+          <div class="product-title">KOLOR</div>
+          <div class="product-name">{{ pos.position.kolor }}</div>
+        </div>
+      </div>
+      <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO -->
+      <div class="product-details">
+        <!-- ILOŚĆ -->
+        <div class="product-group">
+          <div class="product-title">ILOŚĆ</div>
+          <div class="product-name">
+            {{ pos.position.ilosc | number: "1.2-2" }}
+          </div>
+        </div>
+        <!-- CENA BRUTTO -->
+        <div class="product-group">
+          <div class="product-title">CENA BRUTTO</div>
+          <div class="product-name">
+            {{
+              pos.position.brutto
+                ? (pos.position.brutto | number: "1.2-2") + " PLN"
+                : ""
+            }}
+          </div>
+        </div>
+        <!-- WARTOŚĆ BRUTTO -->
+        <div class="product-group">
+          <div class="product-title">WARTOŚĆ BRUTTO</div>
+          <div class="product-name">
+            {{
+              pos.position.wartoscBrutto
+                ? (pos.position.wartoscBrutto | number: "1.2-2") + " PLN"
+                : ""
+            }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- COMMENTS  -->
     <app-comments
       [positionId]="pos.position.id"
       [setId]="setId"
