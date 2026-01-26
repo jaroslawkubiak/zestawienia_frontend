@@ -3,6 +3,7 @@
     <div class="header">
       <div class="header-cell-client">
         <p class="header-title">Dane klienta</p>
+        <p><strong>Inwestycja: </strong>{{ setName }}</p>
         <p>
           <strong>Imię i nazwisko: </strong
           >{{ client.firstName + " " + client.lastName }}
@@ -44,7 +45,7 @@
       <!-- table header  -->
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 4rem" class="position-header">LP</th>
+          <th style="width: 4rem" class="position-header text-center">LP</th>
           <th
             *ngFor="let column of columnListForSupplierWithWidth"
             class="position-header"
@@ -63,7 +64,7 @@
         let-editing="editing"
         let-i="rowIndex"
       >
-        <tr [ngClass]="position.status?.cssClass || ''">
+        <tr>
           <td class="lp">
             <span title="{{ position.id }}">{{ i + 1 }}</span>
           </td>
@@ -119,21 +120,6 @@
               </ng-template>
             </p-cellEditor>
           </td>
-        </tr>
-      </ng-template>
-      <!-- table footer  -->
-      <ng-template pTemplate="footer">
-        <tr>
-          <th
-            *ngFor="let column of footerRow; let i = index"
-            class="position-footer"
-            [innerHTML]="
-              column.key === 'wartoscNetto' || column.key === 'wartoscBrutto'
-                ? (column?.value | number: '1.2-2') + ' PLN'
-                : ''
-            "
-            [ngClass]="column.classFooter"
-          ></th>
         </tr>
       </ng-template>
     </p-table>

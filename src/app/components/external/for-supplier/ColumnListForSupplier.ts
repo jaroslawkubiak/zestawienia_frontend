@@ -13,14 +13,6 @@ export const ColumnListForSupplier: IColumnList[] = [
     type: 'textarea',
   },
   {
-    name: 'STATUS',
-    key: 'status',
-    type: 'select',
-    classColumn: 'select-field',
-    optionList: 'positionStatus',
-    optionLabel: 'label',
-  },
-  {
     name: 'PRODUCENT',
     key: 'producent',
     type: 'string',
@@ -40,30 +32,9 @@ export const ColumnListForSupplier: IColumnList[] = [
     key: 'kolor',
     type: 'string',
   },
-
   {
     name: 'ILOŚĆ',
     key: 'ilosc',
-    type: 'number',
-  },
-  {
-    name: 'CENA NETTO',
-    key: 'netto',
-    type: 'number',
-  },
-  {
-    name: 'CENA BRUTTO',
-    key: 'brutto',
-    type: 'number',
-  },
-  {
-    name: 'WARTOŚĆ NETTO',
-    key: 'wartoscNetto',
-    type: 'number',
-  },
-  {
-    name: 'WARTOŚĆ BRUTTO',
-    key: 'wartoscBrutto',
     type: 'number',
   },
   {

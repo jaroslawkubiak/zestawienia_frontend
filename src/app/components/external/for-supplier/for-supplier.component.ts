@@ -19,7 +19,7 @@ import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
 import { IClientData } from './types/IClientData';
-import { ISupplierData } from './types/ISupplierDAta';
+import { ISupplierData } from './types/ISupplierData';
 
 @Component({
   selector: 'app-for-supplier',
@@ -32,20 +32,13 @@ import { ISupplierData } from './types/ISupplierDAta';
 export class ForSupplierComponent implements OnInit {
   setId: number | null = null;
   setHash: string | null = null;
+  setName: string | null = null;
   set!: ISet;
   client!: IClientData;
   supplier!: ISupplierData;
   positions: IPosition[] = [];
   FILES_URL = environment.FILES_URL;
   isLoading = true;
-  footerRow: IFooterRow[] = [
-    {
-      name: 'lp',
-      key: 'lp',
-      type: 'number',
-    },
-    ...ColumnListForSupplier,
-  ];
 
   defaultColumnWidth = 120;
   linkColumnWidth = 90;
@@ -92,6 +85,7 @@ export class ForSupplierComponent implements OnInit {
         next: (response) => {
           if (response && response.valid && response.setId) {
             this.setId = response.setId;
+            this.setName = response.setName;
 
             this.client = { ...response.client };
             this.supplier = { ...response.supplier };
@@ -139,15 +133,5 @@ export class ForSupplierComponent implements OnInit {
         imageUrl,
       };
     });
-
-    this.calculateFooterRow();
-  }
-
-  // calculate values for footer row
-  calculateFooterRow(): void {
-    this.footerRow = this.footerService.calculateFooterRow(
-      this.footerRow,
-      this.positions,
-    );
   }
 }

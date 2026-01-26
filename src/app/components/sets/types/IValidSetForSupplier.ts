@@ -3,6 +3,7 @@ import { IPosition } from './IPosition';
 export interface IValidSetForSupplier {
   valid: boolean;
   setId: number;
+  setName: string;
   supplier: {
     id: number;
     company: string;
