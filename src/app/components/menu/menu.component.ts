@@ -15,6 +15,7 @@ import { IMenu } from './IMenu';
 export class MenuComponent {
   userlabel = () => this.authService.getUserName();
   userRole = () => this.authService.getUserRole();
+  userId = () => this.authService.userId();
 
   menuItems: IMenu[] = [
     {

@@ -7,8 +7,17 @@
         </a>
       </li>
     </ul>
-    <button type="button" class="logout" (click)="logout()">
-      <i class="pi pi-sign-out icon"></i>
-    </button>
+    <div class="logout-wrapper">
+      <button type="button" class="logout" (click)="logout()">
+        <i class="pi pi-sign-out icon"></i>
+      </button>
+      <div class="flex-center">
+        <img
+          [src]="'assets/images/avatars/' + userId() + '.png'"
+          alt="avatar"
+          class="avatar-image"
+        />
+      </div>
+    </div>
   </div>
 </div>

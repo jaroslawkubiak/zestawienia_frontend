@@ -46,8 +46,20 @@ li:hover,
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  margin: 10px;
 }
 
 .icon {
   font-size: 2rem;
+}
+
+.avatar-image {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.logout-wrapper {
+  display: flex;
+  gap: 10px;
 }
