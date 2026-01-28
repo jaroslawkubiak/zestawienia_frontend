@@ -12,7 +12,7 @@
 
 .background {
   font-weight: 700;
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
 }
 
 .bookmark-link {

@@ -63,7 +63,7 @@ th {
 }
 
 .position-header {
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
   height: 50px;
   font-size: 1.2rem;
 }
@@ -80,7 +80,7 @@ th {
   width: 100%;
   font-size: 1.8rem;
   font-weight: bold;
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
 }
 
 .text-center {

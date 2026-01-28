@@ -9,12 +9,12 @@ th {
 }
 
 .position-header {
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
   height: 50px;
 }
 
 .position-footer {
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
   height: 30px;
   text-align: left;
   padding: 8px;
@@ -33,7 +33,7 @@ th {
   width: 100%;
   font-size: 1.2rem;
   font-weight: bold;
-  background-color: var(--table-header-bc);
+  background-color: var(--table-header-bg);
 }
 
 .action-btns-wrapper {

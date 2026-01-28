@@ -7,7 +7,8 @@
 html {
   --primary-color: #212121;
   --secondary-color: #f4f3f3;
-  --table-header-bc: #ebebeb;
+  --table-header-bg: #ebebeb;
+  --app-menu-bg: #2c2c2e;
 
   --neutral-color-01: #f9f9f9;
   --neutral-color-02: #e6e6e6;
