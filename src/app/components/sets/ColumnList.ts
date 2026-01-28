@@ -1,4 +1,4 @@
-import { IColumnList } from './types/IColumnList';
+import { IColumnList } from './positions-table/types/IColumnList';
 
 export const ColumnList: IColumnList[] = [
   {

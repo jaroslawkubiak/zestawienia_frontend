@@ -10,17 +10,17 @@ import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { SuppliersService } from '../../suppliers/suppliers.service';
+import { IPosition } from '../positions-table/types/IPosition';
+import { IPositionStatus } from '../positions-table/types/IPositionStatus';
 import { PositionStatusList } from '../PositionStatusList';
 import { IClonePosition } from '../types/IClonePosition';
 import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { INewSet } from '../types/INewSet';
-import { IPosition } from '../types/IPosition';
-import { IPositionStatus } from '../types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { IValidSetForSupplier } from '../types/IValidSetForSupplier';
 import { IValidSetForClient } from '../types/IValidSetForClient';
+import { IValidSetForSupplier } from '../types/IValidSetForSupplier';
 
 @Injectable({
   providedIn: 'root',

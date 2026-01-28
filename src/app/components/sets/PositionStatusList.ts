@@ -1,4 +1,4 @@
-import { IPositionStatus } from './types/IPositionStatus';
+import { IPositionStatus } from './positions-table/types/IPositionStatus';
 
 export const PositionStatusList: IPositionStatus[] = [
   {

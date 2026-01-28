@@ -22,13 +22,12 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { calculateWartosc } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
-import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
+import { IPosition } from '../positions-table/types/IPosition';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { SummaryComponent } from '../summary/summary.component';
-import { IPosition } from '../types/IPosition';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { EditSetService } from './edit-set.service';

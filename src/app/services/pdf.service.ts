@@ -4,9 +4,9 @@ import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
 import { ColumnList } from '../components/sets/ColumnList';
 import { PositionStatusList } from '../components/sets/PositionStatusList';
-import { IColumnList } from '../components/sets/types/IColumnList';
-import { IPosition } from '../components/sets/types/IPosition';
-import { IPositionStatus } from '../components/sets/types/IPositionStatus';
+import { IColumnList } from '../components/sets/positions-table/types/IColumnList';
+import { IPosition } from '../components/sets/positions-table/types/IPosition';
+import { IPositionStatus } from '../components/sets/positions-table/types/IPositionStatus';
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { getCssVariable } from '../shared/helpers/getCssVariable';
@@ -59,14 +59,14 @@ export class PdfService {
   ROW_HEIGHT = 60;
   IMAGE_HORIZONTAL_PADDING = 3;
   visibleColumns = this.columnList.filter(
-    (col) => col.classHeader !== 'hidden'
+    (col) => col.classHeader !== 'hidden',
   );
   headers: string[][] = [this.visibleColumns.map((col) => col.name)];
   columnStyles: ColumnStyles = {};
   positionStatus: IPositionStatus[] = PositionStatusList;
   constructor(
     private filesService: FilesService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
   ) {
     this.loadFont();
   }
@@ -104,10 +104,13 @@ export class PdfService {
     doc.setFontSize(10);
     doc.setTextColor(this.colors.black);
 
-    this.columnStyles = this.visibleColumns.reduce((styles, col, index) => {
-      styles[index] = { cellWidth: col.pdfWidth || 'auto' };
-      return styles;
-    }, {} as { [key: number]: { cellWidth: number | 'auto' } });
+    this.columnStyles = this.visibleColumns.reduce(
+      (styles, col, index) => {
+        styles[index] = { cellWidth: col.pdfWidth || 'auto' };
+        return styles;
+      },
+      {} as { [key: number]: { cellWidth: number | 'auto' } },
+    );
 
     // find index of column needed in didDrawCell
     const columnIndexes = this.visibleColumns.reduce<{ [key: string]: number }>(
@@ -115,11 +118,11 @@ export class PdfService {
         const key = col.key;
         acc[col.key] = this.headers[0].findIndex(
           (name) =>
-            name === this.visibleColumns.find((col) => col.key === key)?.name
+            name === this.visibleColumns.find((col) => col.key === key)?.name,
         );
         return acc;
       },
-      {}
+      {},
     );
 
     const uniqueBookmarks = new Set(positions.map((pos) => pos.bookmarkId.id));
@@ -158,7 +161,7 @@ export class PdfService {
 
     // draw background
     const backgroundBase64 = await this.getBase64Image(
-      'assets/images/background1.jpg'
+      'assets/images/background1.jpg',
     );
 
     doc.addImage(
@@ -167,7 +170,7 @@ export class PdfService {
       0, // X
       0, // Y
       this.pageWidth,
-      this.pageHeight
+      this.pageHeight,
     );
 
     // header summary
@@ -276,7 +279,7 @@ export class PdfService {
           try {
             const base64Image = await this.getBase64Image(imageUrl);
             const { width, height } = await this.getImageSize(
-              base64Image as string
+              base64Image as string,
             );
             imageMap.set(row.id + '/' + imageName, {
               base64: base64Image as string,
@@ -286,7 +289,7 @@ export class PdfService {
           } catch (error) {
             console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
           }
-        })
+        }),
       );
 
       // totals for footer
@@ -348,7 +351,7 @@ export class PdfService {
           };
 
           return formatRow(row);
-        })
+        }),
       );
 
       this.drawBookmarkName(doc, bookmark.name);
@@ -367,7 +370,7 @@ export class PdfService {
           const status = rowArray[statusColumnIndex];
           if (status) {
             const statusObj = this.positionStatus.find(
-              (s) => s.label === status
+              (s) => s.label === status,
             );
 
             if (statusObj) {
@@ -419,7 +422,7 @@ export class PdfService {
 
           if (
             centeredColumns.includes(
-              this.visibleColumns[data.column.index]?.key
+              this.visibleColumns[data.column.index]?.key,
             )
           ) {
             data.cell.styles.halign = 'center';
@@ -454,7 +457,7 @@ export class PdfService {
                 xCenter,
                 yCenter,
                 imgWidth,
-                imgHeight
+                imgHeight,
               );
             }
           }
@@ -467,7 +470,7 @@ export class PdfService {
               data.cell.y,
               data.cell.width,
               data.cell.height,
-              { url }
+              { url },
             );
           }
         },
@@ -543,7 +546,7 @@ export class PdfService {
         14,
         14,
         this.colors.white,
-        `Zestawienie : ${set.name}`
+        `Zestawienie : ${set.name}`,
       );
       this.drawRectRight(
         doc,
@@ -551,7 +554,7 @@ export class PdfService {
         14,
         14,
         this.colors.white,
-        set.clientId.firstName
+        set.clientId.firstName,
       );
       this.drawRectFull(
         doc,
@@ -559,7 +562,7 @@ export class PdfService {
         10,
         12,
         this.colors.white,
-        `Strona ${i} z ${totalPages}`
+        `Strona ${i} z ${totalPages}`,
       );
       this.drawRectFull(
         doc,
@@ -567,7 +570,7 @@ export class PdfService {
         10,
         12,
         this.colors.white,
-        `Copyright @${new Date().getFullYear()} Żurawicki Design`
+        `Copyright @${new Date().getFullYear()} Żurawicki Design`,
       );
     }
 
@@ -579,7 +582,7 @@ export class PdfService {
       10,
       12,
       this.colors.white,
-      `Strona 1 z ${totalPages}`
+      `Strona 1 z ${totalPages}`,
     );
     this.drawRectFull(
       doc,
@@ -587,7 +590,7 @@ export class PdfService {
       10,
       12,
       this.colors.white,
-      `Copyright @${new Date().getFullYear()} Żurawicki Design`
+      `Copyright @${new Date().getFullYear()} Żurawicki Design`,
     );
 
     const finalAction: Array<'saveToPC' | 'openInNewCard' | 'sendToFtp'> = [
@@ -615,7 +618,7 @@ export class PdfService {
             next: (response) => {
               this.notificationService.showNotification(
                 'success',
-                'Zestawienie w PDF zostało poprawnie wysłane na serwer'
+                'Zestawienie w PDF zostało poprawnie wysłane na serwer',
               );
             },
             error: (error) => {
@@ -633,7 +636,7 @@ export class PdfService {
     rectHeight: number,
     font: number,
     color: string,
-    text: string
+    text: string,
   ) {
     doc.setFontSize(font);
     doc.setFillColor(color);
@@ -657,7 +660,7 @@ export class PdfService {
     rectHeight: number,
     font: number,
     color: string,
-    text: string
+    text: string,
   ) {
     doc.setFontSize(font);
     doc.setFillColor(color);
@@ -681,7 +684,7 @@ export class PdfService {
     rectHeight: number,
     font: number,
     color: string,
-    text: string
+    text: string,
   ) {
     doc.setFontSize(font);
     doc.setFillColor(color);
@@ -739,7 +742,7 @@ export class PdfService {
   }
 
   async getImageSize(
-    base64Image: string
+    base64Image: string,
   ): Promise<{ width: number; height: number }> {
     return new Promise((resolve) => {
       const img = new Image();
@@ -766,7 +769,7 @@ export class PdfService {
 // blend alpha channel with white background - jsPDF doesn't support alpha channel
 function blendHexWithBackground(
   hexWithAlpha: string,
-  background: [number, number, number] = [255, 255, 255]
+  background: [number, number, number] = [255, 255, 255],
 ): [number, number, number] {
   const hex = hexWithAlpha.replace('#', '');
   const hasAlpha = hex.length === 8;

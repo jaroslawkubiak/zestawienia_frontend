@@ -1,4 +1,4 @@
-import { IPosition } from './IPosition';
+import { IPosition } from '../positions-table/types/IPosition';
 import { ISet } from './ISet';
 
 export interface IUpdateSet {

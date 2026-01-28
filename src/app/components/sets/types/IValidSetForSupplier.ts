@@ -1,4 +1,4 @@
-import { IPosition } from './IPosition';
+import { IPosition } from "../positions-table/types/IPosition";
 
 export interface IValidSetForSupplier {
   valid: boolean;

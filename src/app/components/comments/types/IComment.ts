@@ -1,4 +1,3 @@
-import { IPosition } from '../../sets/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
 
 export interface IComment {
@@ -6,13 +5,12 @@ export interface IComment {
   comment: string;
   authorType: 'client' | 'user';
   authorId: number;
+  authorName: string;
   seenAt: Date;
   needsAttention: boolean;
   createdAt: string;
   createdAtTimestamp: number;
-  positionId: IPosition;
-  setId: ISet;
-  authorName?: string;
-  notificationSend?: boolean;
+  positionId: number;
+  setId: number;
   avatar?: string;
 }

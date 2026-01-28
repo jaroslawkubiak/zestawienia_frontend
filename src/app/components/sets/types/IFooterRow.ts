@@ -1,4 +1,4 @@
-import { TField } from './field.type';
+import { TField } from '../positions-table/types/field.type';
 
 export interface IFooterRow {
   name: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { IPosition } from '../positions-table/types/IPosition';
 import { IFooterRow } from '../types/IFooterRow';
-import { IPosition } from '../types/IPosition';
 
 @Injectable({
   providedIn: 'root',

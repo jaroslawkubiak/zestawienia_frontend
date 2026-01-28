@@ -25,7 +25,7 @@ import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { IDeletedFiles } from '../files/types/IDeletedFiles';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
-import { BadgeSeverity } from './types/badgeSeverity.type';
+import { BadgeSeverity } from './action-btns/types/badgeSeverity.type';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
 

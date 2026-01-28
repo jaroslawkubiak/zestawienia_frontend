@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { IPosition } from '../types/IPosition';
-import { BadgeSeverity } from '../types/badgeSeverity.type';
+import { IPosition } from '../positions-table/types/IPosition';
+import { BadgeSeverity } from './types/badgeSeverity.type';
 
 @Component({
   selector: 'app-action-btns',

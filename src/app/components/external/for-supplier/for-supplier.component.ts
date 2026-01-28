@@ -11,11 +11,9 @@ import {
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
-import { FooterService } from '../../sets/edit-set/footer.service';
+import { IPosition } from '../../sets/positions-table/types/IPosition';
+import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
 import { PositionStatusList } from '../../sets/PositionStatusList';
-import { IFooterRow } from '../../sets/types/IFooterRow';
-import { IPosition } from '../../sets/types/IPosition';
-import { IPositionStatus } from '../../sets/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
 import { IClientData } from './types/IClientData';
@@ -59,7 +57,6 @@ export class ForSupplierComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
-    private footerService: FooterService,
   ) {}
 
   ngOnInit() {

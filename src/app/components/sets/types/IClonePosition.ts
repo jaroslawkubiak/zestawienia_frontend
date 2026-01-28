@@ -1,7 +1,7 @@
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ISupplier } from '../../suppliers/ISupplier';
-import { IPositionStatus } from './IPositionStatus';
+import { IPositionStatus } from '../positions-table/types/IPositionStatus';
 import { ISet } from './ISet';
 
 export interface IClonePosition {

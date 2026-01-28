@@ -1,4 +1,4 @@
-import { EmailAudience } from '../../emails/types/EmailAudience.type';
+import { EmailAudience } from './EmailAudience.type';
 
 export interface IExternalLink {
   type: EmailAudience;

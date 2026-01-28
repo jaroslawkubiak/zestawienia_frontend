@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { TableModule } from 'primeng/table';
-import { IPosition } from '../types/IPosition';
+import { IPosition } from '../positions-table/types/IPosition';
 import { ISet } from '../types/ISet';
 import { SummaryData } from '../types/ISummaryData';
 
