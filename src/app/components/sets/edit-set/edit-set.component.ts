@@ -168,11 +168,6 @@ export class EditSetComponent
     this.loadContentForBookmark(this.selectedBookmark);
   }
 
-  // update files list after upload new files
-  updateFileList(newFiles: IFileFullDetails[]) {
-    this.set.files = [...(this.set.files || []), ...newFiles];
-  }
-
   // save data
   onSubmit() {
     if (this.positionsTableComponent) {

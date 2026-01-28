@@ -146,7 +146,7 @@ export class SendFilesComponent {
             );
           }
 
-          if (event.type === HttpEventType.Response) {
+          if (event.type === HttpEventType.Response && event.body) {
             this.fileUploader.clear();
             this.uploadProgress = 0;
             this.showSendFilesDialog = false;

@@ -23,9 +23,6 @@ export interface IPosition {
   uwagi: string;
   image: string;
   status: IPositionStatus | string;
-  acceptedAt: string;
-  acceptedAtTimestamp: number;
-  acceptedStatus: string;
   createdAt: string;
   createdAtTimestamp: number;
   updatedAt: string;

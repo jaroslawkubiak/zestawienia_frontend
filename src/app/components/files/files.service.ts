@@ -1,11 +1,13 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { saveAs } from 'file-saver';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { IDeletedFileResponse } from './types/IDeletedFileResponse';
 import { IFileFullDetails } from './types/IFileFullDetails';
+import { IUploadFileResponse } from './types/IUploadFileResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +23,7 @@ export class FilesService {
   ) {}
 
   // save created zip from set files
-  downloadFiles(ids: number[]): Observable<any> {
+  downloadFiles(ids: number[]): Observable<Blob> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
@@ -57,12 +59,12 @@ export class FilesService {
     setHash: string,
     formData: FormData,
     uploadFolder: string,
-  ): Observable<any> {
+  ): Observable<HttpEvent<IUploadFileResponse>> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    return this.http.post<any>(
+    return this.http.post<IUploadFileResponse>(
       `${environment.API_URL}/files/upload/${setId}/${setHash}/${uploadFolder}`,
       formData,
       {
@@ -74,8 +76,8 @@ export class FilesService {
   }
 
   // download file and save on client
-  downloadAndSaveFile(file: IFileFullDetails): void {
-    const url = `${environment.API_URL}/files/download/${file.setId.id}/${file.id}`;
+  downloadAndSaveFile(file: IFileFullDetails, setId: number): void {
+    const url = `${environment.API_URL}/files/download/${setId}/${file.id}`;
 
     this.http.get(url, { responseType: 'blob' }).subscribe({
       next: (fileBlob) => {
@@ -92,12 +94,12 @@ export class FilesService {
   }
 
   // delete one file
-  deleteFile(id: number): Observable<any> {
+  deleteFile(id: number): Observable<IDeletedFileResponse> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    return this.http.delete<any>(
+    return this.http.delete<IDeletedFileResponse>(
       `${environment.API_URL}/files/${id}/deleteFile`,
       {
         headers,
@@ -106,12 +108,12 @@ export class FilesService {
   }
 
   // batch delete files
-  deleteFiles(ids: number[]): Observable<any> {
+  deleteFiles(ids: number[]): Observable<void> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
     });
 
-    return this.http.delete<any>(
+    return this.http.delete<void>(
       `${environment.API_URL}/files/deleteSomeFiles`,
       {
         headers,

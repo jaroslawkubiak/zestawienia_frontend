@@ -114,7 +114,7 @@ export class ShowFilesComponent implements OnInit {
       return;
     }
 
-    this.filesService.downloadAndSaveFile(file);
+    this.filesService.downloadAndSaveFile(file, this.setId);
   }
 
   // delete file form server and remove from list
