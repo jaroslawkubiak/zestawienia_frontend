@@ -1,7 +1,4 @@
-<app-send-files
-  who="user"
-  (updateFileList)="updateAttachedFiles($event)"
-/>
+<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
 <app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
 
 <div class="spinner" *ngIf="isLoading">
@@ -168,23 +165,13 @@
                 pTooltip="Zobacz komentarze"
                 tooltipPosition="bottom"
                 [disabled]="set?.comments?.length === 0"
-                (click)="showComments(set.id)"
+                (click)="showAllComments(set.id)"
               />
               <p-badge
-                [value]="set?.newComments || set?.comments?.length || 0"
-                [severity]="
-                  set?.newComments
-                    ? 'danger'
-                    : set?.comments?.length
-                    ? 'contrast'
-                    : 'secondary'
-                "
+                [value]="getCommentsBadgeValue(set.id)"
+                [severity]="getCommentsBadgeClass(set.id)"
                 class="nr-comments"
-                [pTooltip]="
-                  set?.newComments
-                    ? 'Ilość nowych komentarzy'
-                    : 'Ilość komentarzy'
-                "
+                [pTooltip]="getCommentsTooltipInfo(set.id)"
               />
             </div>
           </div>

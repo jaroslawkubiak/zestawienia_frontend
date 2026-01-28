@@ -33,21 +33,11 @@
       (click)="triggerShowComments()"
     />
     <p-badge
-      [value]="getRowNewComments(positionId) || getRowAllComments(positionId)"
-      [severity]="
-        getRowNewComments(positionId)
-          ? 'danger'
-          : getRowAllComments(positionId)
-          ? 'contrast'
-          : 'secondary'
-      "
+      [value]="getCommentsBadgeValue(positionId)"
+      [severity]="getCommentsBadgeClass(positionId)"
+      [pTooltip]="pTooltipInfo"
       class="nr-comments"
       badgeSize="large"
-      [pTooltip]="
-        getRowNewComments(positionId)
-          ? 'Ilość nowych komentarzy'
-          : 'Ilość komentarzy'
-      "
     ></p-badge>
   </div>
 </div>

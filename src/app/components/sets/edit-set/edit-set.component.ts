@@ -219,7 +219,6 @@ export class EditSetComponent
   loadContentForBookmark(bookmarkId: number) {
     this.updatePositions();
     this.selectedBookmark = bookmarkId;
-
     this.positionsFromBookmark = this.positions
       .filter(
         (item) =>

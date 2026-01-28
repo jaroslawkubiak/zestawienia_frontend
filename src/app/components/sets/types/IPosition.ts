@@ -1,6 +1,7 @@
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { IComment } from '../../comments/types/IComment';
+import { IUnreadComments } from '../../comments/types/IUnreadComments';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { IPositionStatus } from './IPositionStatus';
 import { ISet } from './ISet';
@@ -33,7 +34,5 @@ export interface IPosition {
   createdBy: IUser;
   updatedBy: IUser;
   [key: string]: any;
-
-  comments?: IComment[];
-  newComments?: number;
+  newCommentsCount: IUnreadComments;
 }

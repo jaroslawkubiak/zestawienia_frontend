@@ -3,6 +3,7 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { IPosition } from '../types/IPosition';
+import { BadgeSeverity } from '../types/badgeSeverity.type';
 
 @Component({
   selector: 'app-action-btns',
@@ -18,6 +19,45 @@ export class ActionBtnsComponent {
   @Output() clonePosition = new EventEmitter<number>();
   @Output() deletePosition = new EventEmitter<number>();
   @Output() showComments = new EventEmitter<number>();
+  pTooltipInfo = '';
+
+  getCommentsBadgeValue(positionId: number): number {
+    const currentPostition = this.positions.find(
+      (pos) => pos.id === positionId,
+    );
+
+    if (!currentPostition) {
+      return 0;
+    }
+
+    const { needsAttention, unread, all } = currentPostition.newCommentsCount;
+
+    this.pTooltipInfo =
+      needsAttention > 0 || unread > 0
+        ? 'Ilość nowych komentarzy'
+        : 'Ilość komentarzy';
+
+    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+  }
+
+  getCommentsBadgeClass(positionId: number): BadgeSeverity {
+    const currentPostition = this.positions.find(
+      (pos) => pos.id === positionId,
+    );
+
+    if (!currentPostition) {
+      return 'secondary';
+    }
+    const { needsAttention, unread, all } = currentPostition.newCommentsCount;
+
+    if (needsAttention > 0 || unread > 0) {
+      return 'danger';
+    } else if (all > 0) {
+      return 'contrast';
+    } else {
+      return 'secondary';
+    }
+  }
 
   triggerAddEmptyPosition() {
     this.addEmptyPosition.emit(this.kolejnosc);
@@ -29,18 +69,6 @@ export class ActionBtnsComponent {
 
   triggerDeletePosition() {
     this.deletePosition.emit(this.positionId);
-  }
-
-  getRowNewComments(positionId: number): number {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    return position?.newComments || 0;
-  }
-
-  getRowAllComments(positionId: number): number {
-    const position = this.positions.find((item) => item.id === positionId);
-
-    return position?.comments?.length || 0;
   }
 
   triggerShowComments() {

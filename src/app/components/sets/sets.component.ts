@@ -19,13 +19,13 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
-import { countNewComments } from '../../shared/helpers/countNewComments';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { IDeletedFiles } from '../files/types/IDeletedFiles';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
+import { BadgeSeverity } from './types/badgeSeverity.type';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
 
@@ -93,13 +93,6 @@ export class SetsComponent implements OnInit {
           fullName: set.clientId.firstName + ' ' + set.clientId.lastName,
         }));
 
-        this.sets = this.sets.map((set) => ({
-          ...set,
-          newComments: set.comments
-            ? countNewComments(set.comments, 'client')
-            : undefined,
-        }));
-
         this.allSets = this.sets;
         this.filterSets();
 
@@ -146,6 +139,7 @@ export class SetsComponent implements OnInit {
         setToDelete?.name +
         ' dla ' +
         setToDelete?.clientId.firstName +
+        ' ' +
         setToDelete?.clientId.lastName +
         '?<br />Spowoduje to usunięcie również wszystkich przesłanych zdjęć do zestawienia.',
       header: 'Potwierdź usunięcie zestawienia',
@@ -180,7 +174,7 @@ export class SetsComponent implements OnInit {
     );
   }
 
-  showComments(setId: number) {
+  showAllComments(setId: number) {
     const backPath = '/sets';
 
     this.router.navigate([`/sets/comments/${setId}`], {
@@ -204,5 +198,48 @@ export class SetsComponent implements OnInit {
 
   uploadFinished(message: string) {
     this.notificationService.showNotification('info', message);
+  }
+
+  getCommentsBadgeValue(setId: number): number {
+    const currentSet = this.sets.find((set) => set.id === setId);
+
+    if (!currentSet) {
+      return 0;
+    }
+
+    const { needsAttention, unread, all } = currentSet.newCommentsCount;
+
+    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+  }
+
+  getCommentsTooltipInfo(setId: number): string {
+    const currentSet = this.sets.find((set) => set.id === setId);
+
+    if (!currentSet) {
+      return '';
+    }
+
+    const { needsAttention, unread, all } = currentSet.newCommentsCount;
+
+    return needsAttention > 0 || unread > 0
+      ? 'Ilość nowych komentarzy'
+      : 'Ilość komentarzy';
+  }
+
+  getCommentsBadgeClass(setId: number): BadgeSeverity {
+    const currentSet = this.sets.find((set) => set.id === setId);
+
+    if (!currentSet) {
+      return 'secondary';
+    }
+    const { needsAttention, unread, all } = currentSet.newCommentsCount;
+
+    if (needsAttention > 0 || unread > 0) {
+      return 'danger';
+    } else if (all > 0) {
+      return 'contrast';
+    } else {
+      return 'secondary';
+    }
   }
 }
