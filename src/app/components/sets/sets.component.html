@@ -1,4 +1,4 @@
-<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
+<app-send-files who="user" (updateFileList)="updateFileList($event)" />
 <app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
 
 <div class="spinner" *ngIf="isLoading">

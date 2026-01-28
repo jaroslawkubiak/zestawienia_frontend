@@ -82,10 +82,6 @@ export class SetsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getSets();
-  }
-
-  getSets() {
     this.setsService.getSets().subscribe({
       next: (data) => {
         this.sets = data.map((set) => ({
@@ -165,8 +161,8 @@ export class SetsComponent implements OnInit {
   }
 
   // update attached files after sending new files to server
-  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    const uploadedSetId = +uploadedFiles[0].setId;
+  updateFileList(uploadedFiles: IFileFullDetails[]) {
+    const uploadedSetId = +uploadedFiles[0].setId.id;
     this.sets = this.sets.map((set) =>
       set.id === uploadedSetId
         ? { ...set, files: [...(set.files || []), ...uploadedFiles] }
@@ -194,10 +190,6 @@ export class SetsComponent implements OnInit {
     this.sets = this.sets.map((item) =>
       item.id === setId ? { ...item, files: files } : item,
     );
-  }
-
-  uploadFinished(message: string) {
-    this.notificationService.showNotification('info', message);
   }
 
   getCommentsBadgeValue(setId: number): number {
