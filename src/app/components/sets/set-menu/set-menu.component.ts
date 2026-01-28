@@ -18,7 +18,6 @@ import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
-import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { EmailsService } from '../../emails/email.service';
@@ -62,7 +61,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @Input() isEdited: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
-  @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
 
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
@@ -79,8 +77,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
   attachmentBadge: number = 0;
   clientHash = '';
 
-  newComments = 0;
-  allComments = 0;
+  // newComments = 0;
+  // allComments = 0;
 
   constructor(
     private router: Router,
@@ -98,8 +96,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.attachmentBadge = this.set?.files?.length || 0;
-    this.allComments = this.set?.comments?.length ?? 0;
-    this.newComments = countNewComments(this.set?.comments || [], 'client');
+    // this.allComments = this.set?.comments?.length ?? 0;
+    // this.newComments = countNewComments(this.set?.comments || [], 'client');
 
     if (this.set && this.positions?.length && this.allSuppliers?.length) {
       this.findUniqueSuppliers();
@@ -124,20 +122,29 @@ export class SetMenuComponent implements OnChanges, OnInit {
       showAttachedFiles: () => this.showAttachedFiles(),
       openSendFilesDialog: () => this.openSendFilesDialog(),
       getCommentsBadgeClass: () => this.getCommentsBadgeClass(),
-      badgeValue: () => this.newComments || this.allComments,
+      getCommentsBadgeValue: () => this.getCommentsBadgeValue(),
       showComments: () => this.showComments(),
     });
   }
 
-  // define comments badge color
+  // calc comments badge color
   getCommentsBadgeClass(): string {
-    if (this.newComments > 0) {
+    const { needsAttention, unread, all } = this.set.newCommentsCount;
+
+    if (needsAttention > 0 || unread > 0) {
       return 'p-badge-danger';
-    } else if (this.allComments > 0) {
+    } else if (all > 0) {
       return 'p-badge-contrast';
     } else {
       return 'p-badge-secondary';
     }
+  }
+
+  // calc comments badge value
+  getCommentsBadgeValue(): number {
+    const { needsAttention, unread, all } = this.set.newCommentsCount;
+
+    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
   }
 
   // open edit set header dialog
@@ -232,7 +239,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
   updateAttachedFiles(files: IFileFullDetails[]): void {
     this.set.files = [...(this.set.files ?? []), ...files];
     this.updateMenuItems();
-    this.updateFileList.emit(files);
   }
 
   //delete
