@@ -31,13 +31,12 @@ export class WelcomeComponent implements OnInit {
 
       this.messageNeedsAttention = `Masz ${needsAttention} ${this.pluralize(
         needsAttention,
-        'komentarz oznaczony jako ważny',
-        'komentarze oznaczone jako ważne',
-        'komentarzy oznaczonych jako ważne',
+        'komentarz oznaczony jako wymagający uwagi',
+        'komentarze oznaczone jako wymagające uwagi',
+        'komentarzy oznaczonych jako wymagające uwagi',
       )}`;
     });
   }
-
 
   private pluralize(
     count: number,

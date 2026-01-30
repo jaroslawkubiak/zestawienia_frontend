@@ -247,10 +247,9 @@ export class EditSetComponent
     }, 0);
   }
 
-  // update comments for set, and count newComments property for badge
-  updateDataForSet() {
+  // update comments for set
+  updateSetComments() {
     this.loadData();
-
     this.loadContentForBookmark(this.selectedBookmark);
     this.setMenuComponent.updateMenuItems();
     this.cd.detectChanges();

@@ -37,6 +37,10 @@ export class ActionBtnsComponent {
         ? 'Ilość nowych komentarzy'
         : 'Ilość komentarzy';
 
+    if (needsAttention > 0 && unread > 0) {
+      return needsAttention + unread;
+    }
+
     return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
   }
 

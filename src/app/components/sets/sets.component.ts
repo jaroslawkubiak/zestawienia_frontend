@@ -194,12 +194,15 @@ export class SetsComponent implements OnInit {
 
   getCommentsBadgeValue(setId: number): number {
     const currentSet = this.sets.find((set) => set.id === setId);
-
     if (!currentSet) {
       return 0;
     }
 
     const { needsAttention, unread, all } = currentSet.newCommentsCount;
+
+    if (needsAttention > 0 && unread > 0) {
+      return needsAttention + unread;
+    }
 
     return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
   }

@@ -143,6 +143,10 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // calc comments badge value
   getCommentsBadgeValue(): number {
     const { needsAttention, unread, all } = this.set.newCommentsCount;
+    
+    if (needsAttention > 0 && unread > 0) {
+      return needsAttention + unread;
+    }
 
     return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
   }
