@@ -21,7 +21,7 @@ import { FilePreviewComponent } from '../file-preview/file-preview.component';
   styleUrl: './icons-view.component.css',
 })
 export class IconsViewComponent {
-  @Input() who!: 'user' | 'client';
+  @Input() who!: 'client' | 'user';
   @Input() files: IFileFullDetails[] = [];
   @Input() uniqueDir: string[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];

@@ -88,7 +88,7 @@ export class CommentsService {
   markAllCommentsAsNeedsAttention(
     positionId: number,
     readState: boolean,
-    authorType: 'user' | 'client',
+    authorType: 'client' | 'user',
   ): Observable<IComment[]> {
     const oppositeAuthorType = authorType === 'user' ? 'client' : 'user';
     const body = {
@@ -112,7 +112,7 @@ export class CommentsService {
   }
 
   // when open comments dialog - mark all unread comment as seenAt
-  markAllCommentsAsSeen(positionId: number, authorType: 'user' | 'client') {
+  markAllCommentsAsSeen(positionId: number, authorType: 'client' | 'user') {
     return this.http.post<void>(
       `${environment.API_URL}/comments/markAllAsSeen`,
       {

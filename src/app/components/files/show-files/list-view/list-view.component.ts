@@ -39,7 +39,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   encapsulation: ViewEncapsulation.None,
 })
 export class ListViewComponent implements OnChanges {
-  @Input() who!: 'user' | 'client';
+  @Input() who!: 'client' | 'user';
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() isDeleteDisabled!: boolean;

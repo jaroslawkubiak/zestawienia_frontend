@@ -50,7 +50,7 @@ export class SendFilesComponent {
       });
   }
 
-  @Input() who!: 'user' | 'client';
+  @Input() who!: 'client' | 'user';
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
 
   showSendFilesDialog = false;

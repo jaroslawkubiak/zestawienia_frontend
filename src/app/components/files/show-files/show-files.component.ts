@@ -60,7 +60,7 @@ export class ShowFilesComponent implements OnInit {
       });
   }
 
-  @Input() who!: 'user' | 'client';
+  @Input() who!: 'client' | 'user';
   @Output() deleteFiles = new EventEmitter<IDeletedFiles>();
   setId!: number;
   setHash!: string;

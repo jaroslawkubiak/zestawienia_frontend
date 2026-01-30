@@ -35,7 +35,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 })
 export class FilePreviewComponent {
   @Input() file!: IFileFullDetails;
-  @Input() who!: 'user' | 'client';
+  @Input() who!: 'client' | 'user';
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Output() delete = new EventEmitter<void>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
