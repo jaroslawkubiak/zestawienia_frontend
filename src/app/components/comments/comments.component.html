@@ -6,16 +6,24 @@
     [class.outgoing]="!isClientMessage(comment)"
   >
     <div class="message-bubble">
-      <i
-        [pTooltip]="
-          isUnread(comment) ? 'Oznacz jako przeczytany' : 'Oznacz jako ważny'
+      <div
+        [class.needsAttentionIncoming]="
+          isClientMessage(comment) && isNeedsAttention(comment)
         "
+        [class.needsAttentionOutgoing]="
+          !isClientMessage(comment) && isNeedsAttention(comment)
+        "
+        pTooltip="Komentarz jest oznaczony jako wymaga uwagi"
+        tooltipPosition="top"
+      ></div>
+      <i
+        [pTooltip]="isUnreadOrNeedsAttentionTooltip(comment)"
         tooltipPosition="top"
         class="pi pi-comment comment-icon"
         [ngClass]="
-          isUnread(comment) ? 'comment-icon-unread' : 'comment-icon-read'
+          !comment.seenAt ? 'comment-icon-unread' : 'comment-icon-read'
         "
-        (click)="toggleCommentRead(comment.id)"
+        (click)="toggleCommentAsNeedAttention(comment.id)"
       ></i>
       <i
         class="pi pi-pencil edit-icon"
@@ -42,11 +50,9 @@
         [class.avatar-client]="!isClientMessage(comment)"
       >
         <img
-          [src]="
-            comment?.avatar
-              ? 'assets/images/avatars/' + comment.avatar + '.png'
-              : 'assets/images/avatars/default.png'
-          "
+          [src]="getCommentAvatar(comment)"
+          (error)="onAvatarError($event)"
+          [title]="comment.authorName"
           alt="avatar"
           class="avatar-image"
         />
@@ -56,43 +62,38 @@
 </div>
 
 <div class="new-message-input-wrapper">
-  <div class="new-message-all-comments flex-center">
+  <div class="new-message-action-btns flex-center">
     <div
       class="comment-read-btn flex-center cursor-pointer"
-      pTooltip="Oznacz wszystkie jako przeczytane"
+      pTooltip="Oznacz wszystkie jako nie wymagające uwagi"
       tooltipPosition="top"
-      (click)="
-        markAllCommentsAsNeedsAttention(false, isUser ? 'client' : 'user')
-      "
+      (click)="markAllCommentsAsNeedsAttention(false)"
     >
       <i class="pi pi-comments"></i>
     </div>
     <div
       class="comment-unread-btn flex-center cursor-pointer"
-      pTooltip="Oznacz wszystkie jako ważne"
+      pTooltip="Oznacz wszystkie jako wymagające uwagi"
       tooltipPosition="top"
-      (click)="
-        markAllCommentsAsNeedsAttention(true, isUser ? 'client' : 'user')
-      "
+      (click)="markAllCommentsAsNeedsAttention(true)"
     >
       <i class="pi pi-comments"></i>
     </div>
   </div>
   <textarea
+    #messageTextarea
     [(ngModel)]="newMessage"
     class="new-message-textarea"
     placeholder="Napisz wiadomość..."
-    (input)="adjustTextareaHeight($event)"
-    (keyup.enter)="sendComment()"
+    (input)="adjustTextareaHeight(messageTextarea)"
     rows="1"
     pTextarea
     fluid
-    id="new-message"
   ></textarea>
   <div class="new-message-send-btn-wrapper flex-center">
     <button
       class="send-btn"
-      (click)="sendComment()"
+      (click)="sendComment(messageTextarea)"
       [ngClass]="{ disabled: !newMessage }"
     >
       <i class="pi pi-arrow-up send-icon"></i>

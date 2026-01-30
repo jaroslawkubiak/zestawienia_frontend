@@ -7,6 +7,7 @@ import {
   OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -24,12 +25,10 @@ import {
   calculateNetto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
-import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ITableColumnWidth } from '../../bookmarks/types/ITableColumnWidth';
 import { CommentsComponent } from '../../comments/comments.component';
-import { IComment } from '../../comments/types/IComment';
 import { ImageGalleryComponent } from '../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../image-gallery/types/IGalleryList';
 import { ISupplier } from '../../suppliers/ISupplier';
@@ -39,12 +38,14 @@ import { EditSetService } from '../edit-set/edit-set.service';
 import { FooterService } from '../edit-set/footer.service';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { PositionStatusList } from '../PositionStatusList';
-import { IColumnList } from '../types/IColumnList';
 import { IFooterRow } from '../types/IFooterRow';
-import { IPosition } from '../types/IPosition';
-import { IPositionStatus } from '../types/IPositionStatus';
+import { IPositionStatus } from './types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
+import { IColumnList } from './types/IColumnList';
+import { IPosition } from './types/IPosition';
+import { CommentsService } from '../../comments/comments.service';
+import { IComment } from '../../comments/types/IComment';
 
 @Component({
   selector: 'app-positions-table',
@@ -99,8 +100,9 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   ];
   positionStatus: IPositionStatus[] = PositionStatusList.filter((s) => s.label);
   setId: number = 0;
-  positionId: number = 0;
+  positionIdForComments: number = 0;
   showCommentsDialog = false;
+  commentsForPosition: IComment[] = [];
   header = '';
   @ViewChild('table') table!: Table;
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
@@ -109,25 +111,31 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     private editSetService: EditSetService,
     private notificationService: NotificationService,
     private footerService: FooterService,
+    private commentsService: CommentsService,
     private cd: ChangeDetectorRef,
   ) {
     this.onImageUpload = this.onImageUpload.bind(this);
   }
 
   ngOnInit() {
-    if (this.positionsFromBookmark) {
-      // map option list for select fields
-      this.dropwownColumnOptions = {
-        allSuppliers: this.allSuppliers,
-        positionStatus: this.positionStatus,
-      };
-    }
+    // if (this.positionsFromBookmark) {
+    // map option list for select fields
+    this.dropwownColumnOptions = {
+      allSuppliers: this.allSuppliers,
+      positionStatus: this.positionStatus,
+      // };
+    };
 
     this.setId = this.set.id;
   }
 
-  ngOnChanges() {
-    this.assignCommentsToPosition(this.set.comments || []);
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['positionsFromBookmark']) {
+      const positions = changes['positionsFromBookmark']
+        .currentValue as IPosition[];
+    }
+
+    // this.assignCommentsToPosition(this.set.comments || []);
   }
 
   scrollToPosition(positionNumber: number) {
@@ -252,6 +260,10 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   // mark position to be deleted after submit
   deletePosition(positionId: number) {
     this.onIsEdited(true);
+    const removedPosition = this.positionsFromBookmark.find(
+      (item) => item.id === positionId,
+    );
+
     // remove position from formData and positionsFromBookmark
     this.formData = this.formData.filter((item) => item.id !== positionId);
     this.positionsFromBookmark = this.positionsFromBookmark.filter(
@@ -266,7 +278,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
 
     this.notificationService.showNotification(
       'warn',
-      `Pozycja o ID=${positionId} oznaczona do usunięcia.`,
+      `Produkt "${removedPosition?.produkt}" zostanie usunięty.`,
     );
   }
 
@@ -432,17 +444,26 @@ export class PositionsTableComponent implements OnInit, OnChanges {
 
   // show dialog with comments for current position
   showComments(positionId: number) {
-    this.positionId = positionId;
+    this.positionIdForComments = positionId;
     const position = this.positionsFromBookmark.find(
       (item) => item.id === positionId,
     );
 
-    if (position?.comments) {
-      this.set.comments = position.comments;
-      this.header = `Pozycja ${position.kolejnosc} ${
-        position.produkt ? ' : ' + position.produkt : ''
-      }`;
-      this.showCommentsDialog = true;
+    if (position) {
+      this.commentsService.getCommentsForPosition(positionId).subscribe({
+        next: (response) => {
+          this.commentsForPosition = response;
+          this.header = `Pozycja ${position.kolejnosc} ${
+            position.produkt ? ' : ' + position.produkt : ''
+          }`;
+
+          this.showCommentsDialog = true;
+          this.cd.markForCheck();
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
     }
   }
 
@@ -486,30 +507,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   }
 
   // on close dialog with comments
-  onDialogClosed() {
+  onCloseCommentsDialog() {
     this.updateSetComments.emit();
-  }
-
-  assignCommentsToPosition(comments: IComment[]) {
-    let totalNewComments = 0;
-
-    this.positionsFromBookmark = this.positionsFromBookmark.map((position) => {
-      const commentsForPosition =
-        comments.filter((comment) => comment.positionId?.id === position.id) ??
-        [];
-
-      const newCommentsForPosition = countNewComments(
-        commentsForPosition,
-        'client',
-      );
-
-      totalNewComments += newCommentsForPosition;
-
-      return {
-        ...position,
-        comments: commentsForPosition,
-        newComments: newCommentsForPosition,
-      };
-    });
   }
 }

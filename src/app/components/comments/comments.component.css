@@ -16,9 +16,9 @@
   background-color: var(--chat-bg);
   height: 500px;
   overflow-y: auto;
-  margin-bottom: 2rem;
   overflow-x: hidden;
   border: 1px solid var(--accent-color-10);
+  border-radius: 10px;
   scroll-behavior: smooth;
 }
 
@@ -80,24 +80,6 @@
   background-color: var(--incoming-message-bg-color);
   color: var(--neutral-color-01);
   z-index: 3;
-}
-
-:host ::ng-deep .message-link {
-  cursor: pointer;
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition:
-    color 0.15s ease,
-    opacity 0.15s ease;
-}
-
-:host ::ng-deep .message-wrapper.incoming .message-link:hover {
-  color: var(--link-hover-on-light);
-}
-
-:host ::ng-deep .message-wrapper.outgoing .message-link:hover {
-  color: var(--link-hover-on-blue);
 }
 
 .message-wrapper.outgoing::before {
@@ -202,6 +184,7 @@
   background-color: var(--error-color);
 }
 
+.message-wrapper.incoming:hover .comment-icon,
 .message-wrapper.outgoing:hover .edit-icon,
 .message-wrapper.outgoing:hover .delete-icon {
   opacity: 1;
@@ -224,7 +207,6 @@
   justify-content: center;
   border-radius: 100%;
   color: var(--secondary-color);
-  opacity: 1;
   visibility: visible;
   transition: opacity 0.3s ease;
 }
@@ -233,16 +215,29 @@
   background-color: var(--error-color);
 }
 
-.comment-icon-unread:hover {
-  background-color: var(--accent-color-10);
-}
-
 .comment-icon-read {
+  opacity: 0;
   background-color: var(--accent-color-10);
 }
 
-.comment-icon-read:hover {
-  background-color: var(--error-color);
+.needsAttentionIncoming {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: var(--error-color) !important;
+}
+
+.needsAttentionOutgoing {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  width: 8px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: var(--error-color) !important;
 }
 
 .new-message-input-wrapper {
@@ -251,6 +246,7 @@
   gap: 1rem;
   width: 100%;
   min-height: 60px;
+  padding-top: 2rem;
 }
 
 .new-message-textarea {
@@ -300,14 +296,14 @@
   font-size: 1.6rem;
 }
 
-.new-message-all-comments {
+.new-message-action-btns {
   display: flex;
   flex-direction: column;
   gap: 10px;
   color: var(--secondary-color);
 }
 
-.new-message-all-comments i {
+.new-message-action-btns i {
   font-size: 1.6rem;
 }
 
@@ -328,6 +324,7 @@
 .comment-unread-btn {
   background-color: var(--error-color);
 }
+
 .send-btn:hover,
 .comment-read-btn:hover,
 .comment-unread-btn:hover {
@@ -336,8 +333,27 @@
     0 4px 10px rgba(0, 0, 0, 0.18),
     0 1px 3px rgba(0, 0, 0, 0.12);
 }
+
 .comment-read-btn:active,
 .comment-unread-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+:host ::ng-deep .message-link {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition:
+    color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+:host ::ng-deep .message-wrapper.incoming .message-link:hover {
+  color: var(--link-hover-on-light);
+}
+
+:host ::ng-deep .message-wrapper.outgoing .message-link:hover {
+  color: var(--link-hover-on-blue);
 }

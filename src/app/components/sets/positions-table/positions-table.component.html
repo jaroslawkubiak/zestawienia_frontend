@@ -248,13 +248,13 @@
   [header]="header"
   [modal]="true"
   [(visible)]="showCommentsDialog"
-  (onHide)="onDialogClosed()"
+  (onHide)="onCloseCommentsDialog()"
   [style]="{ width: '70rem' }"
   [dismissableMask]="true"
 >
   <app-comments
-    [comments]="set.comments || []"
-    [positionId]="positionId"
+    [comments]="commentsForPosition"
+    [positionId]="positionIdForComments"
     [set]="set"
     [commentsDialog]="showCommentsDialog"
     [authorType]="'user'"

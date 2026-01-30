@@ -21,7 +21,8 @@ import { SoundType } from '../../services/types/SoundType';
 import { ISet } from '../sets/types/ISet';
 import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
-import { IEditedComment } from './types/IEditedComment';
+import { IEditedPartialComment } from './types/IEditedPartialComment';
+import { INewPartialComment } from './types/INewPartialComment';
 
 @Component({
   selector: 'app-comments',
@@ -36,14 +37,14 @@ import { IEditedComment } from './types/IEditedComment';
   styleUrl: './comments.component.css',
 })
 export class CommentsComponent implements AfterViewInit, OnChanges {
-  @Input() setId!: number | null;
   @Input() set!: ISet;
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
-  @Input() isUser: boolean = true;
+  @Input() authorType!: 'client' | 'user';
   newMessage: string = '';
   editedCommentId: number | null = null;
+  clientsAvatar = `assets/images/avatars/default.png`;
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 
   constructor(
@@ -61,61 +62,64 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    const avatars = {
+      light: ['chicken', 'cat', 'dog', 'shark', 'tiger', 'unicorn'],
+      dark: ['cat', 'dog', 'monkey', 'boar', 'unicorn'],
+    } as const;
+
+    const avatarsColor: keyof typeof avatars = 'light';
+
+    const images = avatars[avatarsColor];
+    const randomAvatar = images[Math.floor(Math.random() * images.length)];
+
+    this.clientsAvatar = `assets/images/avatars/clients/${avatarsColor}/${randomAvatar}.png`;
+
     if (
       changes['commentsDialog'] &&
       changes['commentsDialog'].currentValue === true
     ) {
       setTimeout(() => this.scrollToBottom(), 0);
 
-      this.markCommentsAsSeen(this.positionId);
+      this.markAllCommentsAsSeen(this.positionId);
     }
   }
 
-  private scrollToBottom() {
-    try {
-      const element = this.chatContainerRef.nativeElement;
-      element.scrollTop = element.scrollHeight;
-    } catch (err) {
-      console.error('Scroll error:', err);
-    }
-  }
-
-  sendComment() {
-    if (!this.newMessage.trim() || this.setId === null) return;
+  sendComment(textarea: HTMLTextAreaElement) {
+    if (!this.newMessage.trim() || this.set.id === null) return;
     // add new comment
     if (!this.editedCommentId) {
-      this.commentsService
-        .addComment(this.newMessage, this.setId, this.positionId, this.set)
-        .subscribe({
-          next: (response) => {
-            this.comments = [...this.comments, response];
-            this.newMessage = '';
+      const newComment: INewPartialComment = {
+        comment: this.newMessage,
+        authorType: this.authorType,
+        setId: this.set.id,
+        positionId: this.positionId,
+        set: this.set,
+      };
 
-            this.soundService.playSound(SoundType.messageSending);
-            setTimeout(() => {
-              this.scrollToBottom();
-            }, 100);
+      this.commentsService.addComment(newComment).subscribe({
+        next: (response) => {
+          this.comments = [...this.comments, response];
+          this.newMessage = '';
+          this.resetTextareaHeight(textarea);
 
-            if (!response.notificationSend && this.isUser) {
-              this.notificationService.showNotification(
-                'warn',
-                `Powiadomienia o nowych komantarzach są wyłączone.`,
-              );
-            }
+          this.soundService.playSound(SoundType.messageSending);
+          setTimeout(() => {
+            this.scrollToBottom();
+          }, 100);
 
-            this.cd.detectChanges();
-          },
-          error: (error) => {
-            console.error(error);
-          },
-        });
+          this.cd.detectChanges();
+        },
+        error: (error) => {
+          console.error(error);
+        },
+      });
     } else {
       // edit comment
-      const editedComment: IEditedComment = {
+      const editedComment: IEditedPartialComment = {
         commentId: this.editedCommentId,
         comment: this.newMessage,
-        clientId: this.set?.clientId?.id,
-        authorName: this.set?.clientId?.firstName,
+        authorType: this.authorType,
+        set: this.set,
       };
 
       this.commentsService.editComment(editedComment).subscribe({
@@ -173,14 +177,14 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     this.confirmationModalService.showConfirmation(confirmMessage);
   }
 
-  toggleCommentRead(id: number) {
-    this.commentsService.toggleCommentRead(id).subscribe({
+  toggleCommentAsNeedAttention(id: number) {
+    this.commentsService.toggleCommentAsNeedAttention(id).subscribe({
       next: (response: IComment) => {
         const updatedComment = response;
         this.notificationService.showNotification(
           'info',
           `Komentarz został oznaczony jako ${
-            updatedComment.needsAttention ? 'ważny' : 'przeczytany'
+            updatedComment.needsAttention ? 'wymaga uwagi' : 'nie wymaga uwagi'
           }`,
         );
         this.comments = this.comments.map((item) =>
@@ -188,6 +192,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             ? { ...item, needsAttention: updatedComment.needsAttention }
             : item,
         );
+
         this.cd.detectChanges();
       },
       error: (error) => {
@@ -196,12 +201,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     });
   }
 
-  markAllCommentsAsNeedsAttention(
-    state: boolean,
-    authorType: 'user' | 'client',
-  ) {
+  markAllCommentsAsNeedsAttention(state: boolean) {
     this.commentsService
-      .markAllCommentsAsNeedsAttention(this.positionId, state, authorType)
+      .markAllCommentsAsNeedsAttention(this.positionId, state, this.authorType)
       .subscribe({
         next: (updatedComments) => {
           const firstClientComment = updatedComments.find(
@@ -211,7 +213,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
           this.notificationService.showNotification(
             'info',
             `Wszystkie komentarze zostały oznaczone jako ${
-              firstClientComment?.needsAttention ? 'ważne' : 'przeczytane'
+              firstClientComment?.needsAttention
+                ? 'wymagające uwagi'
+                : 'nie wymagające uwagi'
             }`,
           );
           this.comments = updatedComments;
@@ -223,33 +227,54 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       });
   }
 
-  markCommentsAsSeen(positionId: number) {
-    const unseenComments = this.comments.filter((comment) => !comment.seenAt);
-
+  markAllCommentsAsSeen(positionId: number) {
+    const unseenComments = this.comments.filter(
+      (comment) => !comment.seenAt && comment.authorType !== this.authorType,
+    );
     if (unseenComments.length === 0) return;
 
-    const authorType = this.isUser ? 'user' : 'client';
-
-    this.commentsService.markCommentsAsSeen(positionId, authorType).subscribe();
+    this.commentsService
+      .markAllCommentsAsSeen(positionId, this.authorType)
+      .subscribe();
   }
 
   isClientMessage(comment: IComment): boolean {
-    return this.isUser
-      ? comment.authorType === 'client'
-      : comment.authorType === 'user';
+    return comment.authorType === 'client';
   }
 
-  isUnread(comment: IComment): boolean {
-    return (
-      (!comment.seenAt || comment.needsAttention) &&
-      comment.authorType !== (this.isUser ? 'user' : 'client')
-    );
+  isNeedsAttention(comment: IComment): boolean {
+    return comment.needsAttention;
   }
 
-  adjustTextareaHeight(event: Event) {
-    const textarea = event.target as HTMLTextAreaElement;
+  isUnreadOrNeedsAttentionTooltip(comment: IComment): string {
+    const shouldMarkAsNeedsAttention =
+      !comment.seenAt || !comment.needsAttention;
+
+    return shouldMarkAsNeedsAttention
+      ? 'Oznacz jako wymaga uwagi'
+      : 'Oznacz jako nie wymaga uwagi';
+  }
+
+  getCommentAvatar(comment: IComment): string {
+    if (comment.authorType === 'user') {
+      return `assets/images/avatars/users/${comment.authorId}.png`;
+    }
+
+    return this.clientsAvatar;
+  }
+
+  onAvatarError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/avatars/default.png';
+  }
+
+  adjustTextareaHeight(textarea: HTMLTextAreaElement) {
     textarea.style.height = 'auto';
-    textarea.style.height = textarea.scrollHeight + 'px';
+    textarea.style.height = Math.min(textarea.scrollHeight, 140) + 'px';
+  }
+
+  resetTextareaHeight(textarea: HTMLTextAreaElement) {
+    textarea.style.height = 'auto';
   }
 
   parseTextWithLinks(text: string): string {
@@ -281,5 +306,14 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     });
 
     return result.map((item) => item.value).join(' ');
+  }
+
+  private scrollToBottom() {
+    try {
+      const element = this.chatContainerRef.nativeElement;
+      element.scrollTop = element.scrollHeight;
+    } catch (err) {
+      console.error('Scroll error:', err);
+    }
   }
 }

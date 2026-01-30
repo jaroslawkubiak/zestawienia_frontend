@@ -1,5 +1,3 @@
-import { ISet } from '../../sets/types/ISet';
-
 export interface IComment {
   id: number;
   comment: string;
@@ -12,5 +10,4 @@ export interface IComment {
   createdAtTimestamp: number;
   positionId: number;
   setId: number;
-  avatar?: string;
 }
