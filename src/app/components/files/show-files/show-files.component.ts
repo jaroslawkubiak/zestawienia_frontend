@@ -24,8 +24,8 @@ import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
-import { IDeletedFiles } from '../types/IDeletedFiles';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { IRemainingFiles } from '../types/IRemainingFiles';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
 
@@ -61,7 +61,7 @@ export class ShowFilesComponent implements OnInit {
   }
 
   @Input() who!: 'client' | 'user';
-  @Output() deleteFiles = new EventEmitter<IDeletedFiles>();
+  @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
   setId!: number;
   setHash!: string;
   setName: string = '';
@@ -135,8 +135,8 @@ export class ShowFilesComponent implements OnInit {
           this.uniqueDir = this.getUniqueDirectory();
           this.selectedFiles = [];
 
-          const deletedFiles: IDeletedFiles = {
-            setId: file.setId.id,
+          const deletedFiles: IRemainingFiles = {
+            setId: file.setId,
             files: this.files,
           };
 
@@ -174,7 +174,7 @@ export class ShowFilesComponent implements OnInit {
 
     const ids: number[] = this.selectedFiles.map((item) => item.id);
     const fileNames: string[] = this.selectedFiles.map((item) => item.fileName);
-    const setId = this.selectedFiles[0]?.setId.id;
+    const setId = this.selectedFiles[0]?.setId;
 
     const accept = () => {
       this.filesService.deleteFiles(ids).subscribe({
@@ -194,12 +194,12 @@ export class ShowFilesComponent implements OnInit {
           this.uniqueDir = this.getUniqueDirectory();
           this.selectedFiles = [];
 
-          const deletedFiles: IDeletedFiles = {
+          const remainingFiles: IRemainingFiles = {
             setId,
             files: this.files,
           };
 
-          this.deleteFiles.emit(deletedFiles);
+          this.deleteFiles.emit(remainingFiles);
           this.cd.markForCheck();
         },
         error: (error) => {

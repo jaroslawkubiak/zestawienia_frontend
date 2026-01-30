@@ -11,7 +11,7 @@ export interface IFileFullDetails {
   size: number;
   width: number;
   height: number;
-  setId: ISet;
+  setId: number;
   createdAt: string;
   createdAtTimestamp: number;
   fullPath?: string;

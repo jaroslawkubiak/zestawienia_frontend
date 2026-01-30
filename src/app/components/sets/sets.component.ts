@@ -22,7 +22,7 @@ import { IConfirmationMessage } from '../../services/types/IConfirmationMessage'
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
-import { IDeletedFiles } from '../files/types/IDeletedFiles';
+import { IRemainingFiles } from '../files/types/IRemainingFiles';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { SetsService } from './sets.service';
 import { BadgeSeverity } from './action-btns/types/badgeSeverity.type';
@@ -162,7 +162,7 @@ export class SetsComponent implements OnInit {
 
   // update attached files after sending new files to server
   updateFileList(uploadedFiles: IFileFullDetails[]) {
-    const uploadedSetId = +uploadedFiles[0].setId.id;
+    const uploadedSetId = +uploadedFiles[0].setId;
     this.sets = this.sets.map((set) =>
       set.id === uploadedSetId
         ? { ...set, files: [...(set.files || []), ...uploadedFiles] }
@@ -184,8 +184,8 @@ export class SetsComponent implements OnInit {
   }
 
   // when delete files - refresh badge
-  onDeleteFile(deletedFiles: IDeletedFiles) {
-    const { setId, files } = deletedFiles;
+  onDeleteFile(remainingFiles: IRemainingFiles) {
+    const { setId, files } = remainingFiles;
 
     this.sets = this.sets.map((item) =>
       item.id === setId ? { ...item, files: files } : item,

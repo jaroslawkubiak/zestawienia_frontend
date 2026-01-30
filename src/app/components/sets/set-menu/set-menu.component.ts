@@ -26,7 +26,7 @@ import { IExternalLink } from '../../emails/types/IExternalLink';
 import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
-import { IDeletedFiles } from '../../files/types/IDeletedFiles';
+import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
@@ -143,7 +143,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // calc comments badge value
   getCommentsBadgeValue(): number {
     const { needsAttention, unread, all } = this.set.newCommentsCount;
-    
+
     if (needsAttention > 0 && unread > 0) {
       return needsAttention + unread;
     }
@@ -246,8 +246,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
   }
 
   //delete
-  onDeleteFile(deletedFiles: IDeletedFiles) {
-    const deletedIds = new Set(deletedFiles.files.map((file) => file.id));
+  onDeleteFile(remainingFiles: IRemainingFiles) {
+    const deletedIds = new Set(remainingFiles.files.map((file) => file.id));
 
     this.set.files = (this.set.files ?? []).filter((file) =>
       deletedIds.has(file.id),

@@ -1,6 +1,6 @@
 import { IFileFullDetails } from './IFileFullDetails';
 
-export interface IDeletedFiles {
+export interface IRemainingFiles {
   setId: number;
   files: IFileFullDetails[];
 }
