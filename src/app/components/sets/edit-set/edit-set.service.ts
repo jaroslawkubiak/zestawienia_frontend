@@ -9,6 +9,8 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
+import { IValidSetForClient } from '../../external/for-client/types/IValidSetForClient';
+import { IValidSetForSupplier } from '../../external/for-supplier/types/IValidSetForSupplier';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IPosition } from '../positions-table/types/IPosition';
 import { IPositionStatus } from '../positions-table/types/IPositionStatus';
@@ -19,8 +21,6 @@ import { INewEmptyPosition } from '../types/INewEmptyPosition';
 import { INewSet } from '../types/INewSet';
 import { ISet } from '../types/ISet';
 import { IUpdateSet } from '../types/IUpdateSet';
-import { IValidSetForClient } from '../types/IValidSetForClient';
-import { IValidSetForSupplier } from '../types/IValidSetForSupplier';
 
 @Injectable({
   providedIn: 'root',

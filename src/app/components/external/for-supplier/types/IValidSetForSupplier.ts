@@ -1,4 +1,4 @@
-import { IPosition } from "../positions-table/types/IPosition";
+import { IPositionForSupplier } from './IPositionForSupplier';
 
 export interface IValidSetForSupplier {
   valid: boolean;
@@ -16,5 +16,5 @@ export interface IValidSetForSupplier {
     firstName: string;
     lastName: string;
   };
-  positions: IPosition[];
+  positions: IPositionForSupplier[];
 }

@@ -4,20 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { TableModule } from 'primeng/table';
 import { map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import {
-  calculateBrutto,
-  calculateWartosc,
-} from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
-import { IPosition } from '../../sets/positions-table/types/IPosition';
-import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
-import { PositionStatusList } from '../../sets/PositionStatusList';
 import { ISet } from '../../sets/types/ISet';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
 import { IClientData } from './types/IClientData';
+import { IPositionForSupplier } from './types/IPositionForSupplier';
 import { ISupplierData } from './types/ISupplierData';
+import { IValidSetForSupplier } from './types/IValidSetForSupplier';
 
 @Component({
   selector: 'app-for-supplier',
@@ -34,7 +29,7 @@ export class ForSupplierComponent implements OnInit {
   set!: ISet;
   client!: IClientData;
   supplier!: ISupplierData;
-  positions: IPosition[] = [];
+  positions: IPositionForSupplier[] = [];
   FILES_URL = environment.FILES_URL;
   isLoading = true;
 
@@ -79,7 +74,7 @@ export class ForSupplierComponent implements OnInit {
         }),
       )
       .subscribe({
-        next: (response) => {
+        next: (response: IValidSetForSupplier | null) => {
           if (response && response.valid && response.setId) {
             this.setId = response.setId;
             this.setName = response.setName;
@@ -99,13 +94,8 @@ export class ForSupplierComponent implements OnInit {
   }
 
   // modify positions data: get status, image url, calculate brutto
-  modifyData(positions: IPosition[]) {
+  modifyData(positions: IPositionForSupplier[]) {
     this.positions = positions.map((item) => {
-      const statusObj: IPositionStatus =
-        PositionStatusList.filter(
-          (statusItem) => item.status === statusItem.label,
-        )[0] || PositionStatusList[0];
-
       let imageUrl = '';
       if (item.image) {
         imageUrl = [
@@ -118,15 +108,10 @@ export class ForSupplierComponent implements OnInit {
           item.image,
         ].join('/');
       }
-      const brutto = calculateBrutto(item.netto);
       this.isLoading = false;
 
       return {
         ...item,
-        status: statusObj ? statusObj : item.status,
-        brutto,
-        wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-        wartoscBrutto: calculateWartosc(item.ilosc, brutto),
         imageUrl,
       };
     });
