@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { ISet } from '../sets/types/ISet';
 import { IComment } from './types/IComment';
-import { IEditedComment } from './types/IEditedComment';
+import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { INewComment } from './types/INewComment';
+import { INewPartialComment } from './types/INewPartialComment';
 import { IUnreadComments } from './types/IUnreadComments';
 import { IUpdatedComment } from './types/IUpdatedComment';
 
@@ -24,60 +24,64 @@ export class CommentsService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  addComment(
-    comment: string,
-    setId: number,
-    positionId: number,
-    set: ISet,
-  ): Observable<IComment> {
-    const isClient = !!set?.clientId?.id;
-    const newComment: INewComment = {
-      comment,
-      setId,
-      positionId,
-      authorType: isClient ? 'client' : 'user',
-      authorId: isClient ? set.clientId.id : Number(this.userId()),
-      authorName: isClient ? set.clientId.firstName : this.userName() || '',
-    };
-
+  getCommentsForPosition(positionId: number): Observable<IComment[]> {
     return this.http
-      .post<IComment>(`${environment.API_URL}/comments/add`, newComment)
+      .get<
+        IComment[]
+      >(`${environment.API_URL}/comments/${positionId}/getCommentsForPosition`)
       .pipe(catchError(this.handleError));
   }
 
-  editComment(editedComment: IEditedComment): Observable<IComment> {
-    const updatedComment: Partial<IUpdatedComment> = {
+  addComment(newComment: INewPartialComment): Observable<IComment> {
+    const isClient = newComment.authorType === 'client';
+    const set = newComment.set;
+
+    const updatedNewComment: INewComment = {
+      ...newComment,
+      authorId: isClient ? set.clientId.id : Number(this.userId()),
+      authorName: isClient ? set.clientId.firstName : this.userName(),
+    };
+
+    return this.http
+      .post<IComment>(
+        `${environment.API_URL}/comments/addComment`,
+        updatedNewComment,
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  editComment(editedComment: IEditedPartialComment): Observable<IComment> {
+    const isClient = editedComment.authorType === 'client';
+    const set = editedComment.set;
+
+    const updatedComment: IUpdatedComment = {
       comment: editedComment.comment,
       commentId: editedComment.commentId,
+      authorId: isClient ? set.clientId.id : Number(this.userId()),
+      authorName: isClient ? set.clientId.firstName : this.userName(),
     };
 
-    // if user edit comment
-    if (!editedComment.clientId) {
-      updatedComment.authorId = Number(this.userId());
-      updatedComment.authorName = this.userName() || '';
-    } else {
-      updatedComment.authorId = editedComment.clientId;
-      updatedComment.authorName = editedComment.authorName;
-    }
-
     return this.http
-      .patch<IComment>(`${environment.API_URL}/comments/edit`, updatedComment)
+      .patch<IComment>(
+        `${environment.API_URL}/comments/editComment`,
+        updatedComment,
+      )
       .pipe(catchError(this.handleError));
   }
 
-  deleteComment(id: number): Observable<any> {
+  deleteComment(id: number) {
     return this.http
-      .delete<any>(`${environment.API_URL}/comments/${id}`)
+      .delete(`${environment.API_URL}/comments/${id}/deleteComment`)
       .pipe(catchError(this.handleError));
   }
 
-  toggleCommentRead(id: number): Observable<IComment> {
+  toggleCommentAsNeedAttention(id: number): Observable<IComment> {
     const body = {
       id,
     };
 
     return this.http
-      .patch<IComment>(`${environment.API_URL}/comments/`, body)
+      .patch<IComment>(`${environment.API_URL}/comments/needsAttention`, body)
       .pipe(catchError(this.handleError));
   }
 
@@ -86,27 +90,35 @@ export class CommentsService {
     readState: boolean,
     authorType: 'user' | 'client',
   ): Observable<IComment[]> {
+    const oppositeAuthorType = authorType === 'user' ? 'client' : 'user';
     const body = {
       positionId,
       readState,
-      authorType,
+      authorType: oppositeAuthorType,
     };
 
     return this.http
-      .patch<IComment[]>(`${environment.API_URL}/comments/positions`, body)
+      .patch<
+        IComment[]
+      >(`${environment.API_URL}/comments/allNeedsAttention`, body)
       .pipe(catchError(this.handleError));
   }
 
+  // for welcome screen
   unreadComments(): Observable<IUnreadComments> {
     return this.http
       .get<IUnreadComments>(`${environment.API_URL}/comments/unreadComments`)
       .pipe(catchError(this.handleError));
   }
 
-  markCommentsAsSeen(positionId: number, authorType: 'user' | 'client') {
-    return this.http.post<void>(`${environment.API_URL}/comments/seen`, {
-      positionId,
-      authorType,
-    });
+  // when open comments dialog - mark all unread comment as seenAt
+  markAllCommentsAsSeen(positionId: number, authorType: 'user' | 'client') {
+    return this.http.post<void>(
+      `${environment.API_URL}/comments/markAllAsSeen`,
+      {
+        positionId,
+        authorType,
+      },
+    );
   }
 }
