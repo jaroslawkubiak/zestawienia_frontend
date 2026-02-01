@@ -1,5 +1,5 @@
 <div class="positions-item">
-  <div class="product-lp">{{ index }}</div>
+  <div class="product-lp">{{ position.kolejnosc }}</div>
   <div class="product-img-wrapper">
     <div class="product-img">
       <img
@@ -18,16 +18,16 @@
       <!-- COMMENTS WRAPPER -->
       <div
         class="comments-wrapper product-buttons flex-center"
-        pTooltip="Dodaj komentarz"
+        pTooltip="Komentarze"
         tooltipPosition="bottom"
         (click)="showComments(position.id)"
       >
         <div class="comments-cell flex-center">
           <i class="pi pi-comments"></i>
           <p-badge
-            [value]="position.commentsBadge.value"
-            [severity]="position.commentsBadge.severity"
-            [pTooltip]="position.commentsBadge.tooltip"
+            [value]="getCommentsBadgeValue()"
+            [severity]="getCommentsBadgeClass()"
+            [pTooltip]="getCommentsTooltipInfo()"
             class="nr-comments"
             [badgeSize]="isMobile ? 'small' : 'large'"
           ></p-badge>
@@ -166,15 +166,14 @@
   [modal]="true"
   [(visible)]="showCommentsDialog"
   (onHide)="onDialogClosed()"
-  [style]="{ width: '70rem' }"
+  [style]="{ width: '70rem', borderRadius: '20px' }"
   [dismissableMask]="true"
 >
   <app-comments
-    [comments]="comments"
+    [comments]="commentsForPosition"
     [positionId]="positionId"
-    [setId]="setId"
     [set]="set"
-    [isUser]="false"
+    [commentWatcher]="'client'"
     [commentsDialog]="showCommentsDialog"
   />
 </p-dialog>

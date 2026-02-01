@@ -11,11 +11,11 @@ import {
 import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { PositionStatusList } from '../../sets/PositionStatusList';
-import { IPosition } from '../../sets/types/IPosition';
-import { IPositionStatus } from '../../sets/types/IPositionStatus';
+import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { CommentsComponent } from '../comments.component';
 import { IComment } from '../types/IComment';
+import { IPosition } from '../../sets/positions-table/types/IPosition';
 
 interface IPositionsWithComments {
   position: IPosition;
@@ -72,7 +72,7 @@ export class CommentsToSetComponent implements OnInit {
       this.comments = set?.comments ?? [];
 
       this.uniquePositionIds = [
-        ...new Set(this.comments.map((comment) => comment.positionId.id)),
+        ...new Set(this.comments.map((comment) => comment.positionId)),
       ];
 
       this.updateCommentsList();
@@ -96,7 +96,7 @@ export class CommentsToSetComponent implements OnInit {
         if (!position) return null;
 
         const relatedComments = this.comments.filter(
-          (comment) => comment.positionId.id === positionId,
+          (comment) => comment.positionId === positionId,
         );
 
         return {

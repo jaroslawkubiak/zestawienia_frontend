@@ -1,12 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { NotificationService } from '../../../../services/notification.service';
 import { CommentsComponent } from '../../../comments/comments.component';
+import { CommentsService } from '../../../comments/comments.service';
 import { IComment } from '../../../comments/types/IComment';
-import { IPositionStatus } from '../../../sets/types/IPositionStatus';
-import { IPositionWithBadge } from '../../../sets/types/IPositionWithBadge';
+import { IPosition } from '../../../sets/positions-table/types/IPosition';
+import { IPositionStatus } from '../../../sets/positions-table/types/IPositionStatus';
 import { ISet } from '../../../sets/types/ISet';
 
 @Component({
@@ -22,31 +31,44 @@ import { ISet } from '../../../sets/types/ISet';
   styleUrl: './product.component.css',
 })
 export class ProductComponent implements OnInit {
-  @Input() position!: IPositionWithBadge;
-  @Input() index!: number;
-  @Input() positionsWithBadge: IPositionWithBadge[] = [];
-  @Input() comments: IComment[] = [];
   @Input() set!: ISet;
+  @Input() position!: IPosition;
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
-
+  commentsForPosition: IComment[] = [];
   positionId!: number;
   setId!: number;
   showCommentsDialog = false;
   header = '';
   isMobile = window.innerWidth < 768;
 
+  constructor(
+    private commentsService: CommentsService,
+    private notificationService: NotificationService,
+    private cd: ChangeDetectorRef,
+  ) {}
+
   ngOnInit() {
     this.setId = this.set.id;
   }
 
   showComments(positionId: number) {
-    const position = this.positionsWithBadge.find((p) => p.id === positionId);
-    if (!position) return;
+    this.positionId = positionId;
 
-    this.comments = position.comments ?? [];
-    this.positionId = position.id;
-    this.header = `Pozycja ${position.kolejnosc} - ${position.produkt}`;
-    this.showCommentsDialog = true;
+    this.commentsService.getCommentsForPosition(positionId).subscribe({
+      next: (response) => {
+        this.commentsForPosition = response;
+        this.header = `Pozycja ${this.position.kolejnosc} ${
+          this.position.produkt ? ' : ' + this.position.produkt : ''
+        }`;
+
+        this.showCommentsDialog = true;
+
+        this.cd.markForCheck();
+      },
+      error: (error) => {
+        this.notificationService.showNotification('error', error.message);
+      },
+    });
   }
 
   getStatusLabel(status: IPositionStatus | string): string {
@@ -58,6 +80,38 @@ export class ProductComponent implements OnInit {
   }
 
   onDialogClosed() {
-    this.commentsUpdated.emit(this.comments);
+    this.commentsUpdated.emit();
+  }
+
+  // calc comments badge color
+  getCommentsBadgeClass(): 'danger' | 'contrast' | 'secondary' | 'warn' {
+    const { needsAttention, unread, all } = this.position.newCommentsCount;
+
+    if (needsAttention > 0 || unread > 0) {
+      return 'danger';
+    } else if (all > 0) {
+      return 'contrast';
+    } else {
+      return 'secondary';
+    }
+  }
+
+  // calc comments badge value
+  getCommentsBadgeValue(): number {
+    const { needsAttention, unread, all } = this.position.newCommentsCount;
+
+    if (needsAttention > 0 && unread > 0) {
+      return needsAttention + unread;
+    }
+
+    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+  }
+
+  getCommentsTooltipInfo(): string {
+    const { needsAttention, unread } = this.position.newCommentsCount;
+
+    return needsAttention > 0 || unread > 0
+      ? 'Ilość nowych komentarzy'
+      : 'Ilość komentarzy';
   }
 }

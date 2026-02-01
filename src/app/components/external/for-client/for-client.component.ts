@@ -16,19 +16,16 @@ import {
   calculateBrutto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
-import { countNewComments } from '../../../shared/helpers/countNewComments';
-import { IComment } from '../../comments/types/IComment';
-import { ICommentsBadge } from '../../comments/types/ICommentBadge';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
+import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
+import { IPosition } from '../../sets/positions-table/types/IPosition';
+import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
 import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
-import { IPosition } from '../../sets/types/IPosition';
-import { IPositionStatus } from '../../sets/types/IPositionStatus';
-import { IPositionWithBadge } from '../../sets/types/IPositionWithBadge';
 import { ISet } from '../../sets/types/ISet';
 import { IClientData } from '../for-supplier/types/IClientData';
 import { ProductComponent } from './product/product.component';
@@ -52,8 +49,7 @@ export class ForClientComponent implements OnInit {
   clientHash: string | null = null;
   set!: ISet;
   positions: IPosition[] = [];
-  positionsWithBadge: IPositionWithBadge[] = [];
-  positionsFromBookmark: IPositionWithBadge[] = [];
+  positionsFromBookmark: IPosition[] = [];
   client!: IClientData;
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
@@ -81,6 +77,10 @@ export class ForClientComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadData();
+  }
+
+  loadData() {
     this.route.paramMap
       .pipe(
         map((params) => ({
@@ -141,9 +141,8 @@ export class ForClientComponent implements OnInit {
       };
     });
 
-    this.assignCommentsToPosition();
-
     this.selectedBookmarkId = this.set.bookmarks[0].id;
+
     this.loadContentForBookmark(this.selectedBookmarkId);
 
     this.files = (this.set.files || []).filter(
@@ -151,43 +150,20 @@ export class ForClientComponent implements OnInit {
     );
 
     this.uniquePositionIds = [
-      ...new Set(this.set.comments?.map((c) => c.positionId?.id)),
+      ...new Set(this.set.comments?.map((c) => c.positionId)),
     ];
   }
 
-  assignCommentsToPosition() {
-    const map =
-      this.set.comments?.reduce(
-        (acc, comment) => {
-          const id = comment.positionId?.id;
-          if (!acc[id]) acc[id] = [];
-          acc[id].push(comment);
-          return acc;
-        },
-        {} as Record<number, IComment[]>,
-      ) || {};
+  commentsUpdated() {
+    if (!this.set) return;
 
-    this.positionsWithBadge = this.positions.map((position) => {
-      const relatedComments = map[position.id] || [];
-      const newComments = countNewComments(relatedComments, 'user');
-
-      return {
-        ...position,
-        comments: relatedComments,
-        newComments,
-        commentsBadge: this.buildCommentsBadge({
-          ...position,
-          comments: relatedComments,
-          newComments,
-        }),
-      };
-    });
+    this.loadData();
   }
 
   loadContentForBookmark(bookmarkId: number) {
     this.selectedBookmarkId = bookmarkId;
 
-    this.positionsFromBookmark = this.positionsWithBadge
+    this.positionsFromBookmark = this.positions
       .filter((p) => p.bookmarkId?.id === bookmarkId)
       .sort((a, b) => a.kolejnosc - b.kolejnosc)
       .map((p, index) => ({
@@ -198,17 +174,18 @@ export class ForClientComponent implements OnInit {
     this.cd.detectChanges();
   }
 
-  private buildCommentsBadge(pos: IPosition): ICommentsBadge {
-    const newCount = pos.newComments ?? 0;
-    const allCount = pos.comments?.length ?? 0;
-
-    return {
-      value: newCount || allCount,
-      severity: newCount ? 'danger' : allCount ? 'contrast' : 'secondary',
-      tooltip: newCount ? 'Ilość nowych komentarzy' : 'Ilość komentarzy',
-    };
+  //TODO
+  showAllComments() {
+    //get request for all comments here
   }
 
+  // OK
+  // update attached files after sending new files to server
+  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
+    this.files = [...(this.set.files || []), ...uploadedFiles];
+  }
+
+  // OK
   showAttachedFiles() {
     this.dialogShowFilesComponent.showDialog({
       id: this.set.id,
@@ -218,20 +195,52 @@ export class ForClientComponent implements OnInit {
     } as ISet);
   }
 
+  // OK
   openSendFilesDialog(setId: number, setHash: string, setName: string) {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
-  get filesCount(): number {
-    const files =
-      this.files.filter((file) => file.dir !== EFileDirectoryList.working) ??
-      [];
-
-    return files.length;
+  // OK
+  onDeleteFile(remainingFiles: IRemainingFiles) {
+    this.files = [...remainingFiles.files];
   }
 
-  get filesSeverity(): 'contrast' | 'secondary' {
-    return this.filesCount === 0 ? 'secondary' : 'contrast';
+  // OK
+  get filesCount(): number {
+    return this.files.filter((f) => f.dir !== EFileDirectoryList.working)
+      .length;
+  }
+
+  // calc comments badge color
+  getCommentsBadgeClass(): 'danger' | 'contrast' | 'secondary' {
+    const { needsAttention, unread, all } = this.set.newCommentsCount;
+
+    if (needsAttention > 0 || unread > 0) {
+      return 'danger';
+    } else if (all > 0) {
+      return 'contrast';
+    } else {
+      return 'secondary';
+    }
+  }
+
+  // calc comments badge value
+  getCommentsBadgeValue(): number {
+    const { needsAttention, unread, all } = this.set.newCommentsCount;
+
+    if (needsAttention > 0 && unread > 0) {
+      return needsAttention + unread;
+    }
+
+    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+  }
+
+  getCommentsTooltipInfo(): string {
+    const { needsAttention, unread } = this.set.newCommentsCount;
+
+    return needsAttention > 0 || unread > 0
+      ? 'Ilość nowych komentarzy'
+      : 'Ilość komentarzy';
   }
 
   toggleMobileMenu() {
@@ -245,65 +254,5 @@ export class ForClientComponent implements OnInit {
     } else {
       this.mobileMenuOpen = true;
     }
-  }
-
-  // update attached files after sending new files to server
-  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    this.files = [...(this.set.files || []), ...uploadedFiles];
-    this.filesCount;
-  }
-
-  commentsUpdated() {
-    if (!this.set.id) return;
-
-    this.editSetService.getSet(this.set.id).subscribe({
-      next: (updatedSet) => {
-        this.set = updatedSet;
-
-        const map =
-          this.set.comments?.reduce(
-            (acc, comment) => {
-              const id = comment.positionId?.id;
-              if (!acc[id]) acc[id] = [];
-              acc[id].push(comment);
-              return acc;
-            },
-            {} as Record<number, IComment[]>,
-          ) || {};
-
-        this.positionsWithBadge = this.positionsWithBadge.map((p) => {
-          const relatedComments = map[p.id] || [];
-          const newCommentsCount = countNewComments(relatedComments, 'user');
-          return {
-            ...p,
-            comments: relatedComments,
-            newComments: newCommentsCount,
-            commentsBadge: this.buildCommentsBadge({
-              ...p,
-              comments: relatedComments,
-              newComments: newCommentsCount,
-            }),
-          };
-        });
-
-        this.positionsFromBookmark = this.positionsFromBookmark.map((p) => {
-          const relatedComments = map[p.id] || [];
-          const newCommentsCount = countNewComments(relatedComments, 'user');
-
-          return {
-            ...p,
-            comments: relatedComments,
-            newComments: newCommentsCount,
-            commentsBadge: this.buildCommentsBadge({
-              ...p,
-              comments: relatedComments,
-              newComments: newCommentsCount,
-            }),
-          };
-        });
-
-        this.cd.detectChanges();
-      },
-    });
   }
 }

@@ -93,7 +93,7 @@ h3 {
   color: inherit;
 }
 
-.nr-files {
+.badge-position {
   position: absolute;
   top: -7px;
   right: -20px;
@@ -187,7 +187,7 @@ h3 {
 
   .mobile-menu-icon-wrapper i {
     font-size: 3rem;
-    color: var(--accent-color-19);
+    color: var(--accent-color-01);
   }
 
   /* hide PrimeNG bookmarks */
@@ -226,7 +226,6 @@ h3 {
     cursor: pointer;
     color: var(--accent-color-01);
     font-size: 3rem;
-    color: var(--accent-color-19);
     z-index: 99;
   }
 
@@ -243,10 +242,6 @@ h3 {
     font-size: 2.5rem;
     margin: 5px;
     color: var(--accent-color-01);
-  }
-
-  .attachment-icon {
-    position: relative;
   }
 
   .mobile-nr-files {

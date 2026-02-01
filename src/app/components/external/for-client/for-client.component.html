@@ -1,5 +1,5 @@
 <app-send-files who="client" (updateFileList)="updateAttachedFiles($event)" />
-<app-show-files who="client" />
+<app-show-files who="client" (deleteFiles)="onDeleteFile($event)" />
 
 <div class="container" *ngIf="set">
   <div class="header-placeholder"></div>
@@ -14,26 +14,45 @@
       <!-- mobile menu header  -->
       <div class="mobile-menu-header">
         <div class="mobile-menu-actions">
-          <div class="attachment-icon">
+          <!-- SHOW ALL COMMENTS BTN MOBILE-->
+
+          <div class="position-relative">
+            <i
+              class="pi pi-comments"
+              (click)="showAttachedFiles(); toggleMobileMenu()"
+            ></i>
+            <p-badge
+              [value]="getCommentsBadgeValue()"
+              [severity]="getCommentsBadgeClass()"
+              [pTooltip]="getCommentsTooltipInfo()"
+              class="mobile-nr-files"
+              badgeSize="small"
+            ></p-badge>
+          </div>
+          <!-- SHOW ATTACHED FILES BTN MOBILE -->
+          <div class="position-relative">
             <i
               class="pi pi-cloud"
               (click)="showAttachedFiles(); toggleMobileMenu()"
             ></i>
             <p-badge
               [value]="filesCount"
-              [severity]="filesSeverity"
+              [severity]="filesCount === 0 ? 'secondary' : 'contrast'"
               class="mobile-nr-files"
               badgeSize="small"
               [pTooltip]="'Ilość załączonych plików'"
             ></p-badge>
           </div>
-          <i
-            class="pi pi-paperclip"
-            (click)="
-              openSendFilesDialog(set.id, set.hash, set.name);
-              toggleMobileMenu()
-            "
-          ></i>
+          <!-- SEND FILES BTN MOBILE -->
+          <div>
+            <i
+              class="pi pi-paperclip"
+              (click)="
+                openSendFilesDialog(set.id, set.hash, set.name);
+                toggleMobileMenu()
+              "
+            ></i>
+          </div>
         </div>
         <i class="pi pi-times close-icon" (click)="toggleMobileMenu()"></i>
       </div>
@@ -62,17 +81,31 @@
       </div>
 
       <div class="header-actions-btn">
+        <!-- SHOW ALL COMMENTS BTN -->
+        <div class="action-btn-wrapper" (click)="showAllComments()">
+          <i class="pi pi-comments"></i>
+          <p-badge
+            [value]="getCommentsBadgeValue()"
+            [severity]="getCommentsBadgeClass()"
+            [pTooltip]="getCommentsTooltipInfo()"
+            class="badge-position"
+            badgeSize="large"
+          ></p-badge>
+          <label> Komentarze </label>
+        </div>
+        <!-- SHOW ATTACHED FILES BTN  -->
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
           <i class="pi pi-cloud"></i>
           <p-badge
             [value]="filesCount"
-            [severity]="filesSeverity"
-            class="nr-files"
+            [severity]="filesCount === 0 ? 'secondary' : 'contrast'"
+            class="badge-position"
             badgeSize="large"
             [pTooltip]="'Ilość załączonych plików'"
           ></p-badge>
           <label> Załączone pliki </label>
         </div>
+        <!-- SEND FILES BTN  -->
         <div
           class="action-btn-wrapper"
           (click)="openSendFilesDialog(set.id, set.hash, set.name)"
@@ -112,10 +145,8 @@
               <!-- other bookmarks -->
               <ng-container *ngIf="selectedBookmarkId === bookmark.id">
                 <app-product
-                  *ngFor="let position of positionsFromBookmark; let i = index"
+                  *ngFor="let position of positionsFromBookmark"
                   [position]="position"
-                  [index]="i + 1"
-                  [positionsWithBadge]="positionsWithBadge"
                   [set]="set"
                   (commentsUpdated)="commentsUpdated()"
                 >
