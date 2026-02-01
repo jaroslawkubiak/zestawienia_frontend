@@ -15,12 +15,13 @@ import { FileUpload, FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
+import { NotificationService } from '../../../services/notification.service';
+import { TAuthorType } from '../../comments/types/authorType.type';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
 import { IFileDirectory } from '../types/IFileDirectory';
 import { IFileFullDetails } from '../types/IFileFullDetails';
-import { NotificationService } from '../../../services/notification.service';
 
 @Component({
   selector: 'app-send-files',
@@ -50,7 +51,7 @@ export class SendFilesComponent {
       });
   }
 
-  @Input() who!: 'client' | 'user';
+  @Input() who!: TAuthorType;
   @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
 
   showSendFilesDialog = false;

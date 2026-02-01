@@ -14,6 +14,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { ImageModule } from 'primeng/image';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
+import { TAuthorType } from '../../../comments/types/authorType.type';
 import { isImage, isPdf } from '../../helper';
 import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.component';
 import { IsImagePipe } from '../../pipe/is-image.pipe';
@@ -39,7 +40,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   encapsulation: ViewEncapsulation.None,
 })
 export class ListViewComponent implements OnChanges {
-  @Input() who!: 'client' | 'user';
+  @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() isDeleteDisabled!: boolean;

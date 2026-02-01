@@ -1,6 +1,8 @@
+import { TAuthorType } from "./authorType.type";
+
 export interface INewComment {
   comment: string;
-  authorType: 'client' | 'user';
+  authorType: TAuthorType;
   authorId: number;
   authorName: string;
   positionId: number;

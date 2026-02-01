@@ -28,6 +28,7 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IRemainingFiles } from '../types/IRemainingFiles';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
+import { TAuthorType } from '../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-show-files',
@@ -60,7 +61,7 @@ export class ShowFilesComponent implements OnInit {
       });
   }
 
-  @Input() who!: 'client' | 'user';
+  @Input() who!: TAuthorType;
   @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
   setId!: number;
   setHash!: string;

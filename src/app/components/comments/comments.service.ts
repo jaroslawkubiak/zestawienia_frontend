@@ -9,6 +9,7 @@ import { INewComment } from './types/INewComment';
 import { INewPartialComment } from './types/INewPartialComment';
 import { IUnreadComments } from './types/IUnreadComments';
 import { IUpdatedComment } from './types/IUpdatedComment';
+import { TAuthorType } from './types/authorType.type';
 
 @Injectable({
   providedIn: 'root',
@@ -88,7 +89,7 @@ export class CommentsService {
   markAllCommentsAsNeedsAttention(
     positionId: number,
     readState: boolean,
-    authorType: 'client' | 'user',
+    authorType: TAuthorType,
   ): Observable<IComment[]> {
     const oppositeAuthorType = authorType === 'user' ? 'client' : 'user';
     const body = {
@@ -112,7 +113,7 @@ export class CommentsService {
   }
 
   // when open comments dialog - mark all unread comment as seenAt
-  markAllCommentsAsSeen(positionId: number, authorType: 'client' | 'user') {
+  markAllCommentsAsSeen(positionId: number, authorType: TAuthorType) {
     return this.http.post<void>(
       `${environment.API_URL}/comments/markAllAsSeen`,
       {

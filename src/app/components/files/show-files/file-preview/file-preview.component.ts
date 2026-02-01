@@ -15,6 +15,7 @@ import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.compone
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
+import { TAuthorType } from '../../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-file-preview',
@@ -35,7 +36,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 })
 export class FilePreviewComponent {
   @Input() file!: IFileFullDetails;
-  @Input() who!: 'client' | 'user';
+  @Input() who!: TAuthorType;
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Output() delete = new EventEmitter<void>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();

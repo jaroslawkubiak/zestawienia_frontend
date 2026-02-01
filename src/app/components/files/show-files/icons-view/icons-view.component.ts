@@ -6,6 +6,7 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
+import { TAuthorType } from '../../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-icons-view',
@@ -21,7 +22,7 @@ import { FilePreviewComponent } from '../file-preview/file-preview.component';
   styleUrl: './icons-view.component.css',
 })
 export class IconsViewComponent {
-  @Input() who!: 'client' | 'user';
+  @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
   @Input() uniqueDir: string[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];

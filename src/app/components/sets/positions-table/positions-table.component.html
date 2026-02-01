@@ -249,7 +249,7 @@
   [modal]="true"
   [(visible)]="showCommentsDialog"
   (onHide)="onCloseCommentsDialog()"
-  [style]="{ width: '70rem' }"
+  [style]="{ width: '70rem', borderRadius: '20px' }"
   [dismissableMask]="true"
 >
   <app-comments
@@ -257,7 +257,7 @@
     [positionId]="positionIdForComments"
     [set]="set"
     [commentsDialog]="showCommentsDialog"
-    [authorType]="'user'"
+    [commentWatcher]="'user'"
   />
 </p-dialog>
 
