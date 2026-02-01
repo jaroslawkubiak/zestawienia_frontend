@@ -12,15 +12,18 @@ import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
 import { map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
+import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
 import {
   calculateBrutto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
+import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
+import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
@@ -179,13 +182,11 @@ export class ForClientComponent implements OnInit {
     //get request for all comments here
   }
 
-  // OK
   // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     this.files = [...(this.set.files || []), ...uploadedFiles];
   }
 
-  // OK
   showAttachedFiles() {
     this.dialogShowFilesComponent.showDialog({
       id: this.set.id,
@@ -195,44 +196,25 @@ export class ForClientComponent implements OnInit {
     } as ISet);
   }
 
-  // OK
   openSendFilesDialog(setId: number, setHash: string, setName: string) {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
-  // OK
   onDeleteFile(remainingFiles: IRemainingFiles) {
     this.files = [...remainingFiles.files];
   }
 
-  // OK
   get filesCount(): number {
     return this.files.filter((f) => f.dir !== EFileDirectoryList.working)
       .length;
   }
 
-  // calc comments badge color
-  getCommentsBadgeClass(): 'danger' | 'contrast' | 'secondary' {
-    const { needsAttention, unread, all } = this.set.newCommentsCount;
-
-    if (needsAttention > 0 || unread > 0) {
-      return 'danger';
-    } else if (all > 0) {
-      return 'contrast';
-    } else {
-      return 'secondary';
-    }
+  getCommentsBadgeSeverity(): BadgeSeverity {
+    return calcCommentsBadgeSeverity(this.set.newCommentsCount);
   }
 
-  // calc comments badge value
   getCommentsBadgeValue(): number {
-    const { needsAttention, unread, all } = this.set.newCommentsCount;
-
-    if (needsAttention > 0 && unread > 0) {
-      return needsAttention + unread;
-    }
-
-    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+    return countCommentsBadgeValue(this.set.newCommentsCount);
   }
 
   getCommentsTooltipInfo(): string {

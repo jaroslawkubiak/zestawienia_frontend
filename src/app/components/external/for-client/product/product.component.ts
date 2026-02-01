@@ -11,9 +11,12 @@ import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../../services/notification.service';
+import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { CommentsService } from '../../../comments/comments.service';
 import { IComment } from '../../../comments/types/IComment';
+import { BadgeSeverity } from '../../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../../sets/positions-table/types/IPosition';
 import { IPositionStatus } from '../../../sets/positions-table/types/IPositionStatus';
 import { ISet } from '../../../sets/types/ISet';
@@ -84,27 +87,13 @@ export class ProductComponent implements OnInit {
   }
 
   // calc comments badge color
-  getCommentsBadgeClass(): 'danger' | 'contrast' | 'secondary' | 'warn' {
-    const { needsAttention, unread, all } = this.position.newCommentsCount;
-
-    if (needsAttention > 0 || unread > 0) {
-      return 'danger';
-    } else if (all > 0) {
-      return 'contrast';
-    } else {
-      return 'secondary';
-    }
+  getCommentsBadgeSeverity(): BadgeSeverity {
+    return calcCommentsBadgeSeverity(this.position.newCommentsCount);
   }
 
   // calc comments badge value
   getCommentsBadgeValue(): number {
-    const { needsAttention, unread, all } = this.position.newCommentsCount;
-
-    if (needsAttention > 0 && unread > 0) {
-      return needsAttention + unread;
-    }
-
-    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+    return countCommentsBadgeValue(this.position.newCommentsCount);
   }
 
   getCommentsTooltipInfo(): string {

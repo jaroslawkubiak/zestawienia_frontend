@@ -63,6 +63,10 @@
   height: 100px;
 }
 
+.product-group-heigher {
+  height: 130px;
+}
+
 .product-title {
   color: var(--primary-color);
   font-size: 1.2rem;
@@ -103,7 +107,7 @@
   height: 40px;
 }
 
-.nr-comments {
+.comments-badge-position {
   position: absolute;
   top: -7px;
   right: -7px;
@@ -242,7 +246,11 @@
 
   .comments-wrapper {
     font-size: 1.8rem;
-    gap: 10px;
+    gap: 15px;
+  }
+
+  .link-wrapper {
+    gap: 15px;
   }
 
   .link {
@@ -271,5 +279,10 @@
     width: 100%;
     gap: 10px;
     padding: 0;
+  }
+
+  .comments-badge-position {
+    top: -8px;
+    right: -12px;
   }
 }

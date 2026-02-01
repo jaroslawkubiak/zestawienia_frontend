@@ -15,7 +15,6 @@
       <div class="mobile-menu-header">
         <div class="mobile-menu-actions">
           <!-- SHOW ALL COMMENTS BTN MOBILE-->
-
           <div class="position-relative">
             <i
               class="pi pi-comments"
@@ -23,9 +22,9 @@
             ></i>
             <p-badge
               [value]="getCommentsBadgeValue()"
-              [severity]="getCommentsBadgeClass()"
+              [severity]="getCommentsBadgeSeverity()"
               [pTooltip]="getCommentsTooltipInfo()"
-              class="mobile-nr-files"
+              class="mobile-comments-badge-position"
               badgeSize="small"
             ></p-badge>
           </div>
@@ -38,7 +37,7 @@
             <p-badge
               [value]="filesCount"
               [severity]="filesCount === 0 ? 'secondary' : 'contrast'"
-              class="mobile-nr-files"
+              class="mobile-files-badge-position"
               badgeSize="small"
               [pTooltip]="'Ilość załączonych plików'"
             ></p-badge>
@@ -86,7 +85,7 @@
           <i class="pi pi-comments"></i>
           <p-badge
             [value]="getCommentsBadgeValue()"
-            [severity]="getCommentsBadgeClass()"
+            [severity]="getCommentsBadgeSeverity()"
             [pTooltip]="getCommentsTooltipInfo()"
             class="badge-position"
             badgeSize="large"
