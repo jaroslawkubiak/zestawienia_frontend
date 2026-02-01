@@ -23,6 +23,7 @@ import { CommentsService } from './comments.service';
 import { IComment } from './types/IComment';
 import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { INewPartialComment } from './types/INewPartialComment';
+import { TAuthorType } from './types/authorType.type';
 
 @Component({
   selector: 'app-comments',
@@ -41,7 +42,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() positionId!: number;
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
-  @Input() authorType!: 'client' | 'user';
+  @Input() commentWatcher!: TAuthorType;
   newMessage: string = '';
   editedCommentId: number | null = null;
   clientsAvatar = `assets/images/avatars/default.png`;
@@ -90,7 +91,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     if (!this.editedCommentId) {
       const newComment: INewPartialComment = {
         comment: this.newMessage,
-        authorType: this.authorType,
+        authorType: this.commentWatcher,
         setId: this.set.id,
         positionId: this.positionId,
         set: this.set,
@@ -118,7 +119,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       const editedComment: IEditedPartialComment = {
         commentId: this.editedCommentId,
         comment: this.newMessage,
-        authorType: this.authorType,
+        authorType: this.commentWatcher,
         set: this.set,
       };
 
@@ -203,7 +204,11 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   markAllCommentsAsNeedsAttention(state: boolean) {
     this.commentsService
-      .markAllCommentsAsNeedsAttention(this.positionId, state, this.authorType)
+      .markAllCommentsAsNeedsAttention(
+        this.positionId,
+        state,
+        this.commentWatcher,
+      )
       .subscribe({
         next: (updatedComments) => {
           const firstClientComment = updatedComments.find(
@@ -229,21 +234,22 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   markAllCommentsAsSeen(positionId: number) {
     const unseenComments = this.comments.filter(
-      (comment) => !comment.seenAt && comment.authorType !== this.authorType,
+      (comment) =>
+        !comment.seenAt && comment.authorType !== this.commentWatcher,
     );
     if (unseenComments.length === 0) return;
 
     this.commentsService
-      .markAllCommentsAsSeen(positionId, this.authorType)
+      .markAllCommentsAsSeen(positionId, this.commentWatcher)
       .subscribe();
   }
 
-  isClientMessage(comment: IComment): boolean {
-    return comment.authorType === 'client';
+  isIncoming(comment: IComment): boolean {
+    return comment.authorType !== this.commentWatcher;
   }
 
   isNeedsAttention(comment: IComment): boolean {
-    return comment.needsAttention;
+    return comment.needsAttention && comment.authorType !== this.commentWatcher;
   }
 
   isUnreadOrNeedsAttentionTooltip(comment: IComment): string {
@@ -279,33 +285,26 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   parseTextWithLinks(text: string): string {
     const HTMLlinkAttribute =
-      ' target="_blank" class="message-link" rel="noopener noreferrer" ';
+      'target="_blank" class="message-link" rel="noopener noreferrer"';
+
     const httpLinkRegex = /^https?:\/\/[^\s]+$/i;
     const domainLinkRegex = /^(www\.)?[\w-]+\.[a-z]{2,}(\/[^\s]*)?$/i;
     const trailingPunctuationRegex = /[.,!?;:]+$/;
 
-    const words = text.split(/\s+/);
-
-    const result = words.map((word) => {
+    return text.replace(/(\S+)/g, (word) => {
       const trailing = word.match(trailingPunctuationRegex)?.[0] ?? '';
       const cleanWord = word.replace(trailingPunctuationRegex, '');
 
       if (httpLinkRegex.test(cleanWord)) {
-        return {
-          value: `<a href="${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`,
-        };
+        return `<a href="${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`;
       }
 
       if (domainLinkRegex.test(cleanWord)) {
-        return {
-          value: `<a href="http://${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`,
-        };
+        return `<a href="http://${cleanWord}" ${HTMLlinkAttribute}>${cleanWord}</a>${trailing}`;
       }
 
-      return { value: word };
+      return word;
     });
-
-    return result.map((item) => item.value).join(' ');
   }
 
   private scrollToBottom() {
@@ -315,5 +314,14 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     } catch (err) {
       console.error('Scroll error:', err);
     }
+  }
+
+  onKeydown(event: Event, textarea: HTMLTextAreaElement) {
+    if (!(event instanceof KeyboardEvent)) return;
+
+    if (event.key !== 'Enter' || event.shiftKey) return;
+
+    event.preventDefault();
+    this.sendComment(textarea);
   }
 }
