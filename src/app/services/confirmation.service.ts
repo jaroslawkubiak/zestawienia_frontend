@@ -38,7 +38,7 @@ export class ConfirmationModalService {
     // for mobile need to set width manually
     setTimeout(() => {
       const dialogEl = document.querySelector(
-        '.p-confirmdialog.p-dialog'
+        '.p-confirmdialog.p-dialog',
       ) as HTMLElement;
       if (dialogEl) {
         dialogEl.style.visibility = 'hidden';
@@ -49,6 +49,41 @@ export class ConfirmationModalService {
         }
 
         dialogEl.style.visibility = 'visible';
+
+        // handling arrow left and right move
+        const acceptButton = dialogEl.querySelector<HTMLButtonElement>(
+          '.p-confirmdialog-accept-button',
+        );
+        const rejectButton = dialogEl.querySelector<HTMLButtonElement>(
+          '.p-confirmdialog-reject-button',
+        );
+
+        if (!acceptButton) return;
+
+        let focusedButton: HTMLButtonElement = acceptButton;
+
+        const updateFocus = () => {
+          acceptButton.classList.remove('keyboard-focused');
+          rejectButton?.classList.remove('keyboard-focused');
+          focusedButton.classList.add('keyboard-focused');
+          focusedButton.focus({ preventScroll: true });
+        };
+
+        updateFocus();
+
+        const handleKey = (event: KeyboardEvent) => {
+          if (event.key === 'Enter') {
+            focusedButton.click();
+            document.removeEventListener('keydown', handleKey);
+          } else if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+            focusedButton =
+              focusedButton === acceptButton ? rejectButton! : acceptButton;
+            updateFocus();
+            event.preventDefault();
+          }
+        };
+
+        document.addEventListener('keydown', handleKey);
       }
     }, 0);
   }

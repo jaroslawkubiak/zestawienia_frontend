@@ -137,3 +137,8 @@ i {
 .row-yellow {
   background-color: var(--status-yellow-color) !important;
 }
+
+.keyboard-focused {
+  outline: 2px solid #000000 !important;
+  outline-offset: 1px !important;
+}
