@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Observable } from 'rxjs';
+import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { ISet } from '../../sets/types/ISet';
 
 @Injectable({
@@ -12,7 +13,18 @@ export class ForClientService {
     return new HttpHeaders();
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private editSetService: EditSetService,
+  ) {}
+
+  loadClientSetData(setHash: string, clientHash: string) {
+    if (!setHash || !clientHash) {
+      return throwError(() => new Error('Invalid params'));
+    }
+
+    return this.editSetService.validateSetAndHashForClient(setHash, clientHash);
+  }
 
   updateLastUsedClientBookmark(
     setHash: string,

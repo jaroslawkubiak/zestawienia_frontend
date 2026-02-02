@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { BadgeModule } from 'primeng/badge';
 import { TabsModule } from 'primeng/tabs';
 import { TooltipModule } from 'primeng/tooltip';
-import { map, switchMap, throwError } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
 import {
@@ -24,7 +24,6 @@ import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
-import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
 import { PositionStatusList } from '../../sets/PositionStatusList';
@@ -70,7 +69,6 @@ export class ForClientComponent implements OnInit {
     private forClientService: ForClientService,
     private route: ActivatedRoute,
     private router: Router,
-    private editSetService: EditSetService,
     private cd: ChangeDetectorRef,
   ) {}
 
@@ -94,20 +92,17 @@ export class ForClientComponent implements OnInit {
         })),
         switchMap(({ setHash, clientHash }) => {
           if (!setHash || !clientHash) {
-            return throwError(() => new Error('Invalid params'));
+            throw new Error('Invalid params');
           }
-          return this.editSetService.validateSetAndHashForClient(
-            setHash,
-            clientHash,
-          );
+
+          return this.forClientService.loadClientSetData(setHash, clientHash);
         }),
       )
       .subscribe({
         next: (response) => {
-          if (response && response.valid) {
+          if (response?.valid) {
             this.set = response.set;
             this.client = { ...response.set.clientId };
-
             this.modifyData(response.positions);
           } else {
             this.router.navigate(['/notfound']);
