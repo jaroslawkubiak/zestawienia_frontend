@@ -34,8 +34,8 @@
     />
     <p-badge
       [value]="getCommentsBadgeValue(positionId)"
-      [severity]="getCommentsBadgeClass(positionId)"
-      [pTooltip]="pTooltipInfo"
+      [severity]="getCommentsBadgeSeverity(positionId)"
+      [pTooltip]="getCommentsBadgeTooltip(positionId)"
       class="comments-value-badge"
       badgeSize="large"
     ></p-badge>

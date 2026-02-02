@@ -19,13 +19,16 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
+import { calcCommentsBadgeSeverity } from '../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../shared/helpers/calcCommentsBadgeTooltip';
+import { countCommentsBadgeValue } from '../../shared/helpers/countCommentsBadgeValue';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
-import { IRemainingFiles } from '../files/types/IRemainingFiles';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
-import { SetsService } from './sets.service';
+import { IRemainingFiles } from '../files/types/IRemainingFiles';
 import { BadgeSeverity } from './action-btns/types/badgeSeverity.type';
+import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
 
@@ -193,48 +196,20 @@ export class SetsComponent implements OnInit {
   }
 
   getCommentsBadgeValue(setId: number): number {
-    const currentSet = this.sets.find((set) => set.id === setId);
-    if (!currentSet) {
-      return 0;
-    }
+    const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    const { needsAttention, unread, all } = currentSet.newCommentsCount;
-
-    if (needsAttention > 0 && unread > 0) {
-      return needsAttention + unread;
-    }
-
-    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+    return countCommentsBadgeValue(currentSet.newCommentsCount);
   }
 
   getCommentsTooltipInfo(setId: number): string {
-    const currentSet = this.sets.find((set) => set.id === setId);
+    const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    if (!currentSet) {
-      return '';
-    }
-
-    const { needsAttention, unread, all } = currentSet.newCommentsCount;
-
-    return needsAttention > 0 || unread > 0
-      ? 'Ilość nowych komentarzy'
-      : 'Ilość komentarzy';
+    return calcCommentsBadgeTooltip(currentSet.newCommentsCount);
   }
 
-  getCommentsBadgeClass(setId: number): BadgeSeverity {
-    const currentSet = this.sets.find((set) => set.id === setId);
+  getCommentsBadgeSeverity(setId: number): BadgeSeverity {
+    const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    if (!currentSet) {
-      return 'secondary';
-    }
-    const { needsAttention, unread, all } = currentSet.newCommentsCount;
-
-    if (needsAttention > 0 || unread > 0) {
-      return 'danger';
-    } else if (all > 0) {
-      return 'contrast';
-    } else {
-      return 'secondary';
-    }
+    return calcCommentsBadgeSeverity(currentSet.newCommentsCount);
   }
 }

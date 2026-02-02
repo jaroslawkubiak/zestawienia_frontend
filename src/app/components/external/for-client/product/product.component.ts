@@ -12,6 +12,7 @@ import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../../services/notification.service';
 import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { CommentsService } from '../../../comments/comments.service';
@@ -86,21 +87,15 @@ export class ProductComponent implements OnInit {
     this.commentsUpdated.emit();
   }
 
-  // calc comments badge color
   getCommentsBadgeSeverity(): BadgeSeverity {
     return calcCommentsBadgeSeverity(this.position.newCommentsCount);
   }
 
-  // calc comments badge value
   getCommentsBadgeValue(): number {
     return countCommentsBadgeValue(this.position.newCommentsCount);
   }
 
   getCommentsTooltipInfo(): string {
-    const { needsAttention, unread } = this.position.newCommentsCount;
-
-    return needsAttention > 0 || unread > 0
-      ? 'Ilość nowych komentarzy'
-      : 'Ilość komentarzy';
+    return calcCommentsBadgeTooltip(this.position.newCommentsCount);
   }
 }

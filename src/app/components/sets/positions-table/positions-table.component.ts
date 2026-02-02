@@ -276,10 +276,11 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     this.updateOrder();
     this.updateSetPositions.emit();
 
-    this.notificationService.showNotification(
-      'warn',
-      `Produkt "${removedPosition?.produkt}" zostanie usunięty.`,
-    );
+    const message = removedPosition?.produkt
+      ? `Produkt "${removedPosition?.produkt}" zostanie usunięty.`
+      : `Pozycja zostanie usunięta.`;
+
+    this.notificationService.showNotification('warn', message);
   }
 
   // get column width from set object

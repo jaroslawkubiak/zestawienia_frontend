@@ -18,6 +18,8 @@ import { MenubarModule } from 'primeng/menubar';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
+import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
+import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { EmailsService } from '../../emails/email.service';
@@ -26,8 +28,8 @@ import { IExternalLink } from '../../emails/types/IExternalLink';
 import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
-import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
+import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { IPosition } from '../positions-table/types/IPosition';
@@ -77,9 +79,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
   attachmentBadge: number = 0;
   clientHash = '';
 
-  // newComments = 0;
-  // allComments = 0;
-
   constructor(
     private router: Router,
     private notificationService: NotificationService,
@@ -96,8 +95,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     this.attachmentBadge = this.set?.files?.length || 0;
-    // this.allComments = this.set?.comments?.length ?? 0;
-    // this.newComments = countNewComments(this.set?.comments || [], 'client');
 
     if (this.set && this.positions?.length && this.allSuppliers?.length) {
       this.findUniqueSuppliers();
@@ -121,34 +118,22 @@ export class SetMenuComponent implements OnChanges, OnInit {
       generatePDF: () => this.generatePDF(),
       showAttachedFiles: () => this.showAttachedFiles(),
       openSendFilesDialog: () => this.openSendFilesDialog(),
-      getCommentsBadgeClass: () => this.getCommentsBadgeClass(),
+      getCommentsBadgeSeverity: () => this.getCommentsBadgeSeverity(),
       getCommentsBadgeValue: () => this.getCommentsBadgeValue(),
       showComments: () => this.showComments(),
     });
   }
 
   // calc comments badge color
-  getCommentsBadgeClass(): string {
-    const { needsAttention, unread, all } = this.set.newCommentsCount;
+  getCommentsBadgeSeverity(): string {
+    const badgeSeverity = calcCommentsBadgeSeverity(this.set.newCommentsCount);
 
-    if (needsAttention > 0 || unread > 0) {
-      return 'p-badge-danger';
-    } else if (all > 0) {
-      return 'p-badge-contrast';
-    } else {
-      return 'p-badge-secondary';
-    }
+    return `p-badge-${badgeSeverity}`;
   }
 
   // calc comments badge value
   getCommentsBadgeValue(): number {
-    const { needsAttention, unread, all } = this.set.newCommentsCount;
-
-    if (needsAttention > 0 && unread > 0) {
-      return needsAttention + unread;
-    }
-
-    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+    return countCommentsBadgeValue(this.set.newCommentsCount);
   }
 
   // open edit set header dialog

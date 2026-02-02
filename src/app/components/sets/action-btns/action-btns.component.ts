@@ -2,6 +2,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
+import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../../shared/helpers/calcCommentsBadgeTooltip';
+import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { IPosition } from '../positions-table/types/IPosition';
 import { BadgeSeverity } from './types/badgeSeverity.type';
 
@@ -19,48 +22,27 @@ export class ActionBtnsComponent {
   @Output() clonePosition = new EventEmitter<number>();
   @Output() deletePosition = new EventEmitter<number>();
   @Output() showComments = new EventEmitter<number>();
-  pTooltipInfo = '';
 
   getCommentsBadgeValue(positionId: number): number {
-    const currentPostition = this.positions.find(
-      (pos) => pos.id === positionId,
-    );
+    const currentPostition = this.findCurrentPosition(positionId);
 
-    if (!currentPostition) {
-      return 0;
-    }
-
-    const { needsAttention, unread, all } = currentPostition.newCommentsCount;
-
-    this.pTooltipInfo =
-      needsAttention > 0 || unread > 0
-        ? 'Ilość nowych komentarzy'
-        : 'Ilość komentarzy';
-
-    if (needsAttention > 0 && unread > 0) {
-      return needsAttention + unread;
-    }
-
-    return needsAttention > 0 ? needsAttention : unread > 0 ? unread : all;
+    return countCommentsBadgeValue(currentPostition.newCommentsCount);
   }
 
-  getCommentsBadgeClass(positionId: number): BadgeSeverity {
-    const currentPostition = this.positions.find(
-      (pos) => pos.id === positionId,
-    );
+  getCommentsBadgeTooltip(positionId: number): string {
+    const currentPostition = this.findCurrentPosition(positionId);
 
-    if (!currentPostition) {
-      return 'secondary';
-    }
-    const { needsAttention, unread, all } = currentPostition.newCommentsCount;
+    return calcCommentsBadgeTooltip(currentPostition.newCommentsCount);
+  }
 
-    if (needsAttention > 0 || unread > 0) {
-      return 'danger';
-    } else if (all > 0) {
-      return 'contrast';
-    } else {
-      return 'secondary';
-    }
+  getCommentsBadgeSeverity(positionId: number): BadgeSeverity {
+    const currentPostition = this.findCurrentPosition(positionId);
+
+    return calcCommentsBadgeSeverity(currentPostition.newCommentsCount);
+  }
+
+  private findCurrentPosition(positionId: number): IPosition {
+    return this.positions.find((pos) => pos.id === positionId)!;
   }
 
   triggerAddEmptyPosition() {

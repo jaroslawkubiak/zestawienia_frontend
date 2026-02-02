@@ -13,6 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { map, switchMap } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../../shared/helpers/calcCommentsBadgeTooltip';
 import {
   calculateBrutto,
   calculateWartosc,
@@ -223,11 +224,7 @@ export class ForClientComponent implements OnInit {
   }
 
   getCommentsTooltipInfo(): string {
-    const { needsAttention, unread } = this.set.newCommentsCount;
-
-    return needsAttention > 0 || unread > 0
-      ? 'Ilość nowych komentarzy'
-      : 'Ilość komentarzy';
+    return calcCommentsBadgeTooltip(this.set.newCommentsCount);
   }
 
   toggleMobileMenu() {
