@@ -1,7 +1,7 @@
-<div class="comments-to-set-container">
+<ng-container *ngIf="positionsWithComments.length > 0; else noComments">
   <div
     class="comments-to-set-wrapper"
-    *ngFor="let pos of positionsWithComments$ | async"
+    *ngFor="let pos of positionsWithComments"
   >
     <div class="comments-to-set-position-info-wrapper">
       <div class="comments-to-set-product-name-wrapper">
@@ -108,11 +108,20 @@
       </div>
     </div>
     <!-- COMMENTS  -->
-    <app-comments
-      [positionId]="pos.position.id"
-      [set]="set"
-      [comments]="pos.comments"
-      [commentWatcher]="'user'"
-    />
+    <div class="comments-wrapper">
+      <app-comments
+        [positionId]="pos.position.id"
+        [set]="set"
+        [comments]="pos.comments"
+        [commentWatcher]="'user'"
+      />
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #noComments>
+  <div class="no-comments-wrapper flex-center">
+    <i class="pi pi-comments"></i>
+    <p>Brak komentarzy dla tej zakładki.</p>
+  </div>
+</ng-template>

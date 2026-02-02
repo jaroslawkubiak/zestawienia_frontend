@@ -35,7 +35,6 @@ export const routes: Routes = [
     children: [
       { path: '', component: SetsComponent },
       { path: 'new', component: NewSetComponent },
-      { path: 'comments/:id', component: CommentsToSetComponent },
       {
         path: ':id',
         component: EditSetComponent,

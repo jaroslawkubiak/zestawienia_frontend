@@ -10,8 +10,10 @@
     [positions]="positions"
     [selectedBookmarks]="selectedBookmarks"
     [isEdited]="setIsDirty"
+    [showAllComments]="showAllComments"
     (editStarted)="isEdited(true)"
     (updateBookmarks)="updateBookmarks()"
+    (showAllCommentsComponent)="showAllCommentsComponent()"
   />
   <!-- set header  -->
   <div class="set-header-wrapper flex-center" *ngIf="set">
@@ -64,7 +66,15 @@
     <p-tabpanels>
       @for (bookmark of set.bookmarks; track bookmark.id) {
         <p-tabpanel [value]="bookmark.id">
-          <ng-container *ngIf="selectedBookmark === bookmark.id">
+          <ng-container *ngIf="showAllComments">
+            <app-comments-to-set
+              [set]="set"
+              [positionsWithComments]="positionsWithComments"
+            />
+          </ng-container>
+          <ng-container
+            *ngIf="selectedBookmark === bookmark.id && !showAllComments"
+          >
             <div
               [ngClass]="{ 'form-dirty': setIsDirty }"
               class="position-container"

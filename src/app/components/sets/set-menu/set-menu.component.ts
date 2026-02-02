@@ -61,8 +61,10 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @Input() allSuppliers: ISupplier[] = [];
   @Input() selectedBookmarks!: IBookmarksWithTableColumns[];
   @Input() isEdited: boolean = false;
+  @Input() showAllComments: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
+  @Output() showAllCommentsComponent = new EventEmitter<void>();
 
   @ViewChild(SendFilesComponent, { static: false })
   dialogSendFilesComponent!: SendFilesComponent;
@@ -104,24 +106,28 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   // create and update menu if set is edited or number of unique supplier is changed
   updateMenuItems(): void {
-    this.menuItems = buildSetMenu({
-      set: this.set,
-      suppliersFromSet: this.suppliersFromSet,
-      emailsList: this.emailsList,
-      isEdited: this.isEdited,
-      clientHash: this.clientHash,
-      sendSetToClient: () => this.sendSetToClientViaEmail(),
-      sendSetToSupplier: (supplier) => this.sendSetToSupplierViaEmail(supplier),
-      openLink: (type, hash) => this.openLink({ type, hash }),
-      copyLink: (type, hash) => this.copyLink({ type, hash }),
-      editHeader: () => this.editHeader(),
-      generatePDF: () => this.generatePDF(),
-      showAttachedFiles: () => this.showAttachedFiles(),
-      openSendFilesDialog: () => this.openSendFilesDialog(),
-      getCommentsBadgeSeverity: () => this.getCommentsBadgeSeverity(),
-      getCommentsBadgeValue: () => this.getCommentsBadgeValue(),
-      showComments: () => this.showComments(),
-    });
+    this.menuItems = buildSetMenu(
+      {
+        set: this.set,
+        suppliersFromSet: this.suppliersFromSet,
+        emailsList: this.emailsList,
+        isEdited: this.isEdited,
+        clientHash: this.clientHash,
+        sendSetToClient: () => this.sendSetToClientViaEmail(),
+        sendSetToSupplier: (supplier) =>
+          this.sendSetToSupplierViaEmail(supplier),
+        openLink: (type, hash) => this.openLink({ type, hash }),
+        copyLink: (type, hash) => this.copyLink({ type, hash }),
+        editHeader: () => this.editHeader(),
+        generatePDF: () => this.generatePDF(),
+        showAttachedFiles: () => this.showAttachedFiles(),
+        openSendFilesDialog: () => this.openSendFilesDialog(),
+        getCommentsBadgeSeverity: () => this.getCommentsBadgeSeverity(),
+        getCommentsBadgeValue: () => this.getCommentsBadgeValue(),
+        toggleShowAllComments: () => this.toggleShowAllComments(),
+      },
+      this.showAllComments,
+    );
   }
 
   // calc comments badge color
@@ -216,12 +222,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
   }
 
   // show all comments from this set
-  showComments() {
-    const backPath = `/sets/${this.set.id}`;
-
-    this.router.navigate([`/sets/comments/${this.set.id}`], {
-      state: { backPath },
-    });
+  toggleShowAllComments() {
+    this.showAllCommentsComponent.emit();
   }
 
   //update set file list

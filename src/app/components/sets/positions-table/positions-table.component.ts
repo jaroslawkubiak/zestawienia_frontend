@@ -118,12 +118,10 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    // if (this.positionsFromBookmark) {
     // map option list for select fields
     this.dropwownColumnOptions = {
       allSuppliers: this.allSuppliers,
       positionStatus: this.positionStatus,
-      // };
     };
 
     this.setId = this.set.id;
@@ -134,8 +132,6 @@ export class PositionsTableComponent implements OnInit, OnChanges {
       const positions = changes['positionsFromBookmark']
         .currentValue as IPosition[];
     }
-
-    // this.assignCommentsToPosition(this.set.comments || []);
   }
 
   scrollToPosition(positionNumber: number) {

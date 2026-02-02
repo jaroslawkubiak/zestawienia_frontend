@@ -22,6 +22,9 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { calculateWartosc } from '../../../shared/helpers/calculate';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
+import { CommentsToSetComponent } from '../../comments/comments-to-set/comments-to-set.component';
+import { IComment } from '../../comments/types/IComment';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { ISupplier } from '../../suppliers/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
@@ -45,6 +48,7 @@ import { EditSetService } from './edit-set.service';
     InputTextModule,
     LoadingSpinnerComponent,
     PositionsTableComponent,
+    CommentsToSetComponent,
     TooltipModule,
     SetMenuComponent,
     SelectModule,
@@ -77,6 +81,11 @@ export class EditSetComponent
 
   targetBookmark = 0;
   targetPosition = 0;
+
+  showAllComments = false;
+  comments: IComment[] = [];
+  uniquePositionIds: number[] = [];
+  positionsWithComments: IPositionWithComments[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -142,11 +151,100 @@ export class EditSetComponent
     });
   }
 
-  // change state of set - mark as edited or not edited
-  isEdited(state: boolean) {
-    this.setIsDirty = state;
-    this.setMenuComponent.updateMenuItems();
+  showAllCommentsComponent() {
+    this.showAllComments = !this.showAllComments;
+
+    if (this.showAllComments) {
+      this.loadCommentsForSet();
+    } else {
+      this.positionsWithComments = [];
+      this.updateBookmarks();
+    }
+  }
+
+  loadCommentsForSet() {
+    this.editSetService.getCommentsForSet(this.setId).subscribe({
+      next: (response) => {
+        this.comments = response ?? [];
+        this.uniquePositionIds = [
+          ...new Set(this.comments.map((comment) => comment.positionId)),
+        ];
+
+        this.assignCommentsToPosition();
+      },
+      error: (err) => {
+        this.isLoading = false;
+      },
+    });
+  }
+
+  assignCommentsToPosition() {
+    this.positionsWithComments = this.uniquePositionIds.reduce<
+      IPositionWithComments[]
+    >((acc, positionId) => {
+      const position = this.positions.find((p) => p.id === positionId);
+      if (!position) return acc;
+
+      if (position.bookmarkId.id === this.selectedBookmark) {
+        acc.push({
+          position,
+          comments: this.comments.filter(
+            (comment) => comment.positionId === positionId,
+          ),
+        });
+      }
+
+      return acc;
+    }, []);
+
     this.cd.markForCheck();
+  }
+
+  // load positions for a given bookmarkID
+  loadContentForBookmark(bookmarkId: number) {
+    this.editSetService.updateLastUsedBookmark(this.set, bookmarkId).subscribe({
+      next: (response) => {
+        this.set = { ...this.set, lastBookmark: response.lastBookmark };
+
+        if (this.showAllComments) {
+          this.loadCommentsForSet();
+        }
+
+        this.updatePositions();
+        this.selectedBookmark = bookmarkId;
+
+        this.positionsFromBookmark = this.positions
+          .filter(
+            (item) =>
+              item.bookmarkId?.id === bookmarkId &&
+              !this.positionsTableComponent?.positionToDelete.includes(item.id),
+          )
+          .sort((a, b) => a.kolejnosc - b.kolejnosc)
+          .map((item: IPosition, index: number) => {
+            return {
+              ...item,
+              kolejnosc: index + 1,
+              wartoscNetto: calculateWartosc(item.ilosc, item.netto),
+              wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
+            };
+          });
+
+        this.cd.detectChanges();
+
+        setTimeout(() => {
+          if (this.positionsTableComponent) {
+            this.positionsTableComponent.initializeForm();
+
+            if (bookmarkId === this.targetBookmark) {
+              this.positionsTableComponent.scrollToPosition(
+                this.targetPosition,
+              );
+            }
+          }
+        }, 0);
+      },
+      error: (err) => console.error(err),
+    });
   }
 
   // update bookmarks after edit header
@@ -214,42 +312,11 @@ export class EditSetComponent
     });
   }
 
-  // load positions for a given bookmarkID
-  loadContentForBookmark(bookmarkId: number) {
-    this.editSetService.updateLastUsedBookmark(this.set, bookmarkId).subscribe({
-      error: (err) => console.error(err),
-    });
-
-    this.updatePositions();
-    this.selectedBookmark = bookmarkId;
-
-    this.positionsFromBookmark = this.positions
-      .filter(
-        (item) =>
-          item.bookmarkId?.id === bookmarkId &&
-          !this.positionsTableComponent?.positionToDelete.includes(item.id),
-      )
-      .sort((a, b) => a.kolejnosc - b.kolejnosc)
-      .map((item: IPosition, index: number) => {
-        return {
-          ...item,
-          kolejnosc: index + 1,
-          wartoscNetto: calculateWartosc(item.ilosc, item.netto),
-          wartoscBrutto: calculateWartosc(item.ilosc, item.brutto),
-        };
-      });
-
-    this.cd.detectChanges();
-
-    setTimeout(() => {
-      if (this.positionsTableComponent) {
-        this.positionsTableComponent.initializeForm();
-
-        if (bookmarkId === this.targetBookmark) {
-          this.positionsTableComponent.scrollToPosition(this.targetPosition);
-        }
-      }
-    }, 0);
+  // change state of set - mark as edited or not edited
+  isEdited(state: boolean) {
+    this.setIsDirty = state;
+    this.setMenuComponent.updateMenuItems();
+    this.cd.markForCheck();
   }
 
   // update comments for set

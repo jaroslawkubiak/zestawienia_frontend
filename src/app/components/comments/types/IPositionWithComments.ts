@@ -1,6 +1,7 @@
+import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { IComment } from './IComment';
 
 export interface IPositionWithComments {
-  positionId: number;
+  position: IPosition;
   comments: IComment[];
 }

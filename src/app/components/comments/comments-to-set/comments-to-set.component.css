@@ -13,12 +13,19 @@
   margin: 10px 0;
 }
 
+.comments-wrapper {
+  border: 1px solid var(--accent-color-10);
+  background-color: var(--accent-color-02) !important;
+  border-radius: 20px;
+  padding: 16px;
+}
+
 .comments-to-set-position-info-wrapper {
   position: relative;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  height: 700px;
+  height: 650px;
   gap: 10px;
   border: 2px solid var(--burgund-color-15);
   border-radius: 20px;
@@ -55,7 +62,6 @@
   max-height: 95%;
   object-fit: contain !important;
   border-radius: 10px;
-  border: 2px solid var(--burgund-color-15) !important;
 }
 
 .comments-to-set-img-wrapper i {
@@ -96,4 +102,18 @@
 
 .status-wrapper {
   border-radius: 10px;
+}
+
+.no-comments-wrapper {
+  color: var(--error-color);
+  width: 100%;
+  padding: 32px;
+  font-size: 32px;
+}
+
+.no-comments-wrapper i {
+  padding: 32px;
+  color: var(--error-color);
+  font-size: 32px;
+  cursor: auto;
 }

@@ -9,6 +9,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
+import { IComment } from '../../comments/types/IComment';
 import { IValidSetForClient } from '../../external/for-client/types/IValidSetForClient';
 import { IValidSetForSupplier } from '../../external/for-supplier/types/IValidSetForSupplier';
 import { SuppliersService } from '../../suppliers/suppliers.service';
@@ -48,6 +49,14 @@ export class EditSetService {
       );
     }
     return throwError(() => new Error('Wystąpił błąd serwera.'));
+  }
+
+  getCommentsForSet(setId: number): Observable<IComment[]> {
+    return this.http
+      .get<
+        IComment[]
+      >(`${environment.API_URL}/comments/${setId}/getCommentsForSet`)
+      .pipe(catchError(this.handleError));
   }
 
   getPositions(setId: number): Observable<IPosition[]> {
@@ -247,14 +256,17 @@ export class EditSetService {
     return updatedPositions;
   }
 
-  updateLastUsedBookmark(savedSet: ISet, newBookmark: number) {
+  updateLastUsedBookmark(
+    savedSet: ISet,
+    newBookmark: number,
+  ): Observable<ISet> {
     const updatedSet: ISet = {
       ...savedSet,
       lastBookmark: { id: newBookmark },
     };
 
     return this.http
-      .patch(
+      .patch<ISet>(
         `${environment.API_URL}/sets/${savedSet.id}/updateBookmark`,
         updatedSet,
         {

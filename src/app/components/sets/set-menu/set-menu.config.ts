@@ -19,10 +19,13 @@ export interface SetMenuParams {
   openSendFilesDialog: () => void;
   getCommentsBadgeSeverity: () => string;
   getCommentsBadgeValue: () => number;
-  showComments: () => void;
+  toggleShowAllComments: () => void;
 }
 
-export function buildSetMenu(params: SetMenuParams): MenuItem[] {
+export function buildSetMenu(
+  params: SetMenuParams,
+  showAllComments: boolean,
+): MenuItem[] {
   const {
     set,
     suppliersFromSet,
@@ -39,7 +42,7 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
     openSendFilesDialog,
     getCommentsBadgeSeverity,
     getCommentsBadgeValue,
-    showComments,
+    toggleShowAllComments,
   } = params;
 
   const suppliersList: MenuItem[] = suppliersFromSet.map((supplier) => ({
@@ -61,6 +64,20 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
     const email = emailsList.find((e) => e.client?.id === set.clientId.id);
     return email ? `${email.sendAt} - ${email.sendBy.name}` : 'Nie wysłano';
   })();
+
+  const commentsOrPositions = showAllComments
+    ? {
+        label: 'Pokaż pozycje',
+        icon: 'pi pi-table',
+        command: toggleShowAllComments,
+      }
+    : {
+        label: 'Komentarze',
+        icon: 'pi pi-comments',
+        badgeStyleClass: getCommentsBadgeSeverity(),
+        badge: getCommentsBadgeValue().toString(),
+        command: toggleShowAllComments,
+      };
 
   return [
     {
@@ -116,12 +133,6 @@ export function buildSetMenu(params: SetMenuParams): MenuItem[] {
       icon: 'pi pi-paperclip',
       command: openSendFilesDialog,
     },
-    {
-      label: 'Komentarze',
-      icon: 'pi pi-comments',
-      badgeStyleClass: getCommentsBadgeSeverity(),
-      badge: getCommentsBadgeValue().toString(),
-      command: showComments,
-    },
+    { ...commentsOrPositions },
   ];
 }
