@@ -216,8 +216,13 @@ export class EditSetComponent
 
   // load positions for a given bookmarkID
   loadContentForBookmark(bookmarkId: number) {
+    this.editSetService.updateLastUsedBookmark(this.set, bookmarkId).subscribe({
+      error: (err) => console.error(err),
+    });
+
     this.updatePositions();
     this.selectedBookmark = bookmarkId;
+
     this.positionsFromBookmark = this.positions
       .filter(
         (item) =>

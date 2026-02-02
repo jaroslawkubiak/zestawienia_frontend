@@ -29,6 +29,11 @@ export class EditSetService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
   positionStatus: IPositionStatus[] = PositionStatusList;
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
   constructor(
     private http: HttpClient,
@@ -134,13 +139,9 @@ export class EditSetService {
       updatedBy: { id: this.userId() } as IUser,
     };
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .post<IPosition>(`${environment.API_URL}/positions/addNew`, newPosition, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
@@ -186,15 +187,11 @@ export class EditSetService {
       updatedBy: { id: this.userId() } as IUser,
     };
 
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .post<IPosition>(
         `${environment.API_URL}/positions/clone`,
         newClonePosition,
-        { headers },
+        { headers: this.httpHeaders },
       )
       .pipe(
         map((response: IPosition) => {
@@ -213,10 +210,6 @@ export class EditSetService {
   }
 
   saveSet(savedSet: IUpdateSet): Observable<INewSet> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     const createSavedSet: IUpdateSet = {
       ...savedSet,
       userId: this.userId(),
@@ -227,7 +220,7 @@ export class EditSetService {
         `${environment.API_URL}/sets/${savedSet.set.id}/saveSet`,
         createSavedSet,
         {
-          headers,
+          headers: this.httpHeaders,
         },
       )
       .pipe(catchError(this.handleError));
@@ -252,5 +245,22 @@ export class EditSetService {
       });
 
     return updatedPositions;
+  }
+
+  updateLastUsedBookmark(savedSet: ISet, newBookmark: number) {
+    const updatedSet: ISet = {
+      ...savedSet,
+      lastBookmark: { id: newBookmark },
+    };
+
+    return this.http
+      .patch(
+        `${environment.API_URL}/sets/${savedSet.id}/updateBookmark`,
+        updatedSet,
+        {
+          headers: this.httpHeaders,
+        },
+      )
+      .pipe(catchError(this.handleError));
   }
 }
