@@ -93,3 +93,11 @@
 ::ng-deep .p-toast-message-warn .p-toast-close-icon {
   color: #aea859 !important;
 }
+/* MOBILE  */
+@media (max-width: 768px) {
+  /* notification position and size */
+  ::ng-deep .p-toast {
+    top: 20px !important;
+    width: 90% !important;
+  }
+}

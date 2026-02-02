@@ -57,17 +57,26 @@
   <!-- GROUP - PRODUKT PRODUCENT DOSTAWCA-->
   <div class="product-details">
     <!-- PRODUKT -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.produkt">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.produkt"
+    >
       <div class="product-title">PRODUKT</div>
       <div class="product-name">{{ position.produkt }}</div>
     </div>
     <!-- PRODUCENT -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.producent">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.producent"
+    >
       <div class="product-title">PRODUCENT</div>
       <div class="product-name">{{ position.producent }}</div>
     </div>
     <!-- DOSTAWCA -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.supplierId">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.supplierId"
+    >
       <div class="product-title">DOSTAWCA</div>
       <div class="product-name">
         {{ position.supplierId ? position.supplierId["company"] : "" }}
@@ -77,21 +86,30 @@
   <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
   <div class="product-details">
     <!-- KOLEKCJA -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.kolekcja">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.kolekcja"
+    >
       <div class="product-title">KOLEKCJA</div>
       <div class="product-name">
         {{ position.kolekcja }}
       </div>
     </div>
     <!-- NR KATALOGOWY -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.nrKatalogowy">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.nrKatalogowy"
+    >
       <div class="product-title">NR KATALOGOWY</div>
       <div class="product-name">
         {{ position.nrKatalogowy }}
       </div>
     </div>
     <!-- KOLOR -->
-    <div class="product-group product-group-heigher" *ngIf="!isMobile || position.kolor">
+    <div
+      class="product-group product-group-heigher"
+      *ngIf="!isMobile || position.kolor"
+    >
       <div class="product-title">KOLOR</div>
       <div class="product-name">
         {{ position.kolor }}
@@ -166,7 +184,11 @@
   [modal]="true"
   [(visible)]="showCommentsDialog"
   (onHide)="onDialogClosed()"
-  [style]="{ width: '70rem', borderRadius: '20px' }"
+  [style]="{
+    width: '70rem',
+    height: isMobile ? '100vh' : '',
+    borderRadius: '20px',
+  }"
   [dismissableMask]="true"
 >
   <app-comments
