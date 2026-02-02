@@ -8,7 +8,6 @@ import {
   calculateBrutto,
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
-import { countNewComments } from '../../../shared/helpers/countNewComments';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { PositionStatusList } from '../../sets/PositionStatusList';
 import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
@@ -90,24 +89,24 @@ export class CommentsToSetComponent implements OnInit {
   }
 
   updateCommentsList() {
-    const positionsWithComments = this.uniquePositionIds
-      .map((positionId) => {
-        const position = this.positions.find((p) => p.id === positionId);
-        if (!position) return null;
+  //   const positionsWithComments = this.uniquePositionIds
+  //     .map((positionId) => {
+  //       const position = this.positions.find((p) => p.id === positionId);
+  //       if (!position) return null;
 
-        const relatedComments = this.comments.filter(
-          (comment) => comment.positionId === positionId,
-        );
+  //       const relatedComments = this.comments.filter(
+  //         (comment) => comment.positionId === positionId,
+  //       );
 
-        return {
-          position,
-          comments: relatedComments,
-          newComments: countNewComments(relatedComments, 'client'),
-        };
-      })
-      .filter((item): item is IPositionsWithComments => item !== null);
+  //       return {
+  //         position,
+  //         comments: relatedComments,
+  //         newComments: countNewComments(relatedComments, 'client'),
+  //       };
+  //     })
+  //     .filter((item): item is IPositionsWithComments => item !== null);
 
-    this.positionsWithComments$.next(positionsWithComments);
+  //   this.positionsWithComments$.next(positionsWithComments);
   }
 
   getStatusLabel(status: IPositionStatus | string): string {

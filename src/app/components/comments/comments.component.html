@@ -1,107 +1,109 @@
-<div class="chat-container" #chatContainer>
-  <div
-    *ngFor="let comment of comments"
-    class="message-wrapper"
-    [class.incoming]="isIncoming(comment)"
-    [class.outgoing]="!isIncoming(comment)"
-  >
-    <div class="message-bubble">
-      <div
-        [class.needsAttentionIncoming]="
-          isIncoming(comment) && isNeedsAttention(comment)
-        "
-        [class.needsAttentionOutgoing]="
-          !isIncoming(comment) && isNeedsAttention(comment)
-        "
-        [class.hidden]="!isNeedsAttention(comment)"
-        pTooltip="Komentarz jest oznaczony jako wymaga uwagi"
-        tooltipPosition="top"
-      >
-        <i class="pi pi-exclamation-circle"></i>
-      </div>
+<div class="comments-container">
+  <div class="chat-container" #chatContainer>
+    <div
+      *ngFor="let comment of comments"
+      class="message-wrapper"
+      [class.incoming]="isIncoming(comment)"
+      [class.outgoing]="!isIncoming(comment)"
+    >
+      <div class="message-bubble">
+        <div
+          [class.needsAttentionIncoming]="
+            isIncoming(comment) && isNeedsAttention(comment)
+          "
+          [class.needsAttentionOutgoing]="
+            !isIncoming(comment) && isNeedsAttention(comment)
+          "
+          [class.hidden]="!isNeedsAttention(comment)"
+          pTooltip="Komentarz jest oznaczony jako wymaga uwagi"
+          tooltipPosition="top"
+        >
+          <i class="pi pi-exclamation-circle"></i>
+        </div>
 
-      <i
-        [pTooltip]="isUnreadOrNeedsAttentionTooltip(comment)"
-        tooltipPosition="top"
-        class="pi pi-comment comment-icon"
-        [ngClass]="
-          !comment.seenAt ? 'comment-icon-unread' : 'comment-icon-read'
-        "
-        (click)="toggleCommentAsNeedAttention(comment.id)"
-      ></i>
-      <i
-        class="pi pi-pencil edit-icon"
-        (click)="markCommentToEdit(comment.id)"
-        pTooltip="Edytuj"
-        tooltipPosition="top"
-      ></i>
-      <i
-        pTooltip="Usuń"
-        tooltipPosition="top"
-        class="pi pi-trash delete-icon"
-        (click)="deleteComment(comment.id)"
-      ></i>
-      <p
-        class="message-text"
-        [innerHTML]="parseTextWithLinks(comment.comment) | emojiConvert"
-      ></p>
-      <span class="timestamp">
-        {{ comment.authorName }}, {{ comment.createdAt }}
-      </span>
-      <div
-        class="avatar-wrapper"
-        [class.avatar-user]="isIncoming(comment)"
-        [class.avatar-client]="!isIncoming(comment)"
-      >
-        <img
-          [src]="getCommentAvatar(comment)"
-          (error)="onAvatarError($event)"
-          [title]="comment.authorName"
-          alt="avatar"
-          class="avatar-image"
-        />
+        <i
+          [pTooltip]="isUnreadOrNeedsAttentionTooltip(comment)"
+          tooltipPosition="top"
+          class="pi pi-comment comment-icon"
+          [ngClass]="
+            !comment.seenAt ? 'comment-icon-unread' : 'comment-icon-read'
+          "
+          (click)="toggleCommentAsNeedAttention(comment.id)"
+        ></i>
+        <i
+          class="pi pi-pencil edit-icon"
+          (click)="markCommentToEdit(comment.id)"
+          pTooltip="Edytuj"
+          tooltipPosition="top"
+        ></i>
+        <i
+          pTooltip="Usuń"
+          tooltipPosition="top"
+          class="pi pi-trash delete-icon"
+          (click)="deleteComment(comment.id)"
+        ></i>
+        <p
+          class="message-text"
+          [innerHTML]="parseTextWithLinks(comment.comment) | emojiConvert"
+        ></p>
+        <span class="timestamp">
+          {{ comment.authorName }}, {{ comment.createdAt }}
+        </span>
+        <div
+          class="avatar-wrapper"
+          [class.avatar-user]="isIncoming(comment)"
+          [class.avatar-client]="!isIncoming(comment)"
+        >
+          <img
+            [src]="getCommentAvatar(comment)"
+            (error)="onAvatarError($event)"
+            [title]="comment.authorName"
+            alt="avatar"
+            class="avatar-image"
+          />
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="new-message-input-wrapper">
-  <div class="new-message-action-btns flex-center">
-    <div
-      class="comment-read-btn flex-center cursor-pointer"
-      pTooltip="Oznacz wszystkie jako nie wymagające uwagi"
-      tooltipPosition="top"
-      (click)="markAllCommentsAsNeedsAttention(false)"
-    >
-      <i class="pi pi-comments"></i>
+  <div class="new-message-input-wrapper">
+    <div class="new-message-action-btns flex-center">
+      <div
+        class="comment-read-btn flex-center cursor-pointer"
+        pTooltip="Oznacz wszystkie jako nie wymagające uwagi"
+        tooltipPosition="top"
+        (click)="markAllCommentsAsNeedsAttention(false)"
+      >
+        <i class="pi pi-comments"></i>
+      </div>
+      <div
+        class="comment-unread-btn flex-center cursor-pointer"
+        pTooltip="Oznacz wszystkie jako wymagające uwagi"
+        tooltipPosition="top"
+        (click)="markAllCommentsAsNeedsAttention(true)"
+      >
+        <i class="pi pi-comments"></i>
+      </div>
     </div>
-    <div
-      class="comment-unread-btn flex-center cursor-pointer"
-      pTooltip="Oznacz wszystkie jako wymagające uwagi"
-      tooltipPosition="top"
-      (click)="markAllCommentsAsNeedsAttention(true)"
-    >
-      <i class="pi pi-comments"></i>
+    <textarea
+      #messageTextarea
+      [(ngModel)]="newMessage"
+      class="new-message-textarea"
+      placeholder="Napisz komentarz..."
+      (input)="adjustTextareaHeight(messageTextarea)"
+      (keydown)="onKeydown($event, messageTextarea)"
+      rows="1"
+      pTextarea
+      fluid
+    ></textarea>
+    <div class="new-message-send-btn-wrapper flex-center">
+      <button
+        class="send-btn"
+        (click)="sendComment(messageTextarea)"
+        [ngClass]="{ disabled: !newMessage }"
+      >
+        <i class="pi pi-arrow-up send-icon"></i>
+      </button>
     </div>
-  </div>
-  <textarea
-    #messageTextarea
-    [(ngModel)]="newMessage"
-    class="new-message-textarea"
-    placeholder="Napisz komentarz..."
-    (input)="adjustTextareaHeight(messageTextarea)"
-    (keydown)="onKeydown($event, messageTextarea)"
-    rows="1"
-    pTextarea
-    fluid
-  ></textarea>
-  <div class="new-message-send-btn-wrapper flex-center">
-    <button
-      class="send-btn"
-      (click)="sendComment(messageTextarea)"
-      [ngClass]="{ disabled: !newMessage }"
-    >
-      <i class="pi pi-arrow-up send-icon"></i>
-    </button>
   </div>
 </div>
