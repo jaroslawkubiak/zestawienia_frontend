@@ -31,6 +31,7 @@ import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
 import { IClientData } from '../for-supplier/types/IClientData';
+import { ForClientService } from './for-client.service';
 import { ProductComponent } from './product/product.component';
 
 @Component({
@@ -66,6 +67,7 @@ export class ForClientComponent implements OnInit {
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
   constructor(
+    private forClientService: ForClientService,
     private route: ActivatedRoute,
     private router: Router,
     private editSetService: EditSetService,
@@ -144,7 +146,8 @@ export class ForClientComponent implements OnInit {
       };
     });
 
-    this.selectedBookmarkId = this.set.bookmarks[0].id;
+    this.selectedBookmarkId =
+      this.set.lastUsedClientBookmark || this.set.bookmarks[0].id;
 
     this.loadContentForBookmark(this.selectedBookmarkId);
 
@@ -164,6 +167,13 @@ export class ForClientComponent implements OnInit {
   }
 
   loadContentForBookmark(bookmarkId: number) {
+    this.forClientService
+      .updateLastUsedClientBookmark(this.set.hash, bookmarkId)
+      .subscribe({
+        next: (response) => {
+          this.set = { ...response };
+        },
+      });
     this.selectedBookmarkId = bookmarkId;
 
     this.positionsFromBookmark = this.positions
