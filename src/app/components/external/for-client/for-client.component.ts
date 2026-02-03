@@ -143,7 +143,7 @@ export class ForClientComponent implements OnInit {
     });
 
     this.selectedBookmarkId =
-      this.set.lastUsedClientBookmark || this.set.bookmarks[0].id;
+      this.set.lastActiveClientBookmarkId || this.set.bookmarks[0].id;
 
     this.loadContentForBookmark(this.selectedBookmarkId);
 
@@ -164,7 +164,7 @@ export class ForClientComponent implements OnInit {
 
   loadContentForBookmark(bookmarkId: number) {
     this.forClientService
-      .updateLastUsedClientBookmark(this.set.hash, bookmarkId)
+      .updateLastActiveClientBookmark(this.set.hash, bookmarkId)
       .subscribe({
         next: (response) => {
           this.set = { ...response };

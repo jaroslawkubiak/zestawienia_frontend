@@ -262,7 +262,7 @@ export class EditSetService {
   ): Observable<ISet> {
     const updatedSet: ISet = {
       ...savedSet,
-      lastBookmark: { id: newBookmark },
+      lastActiveUserBookmark: { id: newBookmark },
     };
 
     return this.http

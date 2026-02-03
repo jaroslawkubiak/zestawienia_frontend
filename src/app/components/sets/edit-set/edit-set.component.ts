@@ -204,7 +204,7 @@ export class EditSetComponent
   loadContentForBookmark(bookmarkId: number) {
     this.editSetService.updateLastUsedBookmark(this.set, bookmarkId).subscribe({
       next: (response) => {
-        this.set = { ...this.set, lastBookmark: response.lastBookmark };
+        this.set = { ...this.set, lastActiveUserBookmark: response.lastActiveUserBookmark };
 
         if (this.showAllComments) {
           this.loadCommentsForSet();
@@ -253,7 +253,7 @@ export class EditSetComponent
 
     // mark first (lowest id) bookmark as selected
     this.selectedBookmark =
-      this.set.lastBookmark.id || this.set.bookmarks[0].id;
+      this.set.lastActiveUserBookmark.id || this.set.bookmarks[0].id;
 
     // make copy of bookmarks for header edit
     this.selectedBookmarks = JSON.parse(JSON.stringify(this.set.bookmarks));
@@ -280,7 +280,7 @@ export class EditSetComponent
 
     const updatedSet: ISet = {
       ...this.set,
-      lastBookmark: { id: this.selectedBookmark },
+      lastActiveUserBookmark: { id: this.selectedBookmark },
     };
 
     const savedSet: IUpdateSet = {

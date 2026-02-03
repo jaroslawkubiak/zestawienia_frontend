@@ -26,12 +26,12 @@ export class ForClientService {
     return this.editSetService.validateSetAndHashForClient(setHash, clientHash);
   }
 
-  updateLastUsedClientBookmark(
+  updateLastActiveClientBookmark(
     setHash: string,
     newBookmark: number,
   ): Observable<ISet> {
     return this.http.patch<ISet>(
-      `${environment.API_URL}/sets/${setHash}/${newBookmark}/lastUsedClientBookmark`,
+      `${environment.API_URL}/sets/${setHash}/${newBookmark}/lastActiveClientBookmark`,
       {
         headers: this.httpHeaders,
       },

@@ -14,10 +14,10 @@ export interface ISet {
   updatedAtTimestamp: number;
   hash: string;
   bookmarks: IBookmarksWithTableColumns[];
-  lastBookmark: {
+  lastActiveUserBookmark: {
     id: number;
   };
-  lastUsedClientBookmark: number;
+  lastActiveClientBookmarkId: number;
   files?: IFileFullDetails[];
   comments?: IComment[];
   newCommentsCount: IUnreadComments;
