@@ -197,18 +197,14 @@
 
 .needs-attention-wrapper {
   position: absolute;
-  top: -10px;
+  top: -12px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
 }
 
 .needs-attention-wrapper.incoming {
-  right: -10px;
-}
-
-.needs-attention-wrapper.outgoing {
-  left: -10px;
+  right: -12px;
 }
 
 .needs-attention-wrapper.active {

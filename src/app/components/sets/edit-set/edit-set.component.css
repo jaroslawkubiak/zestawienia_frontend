@@ -78,3 +78,15 @@
 .bookmarks {
   position: relative;
 }
+
+::ng-deep .btn-xl {
+  background-color: var(--accent-color-12) !important;
+}
+
+::ng-deep .btn-xl:hover {
+  background-color: var(--accent-color-14) !important;
+}
+
+::ng-deep .btn-xl .p-button-icon {
+  background: transparent !important;
+}

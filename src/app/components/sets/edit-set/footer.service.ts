@@ -23,13 +23,14 @@ export class FooterService {
     positions: IPosition[],
   ): IFooterRow[] {
     const totals = positions.reduce(
-      (acc, position) => {
-        acc.wartoscNetto += position.status.summary
-          ? Number(position.wartoscNetto)
-          : 0;
-        acc.wartoscBrutto += position.status.summary
-          ? Number(position.wartoscBrutto)
-          : 0;
+      (acc, p) => {
+        if (p.status?.summary) {
+          return acc;
+        }
+
+        acc.wartoscNetto += p.wartoscNetto ?? 0;
+        acc.wartoscBrutto += p.wartoscBrutto ?? 0;
+
         return acc;
       },
       { wartoscNetto: 0, wartoscBrutto: 0 },

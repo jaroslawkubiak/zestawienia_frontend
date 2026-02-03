@@ -105,6 +105,11 @@ th {
 
 .view-mode-textarea {
   text-align: center;
+  height: var(--row-height);
+  max-height: var(--row-height);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
 }
 
 .view-mode-link {
