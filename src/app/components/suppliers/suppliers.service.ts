@@ -14,6 +14,11 @@ import { ISupplier } from './ISupplier';
 })
 export class SuppliersService {
   authorizationToken = () => this.authService.getAuthorizationToken();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
   constructor(
     private http: HttpClient,
@@ -28,48 +33,37 @@ export class SuppliersService {
   }
 
   getSuppliers(): Observable<ISupplier[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .get<ISupplier[]>(`${environment.API_URL}/suppliers/getSuppliers`, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   addSupplier(supplier: Partial<ISupplier>): Observable<ISupplier> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     const { id, ...newSupplier } = supplier as Partial<ISupplier>;
 
     return this.http
-      .post<ISupplier>(`${environment.API_URL}/suppliers/addSupplier`, newSupplier, {
-        headers,
-      })
+      .post<ISupplier>(
+        `${environment.API_URL}/suppliers/addSupplier`,
+        newSupplier,
+        {
+          headers: this.httpHeaders,
+        },
+      )
       .pipe(catchError(this.handleError));
   }
 
   removeSuppliers(ids: number[]): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .request('delete', `${environment.API_URL}/suppliers/deleteSupplier`, {
         body: { ids },
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   saveSupplier(supplier: Partial<ISupplier>): Observable<ISupplier> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
     const { id, ...updatedSupplier } = supplier as Partial<ISupplier>;
 
     return this.http
@@ -77,7 +71,7 @@ export class SuppliersService {
         `${environment.API_URL}/suppliers/${id}/saveSupplier`,
         updatedSupplier,
         {
-          headers,
+          headers: this.httpHeaders,
         },
       )
       .pipe(catchError(this.handleError));

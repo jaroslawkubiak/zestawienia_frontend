@@ -14,6 +14,11 @@ import { IClient } from './types/IClient';
 })
 export class ClientsService {
   authorizationToken = () => this.authService.getAuthorizationToken();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 
@@ -27,53 +32,39 @@ export class ClientsService {
   }
 
   getClients(): Observable<IClient[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .get<IClient[]>(`${environment.API_URL}/clients/getClients`, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   addClient(client: Partial<IClient>): Observable<IClient> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     const { id, ...newClient } = client as Partial<IClient>;
 
     return this.http
       .post<IClient>(`${environment.API_URL}/clients/addClient`, newClient, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   saveClient(client: Partial<IClient>): Observable<IClient> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
     const { id, ...updatedClient } = client as Partial<IClient>;
 
     return this.http
       .patch<IClient>(`${environment.API_URL}/clients/${id}/saveClient`, updatedClient, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   removeClients(ids: number[]): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
 
     return this.http
       .request('delete', `${environment.API_URL}/clients/deleteClient`, {
         body: { ids },
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }

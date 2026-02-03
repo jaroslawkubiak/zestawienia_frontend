@@ -17,6 +17,11 @@ import { ISet } from './types/ISet';
 export class SetsService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
   constructor(
     private http: HttpClient,
@@ -32,39 +37,27 @@ export class SetsService {
   }
 
   getSets(): Observable<ISet[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .get<ISet[]>(`${environment.API_URL}/sets/getSets`, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   addSet(newSet: INewSet): Observable<ISavedSet> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     const createSet: INewSet = { ...newSet, createdBy: Number(this.userId()) };
 
     return this.http
       .post<ISavedSet>(`${environment.API_URL}/sets/addNew`, createSet, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }
 
   remove(id: number): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .delete<any>(`${environment.API_URL}/sets/${id}`, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }

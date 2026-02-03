@@ -13,8 +13,16 @@ import { AuthService } from '../../login/auth.service';
 })
 export class BookmarksService {
   authorizationToken = () => this.authService.getAuthorizationToken();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(() => new Error('DuplicateEntry'));
@@ -23,13 +31,9 @@ export class BookmarksService {
   }
 
   getBookmarks(): Observable<any[]> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http
       .get<any[]>(`${environment.API_URL}/bookmarks`, {
-        headers,
+        headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
   }

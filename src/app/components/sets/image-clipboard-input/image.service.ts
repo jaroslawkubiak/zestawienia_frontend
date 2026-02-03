@@ -10,26 +10,30 @@ import { AuthService } from '../../../login/auth.service';
 export class ImageService {
   userId = () => this.authService.getUserId();
   authorizationToken = () => this.authService.getAuthorizationToken();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
-  constructor(private http: HttpClient, private authService: AuthService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
   saveImage(
     setId: number,
     setHash: string,
     positionId: number,
-    formData: FormData
+    formData: FormData,
   ): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.post<any>(
       `${
         environment.API_URL
       }/images/${setId}/${setHash}/${positionId}?userId=${this.userId()}`,
       formData,
       {
-        headers,
-      }
+        headers: this.httpHeaders,
+      },
     );
   }
 }

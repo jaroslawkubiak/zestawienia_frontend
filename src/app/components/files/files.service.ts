@@ -15,6 +15,11 @@ import { IUploadFileResponse } from './types/IUploadFileResponse';
 export class FilesService {
   authorizationToken = () => this.authService.getAuthorizationToken();
   userId = () => this.authService.getUserId();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+    });
+  }
 
   constructor(
     private http: HttpClient,
@@ -24,15 +29,11 @@ export class FilesService {
 
   // save created zip from set files
   downloadFiles(ids: number[]): Observable<Blob> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.post(
       `${environment.API_URL}/files/download-zip`,
       { ids },
       {
-        headers,
+        headers: this.httpHeaders,
         responseType: 'blob',
       },
     );
@@ -40,15 +41,11 @@ export class FilesService {
 
   // save created pdf from set
   savePdf(setId: number, formData: FormData): Observable<any> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.post<any>(
       `${environment.API_URL}/files/upload/${setId}/pdf`,
       formData,
       {
-        headers,
+        headers: this.httpHeaders,
       },
     );
   }
@@ -60,17 +57,13 @@ export class FilesService {
     formData: FormData,
     uploadFolder: string,
   ): Observable<HttpEvent<IUploadFileResponse>> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.post<IUploadFileResponse>(
       `${environment.API_URL}/files/upload/${setId}/${setHash}/${uploadFolder}`,
       formData,
       {
         reportProgress: true,
         observe: 'events',
-        headers,
+        headers: this.httpHeaders,
       },
     );
   }
@@ -95,28 +88,20 @@ export class FilesService {
 
   // delete one file
   deleteFile(id: number): Observable<IDeletedFileResponse> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.delete<IDeletedFileResponse>(
       `${environment.API_URL}/files/${id}/deleteFile`,
       {
-        headers,
+        headers: this.httpHeaders,
       },
     );
   }
 
   // batch delete files
   deleteFiles(ids: number[]): Observable<void> {
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${this.authorizationToken()}`,
-    });
-
     return this.http.delete<void>(
       `${environment.API_URL}/files/deleteSomeFiles`,
       {
-        headers,
+        headers: this.httpHeaders,
         body: { ids },
       },
     );
