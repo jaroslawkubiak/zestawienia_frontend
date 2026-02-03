@@ -3,6 +3,8 @@ import { IUnreadComments } from '../../components/comments/types/IUnreadComments
 export function calcCommentsBadgeTooltip(
   newCommentsCount: IUnreadComments,
 ): string {
+  if (!newCommentsCount) return '';
+
   const { needsAttention, unread } = newCommentsCount;
 
   const tooltip =

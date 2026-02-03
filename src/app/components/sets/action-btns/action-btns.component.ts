@@ -25,18 +25,21 @@ export class ActionBtnsComponent {
 
   getCommentsBadgeValue(positionId: number): number {
     const currentPostition = this.findCurrentPosition(positionId);
+    if (!currentPostition?.newCommentsCount) return 0;
 
-    return countCommentsBadgeValue(currentPostition.newCommentsCount);
+    return countCommentsBadgeValue(currentPostition?.newCommentsCount);
   }
 
   getCommentsBadgeTooltip(positionId: number): string {
     const currentPostition = this.findCurrentPosition(positionId);
+    if (!currentPostition?.newCommentsCount) return '';
 
     return calcCommentsBadgeTooltip(currentPostition.newCommentsCount);
   }
 
   getCommentsBadgeSeverity(positionId: number): BadgeSeverity {
     const currentPostition = this.findCurrentPosition(positionId);
+    if (!currentPostition?.newCommentsCount) return 'secondary';
 
     return calcCommentsBadgeSeverity(currentPostition.newCommentsCount);
   }

@@ -4,6 +4,8 @@ import { BadgeSeverity } from '../../components/sets/action-btns/types/badgeSeve
 export function calcCommentsBadgeSeverity(
   newCommentsCount: IUnreadComments,
 ): BadgeSeverity {
+  if (!newCommentsCount) return 'secondary';
+
   const { needsAttention, unread, all } = newCommentsCount;
 
   if (needsAttention > 0 || unread > 0) {
