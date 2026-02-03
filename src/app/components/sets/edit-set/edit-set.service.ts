@@ -4,7 +4,7 @@ import {
   HttpHeaders,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, forkJoin, map, Observable, throwError } from 'rxjs';
+import { catchError, forkJoin, Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
@@ -15,7 +15,7 @@ import { IValidSetForSupplier } from '../../external/for-supplier/types/IValidSe
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IPosition } from '../positions-table/types/IPosition';
 import { IPositionStatus } from '../positions-table/types/IPositionStatus';
-import { PositionStatusList } from '../PositionStatusList';
+import { EMPTY_STATUS, PositionStatusList } from '../PositionStatusList';
 import { IClonePosition } from '../types/IClonePosition';
 import { ICompleteSet } from '../types/ICompleteSet';
 import { INewEmptyPosition } from '../types/INewEmptyPosition';
@@ -117,6 +117,7 @@ export class EditSetService {
     const newPosition: INewEmptyPosition = {
       kolejnosc,
       bookmarkId: bookmark,
+      status: EMPTY_STATUS,
       setId: { id: +set.id } as ISet,
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,

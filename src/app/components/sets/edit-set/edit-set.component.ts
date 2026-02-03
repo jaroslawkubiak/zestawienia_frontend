@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { SelectModule } from 'primeng/select';
@@ -29,6 +28,7 @@ import { ISupplier } from '../../suppliers/types/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
 import { IPosition } from '../positions-table/types/IPosition';
+import { EMPTY_STATUS } from '../PositionStatusList';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { SummaryComponent } from '../summary/summary.component';
 import { ISet } from '../types/ISet';
@@ -279,9 +279,18 @@ export class EditSetComponent
       lastActiveUserBookmark: { id: this.selectedBookmark },
     };
 
+    // replaca null status for EMPTY_STATUS
+    const updatedPositions = this.positions.map((position) => {
+      if (!position.status) {
+        return { ...position, status: EMPTY_STATUS };
+      }
+
+      return { ...position };
+    });
+
     const savedSet: IUpdateSet = {
       set: updatedSet,
-      positions: this.positions,
+      positions: updatedPositions,
       positionToDelete: [...this.positionToDelete],
     };
 

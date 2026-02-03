@@ -22,7 +22,7 @@ export interface IPosition {
   link: string;
   uwagi: string;
   image: string;
-  status?: IPositionStatus;
+  status: IPositionStatus;
   createdAt: string;
   createdAtTimestamp: number;
   updatedAt: string;
