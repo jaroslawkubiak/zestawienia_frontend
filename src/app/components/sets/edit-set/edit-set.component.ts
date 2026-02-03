@@ -272,12 +272,6 @@ export class EditSetComponent
     }
     this.updatePositions();
 
-    // need extract status.label from status object to save in DB
-    const updatedPositions = this.positions.map((item: any) => ({
-      ...item,
-      status: item.status?.label || item.status,
-    }));
-
     const updatedSet: ISet = {
       ...this.set,
       lastActiveUserBookmark: { id: this.selectedBookmark },
@@ -285,7 +279,7 @@ export class EditSetComponent
 
     const savedSet: IUpdateSet = {
       set: updatedSet,
-      positions: updatedPositions,
+      positions: this.positions,
       positionToDelete: [...this.positionToDelete],
     };
 

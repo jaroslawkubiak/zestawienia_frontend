@@ -111,22 +111,7 @@ export class EditSetService {
       set: this.getSet(setId),
       positions: this.getPositions(setId),
       suppliers: this.supplierService.getSuppliers(),
-    }).pipe(
-      map(({ set, positions, suppliers }) => {
-        const updatedPositions = positions.map((position) => {
-          return {
-            ...position,
-            status: position.status
-              ? this.positionStatus.find(
-                  (item) => position.status === item.label,
-                ) || ''
-              : position.status,
-          };
-        });
-
-        return { set, positions: updatedPositions, suppliers };
-      }),
-    );
+    });
   }
 
   addEmptyPosition(
@@ -179,18 +164,9 @@ export class EditSetService {
 
     const { id, comments, newComments, ...cloneData } = original;
 
-    const cloneStatus =
-      cloneData.status &&
-      typeof cloneData.status === 'object' &&
-      'label' in cloneData.status
-        ? cloneData.status.label
-        : cloneData.status;
-
     const newClonePosition: IClonePosition = {
       ...cloneData,
       bookmarkId: bookmark,
-      status: cloneStatus,
-
       setId: { id: +setId } as ISet,
       createdBy: { id: this.userId() } as IUser,
       updatedBy: { id: this.userId() } as IUser,
@@ -202,20 +178,7 @@ export class EditSetService {
         newClonePosition,
         { headers: this.httpHeaders },
       )
-      .pipe(
-        map((response: IPosition) => {
-          // if response.status = string — change for object from list
-          if (response.status) {
-            const statusObj = this.positionStatus.find(
-              (s) => s.label === response.status,
-            );
-            response.status = (statusObj as IPositionStatus) || '';
-          }
-
-          return response;
-        }),
-        catchError(this.handleError),
-      );
+      .pipe(catchError(this.handleError));
   }
 
   saveSet(savedSet: IUpdateSet): Observable<INewSet> {

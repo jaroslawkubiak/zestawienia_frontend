@@ -48,11 +48,11 @@
         <!-- STATUS  -->
         <div
           class="product-group status-wrapper"
-          [class]="getStatusCss(pos.position.status)"
+          [class]="pos.position.status?.cssClass"
         >
           <div class="product-title">STATUS</div>
           <div class="product-name">
-            {{ getStatusLabel(pos.position.status) }}
+            {{ pos.position.status?.label }}
           </div>
         </div>
       </div>

@@ -120,7 +120,7 @@
   <div
     class="product-details product-price"
     [style.margin-bottom]="
-      isMobile && getStatusCss(position.status) ? '60px' : '0px'
+      isMobile && position.status?.cssClass ? '60px' : '0px'
     "
   >
     <!-- ILOŚĆ -->
@@ -162,18 +162,16 @@
     <!-- STATUS  -->
     <div
       class="product-group product-status"
-      *ngIf="position.status ? getStatusCss(position.status) : ''"
+      *ngIf="position.status ? position.status.cssClass : ''"
     >
       <div
         class="product-title"
-        [class]="!isMobile ? '' : getStatusCss(position.status)"
+        [class]="!isMobile ? '' : position.status?.cssClass"
       >
         STATUS
       </div>
-      <div
-        class="product-name status-wrapper {{ getStatusCss(position.status) }} "
-      >
-        {{ getStatusLabel(position.status) }}
+      <div class="product-name status-wrapper {{ position.status?.cssClass }} ">
+        {{ position.status?.label }}
       </div>
     </div>
   </div>

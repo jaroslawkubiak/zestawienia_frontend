@@ -75,14 +75,6 @@ export class ProductComponent implements OnInit {
     });
   }
 
-  getStatusLabel(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status.label : '';
-  }
-
-  getStatusCss(status: IPositionStatus | string): string {
-    return typeof status === 'object' ? status.cssClass : '';
-  }
-
   onDialogClosed() {
     this.commentsUpdated.emit();
   }

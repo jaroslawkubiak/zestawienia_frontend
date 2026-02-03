@@ -17,7 +17,7 @@ export interface IClonePosition {
   pomieszczenie: string;
   link: string;
   uwagi: string;
-  status: IPositionStatus | string;
+  status?: IPositionStatus;
   setId: ISet;
   supplierId: ISupplier;
   bookmarkId: IBookmarksWithTableColumns;

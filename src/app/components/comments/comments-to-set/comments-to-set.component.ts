@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 import { environment } from '../../../../environments/environment';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
-import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
 import { ISet } from '../../sets/types/ISet';
 import { CommentsComponent } from '../comments.component';
 import { IPositionWithComments } from '../types/IPositionWithComments';
@@ -28,21 +27,5 @@ export class CommentsToSetComponent {
     }
 
     return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
-  }
-
-  getStatusLabel(status: IPositionStatus | string): string {
-    if (!status) {
-      return '';
-    }
-
-    return typeof status === 'object' ? status.label : '';
-  }
-
-  getStatusCss(status: IPositionStatus | string): string {
-    if (!status) {
-      return '';
-    }
-
-    return typeof status === 'object' ? status.cssClass : '';
   }
 }

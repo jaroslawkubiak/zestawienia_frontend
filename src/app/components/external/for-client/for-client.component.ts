@@ -114,31 +114,19 @@ export class ForClientComponent implements OnInit {
   }
 
   modifyData(positions: IPosition[]) {
-    this.positions = positions.map((pos) => {
-      const statusObj: IPositionStatus =
-        PositionStatusList.find(
-          (statusItem) => pos.status === statusItem.label,
-        ) || PositionStatusList[0];
+    this.positions = positions.map((position) => {
+      const brutto = calculateBrutto(position.netto);
+      const wartoscNetto = calculateWartosc(position.ilosc, position.netto);
+      const wartoscBrutto = calculateWartosc(position.ilosc, brutto);
 
-      const brutto = calculateBrutto(pos.netto);
+      const imageUrl = position.image ? this.joinImageUrl(position) : '';
 
       return {
-        ...pos,
-        status: statusObj,
+        ...position,
         brutto,
-        wartoscNetto: calculateWartosc(pos.ilosc, pos.netto),
-        wartoscBrutto: calculateWartosc(pos.ilosc, brutto),
-        imageUrl: pos.image
-          ? [
-              this.FILES_URL,
-              'sets',
-              this.set.id,
-              this.set.hash,
-              'positions',
-              pos.id,
-              pos.image,
-            ].join('/')
-          : '',
+        wartoscNetto,
+        wartoscBrutto,
+        imageUrl: imageUrl,
       };
     });
 
@@ -238,5 +226,17 @@ export class ForClientComponent implements OnInit {
     } else {
       this.mobileMenuOpen = true;
     }
+  }
+
+  private joinImageUrl(position: IPosition) {
+    return [
+      this.FILES_URL,
+      'sets',
+      this.set.id,
+      this.set.hash,
+      'positions',
+      position.id,
+      position.image,
+    ].join('/');
   }
 }
