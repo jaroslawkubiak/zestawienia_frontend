@@ -117,9 +117,11 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
           if (setting.name === 'sendingEmailsToSupplier') {
             this.sendingEmailsToSuppliers = setting.value === 'true';
           }
+
           if (setting.name === 'senderEmail') {
             this.senderEmail = setting.value;
           }
+          
           if (setting.name === 'GDPRClause') {
             this.GDPRClause = setting.value;
           }

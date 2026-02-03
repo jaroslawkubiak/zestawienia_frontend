@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -10,7 +9,6 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
@@ -37,6 +35,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
 import { buildSetMenu } from './set-menu.config';
+import { EditSetService } from '../edit-set/edit-set.service';
 
 @Component({
   selector: 'app-set-menu',
@@ -82,11 +81,10 @@ export class SetMenuComponent implements OnChanges, OnInit {
   clientHash = '';
 
   constructor(
-    private router: Router,
     private notificationService: NotificationService,
     private emailsService: EmailsService,
     private pdfService: PdfService,
-    private cd: ChangeDetectorRef,
+    private editSetService: EditSetService,
   ) {}
 
   ngOnInit() {
@@ -218,7 +216,26 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   hideEmailDialog() {
     this.showEmailTemplate = false;
-    this.set.status = SetStatus.sended;
+
+    // second auto status change - from inPreparation to sended
+    if (this.set.status === SetStatus.inPreparation) {
+      this.set.status = SetStatus.sended;
+
+      this.editSetService.updateSetStatus(this.set).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'info',
+            `Status zestawienia został zmieniony na "${response.status}"`,
+          );
+        },
+        error: (err) => {
+          this.notificationService.showNotification(
+            'error',
+            'Nie udało się zmienić status zestawienia.\n' + err,
+          );
+        },
+      });
+    }
   }
 
   // show all comments from this set

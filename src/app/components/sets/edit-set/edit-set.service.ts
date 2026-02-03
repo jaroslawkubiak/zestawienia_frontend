@@ -228,4 +228,16 @@ export class EditSetService {
       )
       .pipe(catchError(this.handleError));
   }
+
+  updateSetStatus(savedSet: ISet): Observable<ISet> {
+    return this.http
+      .patch<ISet>(
+        `${environment.API_URL}/sets/${savedSet.id}/updateSetStatus`,
+        savedSet,
+        {
+          headers: this.httpHeaders,
+        },
+      )
+      .pipe(catchError(this.handleError));
+  }
 }
