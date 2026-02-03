@@ -44,11 +44,14 @@ export class PdfService {
     ...ColumnList,
   ];
 
+  drawSummaryPage = false;
+  drawFooter = false;
+
   // get colors from css variables
   colors = {
     accent: getCssVariable('--accent-color-10'),
     accentLighter: getCssVariable('--accent-color-06'),
-    accentDarker: getCssVariable('--accent-color-12'),
+    accentDarker: getCssVariable('--black-color'),
     accentDark: getCssVariable('--accent-color-15'),
     black: getCssVariable('--black-color'),
     neutral: getCssVariable('--neutral-color-01'),
@@ -103,15 +106,42 @@ export class PdfService {
     // set default font and text color
     doc.setFontSize(10);
     doc.setTextColor(this.colors.black);
+    const marginLeft = 5;
+    const marginRight = 5;
+    const availableWidth = this.pageWidth - marginLeft - marginRight;
+    //TODO
+    // this.columnStyles = this.visibleColumns.reduce(
+    //   (styles, col, index) => {
+    //     styles[index] = { cellWidth: col.pdfWidth || 'auto' };
+    //     return styles;
+    //   },
+    //   {} as { [key: number]: { cellWidth: number | 'auto' } },
+    // );
+    // suma szerokości kolumn zdefiniowanych przez pdfWidth
+    const fixedWidthSum = this.visibleColumns
+      .filter((col) => col.pdfWidth)
+      .reduce((sum, col) => sum + col.pdfWidth!, 0);
+
+    // ostatnia kolumna, która nie ma pdfWidth
+    const lastFlexibleColumnIndex = this.visibleColumns.findIndex(
+      (col) => !col.pdfWidth,
+    );
 
     this.columnStyles = this.visibleColumns.reduce(
       (styles, col, index) => {
-        styles[index] = { cellWidth: col.pdfWidth || 'auto' };
+        if (col.pdfWidth) {
+          styles[index] = { cellWidth: col.pdfWidth };
+        } else if (index === lastFlexibleColumnIndex) {
+          // ta kolumna zajmuje resztę dostępnej szerokości
+          styles[index] = { cellWidth: availableWidth - fixedWidthSum };
+        } else {
+          // wszystkie inne kolumny bez pdfWidth traktujemy normalnie
+          styles[index] = { cellWidth: 30 }; // opcjonalnie, lub 'auto'
+        }
         return styles;
       },
-      {} as { [key: number]: { cellWidth: number | 'auto' } },
+      {} as { [key: number]: { cellWidth: number } },
     );
-
     // find index of column needed in didDrawCell
     const columnIndexes = this.visibleColumns.reduce<{ [key: string]: number }>(
       (acc, col) => {
@@ -130,129 +160,126 @@ export class PdfService {
       .filter((bookmark) => uniqueBookmarks.has(bookmark.id))
       .sort((a, b) => a.id - b.id);
 
-    // draw summary
-    const summaryTotals = filteredBookmarks.map((bookmark, i) => {
-      const sum = positions
-        .filter((p) => {
-          if (p.bookmarkId.id !== bookmark.id) return false;
+    if (this.drawSummaryPage) {
+      // draw summary
+      const summaryTotals = filteredBookmarks.map((bookmark, i) => {
+        const sum = positions
+          .filter((p) => p.bookmarkId.id === bookmark.id && p.status?.summary)
+          .reduce((acc, p) => {
+            const brutto = p.netto ? calculateBrutto(p.netto) : 0;
+            const wartoscBrutto = p.ilosc
+              ? calculateWartosc(p.ilosc, brutto)
+              : 0;
+            return acc + wartoscBrutto;
+          }, 0);
 
-          if (!p.status) return true;
+        return {
+          lp: i + 1,
+          name: bookmark.name,
+          brutto: sum,
+        };
+      });
 
-          if (typeof p.status === 'object' && 'summary' in p.status) {
-            return p.status.summary === true;
+      doc.setPage(1);
+
+      // draw background
+      const backgroundBase64 = await this.getBase64Image(
+        'assets/images/background1.jpg',
+      );
+
+      doc.addImage(
+        backgroundBase64,
+        'JPG', // format
+        0, // X
+        0, // Y
+        this.pageWidth,
+        this.pageHeight,
+      );
+
+      // header summary
+      const summaryRowHeight = 40;
+      this.drawSummaryTitle(doc, `Podsumowanie inwestycji ${set.name}`);
+      const totalBrutto = summaryTotals.reduce(
+        (acc, row) => acc + row.brutto,
+        0,
+      );
+
+      const summaryHead = [['LP', 'KATEGORIA', 'WARTOŚĆ [zł/brutto]']];
+      const summaryBody = [
+        ...summaryTotals.map((row) => [
+          row.lp,
+          row.name,
+          formatPLN(row.brutto ?? 0),
+        ]),
+        ['', 'WARTOŚĆ CAŁKOWITA (brutto)', formatPLN(totalBrutto)],
+      ];
+      const summaryTableYPos =
+        this.pageHeight - summaryRowHeight * (summaryBody.length + 1);
+
+      // tabela summary
+      autoTable(doc, {
+        head: summaryHead,
+        body: summaryBody,
+        margin: { left: 520 },
+        startY: summaryTableYPos,
+        theme: 'grid',
+        headStyles: {
+          font: 'Roboto',
+          fontStyle: 'bold',
+          fillColor: this.colors.accentDark,
+          textColor: this.colors.white,
+          halign: 'center',
+          cellPadding: {
+            top: Math.floor(10),
+            bottom: Math.floor(10),
+            right: 3,
+            left: 3,
+          },
+        },
+        bodyStyles: {
+          font: 'Roboto',
+          fontStyle: 'normal',
+          fillColor: this.colors.white,
+          textColor: this.colors.black,
+          halign: 'center',
+          cellPadding: {
+            top: Math.floor(10),
+            bottom: Math.floor(10),
+            right: 3,
+            left: 3,
+          },
+        },
+        columnStyles: {
+          0: { cellWidth: 30 },
+          1: { cellWidth: 180 },
+          2: { cellWidth: 100 },
+        },
+
+        didParseCell: (data) => {
+          data.cell.styles.fontSize = 20;
+          const isLastRow = data.row.index === summaryBody.length - 1;
+
+          if (isLastRow && data.section === 'body') {
+            data.cell.styles.fillColor = this.colors.accentDark;
+            data.cell.styles.textColor = this.colors.white;
+            data.cell.styles.fontStyle = 'bold';
           }
 
-          return false;
-        })
-        .reduce((acc, p) => {
-          const brutto = p.netto ? calculateBrutto(p.netto) : 0;
-          const wartoscBrutto = p.ilosc ? calculateWartosc(p.ilosc, brutto) : 0;
-          return acc + wartoscBrutto;
-        }, 0);
+          if (data.column.index === 0) {
+            data.cell.styles.fillColor = this.colors.accentDark;
+            data.cell.styles.textColor = this.colors.white;
+            data.cell.styles.fontStyle = 'bold';
+          }
 
-      return {
-        lp: i + 1,
-        name: bookmark.name,
-        brutto: sum,
-      };
-    });
-
-    doc.setPage(1);
-
-    // draw background
-    const backgroundBase64 = await this.getBase64Image(
-      'assets/images/background1.jpg',
-    );
-
-    doc.addImage(
-      backgroundBase64,
-      'JPG', // format
-      0, // X
-      0, // Y
-      this.pageWidth,
-      this.pageHeight,
-    );
-
-    // header summary
-    const summaryRowHeight = 40;
-    this.drawSummaryTitle(doc, `Podsumowanie inwestycji ${set.name}`);
-    const totalBrutto = summaryTotals.reduce((acc, row) => acc + row.brutto, 0);
-
-    const summaryHead = [['LP', 'KATEGORIA', 'WARTOŚĆ [zł/brutto]']];
-    const summaryBody = [
-      ...summaryTotals.map((row) => [
-        row.lp,
-        row.name,
-        formatPLN(row.brutto ?? 0),
-      ]),
-      ['', 'WARTOŚĆ CAŁKOWITA (brutto)', formatPLN(totalBrutto)],
-    ];
-    const summaryTableYPos =
-      this.pageHeight - summaryRowHeight * (summaryBody.length + 1);
-
-    // tabela podsumowania
-    autoTable(doc, {
-      head: summaryHead,
-      body: summaryBody,
-      margin: { left: 520 },
-      startY: summaryTableYPos,
-      theme: 'grid',
-      headStyles: {
-        font: 'Roboto',
-        fontStyle: 'bold',
-        fillColor: this.colors.accentDark,
-        textColor: this.colors.white,
-        halign: 'center',
-        cellPadding: {
-          top: Math.floor(10),
-          bottom: Math.floor(10),
-          right: 3,
-          left: 3,
+          if (data.column.index === 1 || data.column.index === 2) {
+            data.cell.styles.halign = 'left';
+          }
         },
-      },
-      bodyStyles: {
-        font: 'Roboto',
-        fontStyle: 'normal',
-        fillColor: this.colors.white,
-        textColor: this.colors.black,
-        halign: 'center',
-        cellPadding: {
-          top: Math.floor(10),
-          bottom: Math.floor(10),
-          right: 3,
-          left: 3,
-        },
-      },
-      columnStyles: {
-        0: { cellWidth: 30 },
-        1: { cellWidth: 180 },
-        2: { cellWidth: 100 },
-      },
+      });
 
-      didParseCell: (data) => {
-        data.cell.styles.fontSize = 20;
-        const isLastRow = data.row.index === summaryBody.length - 1;
-
-        if (isLastRow && data.section === 'body') {
-          data.cell.styles.fillColor = this.colors.accentDark;
-          data.cell.styles.textColor = this.colors.white;
-          data.cell.styles.fontStyle = 'bold';
-        }
-
-        if (data.column.index === 0) {
-          data.cell.styles.fillColor = this.colors.accentDark;
-          data.cell.styles.textColor = this.colors.white;
-          data.cell.styles.fontStyle = 'bold';
-        }
-
-        if (data.column.index === 1 || data.column.index === 2) {
-          data.cell.styles.halign = 'left';
-        }
-      },
-    });
-
-    doc.addPage();
-    // end summary
+      doc.addPage();
+      // end summary
+    }
 
     // main loop for every bookmark in set
     for (const [index, bookmark] of filteredBookmarks.entries()) {
@@ -360,7 +387,7 @@ export class PdfService {
       autoTable(doc, {
         head: this.headers,
         body: data,
-        margin: 0,
+        margin: { left: 5 },
         startY: 20,
         tableWidth: 'wrap',
         didParseCell: (data) => {
@@ -368,6 +395,7 @@ export class PdfService {
           const statusColumnIndex = columnIndexes['status'];
           const rowArray = data.row.raw as any[];
           const status = rowArray[statusColumnIndex];
+
           if (status) {
             const statusObj = this.positionStatus.find(
               (s) => s.label === status,
@@ -499,36 +527,38 @@ export class PdfService {
         columnStyles: this.columnStyles,
       });
 
-      // calculate footer
-      const footerRow = this.visibleColumns.map(({ key }) => {
-        if (key === 'ilosc') return totals.ilosc;
+      if (this.drawFooter) {
+        // calculate footer
+        const footerRow = this.visibleColumns.map(({ key }) => {
+          if (key === 'ilosc') return totals.ilosc;
 
-        const value = totals[key as keyof typeof totals];
-        return value !== undefined && typeof value === 'number'
-          ? formatPLN(value)
-          : '';
-      });
-      const footer = [footerRow];
+          const value = totals[key as keyof typeof totals];
+          return value !== undefined && typeof value === 'number'
+            ? formatPLN(value)
+            : '';
+        });
+        const footer = [footerRow];
 
-      // draw footer
-      const finalY = (doc as any).lastAutoTable?.finalY || 20;
+        // draw footer
+        const finalY = (doc as any).lastAutoTable?.finalY || 20;
 
-      autoTable(doc, {
-        body: footer,
-        margin: 0,
-        startY: finalY,
-        bodyStyles: {
-          font: 'Roboto',
-          fontStyle: 'bold',
-          fillColor: this.colors.accentDarker,
-          textColor: this.colors.white,
-          halign: 'center',
-          valign: 'middle',
-          minCellHeight: 15,
-        },
-        theme: 'grid',
-        columnStyles: this.columnStyles,
-      });
+        autoTable(doc, {
+          body: footer,
+          margin: { left: 5 },
+          startY: finalY,
+          bodyStyles: {
+            font: 'Roboto',
+            fontStyle: 'bold',
+            fillColor: this.colors.accentDarker,
+            textColor: this.colors.white,
+            halign: 'center',
+            valign: 'middle',
+            minCellHeight: 15,
+          },
+          theme: 'grid',
+          columnStyles: this.columnStyles,
+        });
+      }
 
       if (index !== uniqueBookmarks.size - 1) {
         doc.addPage();

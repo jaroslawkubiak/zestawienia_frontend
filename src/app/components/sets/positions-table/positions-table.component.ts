@@ -29,9 +29,11 @@ import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ITableColumnWidth } from '../../bookmarks/types/ITableColumnWidth';
 import { CommentsComponent } from '../../comments/comments.component';
+import { CommentsService } from '../../comments/comments.service';
+import { IComment } from '../../comments/types/IComment';
 import { ImageGalleryComponent } from '../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../image-gallery/types/IGalleryList';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ActionBtnsComponent } from '../action-btns/action-btns.component';
 import { ColumnList } from '../ColumnList';
 import { EditSetService } from '../edit-set/edit-set.service';
@@ -39,13 +41,11 @@ import { FooterService } from '../edit-set/footer.service';
 import { ImageClipboardInputComponent } from '../image-clipboard-input/image-clipboard-input.component';
 import { PositionStatusList } from '../PositionStatusList';
 import { IFooterRow } from '../types/IFooterRow';
-import { IPositionStatus } from './types/IPositionStatus';
 import { ISet } from '../types/ISet';
 import { SetStatus } from '../types/set-status.enum';
 import { IColumnList } from './types/IColumnList';
 import { IPosition } from './types/IPosition';
-import { CommentsService } from '../../comments/comments.service';
-import { IComment } from '../../comments/types/IComment';
+import { IPositionStatus } from './types/IPositionStatus';
 
 @Component({
   selector: 'app-positions-table',

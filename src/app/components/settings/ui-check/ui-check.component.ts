@@ -5,8 +5,6 @@ import { ButtonModule } from 'primeng/button';
   selector: 'app-ui-check',
   imports: [ButtonModule],
   templateUrl: './ui-check.component.html',
-  styleUrl: './ui-check.component.css'
+  styleUrl: './ui-check.component.css',
 })
-export class UiCheckComponent {
-
-}
+export class UiCheckComponent {}

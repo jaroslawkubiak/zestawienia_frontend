@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { notificationLifeTime } from '../shared/constans';
-
-type ISeverity = 'success' | 'error' | 'warn' | 'info';
+import { notificationSeverity } from './types/notificationSeverity.type';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +9,7 @@ type ISeverity = 'success' | 'error' | 'warn' | 'info';
 export class NotificationService {
   constructor(private messageService: MessageService) {}
 
-  showNotification(severity: ISeverity, detail: string) {
+  showNotification(severity: notificationSeverity, detail: string) {
     let summary = '';
     switch (severity) {
       case 'success':

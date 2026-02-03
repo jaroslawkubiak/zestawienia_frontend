@@ -22,7 +22,7 @@ import { SoundType } from '../../../services/types/SoundType';
 import { ISet } from '../../sets/types/ISet';
 import { SettingsService } from '../../settings/settings.service';
 import { DbSettings } from '../../settings/types/IDbSettings';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { createHTMLEmail } from '../createHTMLEmail';
 import { EmailsService } from '../email.service';
 import { EmailDetailsList } from '../EmailDetailsList';

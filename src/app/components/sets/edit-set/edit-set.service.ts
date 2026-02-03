@@ -67,17 +67,6 @@ export class EditSetService {
       .pipe(catchError(this.handleError));
   }
 
-  getPositionsForSupplier(
-    setId: number,
-    supplierId: number,
-  ): Observable<IPosition[]> {
-    return this.http
-      .get<
-        IPosition[]
-      >(`${environment.API_URL}/positions/${setId}/${supplierId}/getPositionList`)
-      .pipe(catchError(this.handleError));
-  }
-
   getSet(setId: number): Observable<ISet> {
     return this.http
       .get<ISet>(`${environment.API_URL}/sets/${setId}/getSet`)

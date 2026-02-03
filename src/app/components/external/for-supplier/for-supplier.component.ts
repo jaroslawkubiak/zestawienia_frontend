@@ -26,7 +26,6 @@ export class ForSupplierComponent implements OnInit {
   setId: number | null = null;
   setHash: string | null = null;
   setName: string | null = null;
-  set!: ISet;
   client!: IClientData;
   supplier!: ISupplierData;
   positions: IPositionForSupplier[] = [];

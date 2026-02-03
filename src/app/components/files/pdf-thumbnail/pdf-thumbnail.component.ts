@@ -24,6 +24,7 @@ export class PdfThumbnailComponent implements OnChanges {
   handleClick() {
     this.pdfClick.emit(this.file);
   }
+  
   thumbnail: string = '';
   isLoading: boolean = true;
 

@@ -26,8 +26,6 @@ import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
-import { IPositionStatus } from '../../sets/positions-table/types/IPositionStatus';
-import { PositionStatusList } from '../../sets/PositionStatusList';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
 import { IClientData } from '../for-supplier/types/IClientData';
@@ -50,7 +48,6 @@ import { ProductComponent } from './product/product.component';
   styleUrl: './for-client.component.css',
 })
 export class ForClientComponent implements OnInit {
-  clientHash: string | null = null;
   set!: ISet;
   positions: IPosition[] = [];
   positionsFromBookmark: IPosition[] = [];
@@ -222,7 +219,7 @@ export class ForClientComponent implements OnInit {
       setTimeout(() => {
         this.mobileMenuOpen = false;
         this.mobileMenuClosing = false;
-      }, 300); // MUSI = czas animacji
+      }, 300);
     } else {
       this.mobileMenuOpen = true;
     }

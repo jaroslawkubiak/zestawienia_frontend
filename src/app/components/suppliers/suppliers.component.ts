@@ -24,7 +24,7 @@ import { IConfirmationMessage } from '../../services/types/IConfirmationMessage'
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { SuppliersService } from './suppliers.service';
-import { ISupplier } from './ISupplier';
+import { ISupplier } from './types/ISupplier';
 
 @Component({
   selector: 'app-suppliers',
@@ -58,11 +58,12 @@ export class SuppliersComponent implements OnInit {
   selected!: ISupplier[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
+
   constructor(
     private suppliersService: SuppliersService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   form = new FormGroup({
@@ -130,7 +131,7 @@ export class SuppliersComponent implements OnInit {
   deleteSelectedSupplier() {
     const accept = () => {
       this.suppliers = this.suppliers.filter(
-        (val) => !this.selected?.includes(val)
+        (val) => !this.selected?.includes(val),
       );
       const idList = this.selected?.map((val) => val.id) ?? [];
       this.selected = null;
@@ -138,7 +139,7 @@ export class SuppliersComponent implements OnInit {
         next: (response) => {
           this.notificationService.showNotification(
             'success',
-            'Dostawcy zostali usunięci'
+            'Dostawcy zostali usunięci',
           );
         },
         error: (error) => {
@@ -167,7 +168,7 @@ export class SuppliersComponent implements OnInit {
         next: (response) => {
           this.notificationService.showNotification(
             'success',
-            'Dostawca został usunięty'
+            'Dostawca został usunięty',
           );
         },
         error: (error) => {
@@ -228,7 +229,7 @@ export class SuppliersComponent implements OnInit {
               editedSupplier;
             this.notificationService.showNotification(
               'success',
-              'Dane dostawcy zaktualizowane'
+              'Dane dostawcy zaktualizowane',
             );
           },
           error: (error) => {
@@ -250,7 +251,7 @@ export class SuppliersComponent implements OnInit {
           next: (response) => {
             this.notificationService.showNotification(
               'success',
-              'Dostawca został dodany'
+              'Dostawca został dodany',
             );
             this.suppliers.unshift(response);
             this.cd.markForCheck();
@@ -286,7 +287,7 @@ export class SuppliersComponent implements OnInit {
       .then(() => {
         this.notificationService.showNotification(
           'info',
-          'Adres dostawcy został skopiowany do schowka'
+          'Adres dostawcy został skopiowany do schowka',
         );
       })
       .catch((err) => {

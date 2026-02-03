@@ -1,7 +1,7 @@
 import { IUser } from '../../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../../bookmarks/types/IBookmarksWithTableColumns';
 import { IUnreadComments } from '../../../comments/types/IUnreadComments';
-import { ISupplier } from '../../../suppliers/ISupplier';
+import { ISupplier } from '../../../suppliers/types/ISupplier';
 import { ISet } from '../../types/ISet';
 import { IPositionStatus } from './IPositionStatus';
 

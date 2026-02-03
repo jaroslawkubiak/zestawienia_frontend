@@ -56,6 +56,7 @@ export class EditHeaderComponent implements OnInit {
     this.selectedStatus = this.editHeader.selectedStatus;
     this.selectedBookmarks = this.editHeader.selectedBookmarks;
   }
+
   getBookmarks() {
     this.bookmarksService.getBookmarks().subscribe({
       next: (data) => {
@@ -68,6 +69,7 @@ export class EditHeaderComponent implements OnInit {
       error: (err) => console.error('Error getting bookmarks ', err),
     });
   }
+  
   save() {
     const newHeader: ISetHeader = {
       name: this.name,

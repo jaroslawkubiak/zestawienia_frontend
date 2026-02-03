@@ -23,6 +23,7 @@ export class BookmarksService {
     private http: HttpClient,
     private authService: AuthService,
   ) {}
+  
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(() => new Error('DuplicateEntry'));

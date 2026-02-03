@@ -22,6 +22,7 @@ import { FilesService } from '../files.service';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
 import { IFileDirectory } from '../types/IFileDirectory';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { TChooseButton, TUploadButton } from './types/buttons.type';
 
 @Component({
   selector: 'app-send-files',
@@ -66,15 +67,19 @@ export class SendFilesComponent {
   directoryList: IFileDirectory[] = FileDirectoryList;
   isMobile = false;
 
-  chooseButtonProps: any = {
+  chooseButtonProps: TChooseButton = {
     severity: 'primary',
     label: 'Wybierz pliki',
     size: 'large',
     disabled: this.who === 'user',
   };
 
-  uploadButtonProps: any = { severity: 'info', label: 'Wgraj', size: 'large' };
-  cancelButtonProps: any = {
+  uploadButtonProps: TUploadButton = {
+    severity: 'info',
+    label: 'Wgraj',
+    size: 'large',
+  };
+  cancelButtonProps: TUploadButton = {
     severity: 'danger',
     label: 'Anuluj',
     size: 'large',

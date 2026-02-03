@@ -25,7 +25,7 @@ import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWith
 import { CommentsToSetComponent } from '../../comments/comments-to-set/comments-to-set.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { LegendComponent } from '../legend/legend.component';
 import { PositionsTableComponent } from '../positions-table/positions-table.component';
 import { IPosition } from '../positions-table/types/IPosition';
@@ -72,7 +72,6 @@ export class EditSetComponent
   isLoading = true;
   setIsDirty = false;
   allSuppliers: ISupplier[] = [];
-  menuItems: MenuItem[] = [];
   @ViewChild(SetMenuComponent) setMenuComponent!: SetMenuComponent;
 
   @ViewChild(PositionsTableComponent)
@@ -204,7 +203,10 @@ export class EditSetComponent
   loadContentForBookmark(bookmarkId: number) {
     this.editSetService.updateLastUsedBookmark(this.set, bookmarkId).subscribe({
       next: (response) => {
-        this.set = { ...this.set, lastActiveUserBookmark: response.lastActiveUserBookmark };
+        this.set = {
+          ...this.set,
+          lastActiveUserBookmark: response.lastActiveUserBookmark,
+        };
 
         if (this.showAllComments) {
           this.loadCommentsForSet();

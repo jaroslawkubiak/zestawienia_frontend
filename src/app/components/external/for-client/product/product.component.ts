@@ -19,7 +19,6 @@ import { CommentsService } from '../../../comments/comments.service';
 import { IComment } from '../../../comments/types/IComment';
 import { BadgeSeverity } from '../../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../../sets/positions-table/types/IPosition';
-import { IPositionStatus } from '../../../sets/positions-table/types/IPositionStatus';
 import { ISet } from '../../../sets/types/ISet';
 
 @Component({

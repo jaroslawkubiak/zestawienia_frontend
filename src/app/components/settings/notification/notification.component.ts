@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { NotificationService } from '../../../services/notification.service';
-type ISeverity = 'success' | 'error' | 'warn' | 'info';
+import { notificationSeverity } from '../../../services/types/notificationSeverity.type';
 
 @Component({
   selector: 'app-notification',
@@ -14,7 +14,7 @@ type ISeverity = 'success' | 'error' | 'warn' | 'info';
 export class NotificationComponent {
   constructor(private notificationService: NotificationService) {}
 
-  send(severity: ISeverity, message: string) {
+  send(severity: notificationSeverity, message: string) {
     this.notificationService.showNotification(severity, message);
   }
 }

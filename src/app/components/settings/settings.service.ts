@@ -23,7 +23,7 @@ export class SettingsService {
       .pipe(catchError(this.handleError));
   }
 
-  getByName(name: string): Observable<DbSettings> {
+  getSettingByName(name: string): Observable<DbSettings> {
     return this.http
       .get<DbSettings>(`${environment.API_URL}/settings/${name}`)
       .pipe(catchError(this.handleError));

@@ -23,6 +23,7 @@ export class ImageClipboardInputComponent {
   @Input() setHash!: string;
   @Input() positionId!: number;
   @Output() blur = new EventEmitter<Event>();
+  
   constructor(
     private notificationService: NotificationService,
     private imageService: ImageService,

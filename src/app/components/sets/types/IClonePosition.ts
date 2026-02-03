@@ -1,6 +1,6 @@
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { IPositionStatus } from '../positions-table/types/IPositionStatus';
 import { ISet } from './ISet';
 

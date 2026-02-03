@@ -1,6 +1,6 @@
 import { MenuItem } from 'primeng/api';
 import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ISet } from '../types/ISet';
 
 export interface SetMenuParams {

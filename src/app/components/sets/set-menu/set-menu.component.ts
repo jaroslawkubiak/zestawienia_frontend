@@ -30,7 +30,7 @@ import { SendFilesComponent } from '../../files/send-files/send-files.component'
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
-import { ISupplier } from '../../suppliers/ISupplier';
+import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { IPosition } from '../positions-table/types/IPosition';
 import { ISet } from '../types/ISet';

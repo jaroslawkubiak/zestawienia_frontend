@@ -19,6 +19,7 @@ import { ConfirmationModalService } from '../../../services/confirmation.service
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
+import { TAuthorType } from '../../comments/types/authorType.type';
 import { ISet } from '../../sets/types/ISet';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
@@ -28,7 +29,6 @@ import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IRemainingFiles } from '../types/IRemainingFiles';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
-import { TAuthorType } from '../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-show-files',

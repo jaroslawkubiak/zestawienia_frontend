@@ -10,11 +10,11 @@ import { TextareaModule } from 'primeng/textarea';
 import { NotificationService } from '../../../services/notification.service';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { BookmarksService } from '../../bookmarks/bookmarks.service';
+import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ClientsService } from '../../clients/clients.service';
 import { IClient } from '../../clients/types/IClient';
 import { SetsService } from '../sets.service';
 import { INewSet } from '../types/INewSet';
-import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 
 @Component({
   selector: 'app-new-set',
