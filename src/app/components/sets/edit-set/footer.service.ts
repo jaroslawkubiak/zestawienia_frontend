@@ -20,15 +20,19 @@ export class FooterService {
   // calculate values for footer row
   calculateFooterRow(
     footerRow: IFooterRow[],
-    positions: IPosition[]
+    positions: IPosition[],
   ): IFooterRow[] {
     const totals = positions.reduce(
       (acc, position) => {
-        acc.wartoscNetto += Number(position.wartoscNetto) || 0;
-        acc.wartoscBrutto += Number(position.wartoscBrutto) || 0;
+        acc.wartoscNetto += position.status.summary
+          ? Number(position.wartoscNetto)
+          : 0;
+        acc.wartoscBrutto += position.status.summary
+          ? Number(position.wartoscBrutto)
+          : 0;
         return acc;
       },
-      { wartoscNetto: 0, wartoscBrutto: 0 }
+      { wartoscNetto: 0, wartoscBrutto: 0 },
     );
 
     return footerRow.map((item: IFooterRow) => {
