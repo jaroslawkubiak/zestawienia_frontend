@@ -7,17 +7,15 @@
         </a>
       </li>
     </ul>
-    <div class="logout-wrapper">
+    <div class="logout-wrapper flex-center">
+      <img
+        [src]="'assets/images/avatars/users/' + userId() + '.png'"
+        alt="avatar"
+        class="avatar-image"
+      />
       <button type="button" class="logout" (click)="logout()">
         <i class="pi pi-sign-out icon"></i>
       </button>
-      <div class="flex-center">
-        <img
-          [src]="'assets/images/avatars/users/' + userId() + '.png'"
-          alt="avatar"
-          class="avatar-image"
-        />
-      </div>
     </div>
   </div>
 </div>
