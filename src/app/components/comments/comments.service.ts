@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError } from 'rxjs';
+import { Observable, catchError, throwError, EMPTY } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { IComment } from './types/IComment';
@@ -113,7 +113,17 @@ export class CommentsService {
   }
 
   // when open comments dialog - mark all unread comment as seenAt
-  markAllCommentsAsSeen(positionId: number, authorType: TAuthorType) {
+  markAllCommentsAsSeen(
+    positionId: number,
+    comments: IComment[],
+    authorType: TAuthorType,
+  ): Observable<void> {
+    const unseenComments = comments.filter(
+      (comment) => !comment.seenAt && comment.authorType !== authorType,
+    );
+
+    if (unseenComments.length === 0) return EMPTY;
+
     return this.http.post<void>(
       `${environment.API_URL}/comments/markAllAsSeen`,
       {

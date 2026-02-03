@@ -7,35 +7,32 @@
       [class.outgoing]="!isIncoming(comment)"
     >
       <div class="message-bubble">
+        <!-- NEEDS ATTENTION ICON  -->
         <div
-          [class.needsAttentionIncoming]="
-            isIncoming(comment) && isNeedsAttention(comment)
-          "
-          [class.needsAttentionOutgoing]="
-            !isIncoming(comment) && isNeedsAttention(comment)
-          "
-          [class.hidden]="!isNeedsAttention(comment)"
-          pTooltip="Komentarz jest oznaczony jako wymaga uwagi"
+          class="needs-attention-wrapper"
           tooltipPosition="top"
+          [pTooltip]="needsAttentionTooltip(comment)"
+          (click)="toggleCommentAsNeedAttention(comment.id)"
+          [class.active]="isNeedsAttention(comment)"
+          [class.incoming]="isIncoming(comment)"
+          [class.outgoing]="!isIncoming(comment)"
         >
           <i class="pi pi-exclamation-circle"></i>
         </div>
-
-        <i
-          [pTooltip]="isUnreadOrNeedsAttentionTooltip(comment)"
+        <!-- UNREAD MESSAGE  -->
+        <div
           tooltipPosition="top"
-          class="pi pi-comment comment-icon"
-          [ngClass]="
-            !comment.seenAt ? 'comment-icon-unread' : 'comment-icon-read'
-          "
-          (click)="toggleCommentAsNeedAttention(comment.id)"
-        ></i>
+          [pTooltip]="isCommentNew(comment) ? 'Nieprzeczytany komentarz' : ''"
+          [ngClass]="isCommentNew(comment) ? 'unread-message' : ''"
+        ></div>
+        <!-- EDIT ICON  -->
         <i
           class="pi pi-pencil edit-icon"
           (click)="markCommentToEdit(comment.id)"
           pTooltip="Edytuj"
           tooltipPosition="top"
         ></i>
+        <!-- DELETE ICON  -->
         <i
           pTooltip="Usuń"
           tooltipPosition="top"
@@ -49,6 +46,7 @@
         <span class="timestamp">
           {{ comment.authorName }}, {{ comment.createdAt }}
         </span>
+        <!-- AVATAR  -->
         <div
           class="avatar-wrapper"
           [class.avatar-user]="isIncoming(comment)"
@@ -66,23 +64,24 @@
     </div>
   </div>
 
+  <!-- NEW MESSAGE WRAPPER  -->
   <div class="new-message-input-wrapper">
     <div class="new-message-action-btns flex-center">
       <div
-        class="comment-read-btn flex-center cursor-pointer"
+        class="message-mark-all-needs-attention-btn flex-center cursor-pointer"
         pTooltip="Oznacz wszystkie jako nie wymagające uwagi"
         tooltipPosition="top"
         (click)="markAllCommentsAsNeedsAttention(false)"
       >
-        <i class="pi pi-comments"></i>
+        <i class="pi pi-exclamation-circle"></i>
       </div>
       <div
-        class="comment-unread-btn flex-center cursor-pointer"
+        class="message-mark-all-not-needs-attention-btn flex-center cursor-pointer"
         pTooltip="Oznacz wszystkie jako wymagające uwagi"
         tooltipPosition="top"
         (click)="markAllCommentsAsNeedsAttention(true)"
       >
-        <i class="pi pi-comments"></i>
+        <i class="pi pi-exclamation-circle"></i>
       </div>
     </div>
     <textarea

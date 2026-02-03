@@ -85,6 +85,12 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     }
   }
 
+  private markAllCommentsAsSeen(positionId: number) {
+    this.commentsService
+      .markAllCommentsAsSeen(positionId, this.comments, this.commentWatcher)
+      .subscribe();
+  }
+  
   sendComment(textarea: HTMLTextAreaElement) {
     if (!this.newMessage.trim() || this.set.id === null) return;
     // add new comment
@@ -224,6 +230,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
             }`,
           );
           this.comments = updatedComments;
+
           this.cd.detectChanges();
         },
         error: (err) => {
@@ -232,16 +239,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       });
   }
 
-  markAllCommentsAsSeen(positionId: number) {
-    const unseenComments = this.comments.filter(
-      (comment) =>
-        !comment.seenAt && comment.authorType !== this.commentWatcher,
-    );
-    if (unseenComments.length === 0) return;
-
-    this.commentsService
-      .markAllCommentsAsSeen(positionId, this.commentWatcher)
-      .subscribe();
+  isCommentNew(comment: IComment): boolean {
+    return !comment.seenAt && comment.authorType !== this.commentWatcher;
   }
 
   isIncoming(comment: IComment): boolean {
@@ -252,11 +251,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     return comment.needsAttention && comment.authorType !== this.commentWatcher;
   }
 
-  isUnreadOrNeedsAttentionTooltip(comment: IComment): string {
-    const shouldMarkAsNeedsAttention =
-      !comment.seenAt || !comment.needsAttention;
-
-    return shouldMarkAsNeedsAttention
+  needsAttentionTooltip(comment: IComment): string {
+    return !comment.needsAttention
       ? 'Oznacz jako wymaga uwagi'
       : 'Oznacz jako nie wymaga uwagi';
   }

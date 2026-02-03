@@ -11,7 +11,7 @@
 .chat-container {
   display: flex;
   flex-direction: column;
-  padding: 2rem 3rem;
+  padding: 20px 30px;
   gap: 1.5rem;
   background-color: var(--chat-bg);
   height: 500px;
@@ -23,30 +23,27 @@
 }
 
 .message-wrapper {
-  padding: 10px;
+  padding: 12px 8px;
   position: relative;
   display: flex;
   max-width: 90%;
+  z-index: 1;
 }
 
 .message-wrapper.outgoing {
-  position: relative;
-  z-index: 1;
   align-self: flex-end;
   justify-content: flex-end;
 }
 
 .message-wrapper.incoming {
-  position: relative;
-  z-index: 1;
   align-self: flex-start;
   justify-content: flex-start;
 }
 
 .message-bubble {
   position: relative;
-  padding: 10px 16px;
-  border-radius: 1.25rem;
+  padding: 8px 16px;
+  border-radius: 12px;
 }
 
 .avatar-wrapper {
@@ -69,14 +66,12 @@
 }
 
 .message-wrapper.incoming .message-bubble {
-  position: relative;
   background-color: var(--outgoing-message-bg-color);
   color: var(--neutral-color-10);
   z-index: 3;
 }
 
 .message-wrapper.outgoing .message-bubble {
-  position: relative;
   background-color: var(--incoming-message-bg-color);
   color: var(--neutral-color-01);
   z-index: 3;
@@ -140,7 +135,7 @@
 .timestamp {
   font-size: 1rem;
   opacity: 0.7;
-  margin-top: 0.5rem;
+  margin-top: 4px;
   display: block;
   text-align: right;
 }
@@ -184,70 +179,63 @@
   background-color: var(--error-color);
 }
 
-.message-wrapper.incoming:hover .comment-icon,
 .message-wrapper.outgoing:hover .edit-icon,
 .message-wrapper.outgoing:hover .delete-icon {
   opacity: 1;
   visibility: visible;
 }
 
-.message-wrapper.outgoing .comment-icon {
-  display: none;
+.unread-message {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  height: 10px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--incoming-message-bg-color);
 }
 
-.comment-icon {
+.needs-attention-wrapper {
   position: absolute;
-  top: -15px;
-  left: -10px;
-  font-size: 12px;
-  width: 25px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 100%;
-  color: var(--secondary-color);
-  visibility: visible;
+  top: -10px;
+  opacity: 0;
+  visibility: hidden;
   transition: opacity 0.3s ease;
 }
 
-.comment-icon-unread {
-  background-color: var(--error-color);
-}
-
-.comment-icon-read {
-  opacity: 0;
-  background-color: var(--accent-color-10);
-}
-
-.needsAttentionIncoming,
-.needsAttentionOutgoing {
-  position: absolute;
-  top: -10px;
-}
-
-.needsAttentionIncoming {
+.needs-attention-wrapper.incoming {
   right: -10px;
 }
 
-.needsAttentionOutgoing {
+.needs-attention-wrapper.outgoing {
   left: -10px;
 }
 
-.needsAttentionIncoming i,
-.needsAttentionOutgoing i {
+.needs-attention-wrapper.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.message-wrapper.incoming:hover .needs-attention-wrapper:not(.active) {
+  opacity: 1;
+  visibility: visible;
+}
+
+.needs-attention-wrapper i {
   font-size: 20px;
-  color: var(--error-color);
-  cursor: auto;
+  color: white;
+  background-color: var(--error-color) !important;
+  padding: 2px;
+  border-radius: 50%;
 }
 
 .new-message-input-wrapper {
   display: grid;
   grid-template-columns: 50px auto 50px;
-  gap: 1rem;
+  gap: 16px;
   width: 100%;
   min-height: 60px;
-  padding-top: 2rem;
+  padding-top: 20px;
 }
 
 .new-message-textarea {
@@ -295,10 +283,6 @@
   background-color: rgb(216, 216, 216);
 }
 
-.send-icon {
-  font-size: 1.6rem;
-}
-
 .new-message-action-btns {
   display: flex;
   flex-direction: column;
@@ -306,12 +290,13 @@
   color: var(--secondary-color);
 }
 
+.send-icon,
 .new-message-action-btns i {
   font-size: 1.6rem;
 }
 
-.comment-read-btn,
-.comment-unread-btn {
+.message-mark-all-needs-attention-btn,
+.message-mark-all-not-needs-attention-btn {
   width: 35px;
   aspect-ratio: 1/1;
   border-radius: 100%;
@@ -320,25 +305,25 @@
     box-shadow 0.2s ease;
 }
 
-.comment-read-btn {
+.message-mark-all-needs-attention-btn {
   background-color: var(--accent-color-10);
 }
 
-.comment-unread-btn {
+.message-mark-all-not-needs-attention-btn {
   background-color: var(--error-color);
 }
 
 .send-btn:hover,
-.comment-read-btn:hover,
-.comment-unread-btn:hover {
+.message-mark-all-needs-attention-btn:hover,
+.message-mark-all-not-needs-attention-btn:hover {
   transform: translateY(-1px);
   box-shadow:
     0 4px 10px rgba(0, 0, 0, 0.18),
     0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
-.comment-read-btn:active,
-.comment-unread-btn:active {
+.message-mark-all-needs-attention-btn:active,
+.message-mark-all-not-needs-attention-btn:active {
   transform: translateY(0);
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
@@ -360,20 +345,24 @@
 :host ::ng-deep .message-wrapper.outgoing .message-link:hover {
   color: var(--link-hover-on-blue);
 }
+
 /* MOBILE  */
 @media (max-width: 768px) {
   :host ::ng-deep .p-dialog-content {
     display: flex;
     flex-direction: column;
   }
+
   .chat-container {
     flex: 1;
     min-height: 0;
     height: auto;
   }
+
   .new-message-input-wrapper {
     flex-shrink: 0;
   }
+
   .comments-container {
     display: flex;
     flex-direction: column;
