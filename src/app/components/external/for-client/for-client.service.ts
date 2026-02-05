@@ -1,9 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { map, Observable, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { EditSetService } from '../../sets/edit-set/edit-set.service';
 import { ISet } from '../../sets/types/ISet';
+import { IComment } from '../../comments/types/IComment';
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,10 @@ export class ForClientService {
     }
 
     return this.editSetService.validateSetAndHashForClient(setHash, clientHash);
+  }
+
+  getCommentsForSet(setId: number): Observable<IComment[]> {
+    return this.editSetService.getCommentsForSet(setId);
   }
 
   updateLastActiveClientBookmark(

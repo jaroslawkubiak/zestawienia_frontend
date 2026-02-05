@@ -209,7 +209,7 @@ export class EditSetService {
     return updatedPositions;
   }
 
-  updateLastUsedBookmark(
+  lastActiveUserBookmark(
     savedSet: ISet,
     newBookmark: number,
   ): Observable<ISet> {
@@ -220,7 +220,7 @@ export class EditSetService {
 
     return this.http
       .patch<ISet>(
-        `${environment.API_URL}/sets/${savedSet.id}/updateBookmark`,
+        `${environment.API_URL}/sets/${savedSet.id}/updateLastActiveUserBookmark`,
         updatedSet,
         {
           headers: this.httpHeaders,

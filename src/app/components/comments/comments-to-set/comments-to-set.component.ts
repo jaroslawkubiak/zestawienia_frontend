@@ -7,6 +7,7 @@ import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { ISet } from '../../sets/types/ISet';
 import { CommentsComponent } from '../comments.component';
 import { IPositionWithComments } from '../types/IPositionWithComments';
+import { TAuthorType } from '../types/authorType.type';
 
 @Component({
   selector: 'app-comments-to-set',
@@ -18,6 +19,7 @@ export class CommentsToSetComponent {
   FILES_URL = environment.FILES_URL;
   @Input() set!: ISet;
   @Input() positionsWithComments: IPositionWithComments[] = [];
+  @Input() commentWatcher!: TAuthorType;
 
   getImagePreviewUrl(position: IPosition): string {
     const fileName = position['image'];

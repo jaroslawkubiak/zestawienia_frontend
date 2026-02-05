@@ -67,16 +67,22 @@
 
       <div class="header-actions-btn">
         <!-- SHOW ALL COMMENTS BTN -->
-        <div class="action-btn-wrapper" (click)="showAllComments()">
-          <i class="pi pi-comments"></i>
-          <p-badge
-            [value]="getCommentsBadgeValue()"
-            [severity]="getCommentsBadgeSeverity()"
-            [pTooltip]="getCommentsTooltipInfo()"
-            class="badge-position"
-            badgeSize="large"
-          ></p-badge>
-          <label> Komentarze </label>
+        <div class="action-btn-wrapper" (click)="showAllCommentsComponent()">
+          <ng-container *ngIf="!showAllComments">
+            <i class="pi pi-comments"></i>
+            <p-badge
+              [value]="getCommentsBadgeValue()"
+              [severity]="getCommentsBadgeSeverity()"
+              [pTooltip]="getCommentsTooltipInfo()"
+              class="badge-position"
+              badgeSize="large"
+            ></p-badge>
+            <label> Pokaż komentarze </label>
+          </ng-container>
+          <ng-container *ngIf="showAllComments">
+            <i class="pi pi-table"></i>
+            <label> Pokaż pozycje </label>
+          </ng-container>
         </div>
         <!-- SHOW ATTACHED FILES BTN  -->
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
@@ -116,28 +122,37 @@
       <p-tabpanels>
         @for (bookmark of set.bookmarks; track bookmark.id) {
           <p-tabpanel [value]="bookmark.id">
-            <div class="mobile-bookmark-name">
-              {{ bookmark.name }}
-            </div>
-            <!-- bookmark = summary -->
-            @if (selectedBookmarkId === 1) {
-              <app-summary
+            <ng-container *ngIf="showAllComments">
+              <app-comments-to-set
                 [set]="set"
-                [positions]="positions"
-                (bookmarkSelected)="loadContentForBookmark($event)"
+                [commentWatcher]="'client'"
+                [positionsWithComments]="positionsWithComments"
               />
-            } @else {
-              <!-- other bookmarks -->
-              <ng-container *ngIf="selectedBookmarkId === bookmark.id">
-                <app-product
-                  *ngFor="let position of positionsFromBookmark"
-                  [position]="position"
+            </ng-container>
+            <ng-container
+              *ngIf="selectedBookmarkId === bookmark.id && !showAllComments"
+            >
+              <div class="mobile-bookmark-name">{{ bookmark.name }}</div>
+              <!-- bookmark = summary -->
+              @if (selectedBookmarkId === 1) {
+                <app-summary
                   [set]="set"
-                  (commentsUpdated)="commentsUpdated()"
-                >
-                </app-product>
-              </ng-container>
-            }
+                  [positions]="positions"
+                  (bookmarkSelected)="loadContentForBookmark($event)"
+                />
+              } @else {
+                <!-- other bookmarks -->
+                <ng-container *ngIf="selectedBookmarkId === bookmark.id">
+                  <app-product
+                    *ngFor="let position of positionsFromBookmark"
+                    [position]="position"
+                    [set]="set"
+                    (commentsUpdated)="commentsUpdated()"
+                  >
+                  </app-product>
+                </ng-container>
+              }
+            </ng-container>
           </p-tabpanel>
         }
       </p-tabpanels>

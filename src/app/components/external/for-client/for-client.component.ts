@@ -19,6 +19,7 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
+import { CommentsToSetComponent } from '../../comments/comments-to-set/comments-to-set.component';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
@@ -31,6 +32,8 @@ import { ISet } from '../../sets/types/ISet';
 import { IClientData } from '../for-supplier/types/IClientData';
 import { ForClientService } from './for-client.service';
 import { ProductComponent } from './product/product.component';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
+import { IComment } from '../../comments/types/IComment';
 
 @Component({
   selector: 'app-for-client',
@@ -43,6 +46,7 @@ import { ProductComponent } from './product/product.component';
     TabsModule,
     SummaryComponent,
     ProductComponent,
+    CommentsToSetComponent,
   ],
   templateUrl: './for-client.component.html',
   styleUrl: './for-client.component.css',
@@ -59,6 +63,9 @@ export class ForClientComponent implements OnInit {
   mobileMenuOpen = false;
   mobileMenuClosing = false;
   isMobileSticky = false;
+  showAllComments = false;
+  positionsWithComments: IPositionWithComments[] = [];
+  comments: IComment[] = [];
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
@@ -152,25 +159,72 @@ export class ForClientComponent implements OnInit {
       .updateLastActiveClientBookmark(this.set.hash, bookmarkId)
       .subscribe({
         next: (response) => {
-          this.set = { ...response };
+          this.set = {
+            ...this.set,
+            lastActiveClientBookmarkId: response.lastActiveClientBookmarkId,
+          };
+          if (this.showAllComments) {
+            this.loadCommentsForSet();
+          }
+          this.selectedBookmarkId = bookmarkId;
+
+          this.positionsFromBookmark = this.positions
+            .filter((p) => p.bookmarkId?.id === bookmarkId)
+            .sort((a, b) => a.kolejnosc - b.kolejnosc)
+            .map((p, index) => ({
+              ...p,
+              kolejnosc: index + 1,
+            }));
+
+          this.cd.detectChanges();
         },
       });
-    this.selectedBookmarkId = bookmarkId;
-
-    this.positionsFromBookmark = this.positions
-      .filter((p) => p.bookmarkId?.id === bookmarkId)
-      .sort((a, b) => a.kolejnosc - b.kolejnosc)
-      .map((p, index) => ({
-        ...p,
-        kolejnosc: index + 1,
-      }));
-
-    this.cd.detectChanges();
   }
 
-  //TODO
-  showAllComments() {
-    //get request for all comments here
+  showAllCommentsComponent() {
+    this.showAllComments = !this.showAllComments;
+
+    if (this.showAllComments) {
+      this.loadCommentsForSet();
+    } else {
+      this.positionsWithComments = [];
+      this.loadContentForBookmark(this.selectedBookmarkId);
+    }
+  }
+
+  loadCommentsForSet() {
+    this.forClientService.getCommentsForSet(this.set.id).subscribe({
+      next: (response) => {
+        this.comments = response ?? [];
+        this.uniquePositionIds = [
+          ...new Set(this.comments.map((comment) => comment.positionId)),
+        ];
+
+        this.assignCommentsToPosition();
+      },
+    });
+  }
+
+  assignCommentsToPosition() {
+    this.positionsWithComments = this.uniquePositionIds.reduce<
+      IPositionWithComments[]
+    >((acc, positionId) => {
+      const position = this.positions.find((p) => p.id === positionId);
+      if (!position) return acc;
+
+      if (position.bookmarkId.id === this.selectedBookmarkId) {
+        acc.push({
+          position,
+          comments: this.comments.filter(
+            (comment) => comment.positionId === positionId,
+          ),
+        });
+      }
+
+      return acc;
+    }, []);
+
+    this.cd.markForCheck();
   }
 
   // update attached files after sending new files to server

@@ -69,6 +69,7 @@
           <ng-container *ngIf="showAllComments">
             <app-comments-to-set
               [set]="set"
+              [commentWatcher]="'user'"
               [positionsWithComments]="positionsWithComments"
             />
           </ng-container>

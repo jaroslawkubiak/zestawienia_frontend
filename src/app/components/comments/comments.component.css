@@ -349,14 +349,38 @@
     flex-direction: column;
   }
 
+  ::ng-deep .p-dialog-header {
+    padding: 6px;
+  }
+
+  ::ng-deep .p-dialog-title {
+    font-size: 12px !important;
+    padding: 6px;
+  }
+
+  ::ng-deep .p-dialog-content {
+    padding: 0 12px;
+  }
+
   .chat-container {
     flex: 1;
     min-height: 0;
     height: auto;
+    gap: 5px;
   }
 
   .new-message-input-wrapper {
     flex-shrink: 0;
+  }
+
+  .message-wrapper {
+    padding: 6px 4px 8px 4px;
+  }
+
+  .new-message-textarea {
+    font-size: 1.2rem !important;
+    min-height: 60px;
+    max-height: 140px;
   }
 
   .comments-container {
@@ -364,5 +388,6 @@
     flex-direction: column;
     height: 100%;
     min-height: 0;
+    padding-bottom: 12px;
   }
 }

@@ -90,7 +90,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       .markAllCommentsAsSeen(positionId, this.comments, this.commentWatcher)
       .subscribe();
   }
-  
+
   sendComment(textarea: HTMLTextAreaElement) {
     if (!this.newMessage.trim() || this.set.id === null) return;
     // add new comment
@@ -217,16 +217,10 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       )
       .subscribe({
         next: (updatedComments) => {
-          const firstClientComment = updatedComments.find(
-            (comment) => comment.authorType === 'client',
-          );
-
           this.notificationService.showNotification(
             'info',
             `Wszystkie komentarze zostały oznaczone jako ${
-              firstClientComment?.needsAttention
-                ? 'wymagające uwagi'
-                : 'nie wymagające uwagi'
+              state ? 'wymagające uwagi' : 'nie wymagające uwagi'
             }`,
           );
           this.comments = updatedComments;
