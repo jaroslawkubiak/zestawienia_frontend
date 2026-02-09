@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -30,12 +31,12 @@ import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
+import { EditSetService } from '../edit-set/edit-set.service';
 import { IPosition } from '../positions-table/types/IPosition';
 import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { SetStatus } from '../types/set-status.enum';
 import { buildSetMenu } from './set-menu.config';
-import { EditSetService } from '../edit-set/edit-set.service';
 
 @Component({
   selector: 'app-set-menu',
@@ -85,6 +86,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
     private emailsService: EmailsService,
     private pdfService: PdfService,
     private editSetService: EditSetService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit() {
@@ -126,6 +128,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
       },
       this.showAllComments,
     );
+
+    this.cd.detectChanges();
   }
 
   // calc comments badge color
@@ -199,8 +203,18 @@ export class SetMenuComponent implements OnChanges, OnInit {
     this.dialogShowFilesComponent.showDialog(this.set);
   }
 
-  generatePDF(): void {
-    this.pdfService.generatePDF(this.set, this.positions);
+  async generatePDF(): Promise<void> {
+    try {
+      const resultPdf = await this.pdfService.generatePDF(
+        this.set,
+        this.positions,
+      );
+
+      this.updateAttachedFiles(resultPdf.files);
+
+    } catch (error) {
+      console.error('Błąd generowania PDF lub wysyłki:', error);
+    }
   }
 
   // send set link to client

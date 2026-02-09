@@ -11,6 +11,7 @@
     icon="pi pi-download"
     alt="Pobierz pliki"
     pTooltip="Pobierz pliki"
+    tooltipPosition="bottom"
     [disabled]="selectedFiles.length === 0"
     (click)="downloadFiles.emit()"
   />
@@ -19,6 +20,7 @@
     icon="pi pi-trash"
     alt="Usuń pliki"
     pTooltip="Usuń pliki"
+    tooltipPosition="bottom"
     [disabled]="isDeleteDisabled"
     (click)="deleteFiles.emit()"
   />

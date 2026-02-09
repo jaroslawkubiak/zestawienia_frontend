@@ -1,4 +1,3 @@
-import { ISet } from '../../sets/types/ISet';
 import { EFileDirectoryList } from './file-directory-list.enum';
 
 export interface IFileFullDetails {

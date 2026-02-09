@@ -1,9 +1,9 @@
 import { HttpEventType } from '@angular/common/http';
 import { ElementRef, Injectable, ViewChild } from '@angular/core';
 import type { jsPDF } from 'jspdf';
+import { filter, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
-import { IFileFullDetails } from '../components/files/types/IFileFullDetails';
 import { EFileDirectoryList } from '../components/files/types/file-directory-list.enum';
 import { ColumnList } from '../components/sets/ColumnList';
 import { PositionStatusList } from '../components/sets/PositionStatusList';
@@ -13,9 +13,7 @@ import { IPositionStatus } from '../components/sets/positions-table/types/IPosit
 import { ISet } from '../components/sets/types/ISet';
 import { calculateBrutto, calculateWartosc } from '../shared/helpers/calculate';
 import { getCssVariable } from '../shared/helpers/getCssVariable';
-import { getFormatedDate } from '../shared/helpers/getFormatedDate';
 import { NotificationService } from './notification.service';
-import { filter, map } from 'rxjs';
 
 type ColumnStyles = {
   [key: number]: {
@@ -86,7 +84,7 @@ export class PdfService {
     this.robotoBoldBase64 = await responseBold.text();
   }
 
-  async generatePDF(set: ISet, positions: IPosition[]) {
+  async generatePDF(set: ISet, positions: IPosition[]): Promise<any> {
     if (!this.robotoRegularBase64 || !this.robotoBoldBase64) {
       console.error('Czcionki jeszcze się nie załadowały!');
       return;
@@ -627,43 +625,30 @@ export class PdfService {
       `Copyright @${new Date().getFullYear()} Żurawicki Design`,
     );
 
-    const finalAction: Array<'saveToPC' | 'openInNewCard' | 'sendToFtp'> = [
-      // 'saveToPC',
-      // 'openInNewCard',
-      'sendToFtp',
-    ];
+    const pdfBlob = doc.output('blob');
+    const formData = new FormData();
+    formData.append('files', pdfBlob, `${set.name}.pdf`);
+    const uploadFolder = EFileDirectoryList['setPdf'];
 
-    // execute final actions
-    finalAction.forEach((action) => {
-      switch (action) {
-        case 'saveToPC':
-          doc.save(`zestawienie-${set.name}-${getFormatedDate()}.pdf`);
-          break;
-        case 'openInNewCard':
-          const pdfUrl = doc.output('bloburl');
-          window.open(pdfUrl, '_blank');
-          break;
-        case 'sendToFtp':
-          const pdfBlob = doc.output('blob');
-          const formData = new FormData();
-          formData.append('files', pdfBlob, `zestawienie-${set.name}.pdf`);
-          const uploadFolder = EFileDirectoryList['setPdf'];
+    return new Promise((resolve, reject) => {
+      this.filesService
+        .saveFile(set.id, set.hash, formData, uploadFolder)
+        .pipe(
+          filter((event) => event.type === HttpEventType.Response),
+          map((event) => event.body),
+        )
+        .subscribe({
+          next: (body) => {
+            this.notificationService.showNotification(
+              'success',
+              body?.message ||
+                'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
+            );
 
-          this.filesService
-            .saveFile(set.id, set.hash, formData, uploadFolder)
-            .pipe(
-              filter((event) => event.type === HttpEventType.Response),
-              map((event) => event.body),
-            )
-            .subscribe((body) => {
-              this.notificationService.showNotification(
-                'success',
-                body?.message ||
-                  'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
-              );
-            });
-          break;
-      }
+            resolve(body);
+          },
+          error: (err) => reject(err),
+        });
     });
   }
 
