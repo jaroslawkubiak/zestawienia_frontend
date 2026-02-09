@@ -39,17 +39,6 @@ export class FilesService {
     );
   }
 
-  // save created pdf from set
-  savePdf(setId: number, formData: FormData): Observable<any> {
-    return this.http.post<any>(
-      `${environment.API_URL}/files/upload/${setId}/pdf`,
-      formData,
-      {
-        headers: this.httpHeaders,
-      },
-    );
-  }
-
   // save attached files to set
   saveFile(
     setId: number,
@@ -57,6 +46,7 @@ export class FilesService {
     formData: FormData,
     uploadFolder: string,
   ): Observable<HttpEvent<IUploadFileResponse>> {
+    console.log(`######## saveFile #########`);
     return this.http.post<IUploadFileResponse>(
       `${environment.API_URL}/files/upload/${setId}/${setHash}/${uploadFolder}`,
       formData,
