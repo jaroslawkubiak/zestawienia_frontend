@@ -26,22 +26,38 @@
   />
 </div>
 
-<div class="show-file-directory-wrapper" *ngFor="let dir of uniqueDir">
-  <h3>
+<div
+  class="show-file-directory-wrapper"
+  *ngFor="let directory of dirListWithShowOption; trackBy: trackByDir"
+>
+  <div
+    class="directory-name-wrapper"
+    (click)="toggleVisibility(directory.dirName)"
+    [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
+    tooltipPosition="bottom"
+  >
     <i class="pi pi-folder-open"></i>
-    {{ dir }}
-  </h3>
-  <ul class="file-container">
-    <li class="file-item" *ngFor="let file of filesFilteredByDir(dir)">
-      <app-file-preview
-        [file]="file"
-        [who]="who"
-        [selectedFiles]="selectedFiles"
-        (delete)="deleteFile(file.id)"
-        (addFileToSelected)="addFileToSelected(file)"
-        (download)="downloadFile(file.id)"
-        (openPdf)="openPdf(file)"
-      ></app-file-preview>
-    </li>
-  </ul>
+    {{ directory.dirName }}
+    <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
+    <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
+  </div>
+
+  <div class="file-container-wrapper" [class.collapsed]="!directory.show">
+    <ul class="file-container">
+      <li
+        class="file-item"
+        *ngFor="let file of filesFilteredByDir(directory.dirName)"
+      >
+        <app-file-preview
+          [file]="file"
+          [who]="who"
+          [selectedFiles]="selectedFiles"
+          (delete)="deleteFile(file.id)"
+          (addFileToSelected)="addFileToSelected(file)"
+          (download)="downloadFile(file.id)"
+          (openPdf)="openPdf(file)"
+        ></app-file-preview>
+      </li>
+    </ul>
+  </div>
 </div>

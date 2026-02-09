@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { TAuthorType } from '../../../comments/types/authorType.type';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
-import { TAuthorType } from '../../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-icons-view',
@@ -35,14 +35,33 @@ export class IconsViewComponent {
   @Output() downloadFiles = new EventEmitter<any>();
   @Output() deleteFiles = new EventEmitter<void>();
   @Output() selectAll = new EventEmitter<any>();
+
   sortedFiles: IFileFullDetails[] = [];
+
+  dirListWithShowOption: { dirName: string; show: boolean }[] = [];
 
   ngOnInit() {
     this.sortedFiles = [...this.files];
     this.sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+
+    this.dirListWithShowOption = this.uniqueDir.map((dir) => ({
+      dirName: dir,
+      show: true,
+    }));
   }
 
   filesFilteredByDir(dir: string): IFileFullDetails[] {
     return this.files.filter((file) => file.dir === dir);
+  }
+
+  toggleVisibility(dirName: string): void {
+    const dir = this.dirListWithShowOption.find((d) => d.dirName === dirName);
+    if (dir) {
+      dir.show = !dir.show;
+    }
+  }
+
+  trackByDir(_: number, item: { dirName: string; show: boolean }): string {
+    return item.dirName;
   }
 }

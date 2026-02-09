@@ -1,4 +1,19 @@
+.file-container-wrapper {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition:
+    grid-template-rows 0.35s ease,
+    opacity 0.25s ease;
+  opacity: 1;
+}
+
+.file-container-wrapper.collapsed {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
 .file-container {
+  overflow: hidden;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 25px;
@@ -32,19 +47,29 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  padding-top: 30px;
 }
 
-h3 {
+.directory-name-wrapper {
+  display: flex;
+  gap: 10px;
+  margin: 20px;
+  align-items: center;
+  justify-content: center;
   font-size: 2.4rem;
   color: var(--accent-color-10);
+  cursor: pointer;
 }
 
-h3 i {
-  font-size: 2rem;
+.directory-name-wrapper i {
+  font-size: 2.4rem;
   margin-right: 10px;
   color: var(--accent-color-10);
-  cursor: auto;
+  cursor: pointer;
+}
+
+.directory-name-wrapper:hover i,
+.directory-name-wrapper:hover {
+  color: var(--accent-color-12);
 }
 
 .icons-top-action-btns {
