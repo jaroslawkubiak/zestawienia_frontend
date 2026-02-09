@@ -24,7 +24,7 @@ export class FooterService {
   ): IFooterRow[] {
     const totals = positions.reduce(
       (acc, p) => {
-        if (p.status?.summary) {
+        if (!p.status?.summary) {
           return acc;
         }
 
