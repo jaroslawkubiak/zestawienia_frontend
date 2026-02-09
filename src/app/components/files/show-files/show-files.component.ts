@@ -72,7 +72,7 @@ export class ShowFilesComponent implements OnInit {
   files: IFileFullDetails[] = [];
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
-  defaultView = 'icons';
+  defaultView: 'icons' | 'list' = 'icons';
   uniqueDir: EFileDirectoryList[] = [];
   isMobile = false;
 
@@ -235,7 +235,7 @@ export class ShowFilesComponent implements OnInit {
     this.displayPdf = true;
   }
 
-  changeView(newView: string) {
+  changeView(newView: 'icons' | 'list') {
     this.defaultView = newView;
   }
 

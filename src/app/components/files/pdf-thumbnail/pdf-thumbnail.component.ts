@@ -24,7 +24,7 @@ export class PdfThumbnailComponent implements OnChanges {
   handleClick() {
     this.pdfClick.emit(this.file);
   }
-  
+
   thumbnail: string = '';
   isLoading: boolean = true;
 
@@ -34,7 +34,17 @@ export class PdfThumbnailComponent implements OnChanges {
       this.isLoading = false;
     } else {
       this.thumbnail = '';
-      this.isLoading = false;
+      this.isLoading = true;
     }
+  }
+
+  onImageLoad() {
+    this.isLoading = false;
+    this.cd.markForCheck();
+  }
+
+  onImageError() {
+    this.isLoading = false;
+    this.thumbnail = '';
   }
 }

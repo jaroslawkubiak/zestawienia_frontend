@@ -46,7 +46,6 @@ export class FilesService {
     formData: FormData,
     uploadFolder: string,
   ): Observable<HttpEvent<IUploadFileResponse>> {
-    console.log(`######## saveFile #########`);
     return this.http.post<IUploadFileResponse>(
       `${environment.API_URL}/files/upload/${setId}/${setHash}/${uploadFolder}`,
       formData,
