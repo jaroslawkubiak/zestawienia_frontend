@@ -6,10 +6,9 @@ import { map, switchMap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
-import { EditSetService } from '../../sets/edit-set/edit-set.service';
-import { ISet } from '../../sets/types/ISet';
+import { ExternalService } from '../external.service';
 import { ColumnListForSupplier } from './ColumnListForSupplier';
-import { IClientData } from './types/IClientData';
+import { IClientDataForSupplier } from './types/IClientDataForSupplier';
 import { IPositionForSupplier } from './types/IPositionForSupplier';
 import { ISupplierData } from './types/ISupplierData';
 import { IValidSetForSupplier } from './types/IValidSetForSupplier';
@@ -26,7 +25,7 @@ export class ForSupplierComponent implements OnInit {
   setId: number | null = null;
   setHash: string | null = null;
   setName: string | null = null;
-  client!: IClientData;
+  client!: IClientDataForSupplier;
   supplier!: ISupplierData;
   positions: IPositionForSupplier[] = [];
   FILES_URL = environment.FILES_URL;
@@ -50,7 +49,7 @@ export class ForSupplierComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private editSetService: EditSetService,
+    private externalService: ExternalService,
   ) {}
 
   ngOnInit() {
@@ -66,7 +65,7 @@ export class ForSupplierComponent implements OnInit {
             return throwError(() => new Error('Invalid params'));
           }
 
-          return this.editSetService.validateSetAndHashForSupplier(
+          return this.externalService.loadSupplierSetData(
             setHash,
             supplierHash,
           );

@@ -15,11 +15,11 @@ import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommen
 import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
-import { CommentsService } from '../../../comments/comments.service';
 import { IComment } from '../../../comments/types/IComment';
 import { BadgeSeverity } from '../../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../../sets/positions-table/types/IPosition';
 import { ISet } from '../../../sets/types/ISet';
+import { ExternalService } from '../../external.service';
 
 @Component({
   selector: 'app-product',
@@ -45,7 +45,7 @@ export class ProductComponent implements OnInit {
   isMobile = window.innerWidth < 768;
 
   constructor(
-    private commentsService: CommentsService,
+    private externalService: ExternalService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
   ) {}
@@ -57,7 +57,7 @@ export class ProductComponent implements OnInit {
   showComments(positionId: number) {
     this.positionId = positionId;
 
-    this.commentsService.getCommentsForPosition(positionId).subscribe({
+    this.externalService.getCommentsForPosition(positionId).subscribe({
       next: (response) => {
         this.commentsForPosition = response;
         this.header = `Pozycja ${this.position.kolejnosc} ${

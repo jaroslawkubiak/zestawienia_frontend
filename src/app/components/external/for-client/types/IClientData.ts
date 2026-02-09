@@ -1,6 +1,7 @@
 export interface IClientData {
   id: number;
-  company?: string;
+  company: string;
   firstName: string;
   lastName: string;
+  hash: string;
 }

@@ -112,5 +112,7 @@ th {
 
 .view-mode-image {
   height: calc(var(--row-height) - 10px) !important;
-  width: 100% !important;
+  max-width: 100%;
+  object-fit: contain !important;
+  max-height: calc(var(--row-height) - 25px);
 }

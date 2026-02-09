@@ -20,6 +20,8 @@ import {
 } from '../../../shared/helpers/calculate';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsToSetComponent } from '../../comments/comments-to-set/comments-to-set.component';
+import { IComment } from '../../comments/types/IComment';
+import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
@@ -29,11 +31,9 @@ import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
-import { IClientData } from '../for-supplier/types/IClientData';
-import { ForClientService } from './for-client.service';
+import { ExternalService } from '../external.service';
 import { ProductComponent } from './product/product.component';
-import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
-import { IComment } from '../../comments/types/IComment';
+import { IClientData } from './types/IClientData';
 
 @Component({
   selector: 'app-for-client',
@@ -71,7 +71,7 @@ export class ForClientComponent implements OnInit {
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
   constructor(
-    private forClientService: ForClientService,
+    private externalService: ExternalService,
     private route: ActivatedRoute,
     private router: Router,
     private cd: ChangeDetectorRef,
@@ -100,7 +100,7 @@ export class ForClientComponent implements OnInit {
             throw new Error('Invalid params');
           }
 
-          return this.forClientService.loadClientSetData(setHash, clientHash);
+          return this.externalService.loadClientSetData(setHash, clientHash);
         }),
       )
       .subscribe({
@@ -108,6 +108,8 @@ export class ForClientComponent implements OnInit {
           if (response?.valid) {
             this.set = response.set;
             this.client = { ...response.set.clientId };
+
+            console.log(this.client);
             this.modifyData(response.positions);
           } else {
             this.router.navigate(['/notfound']);
@@ -155,7 +157,7 @@ export class ForClientComponent implements OnInit {
   }
 
   loadContentForBookmark(bookmarkId: number) {
-    this.forClientService
+    this.externalService
       .updateLastActiveClientBookmark(this.set.hash, bookmarkId)
       .subscribe({
         next: (response) => {
@@ -193,16 +195,18 @@ export class ForClientComponent implements OnInit {
   }
 
   loadCommentsForSet() {
-    this.forClientService.getCommentsForSet(this.set.id).subscribe({
-      next: (response) => {
-        this.comments = response ?? [];
-        this.uniquePositionIds = [
-          ...new Set(this.comments.map((comment) => comment.positionId)),
-        ];
+    this.externalService
+      .getCommentsForSet(this.set.hash, this.client.hash)
+      .subscribe({
+        next: (response) => {
+          this.comments = response ?? [];
+          this.uniquePositionIds = [
+            ...new Set(this.comments.map((comment) => comment.positionId)),
+          ];
 
-        this.assignCommentsToPosition();
-      },
-    });
+          this.assignCommentsToPosition();
+        },
+      });
   }
 
   assignCommentsToPosition() {

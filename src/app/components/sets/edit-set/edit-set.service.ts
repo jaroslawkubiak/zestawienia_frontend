@@ -10,8 +10,6 @@ import { AuthService } from '../../../login/auth.service';
 import { IUser } from '../../../login/types/IUser';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { IComment } from '../../comments/types/IComment';
-import { IValidSetForClient } from '../../external/for-client/types/IValidSetForClient';
-import { IValidSetForSupplier } from '../../external/for-supplier/types/IValidSetForSupplier';
 import { SuppliersService } from '../../suppliers/suppliers.service';
 import { IPosition } from '../positions-table/types/IPosition';
 import { IPositionStatus } from '../positions-table/types/IPositionStatus';
@@ -70,28 +68,6 @@ export class EditSetService {
   getSet(setId: number): Observable<ISet> {
     return this.http
       .get<ISet>(`${environment.API_URL}/sets/${setId}/getSet`)
-      .pipe(catchError(this.handleError));
-  }
-
-  validateSetAndHashForClient(
-    setHash: string,
-    clientHash: string,
-  ): Observable<IValidSetForClient | null> {
-    return this.http
-      .get<IValidSetForClient | null>(
-        `${environment.API_URL}/sets/open-for-client/${setHash}/${clientHash}`,
-      )
-      .pipe(catchError(this.handleError));
-  }
-
-  validateSetAndHashForSupplier(
-    setHash: string,
-    supplierHash: string,
-  ): Observable<IValidSetForSupplier | null> {
-    return this.http
-      .get<IValidSetForSupplier | null>(
-        `${environment.API_URL}/sets/open-for-supplier/${setHash}/${supplierHash}`,
-      )
       .pipe(catchError(this.handleError));
   }
 
