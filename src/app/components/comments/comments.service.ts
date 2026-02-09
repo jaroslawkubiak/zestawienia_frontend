@@ -34,18 +34,18 @@ export class CommentsService {
   }
 
   addComment(newComment: INewPartialComment): Observable<IComment> {
+    const { set, ...rest } = newComment;
     const isClient = newComment.authorType === 'client';
-    const set = newComment.set;
 
     const updatedNewComment: INewComment = {
-      ...newComment,
+      ...rest,
       authorId: isClient ? set.clientId.id : Number(this.userId()),
       authorName: isClient ? set.clientId.firstName : this.userName(),
     };
 
     return this.http
       .post<IComment>(
-        `${environment.API_URL}/comments/addComment`,
+        `${environment.API_URL}/comments/${set.hash}/addComment`,
         updatedNewComment,
       )
       .pipe(catchError(this.handleError));
@@ -114,6 +114,7 @@ export class CommentsService {
 
   // when open comments dialog - mark all unread comment as seenAt
   markAllCommentsAsSeen(
+    setHash: string,
     positionId: number,
     comments: IComment[],
     authorType: TAuthorType,
@@ -125,7 +126,7 @@ export class CommentsService {
     if (unseenComments.length === 0) return EMPTY;
 
     return this.http.post<void>(
-      `${environment.API_URL}/comments/markAllAsSeen`,
+      `${environment.API_URL}/comments/${setHash}/markAllAsSeen`,
       {
         positionId,
         authorType,

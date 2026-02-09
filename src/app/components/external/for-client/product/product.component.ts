@@ -36,6 +36,7 @@ import { ExternalService } from '../../external.service';
 export class ProductComponent implements OnInit {
   @Input() set!: ISet;
   @Input() position!: IPosition;
+  @Input() clientHash!: string;
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
   commentsForPosition: IComment[] = [];
   positionId!: number;
@@ -57,21 +58,23 @@ export class ProductComponent implements OnInit {
   showComments(positionId: number) {
     this.positionId = positionId;
 
-    this.externalService.getCommentsForPosition(positionId).subscribe({
-      next: (response) => {
-        this.commentsForPosition = response;
-        this.header = `Pozycja ${this.position.kolejnosc} ${
-          this.position.produkt ? ' : ' + this.position.produkt : ''
-        }`;
+    this.externalService
+      .getCommentsForPosition(this.set.hash, this.clientHash, positionId)
+      .subscribe({
+        next: (response) => {
+          this.commentsForPosition = response;
+          this.header = `Pozycja ${this.position.kolejnosc} ${
+            this.position.produkt ? ' : ' + this.position.produkt : ''
+          }`;
 
-        this.showCommentsDialog = true;
+          this.showCommentsDialog = true;
 
-        this.cd.markForCheck();
-      },
-      error: (error) => {
-        this.notificationService.showNotification('error', error.message);
-      },
-    });
+          this.cd.markForCheck();
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
   }
 
   onDialogClosed() {

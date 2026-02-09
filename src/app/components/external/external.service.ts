@@ -78,11 +78,15 @@ export class ExternalService {
       .pipe(catchError(this.handleError));
   }
 
-  getCommentsForPosition(positionId: number): Observable<IComment[]> {
+  getCommentsForPosition(
+    setHash: string,
+    clientHash: string,
+    positionId: number,
+  ): Observable<IComment[]> {
     return this.http
       .get<
         IComment[]
-      >(`${environment.API_URL}/external/${positionId}/getCommentsForPosition`)
+      >(`${environment.API_URL}/external/${setHash}/${clientHash}/${positionId}/getCommentsForPosition`)
       .pipe(catchError(this.handleError));
   }
 

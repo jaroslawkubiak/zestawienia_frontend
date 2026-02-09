@@ -81,13 +81,18 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     ) {
       setTimeout(() => this.scrollToBottom(), 0);
 
-      this.markAllCommentsAsSeen(this.positionId);
+      this.markAllCommentsAsSeen(this.set.hash, this.positionId);
     }
   }
 
-  private markAllCommentsAsSeen(positionId: number) {
+  private markAllCommentsAsSeen(setHash: string, positionId: number) {
     this.commentsService
-      .markAllCommentsAsSeen(positionId, this.comments, this.commentWatcher)
+      .markAllCommentsAsSeen(
+        setHash,
+        positionId,
+        this.comments,
+        this.commentWatcher,
+      )
       .subscribe();
   }
 

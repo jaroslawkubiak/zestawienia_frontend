@@ -147,6 +147,7 @@
                     *ngFor="let position of positionsFromBookmark"
                     [position]="position"
                     [set]="set"
+                    [clientHash]="client.hash"
                     (commentsUpdated)="commentsUpdated()"
                   >
                   </app-product>
