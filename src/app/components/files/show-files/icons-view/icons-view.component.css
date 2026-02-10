@@ -50,9 +50,11 @@
 }
 
 .directory-name-wrapper {
+  position: relative;
   display: flex;
-  gap: 10px;
+  gap: 20px;
   margin: 20px;
+  padding: 4px 8px;
   align-items: center;
   justify-content: center;
   font-size: 2.4rem;
@@ -62,7 +64,6 @@
 
 .directory-name-wrapper i {
   font-size: 2.4rem;
-  margin-right: 10px;
   color: var(--accent-color-10);
   cursor: pointer;
 }
@@ -70,6 +71,12 @@
 .directory-name-wrapper:hover i,
 .directory-name-wrapper:hover {
   color: var(--accent-color-12);
+}
+
+.badge-position {
+  position: absolute;
+  top: -4px;
+  left: 30px;
 }
 
 .icons-top-action-btns {

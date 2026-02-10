@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
@@ -17,6 +18,7 @@ import { FilePreviewComponent } from '../file-preview/file-preview.component';
     ButtonModule,
     TooltipModule,
     CheckboxModule,
+    BadgeModule,
   ],
   templateUrl: './icons-view.component.html',
   styleUrl: './icons-view.component.css',
@@ -63,5 +65,10 @@ export class IconsViewComponent {
 
   trackByDir(_: number, item: { dirName: string; show: boolean }): string {
     return item.dirName;
+  }
+
+  countFilesBadge(dirName: string) {
+    const filesCount = this.files.filter((file) => file.dir === dirName);
+    return filesCount.length;
   }
 }

@@ -40,6 +40,13 @@
     {{ directory.dirName }}
     <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
     <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
+    <p-badge
+      *ngIf="!directory.show"
+      [value]="countFilesBadge(directory.dirName)"
+      severity="contrast"
+      class="badge-position"
+      badgeSize="large"
+    ></p-badge>
   </div>
 
   <div class="file-container-wrapper" [class.collapsed]="!directory.show">
