@@ -44,6 +44,7 @@
 }
 
 .preview-image {
+  position: relative;
   flex: 1;
   display: flex;
   align-items: center;
@@ -84,6 +85,14 @@
   max-height: 90vh !important;
   object-fit: contain !important;
 }
+
+.spinner {
+  position: absolute;
+  top: -36px;
+  left: 100px;
+  z-index: 10;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .action-btns {

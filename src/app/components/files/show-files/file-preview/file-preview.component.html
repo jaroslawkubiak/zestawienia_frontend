@@ -1,6 +1,10 @@
 <div class="preview">
   <div class="preview-image">
     <div *ngIf="file | isImage">
+      <app-loading-spinner
+        *ngIf="isLoading"
+        class="spinner"
+      ></app-loading-spinner>
       <p-image
         [src]="file.fullPath"
         [preview]="true"
@@ -8,11 +12,16 @@
         pTooltip="Powiększ"
         tooltipPosition="bottom"
       >
+        <ng-template #image>
+          <img
+            [src]="file.fullPath"
+            alt="Załączony plik"
+            (load)="onImageLoad()"
+            (error)="onImageError()"
+          />
+        </ng-template>
         <ng-template #indicator>
           <i class="pi pi-search-plus indicator"></i>
-        </ng-template>
-        <ng-template #image>
-          <img [src]="file.fullPath" alt="Załączony plik" />
         </ng-template>
         <ng-template
           #preview

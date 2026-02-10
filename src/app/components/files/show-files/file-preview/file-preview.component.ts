@@ -11,11 +11,12 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ImageModule } from 'primeng/image';
 import { TooltipModule } from 'primeng/tooltip';
+import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
+import { TAuthorType } from '../../../comments/types/authorType.type';
 import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.component';
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
-import { TAuthorType } from '../../../comments/types/authorType.type';
 
 @Component({
   selector: 'app-file-preview',
@@ -31,6 +32,7 @@ import { TAuthorType } from '../../../comments/types/authorType.type';
     IsPdfPipe,
     CheckboxModule,
     FormsModule,
+    LoadingSpinnerComponent,
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -42,6 +44,15 @@ export class FilePreviewComponent {
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
+
+  isLoading: boolean = true;
+  onImageLoad() {
+    this.isLoading = false;
+  }
+
+  onImageError() {
+    this.isLoading = false;
+  }
 
   get isSelected(): boolean {
     return this.selectedFiles.some((f) => f.id === this.file.id);
