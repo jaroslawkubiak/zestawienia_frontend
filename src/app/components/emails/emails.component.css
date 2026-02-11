@@ -3,14 +3,6 @@
   margin: 10px auto;
 }
 
-::ng-deep .p-toolbar {
-  width: var(--screen-width);
-}
-
-.cursor-pointer {
-  cursor: pointer;
-}
-
 tr {
   font-size: 1.8rem;
   padding: 0 !important;
@@ -22,13 +14,6 @@ th {
 
 ::ng-deep .custom-table .p-datatable-tbody > tr > td {
   padding: 1rem 0.5rem;
-}
-
-.total {
-  position: absolute;
-  font-size: 1.4rem;
-  bottom: 0;
-  left: 0;
 }
 
 .search-wrapper {
@@ -45,6 +30,10 @@ th {
   border-radius: 0 !important;
   width: 400px !important;
   color: rgb(0, 0, 0) !important;
+}
+
+.set-name:hover {
+  font-weight: 700;
 }
 
 .i-client {
@@ -71,6 +60,7 @@ th {
 
 .email-type i {
   font-size: 1.8rem;
+  cursor: auto;
 }
 
 .no-action {

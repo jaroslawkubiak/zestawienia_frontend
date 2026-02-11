@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -38,7 +38,7 @@ import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
   templateUrl: './emails.component.html',
   styleUrl: './emails.component.css',
 })
-export class EmailsComponent {
+export class EmailsComponent implements OnInit {
   isLoading = true;
   emailDialog: boolean = false;
   emailDialogHeader: string = '';
@@ -48,14 +48,10 @@ export class EmailsComponent {
   constructor(
     private emailsService: EmailsService,
     private router: Router,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
-    this.getEmails();
-  }
-
-  getEmails() {
     this.emailsService.getEmails().subscribe({
       next: (data) => {
         this.emails = data.map((email) => {
