@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
-import { CommentsToSetComponent } from './components/comments/comments-to-set/comments-to-set.component';
+import { CommentNotificationComponent } from './components/comment-notification/comment-notification.component';
 import { EmailsComponent } from './components/emails/emails.component';
 import { ForClientComponent } from './components/external/for-client/for-client.component';
 import { ForSupplierComponent } from './components/external/for-supplier/for-supplier.component';
@@ -55,6 +55,11 @@ export const routes: Routes = [
   {
     path: 'emails',
     component: EmailsComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'comment-notification',
+    component: CommentNotificationComponent,
     canActivate: [AuthGuard],
   },
   {

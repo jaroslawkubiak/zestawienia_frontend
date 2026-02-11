@@ -39,6 +39,11 @@ export class MenuComponent {
       icon: 'pi-envelope',
     },
     {
+      label: 'Wysłane powiadomienia',
+      routerLink: '/comment-notification',
+      icon: 'pi-bell',
+    },
+    {
       label: 'Ustawienia',
       routerLink: '/settings',
       icon: 'pi-cog',

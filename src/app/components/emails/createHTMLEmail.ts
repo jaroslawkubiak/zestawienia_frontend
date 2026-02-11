@@ -52,12 +52,13 @@ function HTMLheader() {
 
     <!-- LOGO -->
     <tr style="margin: 30px 0; width: 800px; text-align: left">
-      <td style="width: 300px">
-        <img
-          src="${ASSETS_URL}/logo-black.png"
+      <td style="width:300px; padding:30px 0 30px 0; text-align:left;">
+        <a href="https://zurawickidesign.pl/" target="_blank">
+          <img src="${ASSETS_URL}/logo-black.png"
           alt="logo"
-          style="width: 300px"
-        />
+          style="cursor: pointer; width: 300px"
+          />
+        </a>
       </td>
     </tr>
   `;
@@ -74,15 +75,15 @@ function HTMLfooter(GDPRClause: string) {
       <table width="100%" border="0" cellspacing="0" cellpadding="0" style="padding:10px 0;">
         <tr>
           <td valign="top">
-            <p style="margin:0 0 10px 0;">Pozdrawiamy,</p>
-            <p style="margin:0 0 10px 0;">Zespół Żurawicki Design</p>
-            <p style="margin:0 0 20px 0;">Jakub Żurawicki, Joanna Kubiak</p>
-            <p style="margin:0 0 10px 0;">ul. Czerkaska 10/7, 85-641 Bydgoszcz</p>
-            <p style="margin:0 0 20px 0;">E-mail: kontakt@zurawickidesign.pl</p>
+            <p style="margin:0 0 10px 0; padding:0;">Pozdrawiamy,</p>
+            <p style="margin:0 0 10px 0; padding:0;">Zespół Żurawicki Design</p>
+            <p style="margin:0 0 20px 0; padding:0;">Jakub Żurawicki, Joanna Kubiak</p>
+            <p style="margin:0 0 10px 0; padding:0;">ul. Czerkaska 10/7, 85-641 Bydgoszcz</p>
+            <p style="margin:0 0 20px 0; padding:0;">E-mail: kontakt@zurawickidesign.pl</p>
           </td>
         </tr>
       </table>
-      <table cellspacing="0" cellpadding="0" border="0" style="display:inline-block;">
+      <table border="0" style="display:inline-block;">
         <tr>
           <!-- IG -->
           <td>
@@ -93,6 +94,7 @@ function HTMLfooter(GDPRClause: string) {
               src="${ASSETS_URL}/social-${socialColor}/ig.png"
               width="32"
               height="32"
+              style="cursor: pointer;"              
               >
             </a>
           </td>
@@ -104,19 +106,22 @@ function HTMLfooter(GDPRClause: string) {
               title="Facebook" 
               src="${ASSETS_URL}/social-${socialColor}/fb.png"
               width="32"
-              height="32">
+              height="32"
+              style="cursor: pointer;"
+              >
             </a>
           </td>
           <!-- WWW -->
           <td style="padding-left:20px;">
             <a href="https://zurawickidesign.pl/" target="_blank">
-            <img
+              <img
               alt="Website"
               title="Website"
               src="${ASSETS_URL}/social-${socialColor}/www.png"
               width="32"
               height="32"
-            />
+              style="cursor: pointer;"
+              />
             </a>
           </td>
         </tr>
@@ -125,7 +130,7 @@ function HTMLfooter(GDPRClause: string) {
   </tr>
   <!-- COPYRIGHT -->
   <tr>
-    <td style="padding:15px 0; text-align:center;">
+    <td style="padding:20px 0; text-align:center;">
       <p style="font-size:14px;">&copy; ${currentYear} Żurawicki Design</p>
     </td>
   </tr>

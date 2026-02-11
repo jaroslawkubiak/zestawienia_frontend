@@ -1,0 +1,94 @@
+.comment-nofitication-container {
+  width: var(--screen-width);
+  margin: 10px auto;
+}
+
+tr {
+  font-size: 1.8rem;
+  padding: 0 !important;
+}
+
+th {
+  padding: 1rem 0.5rem !important;
+}
+
+th i {
+  font-size: 1.8rem;
+}
+
+::ng-deep .custom-table .p-datatable-tbody > tr > td {
+  padding: 1rem 0.5rem;
+}
+
+.search-wrapper {
+  display: flex;
+  margin-bottom: 20px !important;
+}
+
+.search-input {
+  display: flex !important;
+  font-size: 1rem !important;
+  padding: 8px 24px !important;
+  font-weight: normal !important;
+  border: 1px solid rgb(0, 0, 0) !important;
+  border-radius: 0 !important;
+  width: 400px !important;
+  color: rgb(0, 0, 0) !important;
+}
+
+.col-lp {
+  text-align: center;
+}
+
+.col-notification-direction-wrapper {
+  width: 100px;
+}
+
+.col-notification-direction-wrapper i {
+  font-size: 1.8rem;
+  cursor: auto;
+}
+
+.i-client-to-office {
+  color: var(--btn-primary-bg);
+}
+
+.i-office-to-client {
+  color: var(--btn-info-bg);
+}
+
+.no-action {
+  cursor: auto;
+}
+
+.set-name:hover {
+  font-weight: 700;
+}
+
+.notification-direction {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
+}
+
+.notification-preview {
+  text-align: center;
+}
+
+.notification-preview i {
+  font-size: 1.8rem;
+}
+
+.notification-preview i:hover {
+  color: var(--accent-color-10);
+}
+
+.notification-preview-container {
+  all: unset;
+  display: block;
+  width: 100%;
+}

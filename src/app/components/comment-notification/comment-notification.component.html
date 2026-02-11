@@ -1,0 +1,148 @@
+<div class="spinner" *ngIf="isLoading">
+  <app-loading-spinner [size]="200"></app-loading-spinner>
+</div>
+
+<div *ngIf="!isLoading" class="comment-nofitication-container">
+  <p-table
+    #dt
+    [value]="commentNotificationList"
+    [rows]="10"
+    [columns]="cols"
+    [paginator]="true"
+    [globalFilterFields]="[
+      'to',
+      'set.name',
+      'client.firstName',
+      'client.lastName',
+    ]"
+    [tableStyle]="{ 'min-width': '105rem' }"
+    [rowHover]="true"
+    class="custom-table"
+    dataKey="id"
+    stripedRows
+  >
+    <ng-template #caption>
+      <div class="search-wrapper">
+        <p-iconfield>
+          <p-inputicon styleClass="pi pi-search" />
+          <input
+            pInputText
+            type="text"
+            class="search-input"
+            pTooltip="Filtruj e-maile"
+            tooltipPosition="bottom"
+            (input)="onGlobalFilter($event)"
+            placeholder="Imię, nazwisko, e-mail, nazwa inwestycji"
+          />
+        </p-iconfield>
+      </div>
+    </ng-template>
+    <ng-template #header>
+      <tr>
+        <th class="flex-center" style="min-width: 3rem">LP</th>
+        <th style="min-width: 3rem; text-align: center">
+          <i
+            class="pi pi-arrow-right-arrow-left"
+            pTooltip="Kierunek powiadomienia"
+            tooltipPosition="bottom"
+          ></i>
+        </th>
+        <th pSortableColumn="to" style="min-width: 20rem">
+          Adresat
+          <p-sortIcon field="to" />
+        </th>
+        <th pSortableColumn="set.name" style="min-width: 20rem">
+          Inwestycja
+          <p-sortIcon field="set.name" />
+        </th>
+        <th pSortableColumn="client.lastName" style="min-width: 15rem">
+          Imię i nazwisko
+          <p-sortIcon field="client.lastName" />
+        </th>
+        <th style="min-width: 5rem">Nowe komentarze</th>
+        <th style="min-width: 5rem">Ważne komentarze</th>
+        <th pSortableColumn="sendAtTimestamp" style="min-width: 15rem">
+          Wysłane
+          <p-sortIcon field="sendAtTimestamp" />
+        </th>
+        <th style="min-width: 3rem; text-align: center">Podgląd</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-commentNotificationList let-index="rowIndex">
+      <tr class="row">
+        <td class="col-lp">{{ index + 1 }}</td>
+        <td class="col-notification-direction-wrapper">
+          <div
+            class="notification-direction i-office-to-client"
+            *ngIf="
+              commentNotificationList.notificationDirection ===
+              'office_to_client'
+            "
+            pTooltip="Z biura do klienta"
+            tooltipPosition="bottom"
+          >
+            <i class="pi pi-building"></i>
+            <i class="pi pi-arrow-right"></i>
+            <i class="pi pi-user"></i>
+          </div>
+          <div
+            class="notification-direction i-client-to-office"
+            *ngIf="
+              commentNotificationList.notificationDirection ===
+              'client_to_office'
+            "
+            pTooltip="Od klienta do biura"
+            tooltipPosition="bottom"
+          >
+            <i class="pi pi-user"></i>
+            <i class="pi pi-arrow-right"></i>
+            <i class="pi pi-building"></i>
+          </div>
+        </td>
+        <td class="no-action">
+          {{ commentNotificationList.to }}
+        </td>
+        <td
+          class="cursor-pointer set-name"
+          (click)="openSet(commentNotificationList.set.id)"
+          pTooltip="Przejdź do zestawienia"
+          tooltipPosition="left"
+        >
+          {{ commentNotificationList.set.name }}
+        </td>
+        <td class="no-action">
+          {{ commentNotificationList.client.firstName }}
+          {{ commentNotificationList.client.lastName }}
+        </td>
+        <td class="no-action">
+          {{ commentNotificationList.unreadComments }}
+        </td>
+        <td class="no-action">
+          {{ commentNotificationList.needsAttentionComments }}
+        </td>
+        <td class="no-action">
+          {{ commentNotificationList.sendAt }}
+        </td>
+        <td class="cursor-pointer notification-preview">
+          <i
+            pTooltip="Pokaż wysłane powiadomienie"
+            tooltipPosition="bottom"
+            class="pi pi-envelope"
+            (click)="openNotificationPreview(commentNotificationList.id)"
+          ></i>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  [(visible)]="previewDialog"
+  [style]="{ width: '950px' }"
+  (onHide)="onDialogClosed()"
+  header="{{ previewDialogHeader }}"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <div class="notification-preview-container" [innerHTML]="htmlContent"></div>
+</p-dialog>
