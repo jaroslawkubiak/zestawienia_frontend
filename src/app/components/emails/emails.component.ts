@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { Dialog } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
@@ -34,20 +36,25 @@ import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
     ReactiveFormsModule,
     LoadingSpinnerComponent,
     TooltipModule,
+    Dialog,
   ],
   templateUrl: './emails.component.html',
   styleUrl: './emails.component.css',
 })
 export class EmailsComponent implements OnInit {
   isLoading = true;
-  emailDialog: boolean = false;
-  emailDialogHeader: string = '';
   emails!: ISendedEmailsFromDB[];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
+  previewDialogHeader = '';
+  htmlContent!: SafeHtml;
+  previewDialog = false;
+
   constructor(
     private emailsService: EmailsService,
     private router: Router,
+    private sanitizer: DomSanitizer,
+
     private cd: ChangeDetectorRef,
   ) {}
 
@@ -97,6 +104,30 @@ export class EmailsComponent implements OnInit {
     }
 
     return index;
+  }
+
+  openEmailPreview(id: number) {
+    const email = this.emails.find((email) => email.id === id);
+    if (!email) {
+      return;
+    }
+
+    this.previewDialogHeader = `Inwestycja : ${email.set.name}`;
+
+    this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(
+      email.content.replace(
+        /<body.*?>|<\/body>|<html.*?>|<\/html>|<head.*?>.*?<\/head>/g,
+        '',
+      ),
+    );
+
+    this.previewDialog = true;
+  }
+
+  onDialogClosed() {
+    this.htmlContent = '';
+    this.previewDialogHeader = '';
+    this.previewDialog = false;
   }
 
   onGlobalFilter(event: Event) {

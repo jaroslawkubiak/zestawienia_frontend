@@ -14,7 +14,7 @@
       'company',
       'set.name',
       'sendBy.name',
-      'fullName'
+      'fullName',
     ]"
     [tableStyle]="{ 'min-width': '105rem' }"
     [rowHover]="true"
@@ -63,6 +63,7 @@
           Wysłany
           <p-sortIcon field="sendAtTimestamp" />
         </th>
+        <th style="min-width: 3rem; text-align: center">Podgląd</th>
       </tr>
     </ng-template>
     <ng-template #body let-email let-index="rowIndex">
@@ -74,11 +75,20 @@
         <td class="no-action">
           {{ email.emailTo }}
         </td>
-        <td class="cursor-pointer set-name" (click)="openSet(email.set.id)">
+        <td
+          class="cursor-pointer set-name"
+          (click)="openSet(email.set.id)"
+          pTooltip="Przejdź do zestawienia"
+          tooltipPosition="left"
+        >
           {{ email.set.name }}
         </td>
         <td class="cursor-pointer">
-          <a href="{{ email.link }}" target="_blank"
+          <a
+            href="{{ email.link }}"
+            target="_blank"
+            pTooltip="Otwórz link"
+            tooltipPosition="left"
             ><i class="pi pi-link link"></i
           ></a>
         </td>
@@ -89,7 +99,26 @@
           {{ email.fullName }}
         </td>
         <td class="no-action">{{ email.sendAt }} ({{ email.sendBy.name }})</td>
+        <td class="cursor-pointer email-preview">
+          <i
+            pTooltip="Pokaż wysłane powiadomienie"
+            tooltipPosition="bottom"
+            class="pi pi-envelope"
+            (click)="openEmailPreview(email.id)"
+          ></i>
+        </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog
+  [(visible)]="previewDialog"
+  [style]="{ width: '700px' }"
+  (onHide)="onDialogClosed()"
+  header="{{ previewDialogHeader }}"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <div class="email-preview-container" [innerHTML]="htmlContent"></div>
+</p-dialog>

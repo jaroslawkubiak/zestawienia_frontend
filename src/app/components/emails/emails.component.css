@@ -66,3 +66,21 @@ th {
 .no-action {
   cursor: auto;
 }
+
+.email-preview {
+  text-align: center;
+}
+
+.email-preview i {
+  font-size: 1.8rem;
+}
+
+.email-preview i:hover {
+  color: var(--accent-color-10);
+}
+
+.email-preview-container {
+  all: unset;
+  display: block;
+  width: 100%;
+}

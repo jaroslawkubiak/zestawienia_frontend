@@ -90,6 +90,7 @@ export class CommentNotificationComponent {
     this.previewDialogHeader = '';
     this.previewDialog = false;
   }
+
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {
