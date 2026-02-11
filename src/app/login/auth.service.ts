@@ -13,7 +13,7 @@ import {
 import { environment } from '../../environments/environment';
 import { ILoggedUser } from './types/ILoggedUser';
 import { ILoginUser } from './types/ILoginUser';
-import { Role } from './types/role';
+import { Role } from './types/role.type';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,10 @@ export class AuthService {
   private currentUserSubject = new BehaviorSubject<ILoggedUser | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   getAuthorizationToken(): string | null {
     return this.authorizationToken();
@@ -75,7 +78,7 @@ export class AuthService {
             'Błędne dane logowania. Spróbuj ponownie.';
 
           return throwError(() => new Error(backendMsg));
-        })
+        }),
       );
   }
 
@@ -133,7 +136,7 @@ export class AuthService {
           if (this.silentMode) {
             this.setSilentMode(false);
           }
-        })
+        }),
       );
   }
 }

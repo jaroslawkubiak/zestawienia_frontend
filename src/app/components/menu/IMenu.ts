@@ -1,4 +1,4 @@
-import { Role } from '../../login/types/role';
+import { Role } from '../../login/types/role.type';
 
 export interface IMenu {
   label: string;
