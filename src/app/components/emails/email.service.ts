@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { EmailAudience } from './types/EmailAudience.type';
 import { IEmailDetailsToDB } from './types/IEmailDetailsToDB';
+import { IEmailPreviewPayload } from './types/IEmailPreviewPayload';
 import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
 
 @Injectable({
@@ -17,6 +18,16 @@ export class EmailsService {
     private http: HttpClient,
     private authService: AuthService,
   ) {}
+
+  previewEmail(
+    type: string,
+    payload: IEmailPreviewPayload,
+  ): Observable<{ html: string }> {
+    return this.http.post<{ html: string }>(
+      `${environment.API_URL}/email/preview`,
+      { type, payload },
+    );
+  }
 
   getEmails(): Observable<ISendedEmailsFromDB[]> {
     return this.http.get<ISendedEmailsFromDB[]>(

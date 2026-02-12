@@ -6,15 +6,15 @@ import { EmailDetails } from './types/IEmailDetails';
 
 export const EmailDetailsList = {
   client: {
-    welcome: {
+    clientWelcome: {
       audience: 'client',
-      name: 'welcome',
+      name: 'clientWelcome',
       subject: 'Inwestycja',
       message: () => 'Przesyłamy link do inwestycji',
     },
-    info: {
+    clientInfo: {
       audience: 'client',
-      name: 'info',
+      name: 'clientInfo',
       subject: 'Informacja',
       message: () => 'Przesyłamy nowe informacje o inwestycji',
     },

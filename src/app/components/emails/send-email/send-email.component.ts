@@ -23,7 +23,6 @@ import { ISet } from '../../sets/types/ISet';
 import { SettingsService } from '../../settings/settings.service';
 import { DbSettings } from '../../settings/types/IDbSettings';
 import { ISupplier } from '../../suppliers/types/ISupplier';
-import { createHTMLEmail } from '../createHTMLEmail';
 import { EmailsService } from '../email.service';
 import { EmailDetailsList } from '../EmailDetailsList';
 import { EmailAudience } from '../types/EmailAudience.type';
@@ -69,12 +68,11 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   private messageInput$ = new Subject<string>();
   private subscription!: Subscription;
   private viewInitialized = false;
+  private baseLayoutHTML = '';
 
   senderEmail = '';
-  rawHTML = '';
-  title = '';
+  HTMLheader = '';
   emailMessage = '';
-  GDPRClause = '';
 
   newEmail: IEmailDetailsToDB = {
     to: '',
@@ -95,7 +93,6 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
     'sendingEmailsToClient',
     'sendingEmailsToSupplier',
     'senderEmail',
-    'GDPRClause',
   ];
 
   constructor(
@@ -109,32 +106,28 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit() {
     this.settingsService.getSettingByNames(this.settingsNames).subscribe({
       next: (settings: DbSettings[]) => {
-        for (const setting of settings) {
-          if (setting.name === 'sendingEmailsToClient') {
-            this.sendingEmailsToClient = setting.value === 'true';
+        settings.forEach((setting) => {
+          switch (setting.name) {
+            case 'sendingEmailsToClient':
+              this.sendingEmailsToClient = setting.value === 'true';
+              break;
+            case 'sendingEmailsToSupplier':
+              this.sendingEmailsToSuppliers = setting.value === 'true';
+              break;
+            case 'senderEmail':
+              this.senderEmail = setting.value;
+              break;
           }
-
-          if (setting.name === 'sendingEmailsToSupplier') {
-            this.sendingEmailsToSuppliers = setting.value === 'true';
-          }
-
-          if (setting.name === 'senderEmail') {
-            this.senderEmail = setting.value;
-          }
-          
-          if (setting.name === 'GDPRClause') {
-            this.GDPRClause = setting.value;
-          }
-        }
+        });
 
         this.cd.markForCheck();
       },
     });
 
     this.subscription = this.messageInput$
-      .pipe(debounceTime(700))
+      .pipe(debounceTime(50))
       .subscribe(() => {
-        this.loadPreview();
+        this.updateContentOnly();
       });
   }
 
@@ -161,25 +154,17 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   applyTemplate(template: ClientTemplate | SupplierTemplate) {
-    if (template.name === 'welcome') {
-      this.newEmail.subject = `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`;
-    } else {
-      this.newEmail.subject = template.subject;
-    }
+    this.newEmail.subject =
+      template.name === 'clientWelcome'
+        ? `${template.subject}: ${this.set.name} utworzona w dniu ${this.set.createdAt}`
+        : template.subject;
 
-    this.title = template.subject;
+    this.HTMLheader = template.subject;
 
-    if (template.name === 'supplierOrder') {
-      this.emailMessage = template.message({
-        client: {
-          firstName: this.set.clientId.firstName,
-          lastName: this.set.clientId.lastName,
-          company: this.set.clientId.company,
-        },
-      });
-    } else {
-      this.emailMessage = template.message({});
-    }
+    this.emailMessage =
+      template.name === 'supplierOrder'
+        ? template.message({ client: this.set.clientId })
+        : template.message({});
 
     if (this.viewInitialized) {
       this.loadPreview();
@@ -188,15 +173,11 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit() {
     const iframe = this.iframeRef.nativeElement;
-
     iframe.srcdoc = `
-      <html>
-        <body style="margin:0;padding:0;font-family:Arial;">
-          <div id="preview"></div>
-        </body>
-      </html>
-    `;
-
+    <html><body style="margin:0;padding:0;font-family:Arial;">
+      <div id="preview"></div>
+    </body></html>
+  `;
     iframe.onload = () => {
       this.viewInitialized = true;
       this.loadPreview();
@@ -204,23 +185,40 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   loadPreview() {
-    const formattedMessage = this.emailMessage.replace(/\n/g, '<br />');
-    this.rawHTML = createHTMLEmail({
-      title: this.title,
-      message: formattedMessage,
-      link: this.newEmail.link,
-      GDPRClause: this.GDPRClause,
-    });
+    if (!this.selectedTemplate) return;
 
+    const formattedMessage = this.emailMessage.replace(/\n/g, '<br />');
+
+    this.emailsService
+      .previewEmail(this.selectedTemplate.name, {
+        HTMLheader: this.HTMLheader,
+        HTMLContent: formattedMessage,
+        linkToSet: this.newEmail.link,
+      })
+      .subscribe((res) => {
+        this.baseLayoutHTML = res.html;
+
+        const iframe = this.iframeRef.nativeElement;
+        const doc = iframe.contentDocument;
+
+        if (!doc) return;
+
+        const container = doc.getElementById('preview');
+        if (container) {
+          container.innerHTML = this.baseLayoutHTML;
+        }
+      });
+  }
+
+  private updateContentOnly() {
     const iframe = this.iframeRef.nativeElement;
     const doc = iframe.contentDocument;
-
     if (!doc) return;
 
-    const container = doc.getElementById('preview');
-    if (container) {
-      container.innerHTML = this.rawHTML;
-    }
+    const dynamic = doc.getElementById('dynamic-content');
+    if (!dynamic) return;
+
+    dynamic.innerHTML = this.emailMessage.replace(/\n/g, '<br />');
   }
 
   onMessageChange(value: string) {
@@ -261,20 +259,23 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       return;
     }
 
-    this.newEmail.content = this.rawHTML;
+    const iframe = this.iframeRef.nativeElement;
+    const doc = iframe.contentDocument;
+
+    if (doc) {
+      this.newEmail.content = doc.documentElement.outerHTML;
+    }
+
     this.newEmail.setId = this.set.id;
 
-    if (this.supplier) {
-      this.newEmail.supplierId = this.supplier.id;
-    } else {
-      this.newEmail.clientId = this.set.clientId.id;
-    }
+    this.newEmail.supplierId = this.supplier?.id;
+    this.newEmail.clientId = this.supplier ? undefined : this.set.clientId.id;
 
     this.emailsService.sendEmail(this.newEmail).subscribe({
       next: (response) => {
         this.notificationService.showNotification(
           'success',
-          `Email na adres ${response?.accepted[0]} został wysłany poprawnie`,
+          `E-mail na adres ${response?.accepted[0]} został wysłany poprawnie`,
         );
 
         this.soundService.playSound(SoundType.emailSending);
@@ -284,7 +285,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
       error: (error) => {
         const sendigError = error?.error?.message
           ? `${error.error.message} : ${error.error?.error}`
-          : 'Nie udało się wysłać emaila.';
+          : 'Nie udało się wysłać e-maila.';
 
         this.notificationService.showNotification('error', sendigError);
       },

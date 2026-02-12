@@ -1,6 +1,6 @@
 import { EmailDetailsList } from '../EmailDetailsList';
 
-export type ClientEmailTemplateName = 'welcome' | 'info';
+export type ClientEmailTemplateName = 'clientWelcome' | 'clientInfo';
 
 export type SupplierEmailTemplateName = 'supplierOffer' | 'supplierOrder';
 
