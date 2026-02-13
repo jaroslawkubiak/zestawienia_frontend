@@ -1,17 +1,15 @@
 .file-container-wrapper {
-  display: grid;
-  grid-template-rows: 1fr;
+  max-height: 5000px;
   transition:
-    grid-template-rows 0.35s ease,
+    max-height 0.35s ease,
     opacity 0.25s ease;
   opacity: 1;
 }
 
 .file-container-wrapper.collapsed {
-  grid-template-rows: 0fr;
+  max-height: 0;
   opacity: 0;
 }
-
 .file-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -21,7 +19,7 @@
 .file-container .file-item {
   position: relative;
   width: var(--img-container-width);
-  height: 300px;
+  height: 350px;
   width: 300px;
   padding: 20px 10px;
   border-radius: 18px;
@@ -119,7 +117,7 @@
 
   .file-container .file-item {
     width: 150px;
-    height: 150px;
+    height: 250px;
     padding: 10px;
     border-radius: 5px;
   }

@@ -57,4 +57,8 @@ export class FilePreviewComponent {
   get isSelected(): boolean {
     return this.selectedFiles.some((f) => f.id === this.file.id);
   }
+
+  getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {
+    return file.height > file.width ? 'portrait' : 'landscape';
+  }
 }

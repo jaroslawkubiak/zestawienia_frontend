@@ -1,5 +1,5 @@
 <div class="preview">
-  <div class="preview-image">
+  <div class="preview-image" [ngClass]="getImageOrientation(file)">
     <div *ngIf="file | isImage">
       <app-loading-spinner
         *ngIf="isLoading"
