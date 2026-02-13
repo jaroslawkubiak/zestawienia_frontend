@@ -112,7 +112,7 @@ export class EmailsComponent implements OnInit {
       return;
     }
 
-    this.previewDialogHeader = `Inwestycja : ${email.set.name}`;
+    this.previewDialogHeader = email.subject;
 
     this.htmlContent = this.sanitizer.bypassSecurityTrustHtml(
       email.content.replace(

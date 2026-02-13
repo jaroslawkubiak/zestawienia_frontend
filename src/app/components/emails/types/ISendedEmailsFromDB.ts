@@ -4,6 +4,7 @@ export interface ISendedEmailsFromDB {
   sendAt: string;
   sendAtTimestamp: number;
   content: string;
+  subject: string;
   client?: {
     id: number;
     company: string;
