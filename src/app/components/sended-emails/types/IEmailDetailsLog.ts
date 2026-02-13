@@ -1,4 +1,4 @@
-export interface IEmailDetailsToDB {
+export interface IEmailDetailsLog {
   to: string;
   subject: string;
   content: string;

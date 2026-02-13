@@ -1,19 +1,19 @@
 import { MenuItem } from 'primeng/api';
-import { EmailAudience } from '../../emails/types/EmailAudience.type';
-import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
+import { TEmailAudience } from '../../sended-emails/types/EmailAudience.type';
+import { ISendedEmails } from '../../sended-emails/types/ISendedEmails';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { ISet } from '../types/ISet';
 
 export interface SetMenuParams {
   set: ISet;
   suppliersFromSet: ISupplier[];
-  emailsList: ISendedEmailsFromDB[];
+  emailsList: ISendedEmails[];
   isEdited: boolean;
   clientHash: string;
   sendSetToClient: () => void;
   sendSetToSupplier: (supplier: ISupplier) => void;
-  openLink: (type: EmailAudience, hash: string) => void;
-  copyLink: (type: EmailAudience, hash: string) => void;
+  openLink: (type: TEmailAudience, hash: string) => void;
+  copyLink: (type: TEmailAudience, hash: string) => void;
   editHeader: () => void;
   generatePDF: () => void;
   showAttachedFiles: () => void;

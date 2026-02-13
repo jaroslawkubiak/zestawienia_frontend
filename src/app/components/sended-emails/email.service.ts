@@ -3,10 +3,10 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
-import { EmailAudience } from './types/EmailAudience.type';
-import { IEmailDetailsToDB } from './types/IEmailDetailsToDB';
+import { TEmailAudience } from './types/EmailAudience.type';
+import { IEmailDetailsLog } from './types/IEmailDetailsLog';
 import { IEmailPreviewPayload } from './types/IEmailPreviewPayload';
-import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
+import { ISendedEmails } from './types/ISendedEmails';
 
 @Injectable({
   providedIn: 'root',
@@ -29,8 +29,8 @@ export class EmailsService {
     );
   }
 
-  getEmails(): Observable<ISendedEmailsFromDB[]> {
-    return this.http.get<ISendedEmailsFromDB[]>(
+  getEmails(): Observable<ISendedEmails[]> {
+    return this.http.get<ISendedEmails[]>(
       `${environment.API_URL}/email/getEmails`,
       {
         headers: { 'Content-Type': 'application/json' },
@@ -38,8 +38,8 @@ export class EmailsService {
     );
   }
 
-  getEmailBySetId(setId: number): Observable<ISendedEmailsFromDB[]> {
-    return this.http.get<ISendedEmailsFromDB[]>(
+  getEmailBySetId(setId: number): Observable<ISendedEmails[]> {
+    return this.http.get<ISendedEmails[]>(
       `${environment.API_URL}/email/${setId}/getEmailListForSet`,
       {
         headers: { 'Content-Type': 'application/json' },
@@ -47,8 +47,8 @@ export class EmailsService {
     );
   }
 
-  sendEmail(emailDetails: IEmailDetailsToDB): Observable<any> {
-    const newEmail: IEmailDetailsToDB = {
+  sendEmail(emailDetails: IEmailDetailsLog): Observable<any> {
+    const newEmail: IEmailDetailsLog = {
       ...emailDetails,
       userId: this.userId(),
     };
@@ -59,7 +59,7 @@ export class EmailsService {
   }
 
   createExternalLink(
-    type: EmailAudience,
+    type: TEmailAudience,
     setHash: string,
     hash: string,
   ): string {

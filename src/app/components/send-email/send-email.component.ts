@@ -16,18 +16,21 @@ import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
 import { debounceTime, Subject, Subscription } from 'rxjs';
-import { NotificationService } from '../../../services/notification.service';
-import { SoundService } from '../../../services/sound.service';
-import { SoundType } from '../../../services/types/SoundType';
-import { ISet } from '../../sets/types/ISet';
-import { SettingsService } from '../../settings/settings.service';
-import { DbSettings } from '../../settings/types/IDbSettings';
-import { ISupplier } from '../../suppliers/types/ISupplier';
-import { EmailsService } from '../email.service';
-import { EmailDetailsList } from '../EmailDetailsList';
-import { EmailAudience } from '../types/EmailAudience.type';
-import { ClientTemplate, SupplierTemplate } from '../types/EmailTemplates.type';
-import { IEmailDetailsToDB } from '../types/IEmailDetailsToDB';
+import { NotificationService } from '../../services/notification.service';
+import { SoundService } from '../../services/sound.service';
+import { SoundType } from '../../services/types/SoundType';
+import { EmailsService } from '../sended-emails/email.service';
+import { EmailDetailsList } from '../sended-emails/EmailDetailsList';
+import { TEmailAudience } from '../sended-emails/types/EmailAudience.type';
+import {
+  ClientTemplate,
+  SupplierTemplate,
+} from '../sended-emails/types/EmailTemplates.type';
+import { IEmailDetailsLog } from '../sended-emails/types/IEmailDetailsLog';
+import { ISet } from '../sets/types/ISet';
+import { SettingsService } from '../settings/settings.service';
+import { DbSettings } from '../settings/types/IDbSettings';
+import { ISupplier } from '../suppliers/types/ISupplier';
 
 @Component({
   selector: 'app-send-email',
@@ -40,7 +43,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   private _supplier?: ISupplier;
   @Input() set!: ISet;
   @Input()
-  set audienceMode(value: EmailAudience) {
+  set audienceMode(value: TEmailAudience) {
     this._audienceMode = value;
     this.onAudienceChange();
   }
@@ -58,7 +61,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   get supplier(): ISupplier | undefined {
     return this._supplier;
   }
-  private _audienceMode!: EmailAudience;
+  private _audienceMode!: TEmailAudience;
 
   @ViewChild('iframeRef') iframeRef!: ElementRef<HTMLIFrameElement>;
 
@@ -74,14 +77,14 @@ export class SendEmailComponent implements OnInit, AfterViewInit, OnDestroy {
   HTMLheader = '';
   emailMessage = '';
 
-  newEmail: IEmailDetailsToDB = {
+  newEmail: IEmailDetailsLog = {
     to: '',
     subject: '',
     content: '',
     link: '',
   };
 
-  audience!: EmailAudience;
+  audience!: TEmailAudience;
 
   templates: (ClientTemplate | SupplierTemplate)[] = [];
   selectedTemplate!: ClientTemplate | SupplierTemplate;

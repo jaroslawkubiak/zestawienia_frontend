@@ -17,10 +17,10 @@ import { TooltipModule } from 'primeng/tooltip';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { EmailsService } from './email.service';
-import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
+import { ISendedEmails } from './types/ISendedEmails';
 
 @Component({
-  selector: 'app-emails',
+  selector: 'app-sended-emails',
   imports: [
     TableModule,
     SelectModule,
@@ -38,12 +38,12 @@ import { ISendedEmailsFromDB } from './types/ISendedEmailsFromDB';
     TooltipModule,
     Dialog,
   ],
-  templateUrl: './emails.component.html',
-  styleUrl: './emails.component.css',
+  templateUrl: './sended-emails.component.html',
+  styleUrl: './sended-emails.component.css',
 })
-export class EmailsComponent implements OnInit {
+export class SendedEmailsComponent implements OnInit {
   isLoading = true;
-  emails!: ISendedEmailsFromDB[];
+  emails!: ISendedEmails[];
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   previewDialogHeader = '';

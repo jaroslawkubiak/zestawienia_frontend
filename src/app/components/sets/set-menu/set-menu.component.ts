@@ -21,14 +21,14 @@ import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsB
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { bookarksDefaultColumnWidth } from '../../bookmarks/bookmarks-width';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
-import { EmailsService } from '../../emails/email.service';
-import { SendEmailComponent } from '../../emails/send-email/send-email.component';
-import { IExternalLink } from '../../emails/types/IExternalLink';
-import { ISendedEmailsFromDB } from '../../emails/types/ISendedEmailsFromDB';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
+import { SendEmailComponent } from '../../send-email/send-email.component';
+import { EmailsService } from '../../sended-emails/email.service';
+import { IExternalLink } from '../../sended-emails/types/IExternalLink';
+import { ISendedEmails } from '../../sended-emails/types/ISendedEmails';
 import { ISupplier } from '../../suppliers/types/ISupplier';
 import { EditHeaderComponent } from '../edit-header/edit-header.component';
 import { EditSetService } from '../edit-set/edit-set.service';
@@ -77,7 +77,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   editHeaderProps!: ISetHeader;
   menuItems: MenuItem[] = [];
   suppliersFromSet: ISupplier[] = [];
-  emailsList: ISendedEmailsFromDB[] = [];
+  emailsList: ISendedEmails[] = [];
   attachmentBadge: number = 0;
   clientHash = '';
 
@@ -211,7 +211,6 @@ export class SetMenuComponent implements OnChanges, OnInit {
       );
 
       this.updateAttachedFiles(resultPdf.files);
-
     } catch (error) {
       console.error('Błąd generowania PDF lub wysyłki:', error);
     }
@@ -375,8 +374,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // finding the last email date and the user sent to the client
   findLastEmailToClient() {
     const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) =>
-        email.client?.id === this.set.clientId?.id,
+      (email: ISendedEmails) => email.client?.id === this.set.clientId?.id,
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;
@@ -388,7 +386,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   // finding the last email date and the user sent to the supplier
   findLastEmailToSupplier(supplierId: number) {
     const email = this.emailsList.find(
-      (email: ISendedEmailsFromDB) => email.supplier?.id === supplierId,
+      (email: ISendedEmails) => email.supplier?.id === supplierId,
     );
     if (email) {
       return `${email.sendAt} - ${email.sendBy.name}`;

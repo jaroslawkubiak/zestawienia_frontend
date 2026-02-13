@@ -1,10 +1,10 @@
 import { Routes } from '@angular/router';
 import { ClientsComponent } from './components/clients/clients.component';
 import { CommentNotificationComponent } from './components/comment-notification/comment-notification.component';
-import { EmailsComponent } from './components/emails/emails.component';
 import { ForClientComponent } from './components/external/for-client/for-client.component';
 import { ForSupplierComponent } from './components/external/for-supplier/for-supplier.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SendedEmailsComponent } from './components/sended-emails/sended-emails.component';
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
@@ -53,8 +53,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
   },
   {
-    path: 'emails',
-    component: EmailsComponent,
+    path: 'sended-emails',
+    component: SendedEmailsComponent,
     canActivate: [AuthGuard],
   },
   {

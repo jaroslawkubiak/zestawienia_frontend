@@ -1,4 +1,4 @@
-export interface ISendedEmailsFromDB {
+export interface ISendedEmails {
   id: number;
   link: string;
   sendAt: string;
