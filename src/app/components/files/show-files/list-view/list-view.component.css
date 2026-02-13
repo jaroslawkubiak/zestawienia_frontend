@@ -53,3 +53,9 @@
   right: 200px;
   height: 45px;
 }
+
+.folder-icon {
+  padding-right: 5px;
+  font-size: 1.6rem;
+  cursor: auto;
+}
