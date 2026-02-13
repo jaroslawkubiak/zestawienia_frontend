@@ -178,23 +178,28 @@ export class EditSetComponent
   }
 
   assignCommentsToPosition() {
-    this.positionsWithComments = this.uniquePositionIds.reduce<
-      IPositionWithComments[]
-    >((acc, positionId) => {
-      const position = this.positions.find((p) => p.id === positionId);
-      if (!position) return acc;
+    const commentsByPosition = this.comments.reduce<Record<number, IComment[]>>(
+      (acc, comment) => {
+        if (!acc[comment.positionId]) {
+          acc[comment.positionId] = [];
+        }
+        acc[comment.positionId].push(comment);
+        return acc;
+      },
+      {},
+    );
 
-      if (position.bookmarkId.id === this.selectedBookmark) {
-        acc.push({
-          position,
-          comments: this.comments.filter(
-            (comment) => comment.positionId === positionId,
-          ),
-        });
-      }
-
-      return acc;
-    }, []);
+    this.positionsWithComments = this.positions
+      .filter(
+        (position) =>
+          position.bookmarkId.id === this.selectedBookmark &&
+          this.uniquePositionIds.includes(position.id),
+      )
+      .map((position) => ({
+        position,
+        comments: commentsByPosition[position.id] ?? [],
+      }))
+      .sort((a, b) => a.position.kolejnosc - b.position.kolejnosc);
 
     this.cd.markForCheck();
   }
