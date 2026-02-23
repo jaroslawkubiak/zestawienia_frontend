@@ -66,6 +66,21 @@ export function buildSetMenu(
     return email ? `${email.sendAt} - ${email.sendBy.name}` : 'Nie wysłano';
   })();
 
+  const CommentsMenuItem =
+    getCommentsBadgeValue() === 0
+      ? {
+          label: 'Komentarze',
+          icon: 'pi pi-comments',
+          command: toggleShowAllComments,
+        }
+      : {
+          label: 'Komentarze',
+          icon: 'pi pi-comments',
+          badgeStyleClass: getCommentsBadgeSeverity(),
+          badge: getCommentsBadgeValue().toString(),
+          command: toggleShowAllComments,
+        };
+
   const commentsOrPositionsMenuItem = showAllComments
     ? {
         label: 'Pokaż pozycje',
@@ -73,11 +88,7 @@ export function buildSetMenu(
         command: toggleShowAllComments,
       }
     : {
-        label: 'Komentarze',
-        icon: 'pi pi-comments',
-        badgeStyleClass: getCommentsBadgeSeverity(),
-        badge: getCommentsBadgeValue().toString(),
-        command: toggleShowAllComments,
+        ...CommentsMenuItem,
       };
 
   const attachmentsMenuItem =
