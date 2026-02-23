@@ -136,6 +136,30 @@
   </p-table>
 </div>
 
+<div class="active-timers" *ngIf="!isLoading && activeTimers.length !== 0">
+  <div class="header">Aktywne timery</div>
+  <p-table [value]="activeTimers" [tableStyle]="{ 'min-width': '50rem' }">
+    <ng-template #header>
+      <tr>
+        <th>LP</th>
+        <th>Kierunek</th>
+        <th>Opóźnienie</th>
+        <th>Wystartowany</th>
+        <th>Zostanie wysłany</th>
+      </tr>
+    </ng-template>
+    <ng-template #body let-timer let-index="rowIndex">
+      <tr>
+        <td>{{ index + 1 }}</td>
+        <td>{{ timer.notificationDirection }}</td>
+        <td>{{ timer.delayMs }} min</td>
+        <td>{{ timer.startedAt }}</td>
+        <td>{{ timer.fireAt }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
 <p-dialog
   [(visible)]="previewDialog"
   [style]="{ width: '950px' }"

@@ -8,6 +8,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { ICommentNotificationLogs } from './types/ICommentNotificationLogs';
+import { ICommentNotificationWithTimers } from './types/ICommentNotificationWithTimers';
 
 @Injectable({
   providedIn: 'root',
@@ -35,9 +36,9 @@ export class CommentNotificationService {
     private authService: AuthService,
   ) {}
 
-  getCommentNotifications(): Observable<ICommentNotificationLogs[]> {
+  getCommentNotifications(): Observable<ICommentNotificationWithTimers> {
     return this.http
-      .get<ICommentNotificationLogs[]>(
+      .get<ICommentNotificationWithTimers>(
         `${environment.API_URL}/comment-notification/getAllCommentNotificationLogs`,
         {
           headers: this.httpHeaders,

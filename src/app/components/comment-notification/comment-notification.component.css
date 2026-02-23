@@ -3,6 +3,17 @@
   margin: 10px auto;
 }
 
+.active-timers {
+  width: 1000px;
+  margin: 10px auto;
+}
+
+.header {
+  font-size: 2.4rem;
+  color: var(--burgund-color-12);
+  padding: 24px 0;
+}
+
 tr {
   font-size: 1.8rem;
   padding: 0 !important;

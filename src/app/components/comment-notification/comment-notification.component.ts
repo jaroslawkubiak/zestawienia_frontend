@@ -14,6 +14,8 @@ import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-sp
 import { IColumn } from '../../shared/types/ITable';
 import { CommentNotificationService } from './comment-notification.service';
 import { ICommentNotificationLogs } from './types/ICommentNotificationLogs';
+import { INotificationTimer } from './types/INotificationTimer';
+import { formatDate } from '../../shared/helpers/formatDate';
 
 @Component({
   selector: 'app-comment-notification',
@@ -35,6 +37,7 @@ import { ICommentNotificationLogs } from './types/ICommentNotificationLogs';
 export class CommentNotificationComponent {
   @ViewChild('dt') dt!: Table;
   commentNotificationList!: ICommentNotificationLogs[];
+  activeTimers: INotificationTimer[] = [];
   cols!: IColumn[];
   previewDialog = false;
   isLoading = true;
@@ -50,8 +53,16 @@ export class CommentNotificationComponent {
 
   ngOnInit(): void {
     this.commentNotificationService.getCommentNotifications().subscribe({
-      next: (data) => {
-        this.commentNotificationList = data;
+      next: (response) => {
+        this.commentNotificationList = response.commentNotification;
+        this.activeTimers = response.timers.map((timer) => {
+          return {
+            ...timer,
+            delayMs: (timer.delayMs / 1000) / 60,
+            startedAt: formatDate(new Date(timer.startedAt)),
+            fireAt: formatDate(new Date(timer.fireAt)),
+          };
+        });
 
         this.isLoading = false;
         this.cd.markForCheck();
