@@ -220,9 +220,6 @@
 .needs-attention-wrapper i {
   font-size: 20px;
   color: var(--incoming-message-bg-color);
-  /* background-color: var(--error-color) !important; */
-  /* padding: 2px;
-  border-radius: 50%; */
 }
 
 .new-message-input-wrapper {
