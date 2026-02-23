@@ -45,7 +45,7 @@
         ></i>
       </div>
       <div class="send-email-iframe-wrapper">
-        <iframe #iframeRefHeader class="send-email-preview-iframe"></iframe>
+        <iframe #iframeRefHeader class="send-email-preview-iframe-header"></iframe>
         <textarea
           class="send-email-textarea"
           id="message"
@@ -53,7 +53,7 @@
           (ngModelChange)="onMessageChange($event)"
           rows="6"
         ></textarea>
-        <iframe #iframeRefFooter class="send-email-preview-iframe"></iframe>
+        <iframe #iframeRefFooter class="send-email-preview-iframe-footer"></iframe>
       </div>
     </div>
   </div>

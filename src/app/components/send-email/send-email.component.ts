@@ -9,7 +9,7 @@ import {
   Input,
   OnInit,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
@@ -186,7 +186,6 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
         const containerHeader = docHeader.getElementById('previewHeader');
         if (containerHeader) {
           containerHeader.innerHTML = response.header;
-          this.adjustIframeHeight(iframeHeader);
         }
 
         const iframeFooter = this.iframeRefFooter.nativeElement;
@@ -197,7 +196,6 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
         const containerFooter = docFooter.getElementById('previewFooter');
         if (containerFooter) {
           containerFooter.innerHTML = response.footer;
-          this.adjustIframeHeight(iframeFooter);
         }
 
         this.emailMessage = response.content;
@@ -305,14 +303,5 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
       </tr>
     </table>
   `;
-  }
-
-  private adjustIframeHeight(iframe: HTMLIFrameElement) {
-    const doc = iframe.contentDocument || iframe.contentWindow?.document;
-    if (!doc) return;
-
-    setTimeout(() => {
-      iframe.style.height = doc.body.scrollHeight + 10 + 'px';
-    }, 0);
   }
 }

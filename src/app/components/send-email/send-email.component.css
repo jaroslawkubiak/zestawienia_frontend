@@ -52,12 +52,21 @@
   background-color: var(--neutral-color-10);
 }
 
-.send-email-preview-iframe {
+.send-email-preview-iframe-header,
+.send-email-preview-iframe-footer {
   width: 100%;
   border: none;
   overflow: hidden;
   display: block;
   margin: 10px;
+}
+
+.send-email-preview-iframe-header {
+  height: 300px !important;
+}
+
+.send-email-preview-iframe-footer {
+  height: 520px !important;
 }
 
 .send-email-iframe-wrapper {
@@ -70,7 +79,7 @@
 .send-email-textarea {
   all: unset !important;
   padding: 10px !important;
-  width: calc(100% - 20px) !important;
+  width: calc(100% - 0px) !important;
   height: 150px !important;
   font-family: "Poppins", sans-serif !important;
   font-size: 1.6rem !important;
@@ -115,7 +124,6 @@
 }
 
 .p-select {
-  /* all: unset !important; */
   position: relative !important;
   padding: 0 4px !important;
   background-color: var(--neutral-color-10) !important;
@@ -154,7 +162,6 @@
 ::ng-deep .p-select-clear-icon {
   position: absolute !important;
   margin-right: 10px !important;
-  color: yellow !important;
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {
