@@ -62,7 +62,7 @@ export class SendFilesComponent {
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
   uploadProgress = 0;
-  fileLimit = 20;
+  fileLimit = 30;
   selectedDirectory!: IFileDirectory;
   directoryList: IFileDirectory[] = FileDirectoryList;
   isMobile = false;
