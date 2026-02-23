@@ -71,6 +71,7 @@
           <ng-container *ngIf="!showAllComments">
             <i class="pi pi-comments"></i>
             <p-badge
+              *ngIf="getCommentsBadgeValue()"
               [value]="getCommentsBadgeValue()"
               [severity]="getCommentsBadgeSeverity()"
               [pTooltip]="getCommentsTooltipInfo()"
@@ -88,8 +89,9 @@
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
           <i class="pi pi-cloud"></i>
           <p-badge
+            *ngIf="filesCount"
             [value]="filesCount"
-            [severity]="filesCount === 0 ? 'secondary' : 'contrast'"
+            severity="contrast"
             class="badge-position"
             badgeSize="large"
             [pTooltip]="'Ilość załączonych plików'"

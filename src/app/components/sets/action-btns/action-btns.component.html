@@ -33,6 +33,7 @@
       (click)="triggerShowComments()"
     />
     <p-badge
+      *ngIf="getCommentsBadgeValue(positionId)"
       [value]="getCommentsBadgeValue(positionId)"
       [severity]="getCommentsBadgeSeverity(positionId)"
       [pTooltip]="getCommentsBadgeTooltip(positionId)"

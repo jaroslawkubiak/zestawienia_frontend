@@ -25,6 +25,7 @@
         <div class="comments-cell flex-center">
           <i class="pi pi-comments"></i>
           <p-badge
+            *ngIf="getCommentsBadgeValue()"
             [value]="getCommentsBadgeValue()"
             [severity]="getCommentsBadgeSeverity()"
             [pTooltip]="getCommentsTooltipInfo()"

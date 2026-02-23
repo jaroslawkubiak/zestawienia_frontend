@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
@@ -10,7 +11,7 @@ import { BadgeSeverity } from './types/badgeSeverity.type';
 
 @Component({
   selector: 'app-action-btns',
-  imports: [ButtonModule, BadgeModule, TooltipModule],
+  imports: [ButtonModule, BadgeModule, TooltipModule, CommonModule],
   templateUrl: './action-btns.component.html',
   styleUrl: './action-btns.component.css',
 })

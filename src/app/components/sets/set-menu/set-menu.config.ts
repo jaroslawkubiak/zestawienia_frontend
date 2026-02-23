@@ -66,7 +66,7 @@ export function buildSetMenu(
     return email ? `${email.sendAt} - ${email.sendBy.name}` : 'Nie wysłano';
   })();
 
-  const commentsOrPositions = showAllComments
+  const commentsOrPositionsMenuItem = showAllComments
     ? {
         label: 'Pokaż pozycje',
         icon: 'pi pi-table',
@@ -79,6 +79,23 @@ export function buildSetMenu(
         badge: getCommentsBadgeValue().toString(),
         command: toggleShowAllComments,
       };
+
+  const attachmentsMenuItem =
+    set?.files?.length === 0
+      ? {
+          label: 'Załączniki',
+          icon: 'pi pi-cloud',
+          command: showAttachedFiles,
+        }
+      : {
+          label: 'Załączniki',
+          icon: 'pi pi-cloud',
+          badge: String(set?.files?.length || 0),
+          badgeStyleClass: set?.files?.length
+            ? 'p-badge-contrast'
+            : 'p-badge-secondary',
+          command: showAttachedFiles,
+        };
 
   return [
     {
@@ -121,19 +138,13 @@ export function buildSetMenu(
       command: generatePDF,
     },
     {
-      label: 'Załączniki',
-      icon: 'pi pi-cloud',
-      badge: String(set?.files?.length || 0),
-      badgeStyleClass: set?.files?.length
-        ? 'p-badge-contrast'
-        : 'p-badge-secondary',
-      command: showAttachedFiles,
+      ...attachmentsMenuItem,
     },
     {
       label: 'Prześlij pliki',
       icon: 'pi pi-paperclip',
       command: openSendFilesDialog,
     },
-    { ...commentsOrPositions },
+    { ...commentsOrPositionsMenuItem },
   ];
 }

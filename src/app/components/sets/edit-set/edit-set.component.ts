@@ -96,6 +96,11 @@ export class EditSetComponent
   ) {}
 
   ngOnInit() {
+    const navigation = history.state;
+    if (navigation?.showAllComments) {
+      this.showAllComments = true;
+    }
+
     this.route.paramMap.subscribe((params) => {
       this.setId = Number(params.get('id'));
       if (this.setId) {

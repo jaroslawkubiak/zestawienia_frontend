@@ -176,8 +176,8 @@ export class SetsComponent implements OnInit {
   showAllComments(setId: number) {
     const backPath = '/sets';
 
-    this.router.navigate([`/sets/comments/${setId}`], {
-      state: { backPath },
+    this.router.navigate([`/sets/${setId}`], {
+      state: { backPath, showAllComments: true },
     });
   }
 

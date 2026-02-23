@@ -141,8 +141,9 @@
                 (click)="showAttachedFiles(set)"
               />
               <p-badge
+                *ngIf="set.files?.length !== 0"
                 [value]="set.files?.length"
-                [severity]="set.files?.length ? 'contrast' : 'secondary'"
+                severity="contrast"
                 class="nr-comments"
                 pTooltip="Ilość załączników"
               />
@@ -168,6 +169,7 @@
                 (click)="showAllComments(set.id)"
               />
               <p-badge
+                *ngIf="getCommentsBadgeValue(set.id)"
                 [value]="getCommentsBadgeValue(set.id)"
                 [severity]="getCommentsBadgeSeverity(set.id)"
                 class="nr-comments"
