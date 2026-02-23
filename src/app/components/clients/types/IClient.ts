@@ -6,5 +6,5 @@ export interface IClient {
   email: string;
   hash?: string;
   telephone?: string;
-  setCount: number;
+  setCount?: number;
 }

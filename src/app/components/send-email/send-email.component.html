@@ -11,7 +11,7 @@
     <p-select
       [options]="templates"
       [(ngModel)]="selectedTemplate"
-      optionLabel="subject"
+      optionLabel="HTMLHeader"
       (onChange)="applyTemplate($event.value)"
       styleClass="w-full"
     >
@@ -24,36 +24,19 @@
     </div>
     <div class="send-email-header-cell">
       <p class="send-email-title flex-center">Odbiorca</p>
-      <p class="send-email-email">{{ newEmail.to }}</p>
+      <p class="send-email-email">{{ receiverEmail }}</p>
     </div>
     <div class="send-email-header-cell">
       <p class="send-email-title flex-center">Temat</p>
-      <p class="send-email-email">{{ newEmail.subject }}</p>
+      <p class="send-email-email">{{ emailSubject }}</p>
     </div>
   </div>
   <div class="send-email-content-container">
-    <div class="send-email-editor">
-      <label for="message" class="send-email-label send-email-label-edit"
-        >Edytuj treść wiadomości</label
-      >
-      <textarea
-        class="send-email-textarea"
-        id="message"
-        [(ngModel)]="emailMessage"
-        (ngModelChange)="onMessageChange($event)"
-        rows="5"
-      ></textarea>
-    </div>
-
     <div class="send-email-preview-container">
       <label class="send-email-label send-email-label-preview"
         >Podgląd treści wiadomości</label
       >
-
-      <div
-        class="send-email-footer"
-        [class.send-email-to-off]="isSendingDisabled"
-      >
+      <div class="send-email-btn" [class.send-email-to-off]="isSendingDisabled">
         <i
           class="pi pi-send"
           (click)="sendEmail()"
@@ -61,8 +44,17 @@
           pTooltip="{{ tooltipText }}"
         ></i>
       </div>
-
-      <iframe #iframeRef class="send-email-preview-iframe"></iframe>
+      <div class="send-email-iframe-wrapper">
+        <iframe #iframeRefHeader class="send-email-preview-iframe"></iframe>
+        <textarea
+          class="send-email-textarea"
+          id="message"
+          [(ngModel)]="emailMessage"
+          (ngModelChange)="onMessageChange($event)"
+          rows="6"
+        ></textarea>
+        <iframe #iframeRefFooter class="send-email-preview-iframe"></iframe>
+      </div>
     </div>
   </div>
 </div>

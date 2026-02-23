@@ -217,7 +217,6 @@ export class ClientsComponent implements OnInit {
           lastName: this.form.value.lastName!,
           company: this.form.value.company || '',
           telephone: this.form.value.telephone || '',
-          setCount: this.client.setCount,
         };
 
         this.clientsService.saveClient(editedClient).subscribe({

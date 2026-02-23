@@ -3,8 +3,8 @@ export interface IEmailDetailsLog {
   subject: string;
   content: string;
   setId?: number;
+  userId?: number;
   clientId?: number;
   supplierId?: number;
-  userId?: number;
   link: string;
 }

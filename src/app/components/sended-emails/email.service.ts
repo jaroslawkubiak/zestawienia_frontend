@@ -3,9 +3,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { IEmailPreview } from '../send-email/types/IEmailPreview';
+import { IEmailPreviewDetails } from '../send-email/types/IEmailPreviewDetails';
+import { IEmailTemplateList } from '../send-email/types/IEmailTemplateList';
 import { TEmailAudience } from './types/EmailAudience.type';
 import { IEmailDetailsLog } from './types/IEmailDetailsLog';
-import { IEmailPreviewPayload } from './types/IEmailPreviewPayload';
 import { ISendedEmails } from './types/ISendedEmails';
 
 @Injectable({
@@ -19,13 +21,16 @@ export class EmailsService {
     private authService: AuthService,
   ) {}
 
-  previewEmail(
-    type: string,
-    payload: IEmailPreviewPayload,
-  ): Observable<{ html: string }> {
-    return this.http.post<{ html: string }>(
-      `${environment.API_URL}/email/preview`,
-      { type, payload },
+  getTemplates(): Observable<IEmailTemplateList[]> {
+    return this.http.get<IEmailTemplateList[]>(
+      `${environment.API_URL}/email/getEmailTemplatesList`,
+    );
+  }
+
+  getEmailPreview(body: IEmailPreviewDetails): Observable<IEmailPreview> {
+    return this.http.post<IEmailPreview>(
+      `${environment.API_URL}/email/getEmailPreview`,
+      body,
     );
   }
 

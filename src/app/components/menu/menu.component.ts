@@ -35,7 +35,7 @@ export class MenuComponent {
     },
     {
       label: 'Wysłane e-maile',
-      routerLink: '/emails',
+      routerLink: '/sended-emails',
       icon: 'pi-envelope',
     },
     {

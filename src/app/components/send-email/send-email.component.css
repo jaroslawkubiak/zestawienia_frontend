@@ -1,6 +1,6 @@
 .send-email-container {
   width: 100%;
-  border: 1px solid var(--accent-color-13);
+  border: 2px solid var(--neutral-color-10);
 }
 
 .send-email-header {
@@ -18,15 +18,15 @@
   grid-template-columns: 110px auto;
   width: 100%;
   height: 40px;
-  border-bottom: 1px solid var(--accent-color-13);
+  border-bottom: 1px solid var(--neutral-color-10);
 }
 
 .send-email-title {
   font-size: 1.8rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent-color-13);
-  color: var(--secondary-color);
-  border-bottom: 1px solid var(--secondary-color);
+  background-color: var(--neutral-color-10);
+  color: var(--neutral-color-01);
+  border-bottom: 1px solid var(--neutral-color-01);
 }
 
 .send-email-email {
@@ -35,16 +35,11 @@
   align-items: center;
   font-size: 1.6rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--accent-color-03);
+  background-color: var(--neutral-color-01);
 }
 
 .send-email-content-container {
   width: 100%;
-}
-
-.send-email-editor {
-  width: 100%;
-  height: 300px;
 }
 
 .send-email-label {
@@ -53,28 +48,35 @@
   font-weight: 700;
   padding: 1.5rem;
   position: relative;
+  color: var(--neutral-color-01);
+  background-color: var(--neutral-color-10);
 }
 
-.send-email-label-edit {
-  color: var(--error-color);
-  background-color: var(--accent-color-20);
+.send-email-preview-iframe {
+  width: 100%;
+  border: none;
+  overflow: hidden;
+  display: block;
+  margin: 10px;
 }
 
-.send-email-label-preview {
-  color: var(--secondary-color);
-  background-color: var(--accent-color-13);
+.send-email-iframe-wrapper {
+  width: 800px;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
 }
 
 .send-email-textarea {
   all: unset !important;
   padding: 10px !important;
   width: calc(100% - 20px) !important;
-  height: calc(100% - 20px) !important;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.6rem;
-  resize: none;
-  border: none;
-  background-color: var(--edit-color) !important;
+  height: 150px !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 1.6rem !important;
+  resize: none !important;
+  border: none !important;
+  border: 1px solid var(--error-color) !important;
 }
 
 .send-email-preview-container {
@@ -82,27 +84,21 @@
   width: 100%;
 }
 
-.send-email-footer {
+.send-email-btn {
   position: absolute;
   top: 0;
   right: 0;
   padding: 1rem;
-  background-color: var(--accent-color-13);
+  background-color: var(--neutral-color-10);
 }
 
-.send-email-footer i {
+.send-email-btn i {
   font-size: 3rem;
   color: var(--secondary-color);
 }
 
-.send-email-footer i:hover {
-  color: var(--error-color);
-}
-
-.send-email-preview-iframe {
-  width: 100%;
-  height: 600px;
-  border: none;
+.send-email-btn i:hover {
+  color: var(--accent-color-10);
 }
 
 .send-email-template-wrapper {
@@ -110,10 +106,61 @@
   gap: 10px;
   align-items: center;
   justify-content: flex-end;
-  background-color: var(--accent-color-13);
+  background-color: var(--neutral-color-10);
   color: var(--secondary-color);
 }
 
 .send-email-to-off i {
   color: var(--error-color);
+}
+
+.p-select {
+  /* all: unset !important; */
+  position: relative !important;
+  padding: 0 4px !important;
+  background-color: var(--neutral-color-10) !important;
+  height: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  border: 0px solid var(--neutral-color-01) !important;
+}
+
+.p-select:hover {
+  background-color: var(--neutral-color-08) !important;
+}
+
+.p-select.p-variant-filled {
+  background-image: none !important;
+}
+
+::ng-deep .p-select-label {
+  padding: 4px !important;
+  color: var(--neutral-color-01) !important;
+}
+
+::ng-deep .p-select-option {
+  color: var(--neutral-color-10) !important;
+}
+
+::ng-deep .p-select-option-selected {
+  background-color: var(--neutral-color-04) !important;
+}
+
+::ng-deep .p-select-option:hover {
+  color: var(--neutral-color-01) !important;
+  background-color: var(--neutral-color-08) !important;
+}
+
+::ng-deep .p-select-clear-icon {
+  position: absolute !important;
+  margin-right: 10px !important;
+  color: yellow !important;
+}
+
+::ng-deep .p-select-dropdown .p-iconwrapper {
+  color: var(--neutral-color-01) !important;
+}
+
+::ng-deep .p-select-list-container {
+  background-color: var(--neutral-color-01) !important;
 }
