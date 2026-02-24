@@ -39,7 +39,7 @@
       'firstName',
       'lastName',
       'email',
-      'telephone'
+      'telephone',
     ]"
     [tableStyle]="{ 'min-width': '115rem' }"
     [(selection)]="selected"
@@ -127,15 +127,27 @@
         <td style="min-width: 12rem">
           {{ client.lastName }}
         </td>
-        <td style="min-width: 12rem">
+        <td
+          style="min-width: 12rem"
+          pTooltip="Kliknij, aby skopiować email"
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, client.email, 'Email')"
+        >
           {{ client.email }}
         </td>
-        <td style="min-width: 10rem">
+        <td
+          style="min-width: 10rem"
+          [pTooltip]="client.telephone ? 'Kliknij, aby skopiować telefon' : ''"
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, client.telephone, 'Telefon')"
+        >
           {{ client.telephone }}
         </td>
         <td
           style="min-width: 16rem"
-          (click)="copyToClipboard(client.company); $event.stopPropagation()"
+          [pTooltip]="client.company ? 'Kliknij, aby skopiować firmę' : ''"
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, client.company, 'Firma')"
         >
           {{ client.company }}
         </td>
@@ -254,6 +266,13 @@
             ></textarea>
           </div>
         </div>
+        <input
+          type="hidden"
+          pInputText
+          id="setCount"
+          formControlName="setCount"
+          fluid
+        />
       </form>
     </ng-template>
 

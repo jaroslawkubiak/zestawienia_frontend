@@ -62,12 +62,12 @@ export class ClientsComponent implements OnInit {
     private clientsService: ClientsService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
   ) {}
 
   form = new FormGroup({
     company: new FormControl(''),
-    firstName: new FormControl('', {
+    firstName: new FormControl<string | null>('', {
       validators: [Validators.required],
     }),
     lastName: new FormControl('', {
@@ -76,7 +76,8 @@ export class ClientsComponent implements OnInit {
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
-    telephone: new FormControl(''),
+    telephone: new FormControl<string | null>(''),
+    setCount: new FormControl<number | null>(null),
   });
 
   ngOnInit(): void {
@@ -87,6 +88,7 @@ export class ClientsComponent implements OnInit {
     this.clientsService.getClients().subscribe({
       next: (data) => {
         this.clients = data;
+
         this.isLoading = false;
         this.cd.markForCheck();
       },
@@ -102,6 +104,7 @@ export class ClientsComponent implements OnInit {
       lastName: null,
       email: null,
       telephone: null,
+      setCount: null,
     });
 
     this.clientDialog = true;
@@ -116,6 +119,7 @@ export class ClientsComponent implements OnInit {
       lastName: this.client.lastName ?? null,
       email: this.client.email ?? null,
       telephone: this.client.telephone ?? null,
+      setCount: this.client.setCount ?? null,
     });
 
     this.clientDialog = true;
@@ -125,7 +129,7 @@ export class ClientsComponent implements OnInit {
   deleteSelectedClient() {
     const accept = () => {
       this.clients = this.clients.filter(
-        (val) => !this.selected?.includes(val)
+        (val) => !this.selected?.includes(val),
       );
 
       const idList = this.selected?.map((client) => client.id) ?? [];
@@ -135,7 +139,7 @@ export class ClientsComponent implements OnInit {
         next: (response) => {
           this.notificationService.showNotification(
             'success',
-            'Klienci zostali usunięci'
+            'Klienci zostali usunięci',
           );
         },
         error: (error) => {
@@ -164,7 +168,7 @@ export class ClientsComponent implements OnInit {
         next: (response) => {
           this.notificationService.showNotification(
             'success',
-            'Klient został usunięty'
+            'Klient został usunięty',
           );
         },
         error: (error) => {
@@ -221,10 +225,11 @@ export class ClientsComponent implements OnInit {
 
         this.clientsService.saveClient(editedClient).subscribe({
           next: (response) => {
-            this.clients[this.findIndexById(this.client.id)] = editedClient;
+            this.clients[this.findIndexById(this.client.id)] = response;
+
             this.notificationService.showNotification(
               'success',
-              'Dane klienta zaktualizowane'
+              'Dane klienta zaktualizowane',
             );
           },
           error: (error) => {
@@ -245,9 +250,10 @@ export class ClientsComponent implements OnInit {
           next: (response) => {
             this.notificationService.showNotification(
               'success',
-              'Klient został dodany'
+              'Klient został dodany',
             );
             this.clients.unshift(response);
+
             this.cd.markForCheck();
           },
           error: (error) => {
@@ -255,7 +261,6 @@ export class ClientsComponent implements OnInit {
           },
         });
       }
-
       this.clients = [...this.clients];
       this.clientDialog = false;
       this.form.reset();
@@ -274,17 +279,24 @@ export class ClientsComponent implements OnInit {
     return count || 0;
   }
 
-  copyToClipboard(textToCopy: string) {
+  copyToClipboard(textToCopy: string, label: string) {
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
         this.notificationService.showNotification(
           'info',
-          'Adres klienta został skopiowany do schowka'
+          `${label} klienta został skopiowany do schowka`,
         );
       })
       .catch((err) => {
         console.error('Błąd podczas kopiowania: ', err);
       });
+  }
+
+  handleCopy(event: Event, value: string | null | undefined, label: string) {
+    if (!value) return;
+
+    this.copyToClipboard(value, label);
+    event.stopPropagation();
   }
 }
