@@ -1,39 +1,41 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <div class="wrapper">
-    <img src="/assets/images/logo-black.png" alt="logo" />
-    <p class="login-tile">Zestawienia</p>
-    <div class="field">
-      <label for="login">Login</label>
-      <input
-        id="login"
-        type="text"
-        [formControl]="form.controls.login"
-        autocomplete="off"
-      />
-      @if(loginIsInvalid) {
-      <p class="error">Login jest wymagany</p>
-      }
+<div class="login-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="login-wrapper">
+      <img src="/assets/images/logo-black.png" alt="logo" />
+      <p class="login-tile">Zestawienia</p>
+      <div class="login-field">
+        <label for="login">Login</label>
+        <input
+          id="login"
+          type="text"
+          [formControl]="form.controls.login"
+          autocomplete="off"
+        />
+        @if (loginIsInvalid) {
+          <p class="login-error">Login jest wymagany</p>
+        }
+      </div>
+
+      <div class="login-field">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          type="password"
+          formControlName="password"
+          autocomplete="off"
+        />
+        @if (passwordIsInvalid) {
+          <p class="login-error">Hasło jest wymagane</p>
+        }
+      </div>
+
+      <p class="login-submit-error">
+        @if (errorMessage) {
+          {{ errorMessage }}
+        }
+      </p>
+
+      <button type="submit">Login <i class="pi pi-sign-in"></i></button>
     </div>
-
-    <div class="field">
-      <label for="password">Password</label>
-      <input
-        id="password"
-        type="password"
-        formControlName="password"
-        autocomplete="off"
-      />
-      @if(passwordIsInvalid) {
-      <p class="error">Hasło jest wymagane</p>
-      }
-    </div>
-
-    <p class="submit-error">
-      @if(errorMessage) {
-      {{ errorMessage }}
-      }
-    </p>
-
-    <button type="submit">Login <i class="pi pi-sign-in"></i></button>
-  </div>
-</form>
+  </form>
+</div>

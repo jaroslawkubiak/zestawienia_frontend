@@ -4,7 +4,13 @@
   --inputs-transitions: background-color 0.5s linear;
 }
 
-.wrapper {
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -12,11 +18,16 @@
   justify-content: start;
   gap: 1rem;
   padding: 2rem;
-  margin-top: 5rem;
-  width: 500px;
+  margin-top: 7rem;
+  width: 550px;
   justify-self: center;
   position: relative;
   font-size: 14px !important;
+}
+
+.login-wrapper img {
+  width: 500px;
+  margin-bottom: 100px;
 }
 
 .login-tile {
@@ -26,24 +37,19 @@
   padding-bottom: 20px;
 }
 
-img {
-  width: 100%;
-  margin-bottom: 100px;
-}
-
-.field {
+.login-field {
   display: flex;
   flex-direction: column;
   position: relative;
 }
 
-.field label {
+.login-field label {
   margin: 1.2rem 0;
   font-weight: 700;
   color: var(--accent-color-13);
 }
 
-.error {
+.login-error {
   color: var(--error-color);
   font-size: 1.4rem;
   position: absolute;
@@ -51,7 +57,7 @@ img {
   bottom: 0;
 }
 
-.submit-error {
+.login-submit-error {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +67,7 @@ img {
   width: 100%;
 }
 
-.submit {
+.login-submit {
   display: flex;
   justify-content: center;
   align-items: center;
