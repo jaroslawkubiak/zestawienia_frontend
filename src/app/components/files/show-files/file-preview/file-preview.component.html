@@ -1,93 +1,76 @@
-<div class="preview">
-  <div class="preview-image" [ngClass]="getImageOrientation(file)">
-    <div *ngIf="file | isImage">
+<div class="preview-container">
+  <div class="preview-file-wrapper" [ngClass]="getImageOrientation(file)">
+    <div
+      *ngIf="file | isImage"
+      class="preview-image-wrapper"
+      (click)="onShowImageClick($event, file)"
+    >
       <app-loading-spinner
         *ngIf="isLoading"
-        class="spinner"
+        class="preview-spinner flex-center"
       ></app-loading-spinner>
-      <p-image
+      <img
         [src]="file.fullPath"
-        [preview]="true"
         alt="Załączony plik"
-        pTooltip="Powiększ"
-        tooltipPosition="bottom"
-      >
-        <ng-template #image>
-          <img
-            [src]="file.fullPath"
-            alt="Załączony plik"
-            (load)="onImageLoad()"
-            (error)="onImageError()"
-          />
-        </ng-template>
-        <ng-template #indicator>
-          <i class="pi pi-search-plus indicator"></i>
-        </ng-template>
-        <ng-template
-          #preview
-          let-style="style"
-          let-previewCallback="previewCallback"
-        >
-          <img
-            [src]="file.fullPath"
-            alt="Załączony plik"
-            [style]="style"
-            (click)="previewCallback()"
-          />
-        </ng-template>
-      </p-image>
+        (load)="onImageLoad()"
+        (error)="onImageError()"
+      />
+      <div class="preview-image-overlay flex-center">
+        <i class="pi pi-search-plus preview-indicator"></i>
+      </div>
     </div>
 
-    <div class="file-pdf" *ngIf="file | isPdf">
+    <div class="preview-file-pdf flex-center" *ngIf="file | isPdf">
       <app-pdf-thumbnail
         [file]="file"
         (click)="openPdf.emit(file)"
       ></app-pdf-thumbnail>
     </div>
 
-    <div class="file-other" *ngIf="!(file | isImage) && !(file | isPdf)">
+    <div
+      class="preview-file-other flex-center"
+      *ngIf="!(file | isImage) && !(file | isPdf)"
+    >
       <i class="pi pi-file"></i>
     </div>
   </div>
 
-  <div class="preview-footer">
-    <p
-      class="file-name-label"
-      [ngClass]="{ textBold: isSelected }"
-      pTooltip="{{ file.fileName.length > 40 ? file.fileName : '' }}"
-      tooltipPosition="bottom"
-    >
-      {{ file.fileName }}
-    </p>
+  <div
+    class="preview-file-name-label"
+    [ngClass]="{ textBold: isSelected }"
+    pTooltip="{{ file.fileName.length > 40 ? file.fileName : '' }}"
+    tooltipPosition="bottom"
+  >
+    {{ file.fileName }}
+  </div>
 
-    <div class="action-btns">
-      <p-button
-        severity="info"
-        class="m-4"
-        icon="pi pi-download"
-        alt="Pobierz plik"
-        pTooltip="Pobierz plik"
-        tooltipPosition="bottom"
-        (click)="download.emit()"
-      />
-      <p-checkbox
-        (click)="addFileToSelected.emit(file)"
-        [binary]="true"
-        size="large"
-        pTooltip="Zaznacz plik"
-        tooltipPosition="bottom"
-        [ngModel]="isSelected"
-      />
-      <p-button
-        severity="danger"
-        class="m-4"
-        icon="pi pi-trash"
-        alt="Usuń plik"
-        pTooltip="Usuń plik"
-        tooltipPosition="bottom"
-        (click)="delete.emit()"
-        [disabled]="!file.canDelete || selectedFiles.length !== 0"
-      />
-    </div>
+  <div class="preview-action-btns">
+    <p-button
+      severity="info"
+      class="m-2"
+      icon="pi pi-download"
+      alt="Pobierz plik"
+      pTooltip="Pobierz plik"
+      tooltipPosition="bottom"
+      (click)="download.emit()"
+    />
+    <p-checkbox
+      (click)="addFileToSelected.emit(file)"
+      [binary]="true"
+      size="large"
+      pTooltip="Zaznacz plik"
+      tooltipPosition="bottom"
+      [ngModel]="isSelected"
+    />
+    <p-button
+      severity="danger"
+      class="m-2"
+      icon="pi pi-trash"
+      alt="Usuń plik"
+      pTooltip="Usuń plik"
+      tooltipPosition="bottom"
+      (click)="delete.emit()"
+      [disabled]="!file.canDelete || selectedFiles.length !== 0"
+    />
   </div>
 </div>

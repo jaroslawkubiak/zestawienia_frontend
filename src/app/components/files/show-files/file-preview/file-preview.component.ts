@@ -9,7 +9,6 @@ import {
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ImageModule } from 'primeng/image';
 import { TooltipModule } from 'primeng/tooltip';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 import { TAuthorType } from '../../../comments/types/authorType.type';
@@ -25,14 +24,13 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   imports: [
     CommonModule,
     TooltipModule,
-    ImageModule,
     ButtonModule,
     PdfThumbnailComponent,
     IsImagePipe,
     IsPdfPipe,
     CheckboxModule,
     FormsModule,
-    LoadingSpinnerComponent,
+    LoadingSpinnerComponent
   ],
   encapsulation: ViewEncapsulation.None,
 })
@@ -44,6 +42,7 @@ export class FilePreviewComponent {
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
+  @Output() openGalery = new EventEmitter<IFileFullDetails>();
 
   isLoading: boolean = true;
   onImageLoad() {
@@ -60,5 +59,11 @@ export class FilePreviewComponent {
 
   getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {
     return file.height > file.width ? 'portrait' : 'landscape';
+  }
+
+  onShowImageClick(event: MouseEvent, file: IFileFullDetails) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.openGalery.emit(file);
   }
 }

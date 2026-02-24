@@ -1,11 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
 import { TAuthorType } from '../../../comments/types/authorType.type';
+import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
+import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
 
@@ -19,6 +27,7 @@ import { FilePreviewComponent } from '../file-preview/file-preview.component';
     TooltipModule,
     CheckboxModule,
     BadgeModule,
+    ImageGalleryComponent,
   ],
   templateUrl: './icons-view.component.html',
   styleUrl: './icons-view.component.css',
@@ -38,6 +47,7 @@ export class IconsViewComponent {
   @Output() deleteFiles = new EventEmitter<void>();
   @Output() selectAll = new EventEmitter<any>();
 
+  @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
   sortedFiles: IFileFullDetails[] = [];
 
   dirListWithShowOption: { dirName: string; show: boolean }[] = [];
@@ -70,5 +80,29 @@ export class IconsViewComponent {
   countFilesBadge(dirName: string) {
     const filesCount = this.files.filter((file) => file.dir === dirName);
     return filesCount.length;
+  }
+
+  openGalery(file: IFileFullDetails) {
+    const clickedImageUrl = file.fullPath;
+    if (!clickedImageUrl) return;
+
+    const galleryImages: IGalleryList[] = this.files
+      .filter((file) =>
+        ['JPG', 'JPEG', 'PNG'].includes(file?.type?.toUpperCase()),
+      )
+      .map((file) => {
+        return {
+          itemImageSrc: file.fullPath,
+          thumbnailImageSrc: file.fullPath,
+        };
+      })
+      .filter((file) => file !== null) as IGalleryList[];
+
+    const activeIndex = galleryImages.findIndex(
+      (img) => img.itemImageSrc === clickedImageUrl,
+    );
+
+    this.imageGallery.images = galleryImages;
+    this.imageGallery.openGallery(activeIndex);
   }
 }

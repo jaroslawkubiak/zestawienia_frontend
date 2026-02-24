@@ -63,8 +63,10 @@
           (addFileToSelected)="addFileToSelected(file)"
           (download)="downloadFile(file.id)"
           (openPdf)="openPdf(file)"
+          (openGalery)="openGalery(file)"
         ></app-file-preview>
       </li>
     </ul>
   </div>
 </div>
+<app-image-gallery #imageGallery></app-image-gallery>
