@@ -40,7 +40,7 @@
       'firstName',
       'lastName',
       'email',
-      'telephone'
+      'telephone',
     ]"
     [tableStyle]="{ 'min-width': '115rem' }"
     [(selection)]="selected"
@@ -129,14 +129,32 @@
         <td style="min-width: 16rem">{{ supplier.company }}</td>
         <td
           style="min-width: 16rem"
-          (click)="copyToClipboard(supplier.address); $event.stopPropagation()"
+          [pTooltip]="supplier.address ? 'Kliknij, aby skopiować adres' : ''"
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, supplier.address, 'Adres')"
         >
           {{ supplier.address }}
         </td>
         <td style="min-width: 10rem">{{ supplier.firstName }}</td>
         <td style="min-width: 12rem">{{ supplier.lastName }}</td>
-        <td style="min-width: 12rem">{{ supplier.email }}</td>
-        <td style="min-width: 10rem">{{ supplier.telephone }}</td>
+        <td
+          style="min-width: 12rem"
+          pTooltip="Kliknij, aby skopiować email"
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, supplier.email, 'Email')"
+        >
+          {{ supplier.email }}
+        </td>
+        <td
+          style="min-width: 10rem"
+          [pTooltip]="
+            supplier.telephone ? 'Kliknij, aby skopiować telefon' : ''
+          "
+          tooltipPosition="bottom"
+          (click)="handleCopy($event, supplier.telephone, 'Telefon')"
+        >
+          {{ supplier.telephone }}
+        </td>
       </tr>
     </ng-template>
   </p-table>

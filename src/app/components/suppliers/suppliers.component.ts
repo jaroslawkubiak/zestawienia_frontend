@@ -281,17 +281,24 @@ export class SuppliersComponent implements OnInit {
     return count || 0;
   }
 
-  copyToClipboard(textToCopy: string) {
+  copyToClipboard(textToCopy: string, label: string) {
     navigator.clipboard
       .writeText(textToCopy)
       .then(() => {
         this.notificationService.showNotification(
           'info',
-          'Adres dostawcy został skopiowany do schowka',
+          `${label} dostawcy został skopiowany do schowka`,
         );
       })
       .catch((err) => {
         console.error('Błąd podczas kopiowania: ', err);
       });
+  }
+
+  handleCopy(event: Event, value: string | null | undefined, label: string) {
+    if (!value) return;
+
+    this.copyToClipboard(value, label);
+    event.stopPropagation();
   }
 }
