@@ -25,10 +25,7 @@
 .file-name-label {
   font-size: 1.2rem;
   text-align: center;
-  width: 220px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  width: 95%;
   color: var(--accent-color-15);
 }
 
@@ -56,20 +53,18 @@
 .preview-image.landscape img {
   width: 100%;
   height: auto;
-  max-height: 250px !important;
   object-fit: contain;
 }
 
 .preview-image.portrait img {
   height: auto !important;
-  max-height: 250px !important;
 }
 
 .preview-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: 15px;
   padding-top: 15px;
   width: 100%;
 }
@@ -109,9 +104,6 @@
   .file-name-label {
     font-size: 1rem;
     width: 140px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
   .preview {
@@ -125,12 +117,12 @@
   .preview-image.landscape img {
     width: 100%;
     height: auto;
-    max-height: 150px !important;
+    max-height: 250px !important;
     object-fit: contain;
   }
 
   .preview-image.portrait img {
     height: auto !important;
-    max-height: 150px !important;
+    max-height: 500px !important;
   }
 }
