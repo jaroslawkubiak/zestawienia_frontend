@@ -12,6 +12,7 @@
         size="large"
         alt="Dodaj nowego klienta"
         pTooltip="Dodaj nowego klienta"
+        tooltipPosition="bottom"
         (onClick)="openNew()"
       />
       <p-button
@@ -22,6 +23,7 @@
         size="large"
         alt="Usuń zaznaczonych klientów"
         pTooltip="Usuń zaznaczonych klientów"
+        tooltipPosition="bottom"
         (onClick)="deleteSelectedClient()"
         [disabled]="!selected || !selected.length"
       />
@@ -65,18 +67,21 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
-          <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
+          <p-tableHeaderCheckbox
+            pTooltip="Zaznacz wszystkich"
+            tooltipPosition="bottom"
+          />
         </th>
         <th style="width: 10rem"></th>
-        <th pSortableColumn="firstName" style="min-width: 8rem">
+        <th pSortableColumn="firstName" style="min-width: 10rem">
           Imię
           <p-sortIcon field="firstName" />
         </th>
-        <th pSortableColumn="lastName" style="min-width: 8rem">
+        <th pSortableColumn="lastName" style="min-width: 12rem">
           Nazwisko
           <p-sortIcon field="lastName" />
         </th>
-        <th pSortableColumn="email" style="min-width: 8rem">
+        <th pSortableColumn="email" style="min-width: 10rem">
           E-mail
           <p-sortIcon field="email" />
         </th>
@@ -84,7 +89,7 @@
           Telefon
           <p-sortIcon field="telephone" />
         </th>
-        <th pSortableColumn="company" style="min-width: 16rem">
+        <th pSortableColumn="company">
           Firma
           <p-sortIcon field="company" />
         </th>
@@ -96,6 +101,7 @@
           <p-tableCheckbox
             [value]="client"
             pTooltip="Zaznacz klienta"
+            tooltipPosition="bottom"
             [disabled]="getClientSetCount(client.id) !== 0"
           />
         </td>
@@ -105,6 +111,8 @@
             class="m-4"
             alt="Edytuj klienta"
             pTooltip="Edytuj klienta"
+            tooltipPosition="bottom"
+            positionTop="5"
             (click)="editClient(client)"
           />
           <p-button
@@ -112,41 +120,62 @@
             severity="danger"
             class="m-4"
             alt="Usuń klienta"
-            pTooltip="{{
+            [pTooltip]="
               getClientSetCount(client.id) !== 0
                 ? 'Klient ma zestawienie'
                 : 'Usuń klienta'
-            }}"
+            "
+            tooltipPosition="bottom"
+            positionTop="5"
             [disabled]="getClientSetCount(client.id) !== 0"
             (click)="deleteClient(client)"
           />
         </td>
-        <td style="min-width: 8rem">
+        <td
+          style="min-width: 8rem"
+          pTooltip="Edytuj klienta"
+          tooltipPosition="bottom"
+          positionLeft="-60"
+        >
           {{ client.firstName }}
         </td>
-        <td style="min-width: 12rem">
+        <td
+          style="min-width: 12rem"
+          pTooltip="Edytuj klienta"
+          tooltipPosition="bottom"
+          positionLeft="-60"
+        >
           {{ client.lastName }}
         </td>
         <td
           style="min-width: 12rem"
           pTooltip="Kliknij, aby skopiować email"
           tooltipPosition="bottom"
+          positionLeft="-100"
           (click)="handleCopy($event, client.email, 'Email')"
         >
           {{ client.email }}
         </td>
         <td
           style="min-width: 10rem"
-          [pTooltip]="client.telephone ? 'Kliknij, aby skopiować telefon' : ''"
+          [pTooltip]="
+            client.telephone
+              ? 'Kliknij, aby skopiować telefon'
+              : 'Edytuj klienta'
+          "
           tooltipPosition="bottom"
+          positionLeft="-60"
           (click)="handleCopy($event, client.telephone, 'Telefon')"
         >
           {{ client.telephone }}
         </td>
         <td
           style="min-width: 16rem"
-          [pTooltip]="client.company ? 'Kliknij, aby skopiować firmę' : ''"
+          [pTooltip]="
+            client.company ? 'Kliknij, aby skopiować firmę' : 'Edytuj klienta'
+          "
           tooltipPosition="bottom"
+          positionLeft="-250"
           (click)="handleCopy($event, client.company, 'Firma')"
         >
           {{ client.company }}

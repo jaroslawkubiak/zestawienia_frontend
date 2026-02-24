@@ -12,6 +12,7 @@
         size="large"
         alt="Dodaj nowego dostawcę"
         pTooltip="Dodaj nowego dostawcę"
+        tooltipPosition="bottom"
         (onClick)="openNew()"
       />
       <p-button
@@ -22,6 +23,7 @@
         size="large"
         alt="Usuń zaznaczonych dostawców"
         pTooltip="Usuń zaznaczonych dostawców"
+        tooltipPosition="bottom"
         (onClick)="deleteSelectedSupplier()"
         [disabled]="!selected || !selected.length"
       />
@@ -66,7 +68,10 @@
     <ng-template #header>
       <tr>
         <th style="width: 3rem">
-          <p-tableHeaderCheckbox pTooltip="Zaznacz wszystkich" />
+          <p-tableHeaderCheckbox
+            pTooltip="Zaznacz wszystkich"
+            tooltipPosition="bottom"
+          />
         </th>
         <th style="width: 10rem"></th>
         <th pSortableColumn="company" style="min-width: 16rem">
@@ -101,6 +106,7 @@
           <p-tableCheckbox
             [value]="supplier"
             pTooltip="Zaznacz dostawcę"
+            tooltipPosition="bottom"
             [disabled]="getSupplierPositionCount(supplier.id) !== 0"
           />
         </td>
@@ -110,6 +116,8 @@
             class="m-4"
             alt="Edytuj dostawcę"
             pTooltip="Edytuj dostawcę"
+            tooltipPosition="bottom"
+            positionTop="5"
             (click)="editSupplier(supplier)"
           />
           <p-button
@@ -117,30 +125,59 @@
             icon="pi pi-trash"
             class="m-4"
             alt="Usuń dostawcę"
-            pTooltip="{{
+            [pTooltip]="
               getSupplierPositionCount(supplier.id) !== 0
                 ? 'Dostawca widnieje w zestawieniach'
                 : 'Usuń dostawcę'
-            }}"
+            "
+            tooltipPosition="bottom"
+            positionTop="5"
             [disabled]="getSupplierPositionCount(supplier.id) !== 0"
             (click)="deleteSupplier(supplier)"
           />
         </td>
-        <td style="min-width: 16rem">{{ supplier.company }}</td>
         <td
           style="min-width: 16rem"
-          [pTooltip]="supplier.address ? 'Kliknij, aby skopiować adres' : ''"
+          pTooltip="Edytuj dostawcę"
           tooltipPosition="bottom"
+          positionLeft="-90"
+        >
+          {{ supplier.company }}
+        </td>
+        <td
+          style="min-width: 16rem"
+          [pTooltip]="
+            supplier.address
+              ? 'Kliknij, aby skopiować adres'
+              : 'Edytuj dostawcę'
+          "
+          tooltipPosition="bottom"
+          positionLeft="-100"
           (click)="handleCopy($event, supplier.address, 'Adres')"
         >
           {{ supplier.address }}
         </td>
-        <td style="min-width: 10rem">{{ supplier.firstName }}</td>
-        <td style="min-width: 12rem">{{ supplier.lastName }}</td>
+        <td
+          style="min-width: 10rem"
+          pTooltip="Edytuj dostawcę"
+          tooltipPosition="bottom"
+          positionLeft="-60"
+        >
+          {{ supplier.firstName }}
+        </td>
+        <td
+          style="min-width: 12rem"
+          pTooltip="Edytuj dostawcę"
+          tooltipPosition="bottom"
+          positionLeft="-60"
+        >
+          {{ supplier.lastName }}
+        </td>
         <td
           style="min-width: 12rem"
           pTooltip="Kliknij, aby skopiować email"
           tooltipPosition="bottom"
+          positionLeft="-100"
           (click)="handleCopy($event, supplier.email, 'Email')"
         >
           {{ supplier.email }}
@@ -148,9 +185,12 @@
         <td
           style="min-width: 10rem"
           [pTooltip]="
-            supplier.telephone ? 'Kliknij, aby skopiować telefon' : ''
+            supplier.telephone
+              ? 'Kliknij, aby skopiować telefon'
+              : 'Edytuj dostawcę'
           "
           tooltipPosition="bottom"
+          positionLeft="-60"
           (click)="handleCopy($event, supplier.telephone, 'Telefon')"
         >
           {{ supplier.telephone }}
