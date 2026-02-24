@@ -192,7 +192,7 @@
   height: 10px;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  background-color: var(--error-color);
+  background-color: var(--incoming-message-bg-color);
 }
 
 .needs-attention-wrapper {
@@ -219,7 +219,7 @@
 
 .needs-attention-wrapper i {
   font-size: 20px;
-  color: var(--incoming-message-bg-color);
+  color: var(--error-color);
 }
 
 .new-message-input-wrapper {
