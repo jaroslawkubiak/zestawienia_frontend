@@ -2,6 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { CommonModule } from '@angular/common';
 import { HttpEventType } from '@angular/common/http';
 import {
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -22,7 +23,7 @@ import { FilesService } from '../files.service';
 import { EFileDirectoryList } from '../types/file-directory-list.enum';
 import { IFileDirectory } from '../types/IFileDirectory';
 import { IFileFullDetails } from '../types/IFileFullDetails';
-import { TChooseButton, TUploadButton } from './types/buttons.type';
+import { TFileUploadButton } from './types/buttons.type';
 
 @Component({
   selector: 'app-send-files',
@@ -44,6 +45,7 @@ export class SendFilesComponent {
     private filesService: FilesService,
     private notificationService: NotificationService,
     private breakpointObserver: BreakpointObserver,
+    private cdr: ChangeDetectorRef,
   ) {
     this.breakpointObserver
       .observe(['(max-width: 640px)'])
@@ -66,24 +68,53 @@ export class SendFilesComponent {
   selectedDirectory!: IFileDirectory;
   directoryList: IFileDirectory[] = FileDirectoryList;
   isMobile = false;
+  isUploading = false;
+  hasFiles = false;
 
-  chooseButtonProps: TChooseButton = {
-    severity: 'primary',
-    label: 'Wybierz pliki',
-    size: 'large',
-    disabled: this.who === 'user',
-  };
+  get chooseButtonProps(): TFileUploadButton {
+    return {
+      severity: 'primary',
+      label: 'Wybierz pliki',
+      size: 'large',
+      disabled: this.isUploading || !this.selectedDirectory,
+    };
+  }
 
-  uploadButtonProps: TUploadButton = {
-    severity: 'info',
-    label: 'Wgraj',
-    size: 'large',
-  };
-  cancelButtonProps: TUploadButton = {
-    severity: 'danger',
-    label: 'Anuluj',
-    size: 'large',
-  };
+  get uploadButtonProps(): TFileUploadButton {
+    return {
+      severity: 'info',
+      label: this.isUploading ? 'Wgrywanie...' : 'Wgraj',
+      size: 'large',
+      disabled: !this.hasFiles || this.isUploading,
+    };
+  }
+
+  get cancelButtonProps(): TFileUploadButton {
+    return {
+      severity: 'danger',
+      label: 'Anuluj',
+      size: 'large',
+      disabled: !this.hasFiles || this.isUploading,
+    };
+  }
+
+  onFileSelect() {
+    this.updateHasFiles();
+  }
+
+  onFileRemove() {
+    queueMicrotask(() => {
+      this.updateHasFiles();
+    });
+  }
+
+  onFileClear() {
+    this.updateHasFiles();
+  }
+
+  private updateHasFiles() {
+    this.hasFiles = !!this.fileUploader?.files?.length;
+  }
 
   onSelectOpen() {
     requestAnimationFrame(() => {
@@ -95,13 +126,6 @@ export class SendFilesComponent {
         panel.style.maxHeight = '300px';
       }
     });
-  }
-
-  changeDirectory() {
-    this.chooseButtonProps = {
-      ...this.chooseButtonProps,
-      disabled: !this.selectedDirectory,
-    };
   }
 
   openSendFilesDialog(setId: number, setHash: string, setName: string) {
@@ -131,6 +155,9 @@ export class SendFilesComponent {
       return;
     }
 
+    this.isUploading = true;
+    this.uploadProgress = 10;
+
     const files = event.files;
     const formData = new FormData();
     const uploadFolder =
@@ -151,14 +178,15 @@ export class SendFilesComponent {
               (100 * event.loaded) / event.total,
             );
           }
+          this.cdr.detectChanges();
 
           if (event.type === HttpEventType.Response && event.body) {
             this.fileUploader.clear();
-            this.uploadProgress = 0;
             this.showSendFilesDialog = false;
 
             const files: IFileFullDetails[] = event.body.files;
             this.updateFileList.emit(files);
+            this.completeUpload();
 
             // success - file saved
             this.notificationService.showNotification(
@@ -169,8 +197,6 @@ export class SendFilesComponent {
         },
 
         error: (err) => {
-          this.uploadProgress = 0;
-
           let message = 'Wystąpił błąd podczas przesyłania pliku';
 
           if (err.error?.message) {
@@ -178,9 +204,15 @@ export class SendFilesComponent {
               ? err.error.message.join(', ')
               : err.error.message;
           }
+          this.completeUpload();
 
           this.notificationService.showNotification('error', message);
         },
       });
+  }
+
+  completeUpload() {
+    this.uploadProgress = 0;
+    this.isUploading = false;
   }
 }

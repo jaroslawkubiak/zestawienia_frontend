@@ -111,3 +111,7 @@
   color: var(--white-color);
   font-size: 2rem;
 }
+
+.p-progressbar-determinate {
+  height: 20px;
+}

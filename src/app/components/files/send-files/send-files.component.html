@@ -55,6 +55,10 @@
     [uploadButtonProps]="uploadButtonProps"
     [cancelButtonProps]="cancelButtonProps"
     [chooseButtonProps]="chooseButtonProps"
+    (onSelect)="onFileSelect()"
+    (onRemove)="onFileRemove()"
+    (onClear)="onFileClear()"
+    [disabled]="isUploading"
     mode="advanced"
     [fileLimit]="fileLimit"
     maxFileSize="1000000000"
@@ -65,8 +69,7 @@
         <span class="file-limit">Maksymalnie {{ fileLimit }} plików</span>
       </div>
     </ng-template>
-    <ng-template #content
-      >
+    <ng-template #content>
       <ul *ngIf="uploadedFiles.length">
         <li *ngFor="let file of uploadedFiles">
           {{ file.name }} - {{ file.size }} bytes

@@ -1,17 +1,11 @@
-export type TUploadButton = {
-  severity: ButtonSeverity;
-  label: string;
-  size: 'large' | 'small';
-};
-
-export type TChooseButton = {
-  severity: ButtonSeverity;
+export type TFileUploadButton = {
+  severity: TButtonSeverity;
   label: string;
   size: 'large' | 'small';
   disabled: boolean;
 };
 
-export type ButtonSeverity =
+export type TButtonSeverity =
   | 'success'
   | 'primary'
   | 'info'
