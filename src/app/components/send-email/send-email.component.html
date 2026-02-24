@@ -32,20 +32,23 @@
     </div>
   </div>
   <div class="send-email-content-container">
+    <label class="send-email-label send-email-label-preview"
+      >Podgląd treści wiadomości</label
+    >
+    <div class="send-email-btn" [class.send-email-to-off]="isSendingDisabled">
+      <i
+        class="pi pi-send"
+        (click)="sendEmail()"
+        tooltipPosition="left"
+        pTooltip="{{ tooltipText }}"
+      ></i>
+    </div>
     <div class="send-email-preview-container">
-      <label class="send-email-label send-email-label-preview"
-        >Podgląd treści wiadomości</label
-      >
-      <div class="send-email-btn" [class.send-email-to-off]="isSendingDisabled">
-        <i
-          class="pi pi-send"
-          (click)="sendEmail()"
-          tooltipPosition="left"
-          pTooltip="{{ tooltipText }}"
-        ></i>
-      </div>
       <div class="send-email-iframe-wrapper">
-        <iframe #iframeRefHeader class="send-email-preview-iframe-header"></iframe>
+        <iframe
+          #iframeRefHeader
+          class="send-email-preview-iframe-header"
+        ></iframe>
         <textarea
           class="send-email-textarea"
           id="message"
@@ -53,7 +56,10 @@
           (ngModelChange)="onMessageChange($event)"
           rows="6"
         ></textarea>
-        <iframe #iframeRefFooter class="send-email-preview-iframe-footer"></iframe>
+        <iframe
+          #iframeRefFooter
+          class="send-email-preview-iframe-footer"
+        ></iframe>
       </div>
     </div>
   </div>
