@@ -10,7 +10,7 @@
         class="preview-spinner flex-center"
       ></app-loading-spinner>
       <img
-        [src]="file.fullPath"
+        [src]="file.thumbnailPath"
         alt="Załączony plik"
         (load)="onImageLoad()"
         (error)="onImageError()"

@@ -15,5 +15,6 @@ export interface IFileFullDetails {
   createdAtTimestamp: number;
   fullPath?: string;
   thumbnail?: string;
+  thumbnailPath?: string;
   canDelete?: boolean;
 }

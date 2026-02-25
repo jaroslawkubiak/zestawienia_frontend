@@ -232,7 +232,7 @@ export class ForClientComponent implements OnInit {
 
   // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    this.files = [...(this.set.files || []), ...uploadedFiles];
+    this.files = [...(this.files || []), ...uploadedFiles];
   }
 
   showAttachedFiles() {

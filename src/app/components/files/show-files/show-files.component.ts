@@ -5,12 +5,10 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import * as pdfjsLib from 'pdfjs-dist';
 import { ButtonModule } from 'primeng/button';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
@@ -45,7 +43,7 @@ import { ListViewComponent } from './list-view/list-view.component';
   styleUrl: './show-files.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class ShowFilesComponent implements OnInit {
+export class ShowFilesComponent {
   constructor(
     private sanitizer: DomSanitizer,
     private filesService: FilesService,
@@ -76,11 +74,6 @@ export class ShowFilesComponent implements OnInit {
   uniqueDir: EFileDirectoryList[] = [];
   isMobile = false;
 
-  ngOnInit(): void {
-    // forces pdf worker to load .js
-    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/pdfjs/pdf.worker.min.js';
-  }
-
   showDialog(set: ISet) {
     this.setId = set.id;
     this.setHash = set.hash;
@@ -90,11 +83,18 @@ export class ShowFilesComponent implements OnInit {
 
     if (set.files) {
       this.files = set.files.map((file) => {
-        const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
+        const fullPath = this.createFilePath(file);
+        let thumbnailPath = '';
+        if (file.type.toUpperCase() === 'PDF') {
+          thumbnailPath = this.createThumbnailPdfPath(file);
+        } else {
+          thumbnailPath = this.createThumbnailPath(file);
+        }
 
         return {
           ...file,
           fullPath,
+          thumbnailPath,
           canDelete:
             this.who === 'user'
               ? true
@@ -103,9 +103,26 @@ export class ShowFilesComponent implements OnInit {
       });
 
       this.uniqueDir = this.getUniqueDirectory();
-
-      this.generateThumbnailsForFiles();
     }
+  }
+
+  createThumbnailPath(file: IFileFullDetails): string {
+    if (file.thumbnail) {
+      return `${environment.FILES_URL}/${file.path}/${file.thumbnail}`;
+    } else {
+      return this.createFilePath(file);
+    }
+  }
+  createThumbnailPdfPath(file: IFileFullDetails): string {
+    if (file.thumbnail) {
+      return `${environment.FILES_URL}/${file.path}/${file.thumbnail}`;
+    } else {
+      return '';
+    }
+  }
+
+  createFilePath(file: IFileFullDetails): string {
+    return `${environment.FILES_URL}/${file.path}/${file.fileName}`;
   }
 
   // download file to client
@@ -132,7 +149,12 @@ export class ShowFilesComponent implements OnInit {
             response.severity,
             response.message,
           );
+
+          if (response.severity === 'error') {
+            return;
+          }
           this.files = this.files.filter((file) => file.id !== id);
+
           this.uniqueDir = this.getUniqueDirectory();
           this.selectedFiles = [];
 
@@ -179,7 +201,7 @@ export class ShowFilesComponent implements OnInit {
 
     const accept = () => {
       this.filesService.deleteFiles(ids).subscribe({
-        next: (response) => {
+        next: () => {
           const messageOptions = (() => {
             if (ids.length === 1) return 'plik';
             if (ids.length > 1 && ids.length < 5) return 'pliki';
@@ -281,85 +303,6 @@ export class ShowFilesComponent implements OnInit {
     return FileDirectoryList.map((fd) => fd.label as EFileDirectoryList).filter(
       (label) => dirsSet.has(label),
     );
-  }
-
-  generateThumbnailsForFiles() {
-    // Process only files without thumbnails
-    const filesToProcess = this.files.filter((f) => !f.thumbnail);
-
-    // Separate images and PDFs
-    const images = filesToProcess.filter((f) => isImage(f));
-    const pdfs = filesToProcess.filter((f) =>
-      f.fileName.toLowerCase().endsWith('.pdf'),
-    );
-
-    // Process images - set thumbnail URL directly
-    images.forEach((file) => {
-      const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
-      this.files = this.files.map((f) => {
-        if (f.id === file.id) {
-          return { ...f, thumbnail: fullPath };
-        }
-        return f;
-      });
-    });
-
-    // Process PDFs with a slight delay to avoid overloading
-    if (pdfs.length > 0) {
-      this.cd.detectChanges();
-
-      pdfs.forEach((file, index) => {
-        setTimeout(() => {
-          this.generatePdfThumbnail(file);
-        }, index * 300); // Stagger PDF processing by 300ms
-      });
-    } else {
-      this.cd.detectChanges();
-    }
-  }
-
-  private generatePdfThumbnail(file: IFileFullDetails) {
-    const fullPath = `${environment.FILES_URL}/${file.path}/${file.fileName}`;
-
-    pdfjsLib
-      .getDocument(fullPath)
-      .promise.then((pdf: any) => {
-        pdf
-          .getPage(1)
-          .then((page: any) => {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            const viewport = page.getViewport({ scale: 0.3 });
-            canvas.height = viewport.height;
-            canvas.width = viewport.width;
-
-            return page
-              .render({
-                canvasContext: context,
-                viewport: viewport,
-              })
-              .promise.then(() => canvas.toDataURL());
-          })
-          .then((thumbnail: string) => {
-            this.files = this.files.map((f) => {
-              if (f.id === file.id) {
-                return { ...f, thumbnail };
-              }
-              return f;
-            });
-            this.cd.detectChanges();
-          })
-          .catch((error: any) => {
-            // Silently skip PDF thumbnail if it fails
-            console.debug(
-              `Could not generate PDF thumbnail for: ${file.fileName}`,
-            );
-          });
-      })
-      .catch((error: any) => {
-        // Silently skip PDF thumbnail if it fails
-        console.debug(`Could not load PDF for: ${file.fileName}`);
-      });
   }
 
   get isDeleteDisabled(): boolean {
