@@ -30,4 +30,18 @@
       ></div>
     </div>
   </div>
+
+  <p class="settings-color-burgund-title">Neutral color</p>
+  <div class="settings-color-row">
+    <div
+      class="settings-color-wrapper"
+      *ngFor="let color of neutralColors; let i = index"
+    >
+      <span> {{ color.name }}</span>
+      <div
+        class="settings-color-item"
+        [style.background-color]="color.color"
+      ></div>
+    </div>
+  </div>
 </div>
