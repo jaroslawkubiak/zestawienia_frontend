@@ -141,20 +141,49 @@
   <p-table [value]="activeTimers" [tableStyle]="{ 'min-width': '50rem' }">
     <ng-template #header>
       <tr>
-        <th>LP</th>
-        <th>Kierunek</th>
-        <th>Opóźnienie</th>
-        <th>Wystartowany</th>
-        <th>Zostanie wysłany</th>
+        <th class="flex-center" style="min-width: 3rem">LP</th>
+        <th style="min-width: 2rem; text-align: center">
+          <i
+            class="pi pi-arrow-right-arrow-left"
+            pTooltip="Kierunek powiadomienia"
+            tooltipPosition="bottom"
+          ></i>
+        </th>
+        <th style="min-width: 20rem">Inwestycja</th>
+        <th style="min-width: 10rem">Opóźnienie</th>
+        <th style="min-width: 20rem">Wystartowany</th>
+        <th style="min-width: 20rem">Zostanie wysłany</th>
       </tr>
     </ng-template>
     <ng-template #body let-timer let-index="rowIndex">
-      <tr>
-        <td>{{ index + 1 }}</td>
-        <td>{{ timer.notificationDirection }}</td>
-        <td>{{ timer.delayMs }} min</td>
-        <td>{{ timer.startedAt }}</td>
-        <td>{{ timer.fireAt }}</td>
+      <tr class="row">
+        <td class="col-lp">{{ index + 1 }}</td>
+        <td class="col-notification-direction-wrapper">
+          <div
+            class="notification-direction i-office-to-client"
+            *ngIf="timer.notificationDirection === 'office_to_client'"
+            pTooltip="Z biura do klienta"
+            tooltipPosition="bottom"
+          >
+            <i class="pi pi-building"></i>
+            <i class="pi pi-arrow-right"></i>
+            <i class="pi pi-user"></i>
+          </div>
+          <div
+            class="notification-direction i-client-to-office"
+            *ngIf="timer.notificationDirection === 'client_to_office'"
+            pTooltip="Od klienta do biura"
+            tooltipPosition="bottom"
+          >
+            <i class="pi pi-user"></i>
+            <i class="pi pi-arrow-right"></i>
+            <i class="pi pi-building"></i>
+          </div>
+        </td>
+        <td class="no-action">{{ timer.set.name }}</td>
+        <td class="no-action">{{ timer.delayMs }} min</td>
+        <td class="no-action">{{ timer.startedAt }}</td>
+        <td class="no-action">{{ timer.fireAt }}</td>
       </tr>
     </ng-template>
   </p-table>
