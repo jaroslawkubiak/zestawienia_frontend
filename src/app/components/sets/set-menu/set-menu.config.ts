@@ -153,7 +153,7 @@ export function buildSetMenu(
     },
     {
       label: 'Prześlij pliki',
-      icon: 'pi pi-paperclip',
+      icon: 'pi pi-cloud-upload',
       command: openSendFilesDialog,
     },
     { ...commentsOrPositionsMenuItem },
