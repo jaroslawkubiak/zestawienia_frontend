@@ -109,7 +109,6 @@ export class ForClientComponent implements OnInit {
             this.set = response.set;
             this.client = { ...response.set.clientId };
 
-            console.log(this.client);
             this.modifyData(response.positions);
           } else {
             this.router.navigate(['/notfound']);
