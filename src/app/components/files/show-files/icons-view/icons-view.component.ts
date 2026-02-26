@@ -14,8 +14,15 @@ import { TooltipModule } from 'primeng/tooltip';
 import { TAuthorType } from '../../../comments/types/authorType.type';
 import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
+import { EFileDirectory } from '../../types/file-directory.enum';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
+
+type TDirWithShowOptions = {
+  dir: EFileDirectory;
+  dirLabel: string;
+  show: boolean;
+};
 
 @Component({
   selector: 'app-icons-view',
@@ -35,7 +42,7 @@ import { FilePreviewComponent } from '../file-preview/file-preview.component';
 export class IconsViewComponent {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
-  @Input() uniqueDir: string[] = [];
+  @Input() uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
@@ -50,16 +57,18 @@ export class IconsViewComponent {
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
   sortedFiles: IFileFullDetails[] = [];
 
-  dirListWithShowOption: { dirName: string; show: boolean }[] = [];
+  dirListWithShowOption: TDirWithShowOptions[] = [];
 
   ngOnInit() {
     this.sortedFiles = [...this.files];
     this.sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
 
-    this.dirListWithShowOption = this.uniqueDir.map((dir) => ({
-      dirName: dir,
-      show: true,
-    }));
+    this.dirListWithShowOption = this.uniqueDir.map((dir) => {
+      return {
+        ...dir,
+        show: true,
+      };
+    });
   }
 
   filesFilteredByDir(dir: string): IFileFullDetails[] {
@@ -67,14 +76,14 @@ export class IconsViewComponent {
   }
 
   toggleVisibility(dirName: string): void {
-    const dir = this.dirListWithShowOption.find((d) => d.dirName === dirName);
+    const dir = this.dirListWithShowOption.find((d) => d.dir === dirName);
     if (dir) {
       dir.show = !dir.show;
     }
   }
 
-  trackByDir(_: number, item: { dirName: string; show: boolean }): string {
-    return item.dirName;
+  trackByDir(_: number, item: TDirWithShowOptions): string {
+    return item.dir;
   }
 
   countFilesBadge(dirName: string) {

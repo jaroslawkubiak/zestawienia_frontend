@@ -22,7 +22,7 @@ import { ISet } from '../../sets/types/ISet';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { isImage } from '../helper';
-import { EFileDirectoryList } from '../types/file-directory-list.enum';
+import { EFileDirectory } from '../types/file-directory.enum';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IRemainingFiles } from '../types/IRemainingFiles';
 import { IconsViewComponent } from './icons-view/icons-view.component';
@@ -71,7 +71,7 @@ export class ShowFilesComponent {
   selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
   defaultView: 'icons' | 'list' = 'icons';
-  uniqueDir: EFileDirectoryList[] = [];
+  uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   isMobile = false;
 
   showDialog(set: ISet) {
@@ -94,16 +94,21 @@ export class ShowFilesComponent {
         return {
           ...file,
           fullPath,
+          dirLabel: this.findDirLabel(file.dir),
           thumbnailPath,
           canDelete:
             this.who === 'user'
               ? true
-              : file.dir === EFileDirectoryList.inspirations,
+              : file.dir === EFileDirectory.INSPIRATIONS,
         };
       });
 
-      this.uniqueDir = this.getUniqueDirectory();
+      this.uniqueDir = this.getUniqueDirectories();
     }
+  }
+
+  findDirLabel(dir: EFileDirectory) {
+    return FileDirectoryList.find((d) => d.type === dir)!.label;
   }
 
   createThumbnailPath(file: IFileFullDetails): string {
@@ -155,7 +160,7 @@ export class ShowFilesComponent {
           }
           this.files = this.files.filter((file) => file.id !== id);
 
-          this.uniqueDir = this.getUniqueDirectory();
+          this.uniqueDir = this.getUniqueDirectories();
           this.selectedFiles = [];
 
           const deletedFiles: IRemainingFiles = {
@@ -214,7 +219,7 @@ export class ShowFilesComponent {
           );
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
-          this.uniqueDir = this.getUniqueDirectory();
+          this.uniqueDir = this.getUniqueDirectories();
           this.selectedFiles = [];
 
           const remainingFiles: IRemainingFiles = {
@@ -297,12 +302,12 @@ export class ShowFilesComponent {
     this.cd.markForCheck();
   }
 
-  getUniqueDirectory(): EFileDirectoryList[] {
-    const dirsSet = new Set(this.files.map((f) => f.dir));
+  getUniqueDirectories(): { dir: EFileDirectory; dirLabel: string }[] {
+    const dirsSet = new Set(this.files.map((f) => f.dir as EFileDirectory));
 
-    return FileDirectoryList.map((fd) => fd.label as EFileDirectoryList).filter(
-      (label) => dirsSet.has(label),
-    );
+    return FileDirectoryList.filter((fd) => dirsSet.has(fd.type)).map((fd) => {
+      return { dirLabel: fd.label, dir: fd.type };
+    });
   }
 
   get isDeleteDisabled(): boolean {

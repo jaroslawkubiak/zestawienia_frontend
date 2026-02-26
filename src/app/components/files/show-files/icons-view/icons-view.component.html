@@ -25,24 +25,28 @@
     (click)="deleteFiles.emit()"
   />
 </div>
-
 <div
   class="show-file-directory-wrapper"
-  *ngFor="let directory of dirListWithShowOption; trackBy: trackByDir"
+  *ngFor="
+    let directory of dirListWithShowOption;
+    let i = index;
+    trackBy: trackByDir
+  "
 >
   <div
     class="directory-name-wrapper"
-    (click)="toggleVisibility(directory.dirName)"
+    [class.first]="i === 0"
+    (click)="toggleVisibility(directory.dir)"
     [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
     tooltipPosition="bottom"
+    [ngClass]="{ 'collapsed-label': !directory.show }"
   >
     <i class="pi pi-folder-open"></i>
-    {{ directory.dirName }}
+    {{ directory.dirLabel }}
     <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
     <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
     <p-badge
-      *ngIf="!directory.show"
-      [value]="countFilesBadge(directory.dirName)"
+      [value]="countFilesBadge(directory.dir)"
       severity="contrast"
       class="badge-position"
       badgeSize="large"
@@ -53,7 +57,7 @@
     <ul class="file-container">
       <li
         class="file-item"
-        *ngFor="let file of filesFilteredByDir(directory.dirName)"
+        *ngFor="let file of filesFilteredByDir(directory.dir)"
       >
         <app-file-preview
           [file]="file"

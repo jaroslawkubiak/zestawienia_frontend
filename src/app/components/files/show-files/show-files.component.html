@@ -1,9 +1,13 @@
 <p-dialog
   [modal]="true"
   [(visible)]="showFilesDialog"
-  [style]="{ width: '100%', maxWidth: '160rem' }"
+  [style]="{
+    width: '100%',
+    maxWidth: '160rem',
+    maxHeight: '90%',
+  }"
   [breakpoints]="{
-    '640px': '100vw'
+    '640px': '100vw',
   }"
   [dismissableMask]="true"
   styleClass="mobile-full-dialog"

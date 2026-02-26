@@ -20,8 +20,9 @@ import { NotificationService } from '../../../services/notification.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
-import { EFileDirectoryList } from '../types/file-directory-list.enum';
-import { IFileDirectory } from '../types/IFileDirectory';
+
+import { EFileDirectory } from '../types/file-directory.enum';
+import { IFileDirectoryList } from '../types/IFileDirectoryList';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { TFileUploadButton } from './types/buttons.type';
 
@@ -65,8 +66,8 @@ export class SendFilesComponent {
   uploadedFiles: any[] = [];
   uploadProgress = 0;
   fileLimit = 30;
-  selectedDirectory!: IFileDirectory;
-  directoryList: IFileDirectory[] = FileDirectoryList;
+  selectedDirectory!: IFileDirectoryList;
+  directoryList: IFileDirectoryList[] = FileDirectoryList;
   isMobile = false;
   isUploading = false;
   hasFiles = false;
@@ -135,10 +136,9 @@ export class SendFilesComponent {
     this.showSendFilesDialog = true;
 
     if (this.who === 'client') {
-      this.selectedDirectory = {
-        label: EFileDirectoryList['inspirations'],
-        icon: 'pi pi-user',
-      };
+      this.selectedDirectory = FileDirectoryList.find(
+        (d) => d.type === EFileDirectory.INSPIRATIONS,
+      )!;
     }
   }
 
@@ -162,8 +162,8 @@ export class SendFilesComponent {
     const formData = new FormData();
     const uploadFolder =
       this.who === 'user'
-        ? this.selectedDirectory.label
-        : EFileDirectoryList['inspirations'];
+        ? this.selectedDirectory.type
+        : EFileDirectory.INSPIRATIONS;
 
     for (let file of files) {
       formData.append('files', file, file.name);
@@ -188,10 +188,12 @@ export class SendFilesComponent {
             this.updateFileList.emit(files);
             this.completeUpload();
 
+            const uploadMessage = this.returnUploadMessage(event.body.filesCount, event.body.dir);
+
             // success - file saved
             this.notificationService.showNotification(
               'success',
-              event.body.message,
+              uploadMessage,
             );
           }
         },
@@ -209,6 +211,15 @@ export class SendFilesComponent {
           this.notificationService.showNotification('error', message);
         },
       });
+  }
+
+  returnUploadMessage(filesCount: number, dir: string): string {
+    const directory = FileDirectoryList.find((d) => d.type === dir)!;
+
+    const fileWord =
+      filesCount === 1 ? 'plik' : filesCount < 5 ? 'pliki' : 'plików';
+
+    return `Pomyślnie przesłano ${filesCount} ${fileWord} do katalogu "${directory.label}"`;
   }
 
   completeUpload() {

@@ -1,7 +1,7 @@
 <div class="list-top-action-btns">
   <p-checkbox
     size="large"
-    class="m-4"
+    class="m-2"
     pTooltip="Zaznacz wszystkie pliki"
     tooltipPosition="bottom"
     (click)="selectAll.emit($event)"
@@ -9,7 +9,7 @@
   />
   <p-button
     severity="info"
-    class="m-4"
+    class="m-2"
     icon="pi pi-download"
     alt="Pobierz pliki"
     pTooltip="Pobierz pliki"
@@ -18,7 +18,7 @@
   />
   <p-button
     severity="danger"
-    class="m-4"
+    class="m-2"
     icon="pi pi-trash"
     alt="Usuń pliki"
     pTooltip="Usuń pliki"
@@ -30,7 +30,6 @@
   #dt
   dataKey="id"
   scrollable="true"
-  scrollHeight="800px"
   stripedRows
   [rowTrackBy]="trackByFileId"
   [value]="files"
@@ -41,7 +40,7 @@
     'type',
     'dir',
     'size',
-    'createdAtTimestamp'
+    'createdAtTimestamp',
   ]"
   [rowHover]="true"
 >
@@ -49,31 +48,32 @@
     <tr>
       <th></th>
       <th style="width: 16rem; text-align: center">Podgląd</th>
-      <th pSortableColumn="fileName" style="min-width: 6rem">
-        Nazwa <p-sortIcon field="fileName" />
-      </th>
-      <th pSortableColumn="type" style="width: 10rem">
+      <th pSortableColumn="fileName">Nazwa <p-sortIcon field="fileName" /></th>
+      <th pSortableColumn="type" style="width: 10rem; text-align: center">
         Typ <p-sortIcon field="type" />
       </th>
-      <th pSortableColumn="dir" style="width: 14rem">
+      <th pSortableColumn="dir" style="width: 24rem">
         Folder <p-sortIcon field="dir" />
       </th>
-      <th pSortableColumn="size" style="width: 16rem">
+      <th pSortableColumn="size" style="width: 14rem; text-align: center">
         Rozmiar <p-sortIcon field="size" />
       </th>
-      <th style="width: 16rem">Wymiary</th>
-      <th pSortableColumn="createdAtTimestamp" style="width: 16rem">
+      <th style="width: 12rem">Wymiary</th>
+      <th
+        pSortableColumn="createdAtTimestamp"
+        style="width: 16rem; text-align: center"
+      >
         Przesłany <p-sortIcon field="createdAtTimestamp" />
       </th>
     </tr>
   </ng-template>
   <ng-template #body let-file>
-    <tr class="file-row">
+    <tr class="preview-file-row">
       <td>
-        <div class="row-action-btns">
+        <div class="preview-row-action-btns">
           <p-button
             severity="info"
-            class="m-4"
+            class="m-2"
             icon="pi pi-download"
             alt="Pobierz plik"
             pTooltip="Pobierz plik"
@@ -86,7 +86,7 @@
           />
           <p-button
             severity="danger"
-            class="m-4"
+            class="m-2"
             icon="pi pi-trash"
             alt="Usuń plik"
             pTooltip="Usuń plik"
@@ -95,52 +95,37 @@
           />
         </div>
       </td>
-      <td>
-        <div *ngIf="file | isPdf" class="file-pdf">
+      <td class="preview-file-wrapper" [ngClass]="getImageOrientation(file)">
+        <div *ngIf="file | isPdf" class="preview-file-pdf">
           <app-pdf-thumbnail
             [file]="file"
             (click)="openPdf.emit(file)"
           ></app-pdf-thumbnail>
         </div>
-        <div *ngIf="file | isImage" class="flex-center">
-          <p-image
-            *ngIf="file | isImage"
-            [src]="file.fullPath"
-            [preview]="true"
-            alt="Załączony plik"
-            pTooltip="Powiększ"
-            tooltipPosition="bottom"
-          >
-            <ng-template #indicator>
-              <i class="pi pi-search-plus indicator"></i>
-            </ng-template>
-            <ng-template #image>
-              <img [src]="file.fullPath" alt="Załączony plik" />
-            </ng-template>
-            <ng-template
-              #preview
-              let-style="style"
-              let-previewCallback="previewCallback"
-            >
-              <img
-                [src]="file.fullPath"
-                alt="Załączony plik"
-                [style]="style"
-                (click)="previewCallback()"
-              />
-            </ng-template>
-          </p-image>
+        <div
+          *ngIf="file | isImage"
+          class="preview-image-wrapper"
+          (click)="onShowImageClick($event, file)"
+        >
+          <img [src]="file.thumbnailPath" alt="Załączony plik" />
+          <div class="preview-image-overlay flex-center">
+            <i class="pi pi-search-plus preview-indicator"></i>
+          </div>
         </div>
-        <div class="file-other" *ngIf="!(file | isImage) && !(file | isPdf)">
+        <div
+          class="preview-file-other"
+          *ngIf="!(file | isImage) && !(file | isPdf)"
+        >
           <i class="pi pi-file"></i>
         </div>
       </td>
       <td>{{ file.fileName }}</td>
-      <td>{{ file.type | uppercase }}</td>
-      <td><i class="pi pi-folder folder-icon"></i>{{ file.dir }}</td>
-      <td>{{ file.displaySize }}</td>
-      <td>{{ file.dimmensions }}</td>
-      <td>{{ file.createdAt }}</td>
+      <td style="text-align: center">{{ file.type | uppercase }}</td>
+      <td><i class="pi pi-folder folder-icon"></i>{{ file.dirLabel }}</td>
+      <td style="text-align: center">{{ file.displaySize }}</td>
+      <td style="text-align: center">{{ file.dimmensions }}</td>
+      <td style="text-align: center">{{ file.createdAt }}</td>
     </tr>
   </ng-template>
 </p-table>
+<app-image-gallery #imageGallery></app-image-gallery>

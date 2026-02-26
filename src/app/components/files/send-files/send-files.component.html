@@ -16,7 +16,9 @@
 
   <p-progressBar [value]="uploadProgress"></p-progressBar>
   <div class="send-file-directory-wrapper" *ngIf="who === 'user'">
-    <label for="directory" class="label">Wybierz katalog docelowy</label>
+    <label for="directory" class="label">
+      <i class="pi pi-folder"></i> Wybierz katalog docelowy</label
+    >
     <p-select
       name="selectedDirectory"
       optionLabel="label"

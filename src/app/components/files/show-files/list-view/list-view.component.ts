@@ -6,15 +6,17 @@ import {
   OnChanges,
   Output,
   SimpleChanges,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
-import { ImageModule } from 'primeng/image';
 import { TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
 import { TAuthorType } from '../../../comments/types/authorType.type';
+import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
+import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
 import { isImage, isPdf } from '../../helper';
 import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.component';
 import { IsImagePipe } from '../../pipe/is-image.pipe';
@@ -30,10 +32,10 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
     TooltipModule,
     CheckboxModule,
     ButtonModule,
-    ImageModule,
     PdfThumbnailComponent,
     IsImagePipe,
     IsPdfPipe,
+    ImageGalleryComponent,
   ],
   templateUrl: './list-view.component.html',
   styleUrl: './list-view.component.css',
@@ -54,6 +56,7 @@ export class ListViewComponent implements OnChanges {
   @Output() selectAll = new EventEmitter<any>();
   @Output() downloadFiles = new EventEmitter<any>();
   @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
+  @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
 
   ngOnChanges(changes: SimpleChanges): void {
     if (this.files) {
@@ -65,6 +68,10 @@ export class ListViewComponent implements OnChanges {
         };
       });
     }
+  }
+
+  getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {
+    return file.height > file.width ? 'portrait' : 'landscape';
   }
 
   trackByFileId(index: number, file: IFileFullDetails): number {
@@ -97,5 +104,35 @@ export class ListViewComponent implements OnChanges {
     } else {
       this.selectedFiles = [];
     }
+  }
+
+  onShowImageClick(event: MouseEvent, file: IFileFullDetails) {
+    event.stopPropagation();
+    event.preventDefault();
+    this.openGalery(file);
+  }
+
+  openGalery(file: IFileFullDetails) {
+    const clickedImageUrl = file.fullPath;
+    if (!clickedImageUrl) return;
+
+    const galleryImages: IGalleryList[] = this.files
+      .filter((file) =>
+        ['JPG', 'JPEG', 'PNG'].includes(file?.type?.toUpperCase()),
+      )
+      .map((file) => {
+        return {
+          itemImageSrc: file.fullPath,
+          thumbnailImageSrc: file.fullPath,
+        };
+      })
+      .filter((file) => file !== null) as IGalleryList[];
+
+    const activeIndex = galleryImages.findIndex(
+      (img) => img.itemImageSrc === clickedImageUrl,
+    );
+
+    this.imageGallery.images = galleryImages;
+    this.imageGallery.openGallery(activeIndex);
   }
 }

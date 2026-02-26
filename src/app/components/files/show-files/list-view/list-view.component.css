@@ -1,26 +1,58 @@
-.file-row {
+.preview-file-row {
   height: 150px;
   font-size: 1.8rem;
 }
 
-.file-row:hover {
+.preview-file-row:hover {
   background-color: var(--accent-color-03) !important;
 }
 
-.p-image img {
+.preview-file-wrapper {
+  overflow: hidden;
+}
+
+.preview-file-wrapper.landscape img {
   width: 100%;
-  height: 150px;
-  object-fit: cover;
-  display: block;
+  object-fit: contain !important;
+  overflow: visible !important;
 }
 
-.indicator {
-  font-size: 80px;
+.preview-file-wrapper.portrait img {
+  height: 100%;
+  overflow: visible !important;
+}
+
+.preview-image-wrapper {
+  position: relative;
+  cursor: pointer;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+}
+
+.preview-image-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.preview-image-wrapper:hover .preview-image-overlay {
+  opacity: 1;
+}
+
+.preview-indicator,
+.preview-file-other i {
   color: var(--accent-color-10);
+  font-size: 80px;
+  cursor: auto;
 }
 
-.file-pdf,
-.file-other {
+.preview-file-pdf,
+.preview-file-other {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -30,12 +62,7 @@
   width: 150px;
 }
 
-.file-other i {
-  color: var(--accent-color-10);
-  font-size: 80px;
-}
-
-.row-action-btns {
+.preview-row-action-btns {
   display: flex;
   flex-direction: column;
   align-items: center;
