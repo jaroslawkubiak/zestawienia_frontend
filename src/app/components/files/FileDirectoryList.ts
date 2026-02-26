@@ -1,35 +1,53 @@
-import { EFileDirectoryList } from './types/file-directory-list.enum';
-import { IFileDirectory } from './types/IFileDirectory';
+import { EFileDirectory } from './types/file-directory.enum';
+import { IFileDirectoryList } from './types/IFileDirectoryList';
 
-export const FileDirectoryList: IFileDirectory[] = [
+export const FileDirectoryList: IFileDirectoryList[] = [
   {
-    label: EFileDirectoryList['inspirations'],
+    type: EFileDirectory.INSPIRATIONS,
+    label: 'Inspiracje',
+    safeDirName: 'Inspiracje',
     icon: 'pi pi-user',
     title: 'Katalog klienta',
   },
   {
-    label: EFileDirectoryList['moodboard'],
+    type: EFileDirectory.MOODBOARD,
+    label: 'Moodboardy',
+    safeDirName: 'Moodboardy',
   },
   {
-    label: EFileDirectoryList['functionalLayout'],
+    type: EFileDirectory.FUNCTIONAL_LAYOUT,
+    label: 'Układ funkcjonalny',
+    safeDirName: 'Uklad funkcjonalny',
   },
   {
-    label: EFileDirectoryList['model3d'],
+    type: EFileDirectory.MODEL_3D,
+    label: 'Model 3D',
+    safeDirName: 'Model 3D',
   },
   {
-    label: EFileDirectoryList['drawings'],
+    type: EFileDirectory.DRAWINGS,
+    label: 'Rysunki techniczne',
+    safeDirName: 'Rysunki techniczne',
   },
   {
-    label: EFileDirectoryList['visualizations'],
+    type: EFileDirectory.VISUALIZATIONS,
+    label: 'Wizualizacje',
+    safeDirName: 'Wizualizacje',
   },
   {
-    label: EFileDirectoryList['setPdf'],
+    type: EFileDirectory.SET_PDF,
+    label: 'Zestawienie w pdf',
+    safeDirName: 'Zestawienie w pdf',
   },
   {
-    label: EFileDirectoryList['invoice'],
+    type: EFileDirectory.INVOICE,
+    label: 'Faktury',
+    safeDirName: 'Faktury',
   },
   {
-    label: EFileDirectoryList['working'],
+    type: EFileDirectory.WORKING,
+    label: 'Robocze',
+    safeDirName: 'Robocze',
     icon: 'pi pi-eye-slash',
     title: 'Katalog ukryty przed klientem',
   },

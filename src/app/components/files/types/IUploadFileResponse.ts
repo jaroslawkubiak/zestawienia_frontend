@@ -1,7 +1,8 @@
 import { IFileFullDetails } from './IFileFullDetails';
 
 export interface IUploadFileResponse {
-  message: string;
+  filesCount: number;
+  dir: string;
   files: IFileFullDetails[];
   fileNames: string[];
 }

@@ -4,7 +4,7 @@ import type { jsPDF } from 'jspdf';
 import { filter, map } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { FilesService } from '../components/files/files.service';
-import { EFileDirectoryList } from '../components/files/types/file-directory-list.enum';
+import { EFileDirectory } from '../components/files/types/file-directory.enum';
 import { ColumnList } from '../components/sets/ColumnList';
 import { PositionStatusList } from '../components/sets/PositionStatusList';
 import { IColumnList } from '../components/sets/positions-table/types/IColumnList';
@@ -628,7 +628,7 @@ export class PdfService {
     const pdfBlob = doc.output('blob');
     const formData = new FormData();
     formData.append('files', pdfBlob, `${set.name}.pdf`);
-    const uploadFolder = EFileDirectoryList['setPdf'];
+    const uploadFolder = EFileDirectory.SET_PDF;
 
     return new Promise((resolve, reject) => {
       this.filesService
@@ -641,8 +641,7 @@ export class PdfService {
           next: (body) => {
             this.notificationService.showNotification(
               'success',
-              body?.message ||
-                'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
+              'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
             );
 
             resolve(body);

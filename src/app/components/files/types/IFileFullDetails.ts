@@ -1,11 +1,12 @@
-import { EFileDirectoryList } from './file-directory-list.enum';
+import { EFileDirectory } from './file-directory.enum';
 
 export interface IFileFullDetails {
   id: number;
   fileName: string;
   type: string;
   path: string;
-  dir: EFileDirectoryList;
+  dir: EFileDirectory;
+  dirLabel: string;
   originalName: string;
   size: number;
   width: number;

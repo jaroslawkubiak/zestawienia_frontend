@@ -5,7 +5,10 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { NotificationService } from '../../services/notification.service';
+import { FileDirectoryList } from './FileDirectoryList';
 import { IDeletedFileResponse } from './types/IDeletedFileResponse';
+import { IDirectories } from './types/IDirectories';
+import { IDownloadZip } from './types/IDownloadZip';
 import { IFileFullDetails } from './types/IFileFullDetails';
 import { IUploadFileResponse } from './types/IUploadFileResponse';
 
@@ -18,6 +21,7 @@ export class FilesService {
   get httpHeaders(): HttpHeaders {
     return new HttpHeaders({
       Authorization: `Bearer ${this.authorizationToken()}`,
+      'x-user-id': this.userId(),
     });
   }
 
@@ -29,14 +33,19 @@ export class FilesService {
 
   // save created zip from set files
   downloadFiles(ids: number[]): Observable<Blob> {
-    return this.http.post(
-      `${environment.API_URL}/files/download-zip`,
-      { ids },
-      {
-        headers: this.httpHeaders,
-        responseType: 'blob',
-      },
-    );
+    const directories: IDirectories[] = FileDirectoryList.map((dir) => {
+      return {
+        dir: dir.type,
+        dirLabel: dir.safeDirName,
+      };
+    });
+
+    const body: IDownloadZip = { ids, directories };
+
+    return this.http.post(`${environment.API_URL}/files/download-zip`, body, {
+      headers: this.httpHeaders,
+      responseType: 'blob',
+    });
   }
 
   // save attached files to set

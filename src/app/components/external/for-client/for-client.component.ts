@@ -24,7 +24,7 @@ import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../../files/show-files/show-files.component';
-import { EFileDirectoryList } from '../../files/types/file-directory-list.enum';
+import { EFileDirectory } from '../../files/types/file-directory.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
@@ -141,7 +141,7 @@ export class ForClientComponent implements OnInit {
     this.loadContentForBookmark(this.selectedBookmarkId);
 
     this.files = (this.set.files || []).filter(
-      (item) => item.dir !== EFileDirectoryList.working,
+      (item) => item.dir !== EFileDirectory.WORKING,
     );
 
     this.uniquePositionIds = [
@@ -253,8 +253,7 @@ export class ForClientComponent implements OnInit {
   }
 
   get filesCount(): number {
-    return this.files.filter((f) => f.dir !== EFileDirectoryList.working)
-      .length;
+    return this.files.filter((f) => f.dir !== EFileDirectory.WORKING).length;
   }
 
   getCommentsBadgeSeverity(): BadgeSeverity {
