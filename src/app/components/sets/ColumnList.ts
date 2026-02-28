@@ -24,6 +24,14 @@ export const ColumnList: IColumnList[] = [
     pdfWidth: 60,
   },
   {
+    name: 'thumbnail',
+    key: 'thumbnail',
+    type: 'string',
+    classHeader: 'hidden',
+    classColumn: 'hidden',
+    classFooter: 'hidden',
+  },
+  {
     name: 'PRODUKT',
     key: 'produkt',
     type: 'textarea',

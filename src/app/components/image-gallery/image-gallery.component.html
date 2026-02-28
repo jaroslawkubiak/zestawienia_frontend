@@ -9,9 +9,14 @@
   [showIndicators]="true"
 >
   <ng-template #item let-item>
-    <img [src]="item.itemImageSrc" style="width: 100%; display: block" />
+    <div class="preview-image-wrapper flex-center">
+      <img [src]="item.itemImageSrc" />
+    </div>
   </ng-template>
   <ng-template #thumbnail let-item>
-    <img [src]="item.thumbnailImageSrc" style="height: 100px; display: block" />
+    <img
+      [src]="item.thumbnailImageSrc || item.itemImageSrc"
+      style="height: 100px; display: block"
+    />
   </ng-template>
 </p-galleria>

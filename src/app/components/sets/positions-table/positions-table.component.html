@@ -118,7 +118,7 @@
                   [positionId]="position.id"
                   (blur)="applyAction($event, i, column)"
                   [imageUpload]="onImageUpload"
-                  [imagePreview]="getImagePreviewUrl(position)"
+                  [imagePreview]="getImagePreviewUrl(position, true)"
                 />
                 <app-loading-spinner
                   class="image-spinner"
@@ -188,7 +188,7 @@
                   [setId]="+set.id"
                   [setHash]="set.hash"
                   [positionId]="position.id"
-                  [imagePreview]="getImagePreviewUrl(position)"
+                  [imagePreview]="getImagePreviewUrl(position, true)"
                 />
                 <div
                   class="show-image-wrapper"

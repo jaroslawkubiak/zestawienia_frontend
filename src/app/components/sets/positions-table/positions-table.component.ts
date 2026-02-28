@@ -469,15 +469,15 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     event.stopPropagation();
     event.preventDefault();
 
-    const clickedImageUrl = this.getImagePreviewUrl(position);
+    const clickedImageUrl = this.getImagePreviewUrl(position, false);
     if (!clickedImageUrl) return;
 
     const galleryImages: IGalleryList[] = this.formData
       .map((pos) => {
         if (pos['image']) {
           return {
-            itemImageSrc: this.getImagePreviewUrl(pos),
-            thumbnailImageSrc: this.getImagePreviewUrl(pos),
+            itemImageSrc: this.getImagePreviewUrl(pos, false),
+            thumbnailImageSrc: this.getImagePreviewUrl(pos, true),
           };
         }
         return null;
@@ -493,8 +493,17 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   }
 
   // prepare image url
-  getImagePreviewUrl(position: IPosition): string {
-    const fileName = position['image'];
+  getImagePreviewUrl(position: IPosition, getThumbnail: boolean): string {
+    const thumbnail = position['thumbnail'];
+    const image = position['image'];
+
+    let fileName = '';
+
+    if (getThumbnail) {
+      fileName = thumbnail || image;
+    } else {
+      fileName = image;
+    }
 
     if (!fileName) {
       return '';
