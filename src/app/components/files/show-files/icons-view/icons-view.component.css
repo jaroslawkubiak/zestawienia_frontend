@@ -103,8 +103,6 @@
   color: var(--neutral-color-05);
 }
 
-
-
 /* MOBILE  */
 @media (max-width: 768px) {
   .file-container {
@@ -116,15 +114,18 @@
   .show-file-directory-wrapper {
     gap: 10px;
     width: 100%;
-    padding-top: 20px;
+    padding-top: 10px;
   }
 
-  h3 {
-    font-size: 1.4rem;
+  .directory-name-wrapper {
+    gap: 10px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-size: 2rem;
   }
 
-  h3 i {
-    font-size: 1rem;
+  .directory-name-wrapper i {
+    font-size: 1.6rem;
     margin-right: 5px;
   }
 
@@ -143,5 +144,11 @@
 
   .file-container .file-item i {
     font-size: 50px !important;
+  }
+
+  .badge-position {
+    position: absolute;
+    top: -4px;
+    left: 25px;
   }
 }

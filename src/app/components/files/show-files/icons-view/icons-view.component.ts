@@ -49,6 +49,7 @@ export class IconsViewComponent {
   @Input() openPdf!: (file: IFileFullDetails) => void;
   @Input() addFileToSelected!: (file: IFileFullDetails) => void;
   @Input() isDeleteDisabled!: boolean;
+  @Input() isMobile!: boolean;
 
   @Output() downloadFiles = new EventEmitter<any>();
   @Output() deleteFiles = new EventEmitter<void>();

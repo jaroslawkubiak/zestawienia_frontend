@@ -51,6 +51,7 @@
         (downloadFiles)="downloadFiles()"
         (selectAll)="selectAll($event)"
         [isDeleteDisabled]="isDeleteDisabled"
+        [isMobile]="isMobile"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"

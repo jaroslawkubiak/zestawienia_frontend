@@ -49,7 +49,7 @@
       [value]="countFilesBadge(directory.dir)"
       severity="contrast"
       class="badge-position"
-      badgeSize="large"
+      [badgeSize]="isMobile ? 'small' : 'large'"
     ></p-badge>
   </div>
 
