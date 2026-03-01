@@ -14,7 +14,7 @@
 >
   <ng-template pTemplate="header">
     <span class="dialog-header" *ngIf="!isMobile"
-      >Pliki dołączone do zestawienia: {{ setName }}</span
+      >Pliki dołączone do zestawienia: {{ set.name }}</span
     >
     <span class="dialog-header" *ngIf="isMobile">Pliki</span>
   </ng-template>
@@ -42,7 +42,6 @@
         [who]="who"
         [files]="files"
         [uniqueDir]="uniqueDir"
-        [selectedFiles]="selectedFiles"
         [deleteFile]="deleteFile.bind(this)"
         [downloadFile]="downloadFile.bind(this)"
         [openPdf]="openPdf.bind(this)"
@@ -57,7 +56,6 @@
         *ngIf="defaultView === 'list'"
         [who]="who"
         [files]="files"
-        [selectedFiles]="selectedFiles"
         (deleteFile)="deleteFile($event)"
         (deleteFiles)="onDeleteFiles()"
         (downloadFile)="downloadFile($event)"

@@ -18,4 +18,5 @@ export interface IFileFullDetails {
   thumbnail?: string;
   thumbnailPath?: string;
   canDelete?: boolean;
+  isSelected?: boolean;
 }

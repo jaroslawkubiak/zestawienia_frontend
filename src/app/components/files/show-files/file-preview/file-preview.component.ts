@@ -30,14 +30,14 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
     IsPdfPipe,
     CheckboxModule,
     FormsModule,
-    LoadingSpinnerComponent
+    LoadingSpinnerComponent,
   ],
   encapsulation: ViewEncapsulation.None,
 })
 export class FilePreviewComponent {
   @Input() file!: IFileFullDetails;
   @Input() who!: TAuthorType;
-  @Input() selectedFiles: IFileFullDetails[] = [];
+  @Input() files: IFileFullDetails[] = [];
   @Output() delete = new EventEmitter<void>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
   @Output() download = new EventEmitter<void>();
@@ -53,8 +53,10 @@ export class FilePreviewComponent {
     this.isLoading = false;
   }
 
-  get isSelected(): boolean {
-    return this.selectedFiles.some((f) => f.id === this.file.id);
+  countSelectedFiles(): number {
+    return this.files.reduce((acc, file) => {
+      return acc + (file.isSelected === true ? 1 : 0);
+    }, 0);
   }
 
   getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {

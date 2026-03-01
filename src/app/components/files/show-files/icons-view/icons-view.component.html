@@ -3,8 +3,9 @@
     size="large"
     pTooltip="Zaznacz wszystkie pliki"
     tooltipPosition="bottom"
-    (click)="selectAll.emit($event)"
+    (onChange)="selectAll.emit($event)"
     [binary]="true"
+    [ngModel]="allSelected"
   />
   <p-button
     severity="info"
@@ -12,8 +13,8 @@
     alt="Pobierz pliki"
     pTooltip="Pobierz pliki"
     tooltipPosition="bottom"
-    [disabled]="selectedFiles.length === 0"
     (click)="downloadFiles.emit()"
+    [disabled]="countSelectedFiles() === 0"
   />
   <p-button
     severity="danger"
@@ -62,7 +63,7 @@
         <app-file-preview
           [file]="file"
           [who]="who"
-          [selectedFiles]="selectedFiles"
+          [files]="this.files"
           (delete)="deleteFile(file.id)"
           (addFileToSelected)="addFileToSelected(file)"
           (download)="downloadFile(file.id)"

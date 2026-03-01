@@ -43,7 +43,6 @@ export class IconsViewComponent {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
   @Input() uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
-  @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
   @Input() openPdf!: (file: IFileFullDetails) => void;
@@ -70,6 +69,16 @@ export class IconsViewComponent {
         show: true,
       };
     });
+  }
+
+  get allSelected(): boolean {
+    return this.files.length > 0 && this.files.every((file) => file.isSelected);
+  }
+
+  countSelectedFiles(): number {
+    return this.files.reduce((acc, file) => {
+      return acc + (file.isSelected === true ? 1 : 0);
+    }, 0);
   }
 
   filesFilteredByDir(dir: string): IFileFullDetails[] {
