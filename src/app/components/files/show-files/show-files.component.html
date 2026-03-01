@@ -72,7 +72,10 @@
 
 <p-dialog
   [(visible)]="displayPdf"
-  [style]="{ width: '80vw' }"
+  [style]="{
+    width: '160rem',
+    height: '1000px',
+  }"
   [modal]="true"
   [closable]="true"
   [dismissableMask]="true"
@@ -82,7 +85,7 @@
     *ngIf="pdfUrl"
     [src]="pdfUrl"
     width="100%"
-    height="600px"
+    height="900px"
     style="border: none"
   ></iframe>
 </p-dialog>
