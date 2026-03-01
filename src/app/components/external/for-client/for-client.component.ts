@@ -19,7 +19,6 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
-import { CommentsToSetComponent } from '../../comments/comments-to-set/comments-to-set.component';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
@@ -46,7 +45,6 @@ import { IClientData } from './types/IClientData';
     TabsModule,
     SummaryComponent,
     ProductComponent,
-    CommentsToSetComponent,
   ],
   templateUrl: './for-client.component.html',
   styleUrl: './for-client.component.css',
@@ -63,7 +61,6 @@ export class ForClientComponent implements OnInit {
   mobileMenuOpen = false;
   mobileMenuClosing = false;
   isMobileSticky = false;
-  showAllComments = false;
   positionsWithComments: IPositionWithComments[] = [];
   comments: IComment[] = [];
 
@@ -164,9 +161,7 @@ export class ForClientComponent implements OnInit {
             ...this.set,
             lastActiveClientBookmarkId: response.lastActiveClientBookmarkId,
           };
-          if (this.showAllComments) {
-            this.loadCommentsForSet();
-          }
+
           this.selectedBookmarkId = bookmarkId;
 
           this.positionsFromBookmark = this.positions
@@ -178,32 +173,6 @@ export class ForClientComponent implements OnInit {
             }));
 
           this.cd.detectChanges();
-        },
-      });
-  }
-
-  showAllCommentsComponent() {
-    this.showAllComments = !this.showAllComments;
-
-    if (this.showAllComments) {
-      this.loadCommentsForSet();
-    } else {
-      this.positionsWithComments = [];
-      this.loadContentForBookmark(this.selectedBookmarkId);
-    }
-  }
-
-  loadCommentsForSet() {
-    this.externalService
-      .getCommentsForSet(this.set.hash, this.client.hash)
-      .subscribe({
-        next: (response) => {
-          this.comments = response ?? [];
-          this.uniquePositionIds = [
-            ...new Set(this.comments.map((comment) => comment.positionId)),
-          ];
-
-          this.assignCommentsToPosition();
         },
       });
   }

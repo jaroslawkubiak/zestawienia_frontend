@@ -66,25 +66,6 @@
       </div>
 
       <div class="header-actions-btn">
-        <!-- SHOW ALL COMMENTS BTN -->
-        <div class="action-btn-wrapper" (click)="showAllCommentsComponent()">
-          <ng-container *ngIf="!showAllComments">
-            <i class="pi pi-comments"></i>
-            <p-badge
-              *ngIf="getCommentsBadgeValue()"
-              [value]="getCommentsBadgeValue()"
-              [severity]="getCommentsBadgeSeverity()"
-              [pTooltip]="getCommentsTooltipInfo()"
-              class="badge-position"
-              badgeSize="large"
-            ></p-badge>
-            <label> Pokaż komentarze </label>
-          </ng-container>
-          <ng-container *ngIf="showAllComments">
-            <i class="pi pi-table"></i>
-            <label> Pokaż pozycje </label>
-          </ng-container>
-        </div>
         <!-- SHOW ATTACHED FILES BTN  -->
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
           <i class="pi pi-cloud"></i>
@@ -124,16 +105,7 @@
       <p-tabpanels>
         @for (bookmark of set.bookmarks; track bookmark.id) {
           <p-tabpanel [value]="bookmark.id">
-            <ng-container *ngIf="showAllComments">
-              <app-comments-to-set
-                [set]="set"
-                [commentWatcher]="'client'"
-                [positionsWithComments]="positionsWithComments"
-              />
-            </ng-container>
-            <ng-container
-              *ngIf="selectedBookmarkId === bookmark.id && !showAllComments"
-            >
+            <ng-container *ngIf="selectedBookmarkId === bookmark.id">
               <div class="mobile-bookmark-name">{{ bookmark.name }}</div>
               <!-- bookmark = summary -->
               @if (selectedBookmarkId === 1) {
