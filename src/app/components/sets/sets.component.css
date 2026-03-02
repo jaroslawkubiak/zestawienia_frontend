@@ -17,10 +17,10 @@ tr {
   font-size: 1rem !important;
   padding: 8px 24px !important;
   font-weight: normal !important;
-  border: 1px solid rgb(0, 0, 0) !important;
+  border: 1px solid var(--black-color) !important;
   border-radius: 0 !important;
   width: 300px !important;
-  color: rgb(0, 0, 0) !important;
+  color: var(--black-color) !important;
 }
 
 .search-wrapper {
@@ -43,7 +43,7 @@ tr {
 .p-inputtext:focus,
 .p-inputtext:hover,
 .p-inputtext:active {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-04) !important;
 }
 
 .action-btn-wrapper {

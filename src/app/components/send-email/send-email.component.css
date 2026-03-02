@@ -66,14 +66,14 @@
 }
 
 .send-email-preview-iframe-footer {
-  height: 520px !important;
+  height: 540px !important;
 }
 
 .send-email-preview-container {
   position: relative;
   width: 100%;
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
 }
 
 .send-email-iframe-wrapper {
@@ -105,7 +105,7 @@
 
 .send-email-btn i {
   font-size: 3rem;
-  color: var(--secondary-color);
+  color: var(--neutral-color-01);
 }
 
 .send-email-btn i:hover {
@@ -118,7 +118,7 @@
   align-items: center;
   justify-content: flex-end;
   background-color: var(--neutral-color-10);
-  color: var(--secondary-color);
+  color: var(--neutral-color-01);
 }
 
 .send-email-to-off i {

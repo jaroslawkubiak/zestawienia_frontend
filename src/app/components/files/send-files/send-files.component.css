@@ -17,7 +17,7 @@
 }
 
 .send-files-wrapper i:hover {
-  color: var(--accent-color-13);
+  color: var(--accent-color-14);
 }
 
 .file-limit {
@@ -50,13 +50,13 @@
   font-size: 2rem !important;
   font-weight: normal !important;
   border-radius: 0 !important;
-  border: 1px solid var(--accent-color-13) !important;
-  background-color: white !important;
+  border: 1px solid var(--accent-color-14) !important;
+  background-color: var(--white-color) !important;
   width: 300px !important;
 }
 
 .p-select:hover {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .p-select-label {

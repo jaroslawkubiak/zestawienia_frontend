@@ -21,7 +21,7 @@ th {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: var(--primary-color);
+  color: var(--neutral-color-10);
 }
 
 .client-data {

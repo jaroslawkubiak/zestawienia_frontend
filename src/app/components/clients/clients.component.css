@@ -3,6 +3,33 @@
   margin: 10px auto;
 }
 
+::ng-deep .p-toolbar.p-component {
+  background-color: var(--neutral-color-01) !important;
+}
+
+::ng-deep .p-dialog.p-component {
+  display: flex !important;
+  align-items: space-between !important;
+  justify-content: center !important;
+}
+
+::ng-deep .p-dialog-header {
+  padding: 0;
+  margin: 10px 25px 10px 30px;
+}
+
+::ng-deep .p-dialog-title {
+  padding: 0;
+  margin: 0;
+  color: var(--accent-color-18) !important;
+}
+
+::ng-deep .p-dialog-content {
+  padding: 0 30px !important;
+  margin: 0 !important;
+  width: 100%;
+}
+
 ::ng-deep .p-toolbar {
   width: var(--screen-width);
 }
@@ -44,13 +71,11 @@ label {
 
 .new-client-wrapper {
   font-size: 3rem;
-  padding: 0 10px;
-  margin: 0 30px;
 }
 
 .field {
   position: relative;
-  width: 633px !important;
+  width: 682px !important;
 }
 
 i {
@@ -58,8 +83,8 @@ i {
   cursor: default;
   top: 10px;
   right: -10px;
-  color: var(--error-color);
-  font-size: 16px;
+  color: var(--burgund-color-13);
+  font-size: 14px;
 }
 
 .p-inputtext {
@@ -67,7 +92,7 @@ i {
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-13) !important;
-  width: 600px !important;
+  width: 654px !important;
 }
 
 .p-inputtext:focus,
@@ -76,7 +101,8 @@ i {
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-03) !important;
+  color: var(--neutral-color-10) !important;
+  background-color: var(--accent-color-04) !important;
 }
 
 .search-input {
@@ -84,21 +110,28 @@ i {
   font-size: 1rem !important;
   padding: 8px 24px !important;
   font-weight: normal !important;
-  border: 1px solid rgb(0, 0, 0) !important;
+  border: 1px solid var(--black-color) !important;
   border-radius: 0 !important;
   width: 300px !important;
-  color: rgb(0, 0, 0) !important;
+  color: var(--black-color) !important;
 }
 
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: white !important;
+  background-color: var(--white-color) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-13) !important;
+  width: 688px !important;
 }
 
 .p-textarea.p-variant-filled {
   background-image: none !important;
+}
+
+::ng-deep .p-dialog-footer {
+  display: flex !important;
+  margin: 20px 30px !important;
+  padding: 0 !important;
 }

@@ -1,6 +1,6 @@
 .new-set-container {
-  display: flex; 
-  justify-content: center; 
+  display: flex;
+  justify-content: center;
 }
 
 .new-set-wrapper {
@@ -45,11 +45,12 @@
 
 .bookmarks-cell label {
   cursor: pointer;
+  color: var(--accent-color-13);
 }
 
 .bookmarks-cell label:hover {
   cursor: pointer;
-  color: rgb(66, 101, 79);
+  color: var(--accent-color-18);
 }
 
 .bookmarks-checkbox {
@@ -75,7 +76,7 @@
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-04) !important;
   height: 100% !important;
 }
 
@@ -85,6 +86,7 @@
   padding: 0px 8px !important;
   font-size: 3rem !important;
   border: 1px solid var(--accent-color-13) !important;
+  background-color: var(--white-color) !important;
 }
 
 .p-select.p-variant-filled {
@@ -94,7 +96,7 @@
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: white !important;
+  background-color: var(--white-color) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-13) !important;

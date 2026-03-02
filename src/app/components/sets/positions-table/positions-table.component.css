@@ -70,7 +70,7 @@ th {
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
   width: 100% !important;
   height: 100% !important;
 }
@@ -122,16 +122,16 @@ th {
 
 .show-image-wrapper {
   position: absolute;
-  top: 0;
-  right: -8px;
+  top: 5px;
+  right: -3px;
   z-index: 999;
   padding: 8px;
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-06);
   border-radius: 50%;
 }
 
 .show-image-wrapper i {
-  font-size: 2rem;
+  font-size: 1.6rem;
   color: var(--accent-color-02);
 }
 
@@ -147,7 +147,7 @@ th {
   gap: 20px;
   flex-direction: column;
   justify-content: start;
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .p-select {
@@ -155,7 +155,7 @@ th {
   position: relative !important;
   padding: 0 4px !important;
   font-size: 1.2rem !important;
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
@@ -174,7 +174,7 @@ th {
 }
 
 ::ng-deep .p-select-option:hover {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 ::ng-deep .p-select-clear-icon {
