@@ -61,7 +61,6 @@ export class ShowFilesComponent {
 
   @Input() who!: TAuthorType;
   @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
-  setId!: number;
   set!: ISet;
   displayPdf = false;
   displayPdfHeader: string = '';
@@ -135,7 +134,7 @@ export class ShowFilesComponent {
       return;
     }
 
-    this.filesService.downloadAndSaveFile(file, this.setId);
+    this.filesService.downloadAndSaveFile(file, this.set.id);
   }
 
   // delete file form server and remove from list
