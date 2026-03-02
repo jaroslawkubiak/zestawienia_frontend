@@ -14,8 +14,8 @@
 }
 
 .comments-wrapper {
-  border: 1px solid var(--accent-color-10);
-  background-color: var(--accent-color-02) !important;
+  border: 1px solid var(--accent-color-06);
+  background-color: var(--accent-color-01) !important;
   border-radius: 20px;
   padding: 16px;
 }
@@ -27,7 +27,7 @@
   flex-direction: column;
   height: 650px;
   gap: 10px;
-  border: 2px solid var(--burgund-color-15);
+  border: 2px solid var(--burgund-color-08);
   border-radius: 20px;
   padding: 16px;
 }
@@ -37,7 +37,7 @@
   grid-template-columns: 50px 1fr;
   font-size: 3rem;
   font-weight: 700;
-  color: var(--burgund-color-15);
+  color: var(--burgund-color-08);
 }
 
 .comments-to-set-product-name {
@@ -97,7 +97,7 @@
 
 .product-name {
   font-size: 2rem;
-  color: var(--burgund-color-12);
+  color: var(--burgund-color-06);
 }
 
 .status-wrapper {

@@ -24,7 +24,7 @@
 }
 
 .settings-color-item {
-  width: 50px;
+  width: 100px;
   height: 150px;
   margin: 2px;
 }
@@ -35,11 +35,15 @@
 }
 
 .settings-color-accent-title {
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
 }
 
 .settings-color-burgund-title {
-  color: var(--burgund-color-10);
+  color: var(--burgund-color-04);
+}
+
+.settings-color-neutral-title {
+  color: var(--neutral-color-08);
 }
 
 .settings-color-border {

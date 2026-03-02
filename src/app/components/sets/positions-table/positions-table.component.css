@@ -70,7 +70,7 @@ th {
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-02) !important;
+  background-color: var(--accent-color-01) !important;
   width: 100% !important;
   height: 100% !important;
 }
@@ -117,7 +117,7 @@ th {
 }
 
 .view-mode-link:hover {
-  color: var(--burgund-color-15);
+  color: var(--burgund-color-08);
 }
 
 .show-image-wrapper {
@@ -126,17 +126,17 @@ th {
   right: -3px;
   z-index: 999;
   padding: 8px;
-  background-color: var(--accent-color-06);
+  background-color: var(--accent-color-04);
   border-radius: 50%;
 }
 
 .show-image-wrapper i {
   font-size: 1.6rem;
-  color: var(--accent-color-02);
+  color: var(--accent-color-01);
 }
 
 .show-image-wrapper:hover {
-  background-color: var(--accent-color-14);
+  background-color: var(--accent-color-08);
 }
 
 .edit-mode-image {
@@ -147,7 +147,7 @@ th {
   gap: 20px;
   flex-direction: column;
   justify-content: start;
-  background-color: var(--accent-color-02) !important;
+  background-color: var(--accent-color-01) !important;
 }
 
 .p-select {
@@ -155,7 +155,7 @@ th {
   position: relative !important;
   padding: 0 4px !important;
   font-size: 1.2rem !important;
-  background-color: var(--accent-color-02) !important;
+  background-color: var(--accent-color-01) !important;
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
@@ -174,18 +174,18 @@ th {
 }
 
 ::ng-deep .p-select-option:hover {
-  background-color: var(--accent-color-02) !important;
+  background-color: var(--accent-color-01) !important;
 }
 
 ::ng-deep .p-select-clear-icon {
   position: absolute !important;
   margin-right: 10px !important;
-  color: var(--accent-color-13) !important;
+  color: var(--accent-color-07) !important;
   top: calc((var(--row-height) / 2) - 3px) !important;
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {
-  color: var(--accent-color-13) !important;
+  color: var(--accent-color-07) !important;
 }
 
 .select-field {

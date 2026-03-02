@@ -17,7 +17,7 @@
   height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
-  border: 1px solid var(--accent-color-10);
+  border: 1px solid var(--accent-color-06);
   border-radius: 10px;
   scroll-behavior: smooth;
 }
@@ -160,7 +160,7 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
-  background-color: rgb(155, 155, 155);
+  background-color: var(--neutral-color-05);
 }
 
 .edit-icon {
@@ -172,7 +172,7 @@
 }
 
 .edit-icon:hover {
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-06);
 }
 
 .delete-icon:hover {
@@ -232,8 +232,8 @@
 }
 
 .new-message-textarea {
-  background-color: var(--accent-color-03);
-  color: var(--accent-color-13);
+  background-color: var(--accent-color-02);
+  color: var(--accent-color-07);
   outline: none;
   resize: none;
   overflow: hidden;
@@ -245,13 +245,13 @@
 
   width: auto;
   border-radius: 0px;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
 }
 
 .new-message-textarea:hover,
 .new-message-textarea:focus {
-  background-color: var(--accent-color-04) !important;
-  border: 1px solid var(--accent-color-15) !important;
+  background-color: var(--accent-color-03) !important;
+  border: 1px solid var(--accent-color-08) !important;
 }
 
 .new-message-send-btn-wrapper {
@@ -273,7 +273,7 @@
 }
 
 .disabled {
-  background-color: rgb(216, 216, 216);
+  background-color: var(--neutral-color-03);
 }
 
 .new-message-action-btns {
@@ -299,7 +299,7 @@
 }
 
 .message-mark-all-needs-attention-btn {
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-06);
 }
 
 .message-mark-all-not-needs-attention-btn {

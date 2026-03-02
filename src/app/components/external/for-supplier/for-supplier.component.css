@@ -37,7 +37,7 @@ th {
 .header-title {
   font-size: 3rem;
   font-weight: 700;
-  color: var(--accent-color-12);
+  color: var(--accent-color-07);
   margin-bottom: 20px;
 }
 
@@ -107,7 +107,7 @@ th {
 }
 
 .product-img {
-  background-color: rgb(255, 255, 255) !important;
+  background-color: var(--pure-white-color) !important;
 }
 
 .view-mode-image {

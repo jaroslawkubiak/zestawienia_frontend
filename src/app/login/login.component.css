@@ -32,7 +32,7 @@
 
 .login-tile {
   font-size: 4rem;
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
   font-weight: 700;
   padding-bottom: 20px;
 }
@@ -46,7 +46,7 @@
 .login-field label {
   margin: 1.2rem 0;
   font-weight: 700;
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
 }
 
 .login-error {
@@ -80,9 +80,9 @@ i {
 
 input {
   all: unset;
-  border: var(--input-border-width) solid var(--accent-color-13);
-  background-color: var(--accent-color-03);
-  color: var(--accent-color-13);
+  border: var(--input-border-width) solid var(--accent-color-07);
+  background-color: var(--accent-color-02);
+  color: var(--accent-color-07);
   padding: 8px 16px;
   transition: var(--inputs-transitions);
   margin-bottom: 24px;
@@ -92,9 +92,9 @@ input {
 
 input:-webkit-autofill {
   font-size: 14px !important;
-  -webkit-box-shadow: 0 0 0 50px var(--accent-color-03) inset !important;
-  -webkit-text-fill-color: var(--accent-color-13) !important;
-  border: var(--input-border-width) solid var(--accent-color-13) !important;
+  -webkit-box-shadow: 0 0 0 50px var(--accent-color-02) inset !important;
+  -webkit-text-fill-color: var(--accent-color-07) !important;
+  border: var(--input-border-width) solid var(--accent-color-07) !important;
   transition: background-color 5000s ease-in-out 0s !important;
 }
 
@@ -102,9 +102,9 @@ input[type="submit"],
 input[type="button"],
 button {
   text-align: center;
-  color: var(--accent-color-03);
-  background-color: var(--accent-color-13);
-  border: var(--input-border-width) solid var(--accent-color-13);
+  color: var(--accent-color-02);
+  background-color: var(--accent-color-07);
+  border: var(--input-border-width) solid var(--accent-color-07);
   cursor: pointer;
   padding: 8px 16px;
   width: 200px;
@@ -115,7 +115,7 @@ button {
 input[type="submit"]:hover,
 input[type="button"]:hover,
 button:hover {
-  color: var(--accent-color-13);
-  background-color: var(--accent-color-03);
-  border: var(--input-border-width) solid var(--accent-color-13);
+  color: var(--accent-color-07);
+  background-color: var(--accent-color-02);
+  border: var(--input-border-width) solid var(--accent-color-07);
 }

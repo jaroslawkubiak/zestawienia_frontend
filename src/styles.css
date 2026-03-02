@@ -5,9 +5,7 @@
 }
 
 html {
-  --primary-color: #212121;
-  --secondary-color: #f4f3f3;
-  --table-header-bg: #ebebeb;
+  --table-header-bg: #e3e3e3;
   --app-menu-bg: #2c2c2e;
 
   --neutral-color-01: #f9f9f9;
@@ -21,63 +19,42 @@ html {
   --neutral-color-09: #565656;
   --neutral-color-10: #1e1e1e;
 
-  --accent-color-01: #f7fdfb;
-  --accent-color-02: #e2f6f1;
-  --accent-color-03: #cdefe8;
-  --accent-color-04: #b8e9de;
-  --accent-color-05: #a2e2d4;
-  --accent-color-06: #8ddcca;
-  --accent-color-07: #78d5c0;
-  --accent-color-08: #63cfb6;
-  --accent-color-09: #4ec8ac;
+  --accent-color-01: #e2f6f1;
+  --accent-color-02: #cdefe8;
+  --accent-color-03: #b8e9de;
+  --accent-color-04: #8ddcca;
+  --accent-color-05: #63cfb6;
+  --accent-color-06: #3bbfa1; /* kolor bazowy */
+  --accent-color-07: #2b8a75;
+  --accent-color-08: #257966;
+  --accent-color-09: #1a5648;
+  --accent-color-10: #10332b;
 
-  --accent-color-10: #3bbfa1;
+  --burgund-color-01: #ffe1ea;
+  --burgund-color-02: #f9aebe;
+  --burgund-color-03: #d85e6b;
+  --burgund-color-04: #cd4b57;
+  --burgund-color-05: #bf3945;
+  --burgund-color-06: #9a1d2a;
+  --burgund-color-07: #7d1224;
+  --burgund-color-08: #600a21; /* kolor bazowy */
+  --burgund-color-09: #440717;
+  --burgund-color-10: #28040d;
 
-  --accent-color-11: #36ad92;
-  --accent-color-12: #309c83;
-  --accent-color-13: #2b8a75;
-  --accent-color-14: #257966;
-  --accent-color-15: #206757;
-  --accent-color-16: #1a5648;
-  --accent-color-17: #154439;
-  --accent-color-18: #10332b;
-  --accent-color-19: #0a211c;
-  --accent-color-20: #05100d;
-
-  --burgund-color-01: #fff2f6;
-  --burgund-color-02: #ffe1ea;
-  --burgund-color-03: #ffd0de;
-  --burgund-color-04: #ffbfd2;
-  --burgund-color-05: #f9aebe;
-  --burgund-color-06: #f29aa9;
-  --burgund-color-07: #ea8694;
-  --burgund-color-08: #e1727f;
-  --burgund-color-09: #d85e6b;
-  --burgund-color-10: #cd4b57;
-  --burgund-color-11: #bf3945;
-  --burgund-color-12: #ae2a36;
-  --burgund-color-13: #9a1d2a;
-  --burgund-color-14: #7d1224;
-  --burgund-color-15: #600a21; /* kolor bazowy */
-  --burgund-color-16: #52081c;
-  --burgund-color-17: #440717;
-  --burgund-color-18: #360512;
-  --burgund-color-19: #28040d;
-  --burgund-color-20: #1b0309;
-
-  --error-color: #e91e63;
-  --edit-color: #e691a4;
+  --error-color: var(--burgund-color-06);
 
   --white-color: #f4f3f3;
+  --pure-white-color: #ffffff;
   --black-color: #111111;
+  --pure-black-color: #000000;
 
   /* position status color  */
   --status-empty-color: #f8fafc;
-  --status-pink-color: #ffc1c8a2;
-  --status-green-color: #58ac1ba4;
-  --status-red-color: #de10398f;
-  --status-lightgreen-color: #c0f4c8db;
-  --status-yellow-color: #f1f659b9;
+  --status-pink-color: #ffe1ea;
+  --status-green-color: #7fd1c1ab;
+  --status-red-color: #fdb3c9;
+  --status-lightgreen-color: #cdefe8;
+  --status-yellow-color: #fdfdaf;
 
   /* position row height  */
   --row-height: 190px;

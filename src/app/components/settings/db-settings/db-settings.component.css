@@ -22,7 +22,7 @@
 
 .settings-label {
   position: relative;
-  color: var(--accent-color-15);
+  color: var(--accent-color-08);
   font-size: 2rem;
 }
 
@@ -30,7 +30,7 @@
   all: unset !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-15) !important;
+  border: 1px solid var(--accent-color-08) !important;
   width: 100% !important;
   box-sizing: border-box !important;
 }
@@ -41,7 +41,7 @@
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .button[disabled] {
@@ -84,7 +84,7 @@
 }
 
 .p-inputtext {
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
 }
 
 .p-textarea {
@@ -94,12 +94,12 @@
   border-radius: 0px;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
 }
 
 ::ng-deep
   .p-radiobutton:not(.p-disabled):has(.p-radiobutton-input:hover)
   .p-radiobutton-box {
-  border-color: var(--accent-color-10) !important;
-  background-color: var(--accent-color-10) !important;
+  border-color: var(--accent-color-06) !important;
+  background-color: var(--accent-color-06) !important;
 }

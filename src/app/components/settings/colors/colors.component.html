@@ -5,7 +5,7 @@
       class="settings-color-wrapper"
       *ngFor="let color of accentColors; let i = index"
     >
-      <span [ngClass]="i == 9 ? 'settings-color-border' : ''">
+      <span [ngClass]="i == 5 ? 'settings-color-border' : ''">
         {{ color.name }}</span
       >
       <div
@@ -21,7 +21,7 @@
       class="settings-color-wrapper"
       *ngFor="let color of burgundColors; let i = index"
     >
-      <span [ngClass]="i == 14 ? 'settings-color-border' : ''">
+      <span [ngClass]="i == 7 ? 'settings-color-border' : ''">
         {{ color.name }}</span
       >
       <div
@@ -31,7 +31,7 @@
     </div>
   </div>
 
-  <p class="settings-color-burgund-title">Neutral color</p>
+  <p class="settings-color-neutral-title">Neutral color</p>
   <div class="settings-color-row">
     <div
       class="settings-color-wrapper"

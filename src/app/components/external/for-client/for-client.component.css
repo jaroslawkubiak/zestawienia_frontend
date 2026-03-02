@@ -19,7 +19,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-06);
   height: 100px;
 }
 
@@ -51,11 +51,11 @@
 }
 
 h1 {
-  color: var(--accent-color-17);
+  color: var(--accent-color-09);
 }
 
 h3 {
-  color: var(--accent-color-01);
+  color: var(--neutral-color-01);
 }
 
 .header-actions-btn {
@@ -69,12 +69,12 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--accent-color-01);
+  color: var(--neutral-color-01);
   transition: color 0.2s ease;
 }
 
 .action-btn-wrapper:hover {
-  color: var(--accent-color-17);
+  color: var(--accent-color-09);
 }
 
 .action-btn-wrapper label {
@@ -112,13 +112,13 @@ h3 {
 
 ::ng-deep .p-tab {
   font-size: 1.4rem !important;
-  background-color: var(--accent-color-04) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 ::ng-deep .p-tab:hover,
 ::ng-deep .p-tab-active {
-  color: var(--accent-color-01) !important;
-  background-color: var(--accent-color-07) !important;
+  color: var(--neutral-color-01) !important;
+  background-color: var(--accent-color-05) !important;
 }
 
 .mobile-bookmark-name {
@@ -176,7 +176,7 @@ h3 {
   /* show mobile header title  */
   .header-title-mobile {
     display: flex;
-    color: var(--accent-color-02);
+    color: var(--accent-color-01);
   }
 
   /* show mobile menu icon */
@@ -187,7 +187,7 @@ h3 {
 
   .mobile-menu-icon-wrapper i {
     font-size: 3rem;
-    color: var(--accent-color-01);
+    color: var(--neutral-color-01);
   }
 
   /* hide PrimeNG bookmarks */
@@ -202,7 +202,7 @@ h3 {
     left: 0;
     width: 100%;
     height: 100vh;
-    background-color: var(--accent-color-10);
+    background-color: var(--accent-color-06);
     z-index: 50;
     padding: 15px;
     animation: slideDown 0.3s ease;
@@ -224,7 +224,7 @@ h3 {
   .close-icon {
     font-size: 2.5rem;
     cursor: pointer;
-    color: var(--accent-color-01);
+    color: var(--neutral-color-01);
     font-size: 3rem;
     z-index: 99;
   }
@@ -241,7 +241,7 @@ h3 {
     gap: 15px;
     font-size: 2.5rem;
     margin: 5px;
-    color: var(--accent-color-01);
+    color: var(--neutral-color-01);
   }
 
   .mobile-files-badge-position {
@@ -271,13 +271,13 @@ h3 {
     padding: 10px 0;
     font-size: 1.6rem;
     font-weight: 600;
-    border-bottom: 1px solid var(--accent-color-04);
+    border-bottom: 1px solid var(--accent-color-03);
     cursor: pointer;
-    color: var(--accent-color-01);
+    color: var(--neutral-color-01);
   }
 
   .mobile-menu-list li:hover {
-    color: var(--accent-color-08);
+    color: var(--accent-color-05);
   }
 
   .mobile-bookmark-name {
@@ -285,9 +285,9 @@ h3 {
     align-items: center;
     justify-content: center;
     padding: 5px 10px;
-    color: var(--accent-color-17);
-    background-color: var(--accent-color-04);
-    border-bottom: 3px solid var(--accent-color-09);
+    color: var(--accent-color-09);
+    background-color: var(--accent-color-03);
+    border-bottom: 3px solid var(--accent-color-06);
   }
 }
 

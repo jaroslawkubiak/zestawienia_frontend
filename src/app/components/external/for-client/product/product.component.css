@@ -2,8 +2,8 @@
   display: grid;
   padding: 20px 0;
   grid-template-columns: auto repeat(4, 1fr);
-  background-color: var(--accent-color-01);
-  border-bottom: 3px solid var(--accent-color-09);
+  background-color: var(--neutral-color-01);
+  border-bottom: 3px solid var(--accent-color-06);
   gap: 0px;
 }
 
@@ -13,7 +13,7 @@
   justify-content: center;
   font-size: 4rem;
   padding: 0 5px;
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
 }
 
 .product-img-wrapper {
@@ -22,7 +22,7 @@
   align-items: center;
   gap: 15px;
   justify-content: flex-end;
-  background-color: var(--accent-color-01);
+  background-color: var(--neutral-color-01);
 }
 
 .product-img {
@@ -74,7 +74,7 @@
 
 .product-name {
   font-size: 2rem;
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
 }
 
 .position-action-btn {
@@ -87,7 +87,7 @@
 
 .comments-wrapper {
   font-size: 2rem;
-  color: var(--accent-color-09);
+  color: var(--accent-color-06);
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -117,7 +117,7 @@
 .link {
   gap: 10px;
   font-size: 2rem;
-  color: var(--accent-color-09);
+  color: var(--accent-color-06);
   font-weight: 700;
   transition: color 0.2s ease;
 }
@@ -125,7 +125,7 @@
 .link i,
 .comments-cell i {
   font-size: 3rem;
-  color: var(--accent-color-09);
+  color: var(--accent-color-06);
   transition: color 0.2s ease;
 }
 
@@ -175,8 +175,8 @@
     width: 30px;
     height: 30px;
     font-size: 2rem;
-    color: var(--accent-color-01);
-    background-color: var(--accent-color-09);
+    color: var(--neutral-color-01);
+    background-color: var(--accent-color-06);
   }
 
   .product-img-wrapper {
@@ -231,7 +231,7 @@
   }
 
   .product-group-price .product-name {
-    color: var(--accent-color-05);
+    color: var(--accent-color-04);
   }
 
   .product-title {

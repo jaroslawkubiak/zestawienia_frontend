@@ -18,12 +18,12 @@
 }
 
 :host ::ng-deep .settings-menu {
-  --p-menu-background: var(--accent-color-02);
+  --p-menu-background: var(--accent-color-01);
   --p-menu-list-gap: 8px;
   --p-menu-list-padding: 8px;
   --p-menu-item-padding: 20px 10px;
-  --p-menu-item-color: var(--accent-color-12);
-  --p-menu-item-icon-color: var(--accent-color-12);
+  --p-menu-item-color: var(--accent-color-07);
+  --p-menu-item-icon-color: var(--accent-color-07);
 }
 
 ::ng-deep .p-menu-item-icon.pi {

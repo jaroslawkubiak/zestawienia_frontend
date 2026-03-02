@@ -4,7 +4,7 @@
 }
 
 .preview-file-row:hover {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .preview-file-wrapper {
@@ -46,7 +46,7 @@
 
 .preview-indicator,
 .preview-file-other i {
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
   font-size: 80px;
   cursor: auto;
 }

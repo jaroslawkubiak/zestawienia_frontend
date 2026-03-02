@@ -7,8 +7,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--accent-color-03);
-  color: var(--accent-color-18);
+  background-color: var(--accent-color-01);
+  color: var(--accent-color-10);
   width: 100%;
   padding: 15px;
 }
@@ -22,23 +22,27 @@
 
 .set-header-title {
   font-size: 1.6rem;
-  color: var(--accent-color-15);
+  font-weight: 700;
+  color: var(--accent-color-10);
   height: 30px;
 }
 
 .set-header-value {
-  font-size: 2rem;
+  font-size: 1.6rem;
   height: 40px;
+  color: var(--neutral-color-10);
 }
 
 ::ng-deep .p-tab {
   font-size: 1.4rem;
   background-color: var(--neutral-color-01);
+  color: var(--neutral-color-10);
 }
 
 ::ng-deep .p-tab:hover,
 ::ng-deep .p-tab-active {
-  background-color: var(--accent-color-03) !important;
+  color: var(--accent-color-10) !important;
+  background-color: var(--accent-color-01) !important;
 }
 
 .position-container {
@@ -64,7 +68,7 @@
 ::ng-deep .btn-xl {
   font-size: 1.8rem !important;
   gap: 16px !important;
-  background-color: var(--accent-color-10);
+  background-color: var(--accent-color-06);
   height: 18px;
 }
 
@@ -80,11 +84,11 @@
 }
 
 ::ng-deep .btn-xl {
-  background-color: var(--accent-color-12) !important;
+  background-color: var(--accent-color-08) !important;
 }
 
 ::ng-deep .btn-xl:hover {
-  background-color: var(--accent-color-14) !important;
+  background-color: var(--accent-color-10) !important;
 }
 
 ::ng-deep .btn-xl .p-button-icon {

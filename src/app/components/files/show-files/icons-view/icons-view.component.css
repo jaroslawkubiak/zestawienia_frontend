@@ -45,7 +45,7 @@
 
 .file-container .file-item i {
   font-size: 80px !important;
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
   cursor: default;
 }
 
@@ -59,7 +59,7 @@
   align-items: center;
   justify-content: center;
   font-size: 2.4rem;
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
   cursor: pointer;
 }
 
@@ -69,13 +69,13 @@
 
 .directory-name-wrapper i {
   font-size: 2.4rem;
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
   cursor: pointer;
 }
 
 .directory-name-wrapper:hover i,
 .directory-name-wrapper:hover {
-  color: var(--accent-color-12);
+  color: var(--accent-color-07);
 }
 
 .badge-position {

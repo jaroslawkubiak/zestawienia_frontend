@@ -51,10 +51,10 @@ export class PdfService {
 
   // get colors from css variables
   colors = {
-    accent: getCssVariable('--accent-color-10'),
-    accentLighter: getCssVariable('--accent-color-06'),
+    accent: getCssVariable('--accent-color-06'),
+    accentLighter: getCssVariable('--accent-color-04'),
     accentDarker: getCssVariable('--black-color'),
-    accentDark: getCssVariable('--accent-color-15'),
+    accentDark: getCssVariable('--accent-color-08'),
     black: getCssVariable('--black-color'),
     neutral: getCssVariable('--neutral-color-01'),
     neutralDarker: getCssVariable('--neutral-color-05'),

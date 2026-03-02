@@ -15,7 +15,7 @@
 }
 
 .label {
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
   font-size: 1.6rem;
 }
 
@@ -41,12 +41,12 @@
 
 .bookmarks-cell label {
   cursor: pointer;
-  color: var(--accent-color-13);
+  color: var(--accent-color-07);
 }
 
 .bookmarks-cell label:hover {
   cursor: pointer;
-  color: var(--accent-color-18);
+  color: var(--accent-color-10);
 }
 
 .bookmarks-checkbox {
@@ -60,7 +60,7 @@
   all: unset !important;
   padding: 8px 16px !important;
   font-size: 2.2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
   width: 527px !important;
 }
 
@@ -70,7 +70,7 @@
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-04) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .p-select {
@@ -79,13 +79,13 @@
   font-size: 2.2rem !important;
   font-weight: normal;
   border-radius: 0 !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
   background-color: var(--white-color) !important;
   width: 100% !important;
 }
 
 .p-select:hover {
-  background-color: var(--accent-color-04) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .p-select.p-variant-filled {
@@ -108,7 +108,7 @@
   background-color: var(--white-color) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
 }
 
 .p-textarea.p-variant-filled {

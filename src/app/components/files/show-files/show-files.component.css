@@ -25,11 +25,11 @@
 }
 
 .p-image-toolbar {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .p-image-action {
-  color: var(--accent-color-10) !important;
+  color: var(--accent-color-06) !important;
 }
 
 .p-image-rotate-right-button,
@@ -72,11 +72,11 @@
 .top-action-btns i {
   padding: 0.75rem;
   font-size: 2.6rem;
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
 }
 
 .top-action-btns i.active {
-  background-color: var(--accent-color-03);
+  background-color: var(--accent-color-02);
 }
 
 .img-delete {

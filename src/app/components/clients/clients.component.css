@@ -21,7 +21,7 @@
 ::ng-deep .p-dialog-title {
   padding: 0;
   margin: 0;
-  color: var(--accent-color-18) !important;
+  color: var(--accent-color-10) !important;
 }
 
 ::ng-deep .p-dialog-content {
@@ -58,7 +58,7 @@ tr {
 label {
   margin: 20px 0 10px 0;
   display: block;
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
   font-size: 1.6rem;
 }
 
@@ -83,7 +83,7 @@ i {
   cursor: default;
   top: 10px;
   right: -10px;
-  color: var(--burgund-color-13);
+  color: var(--burgund-color-06);
   font-size: 14px;
 }
 
@@ -91,7 +91,7 @@ i {
   all: unset !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
   width: 654px !important;
 }
 
@@ -102,7 +102,7 @@ i {
 .p-textarea:hover,
 .p-textarea:active {
   color: var(--neutral-color-10) !important;
-  background-color: var(--accent-color-04) !important;
+  background-color: var(--accent-color-03) !important;
 }
 
 .search-input {
@@ -122,7 +122,7 @@ i {
   background-color: var(--white-color) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
-  border: 1px solid var(--accent-color-13) !important;
+  border: 1px solid var(--accent-color-07) !important;
   width: 688px !important;
 }
 

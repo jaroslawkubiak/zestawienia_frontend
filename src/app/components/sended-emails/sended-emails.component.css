@@ -45,7 +45,7 @@ th {
 }
 
 .link {
-  color: var(--accent-color-14);
+  color: var(--accent-color-08);
   font-size: 2rem;
 }
 
@@ -76,7 +76,7 @@ th {
 }
 
 .email-preview i:hover {
-  color: var(--accent-color-10);
+  color: var(--accent-color-06);
 }
 
 .email-preview-container {
