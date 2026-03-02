@@ -98,6 +98,9 @@ export class ShowFilesComponent {
         };
       });
 
+      this.files = this.files.sort((a, b) =>
+        a.fileName.localeCompare(b.fileName),
+      );
       this.uniqueDir = this.getUniqueDirectories();
     }
   }
