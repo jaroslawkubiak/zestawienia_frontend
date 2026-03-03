@@ -46,7 +46,7 @@
 
   <div
     class="preview-file-name-label"
-    [ngClass]="{ textBold: file.isSelected }"
+    [ngClass]="{ textBold: isSelected }"
     pTooltip="{{ file.seenAt }}"
     tooltipPosition="bottom"
   >
@@ -62,6 +62,7 @@
       pTooltip="Pobierz plik"
       tooltipPosition="bottom"
       (click)="download.emit()"
+      [disabled]="selectedFiles.length !== 0"
     />
     <p-checkbox
       (onChange)="addFileToSelected.emit(file)"
@@ -69,7 +70,7 @@
       size="large"
       pTooltip="Zaznacz plik"
       tooltipPosition="bottom"
-      [ngModel]="file.isSelected"
+      [ngModel]="isSelected"
     />
     <p-button
       severity="danger"
@@ -79,7 +80,7 @@
       pTooltip="Usuń plik"
       tooltipPosition="bottom"
       (click)="delete.emit()"
-      [disabled]="!file.canDelete || countSelectedFiles() !== 0"
+      [disabled]="!file.canDelete || selectedFiles.length !== 0"
     />
   </div>
 </div>

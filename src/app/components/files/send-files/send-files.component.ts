@@ -46,7 +46,7 @@ export class SendFilesComponent {
     private filesService: FilesService,
     private notificationService: NotificationService,
     private breakpointObserver: BreakpointObserver,
-    private cdr: ChangeDetectorRef,
+    private cd: ChangeDetectorRef,
   ) {
     this.breakpointObserver
       .observe(['(max-width: 640px)'])
@@ -178,7 +178,7 @@ export class SendFilesComponent {
               (100 * event.loaded) / event.total,
             );
           }
-          this.cdr.detectChanges();
+          this.cd.detectChanges();
 
           if (event.type === HttpEventType.Response && event.body) {
             this.fileUploader.clear();
@@ -188,13 +188,13 @@ export class SendFilesComponent {
             this.updateFileList.emit(files);
             this.completeUpload();
 
-            const uploadMessage = this.returnUploadMessage(event.body.filesCount, event.body.dir);
+            const uploadMessage = this.returnUploadMessage(
+              event.body.filesCount,
+              event.body.dir,
+            );
 
             // success - file saved
-            this.notificationService.showNotification(
-              'success',
-              uploadMessage,
-            );
+            this.notificationService.showNotification('success', uploadMessage);
           }
         },
 

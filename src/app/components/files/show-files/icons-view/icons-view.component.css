@@ -84,17 +84,6 @@
   left: 30px;
 }
 
-.icons-top-action-btns {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 25px;
-  top: 14px;
-  right: 200px;
-  height: 45px;
-}
-
 .collapsed-label {
   color: var(--neutral-color-05);
 }

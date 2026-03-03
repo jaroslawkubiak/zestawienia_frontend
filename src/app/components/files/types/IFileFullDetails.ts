@@ -19,5 +19,4 @@ export interface IFileFullDetails {
   createdAtTimestamp: number;
   fullPath?: string;
   canDelete?: boolean;
-  isSelected?: boolean;
 }

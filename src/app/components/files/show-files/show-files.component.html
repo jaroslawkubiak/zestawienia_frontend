@@ -20,7 +20,35 @@
   </ng-template>
 
   <div class="file-wrapper">
-    <div class="top-action-btns" *ngIf="!isMobile">
+    <div class="file-top-action-btn">
+      <p-checkbox
+        size="large"
+        pTooltip="Zaznacz wszystkie pliki"
+        tooltipPosition="bottom"
+        (onChange)="selectAll($event)"
+        [binary]="true"
+        [ngModel]="allSelected"
+      />
+      <p-button
+        severity="info"
+        icon="pi pi-download"
+        alt="Pobierz pliki"
+        pTooltip="Pobierz pliki"
+        tooltipPosition="bottom"
+        (click)="downloadFiles()"
+        [disabled]="selectedFiles.length === 0"
+      />
+      <p-button
+        severity="danger"
+        icon="pi pi-trash"
+        alt="Usuń pliki"
+        pTooltip="Usuń pliki"
+        tooltipPosition="bottom"
+        [disabled]="isDeleteDisabled"
+        (click)="onDeleteFiles()"
+      />
+    </div>
+    <div class="file-change-view-mode-btn" *ngIf="!isMobile">
       <i
         class="pi pi-th-large"
         (click)="changeView('icons')"
@@ -41,30 +69,24 @@
         *ngIf="defaultView === 'icons'"
         [who]="who"
         [files]="files"
+        [selectedFiles]="selectedFiles"
         [uniqueDir]="uniqueDir"
         [deleteFile]="deleteFile.bind(this)"
         [downloadFile]="downloadFile.bind(this)"
         [openPdf]="openPdf.bind(this)"
         [addFileToSelected]="addFileToSelected.bind(this)"
-        (deleteFiles)="onDeleteFiles()"
-        (fileVisible)="onFileVisible($event)"
-        (downloadFiles)="downloadFiles()"
-        (selectAll)="selectAll($event)"
-        [isDeleteDisabled]="isDeleteDisabled"
         [isMobile]="isMobile"
+        (fileVisible)="onFileVisible($event)"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"
         [who]="who"
         [files]="files"
+        [selectedFiles]="selectedFiles"
         (deleteFile)="deleteFile($event)"
-        (deleteFiles)="onDeleteFiles()"
         (downloadFile)="downloadFile($event)"
-        (downloadFiles)="downloadFiles()"
         (addFileToSelected)="addFileToSelected($event)"
-        (selectAll)="selectAll($event)"
         (openPdf)="openPdf($event)"
-        [isDeleteDisabled]="isDeleteDisabled"
       ></app-list-view>
     </div>
     <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>

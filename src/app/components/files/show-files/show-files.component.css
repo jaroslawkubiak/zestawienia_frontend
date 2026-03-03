@@ -59,7 +59,7 @@
   color: var(--error-color);
 }
 
-.top-action-btns {
+.file-change-view-mode-btn {
   position: absolute;
   top: 16px;
   right: 50px;
@@ -69,13 +69,13 @@
   margin: 0 3rem;
 }
 
-.top-action-btns i {
+.file-change-view-mode-btn i {
   padding: 0.75rem;
   font-size: 2.6rem;
   color: var(--accent-color-06);
 }
 
-.top-action-btns i.active {
+.file-change-view-mode-btn i.active {
   background-color: var(--accent-color-02);
 }
 
@@ -100,6 +100,17 @@
   max-width: 100%;
 }
 
+.file-top-action-btn {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  top: 14px;
+  right: 200px;
+  height: 45px;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .mobile-full-dialog.p-dialog {
@@ -110,7 +121,7 @@
     border-radius: 0 !important;
   }
 
-  .top-action-btns i {
+  .file-change-view-mode-btn i {
     font-size: 2rem;
   }
 

@@ -44,22 +44,17 @@ type TDirWithShowOptions = {
 export class IconsViewComponent implements OnChanges {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
+  @Input() selectedFiles: IFileFullDetails[] = [];
   @Input() uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
-  @Output() fileVisible = new EventEmitter<number>();
   @Input() openPdf!: (file: IFileFullDetails) => void;
   @Input() addFileToSelected!: (file: IFileFullDetails) => void;
-  @Input() isDeleteDisabled!: boolean;
   @Input() isMobile!: boolean;
 
-  @Output() downloadFiles = new EventEmitter<any>();
-  @Output() deleteFiles = new EventEmitter<void>();
-  @Output() selectAll = new EventEmitter<any>();
-
+  @Output() fileVisible = new EventEmitter<number>();
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
   sortedFiles: IFileFullDetails[] = [];
-
   dirListWithShowOption: TDirWithShowOptions[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
@@ -74,16 +69,6 @@ export class IconsViewComponent implements OnChanges {
         show: true,
       }));
     }
-  }
-
-  get allSelected(): boolean {
-    return this.files.length > 0 && this.files.every((file) => file.isSelected);
-  }
-
-  countSelectedFiles(): number {
-    return this.files.reduce((acc, file) => {
-      return acc + (file.isSelected === true ? 1 : 0);
-    }, 0);
   }
 
   filesFilteredByDir(dir: string): IFileFullDetails[] {

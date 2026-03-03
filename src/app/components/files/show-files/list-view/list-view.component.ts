@@ -7,7 +7,7 @@ import {
   Output,
   SimpleChanges,
   ViewChild,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
@@ -44,17 +44,12 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 export class ListViewComponent implements OnChanges {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
-  @Input() isDeleteDisabled!: boolean;
-
-  @Output() downloadFile = new EventEmitter<number>();
+  @Input() selectedFiles: IFileFullDetails[] = [];
+  
   @Output() deleteFile = new EventEmitter<number>();
-  @Output() deleteFiles = new EventEmitter<void>();
-  @Output() clearSelectedFiles = new EventEmitter<void>();
-  @Output() openPdf = new EventEmitter<IFileFullDetails>();
+  @Output() downloadFile = new EventEmitter<number>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
-  @Output() selectAll = new EventEmitter<any>();
-  @Output() downloadFiles = new EventEmitter<any>();
-  @Output() selectedFilesChange = new EventEmitter<IFileFullDetails[]>();
+  @Output() openPdf = new EventEmitter<IFileFullDetails>();
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -67,10 +62,6 @@ export class ListViewComponent implements OnChanges {
         };
       });
     }
-  }
-
-  get allSelected(): boolean {
-    return this.files.length > 0 && this.files.every((file) => file.isSelected);
   }
 
   getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {
@@ -97,12 +88,6 @@ export class ListViewComponent implements OnChanges {
       return `${file.width}x${file.height}px`;
     }
     return '';
-  }
-
-  countSelectedFiles(): number {
-    return this.files.reduce((acc, file) => {
-      return acc + (file.isSelected === true ? 1 : 0);
-    }, 0);
   }
 
   onShowImageClick(event: MouseEvent, file: IFileFullDetails) {

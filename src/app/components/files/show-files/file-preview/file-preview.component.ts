@@ -37,11 +37,13 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
   encapsulation: ViewEncapsulation.None,
 })
 export class FilePreviewComponent {
-  @Input() file!: IFileFullDetails;
   @Input() who!: TAuthorType;
+  @Input() file!: IFileFullDetails;
   @Input() files: IFileFullDetails[] = [];
-  @Output() delete = new EventEmitter<void>();
+  @Input() selectedFiles: IFileFullDetails[] = [];
+
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();
+  @Output() delete = new EventEmitter<void>();
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
   @Output() openGalery = new EventEmitter<IFileFullDetails>();
@@ -76,10 +78,8 @@ export class FilePreviewComponent {
     this.isLoading = false;
   }
 
-  countSelectedFiles(): number {
-    return this.files.reduce((acc, file) => {
-      return acc + (file.isSelected === true ? 1 : 0);
-    }, 0);
+  get isSelected(): boolean {
+    return this.selectedFiles.some((f) => f.id === this.file.id);
   }
 
   getImageOrientation(file: IFileFullDetails): 'portrait' | 'landscape' {

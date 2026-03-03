@@ -1,31 +1,3 @@
-<div class="icons-top-action-btns">
-  <p-checkbox
-    size="large"
-    pTooltip="Zaznacz wszystkie pliki"
-    tooltipPosition="bottom"
-    (onChange)="selectAll.emit($event)"
-    [binary]="true"
-    [ngModel]="allSelected"
-  />
-  <p-button
-    severity="info"
-    icon="pi pi-download"
-    alt="Pobierz pliki"
-    pTooltip="Pobierz pliki"
-    tooltipPosition="bottom"
-    (click)="downloadFiles.emit()"
-    [disabled]="countSelectedFiles() === 0"
-  />
-  <p-button
-    severity="danger"
-    icon="pi pi-trash"
-    alt="Usuń pliki"
-    pTooltip="Usuń pliki"
-    tooltipPosition="bottom"
-    [disabled]="isDeleteDisabled"
-    (click)="deleteFiles.emit()"
-  />
-</div>
 <div
   class="show-file-directory-wrapper"
   *ngFor="
@@ -61,11 +33,12 @@
         *ngFor="let file of filesFilteredByDir(directory.dir)"
       >
         <app-file-preview
-          [file]="file"
           [who]="who"
+          [file]="file"
           [files]="this.files"
-          (delete)="deleteFile(file.id)"
+          [selectedFiles]="selectedFiles"
           (addFileToSelected)="addFileToSelected(file)"
+          (delete)="deleteFile(file.id)"
           (download)="downloadFile(file.id)"
           (openPdf)="openPdf(file)"
           (openGalery)="openGalery(file)"

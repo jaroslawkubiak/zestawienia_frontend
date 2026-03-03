@@ -9,8 +9,10 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
 import { Subject, bufferTime, filter } from 'rxjs';
@@ -33,6 +35,8 @@ import { ListViewComponent } from './list-view/list-view.component';
 @Component({
   selector: 'app-show-files',
   imports: [
+    CheckboxModule,
+    FormsModule,
     CommonModule,
     Dialog,
     TooltipModule,
@@ -68,6 +72,7 @@ export class ShowFilesComponent implements OnInit {
   displayPdfHeader: string = '';
   pdfUrl: SafeResourceUrl = '';
   files: IFileFullDetails[] = [];
+  selectedFiles: IFileFullDetails[] = [];
   showFilesDialog = false;
   defaultView: 'icons' | 'list' = 'icons';
   uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
@@ -90,6 +95,7 @@ export class ShowFilesComponent implements OnInit {
     this.seenFiles.clear();
     this.set = set;
     this.showFilesDialog = true;
+    this.selectedFiles = [];
 
     if (set.files) {
       this.files = set.files.map((file) => {
@@ -117,6 +123,7 @@ export class ShowFilesComponent implements OnInit {
       this.files = this.files.sort((a, b) =>
         a.fileName.localeCompare(b.fileName),
       );
+
       this.uniqueDir = this.getUniqueDirectories();
     }
   }
@@ -219,25 +226,13 @@ export class ShowFilesComponent implements OnInit {
 
   // batch delete selected files form server and remove from list
   onDeleteFiles() {
-    if (this.countSelectedFiles() === 0) {
+    if (this.selectedFiles.length === 0) {
       return;
     }
 
-    const ids: number[] = this.files.reduce((acc: number[], item) => {
-      if (item.isSelected) {
-        acc.push(item.id);
-      }
-      return acc;
-    }, []);
-
-    const fileNames: string[] = this.files.reduce((acc: string[], item) => {
-      if (item.isSelected) {
-        acc.push(item.fileName);
-      }
-      return acc;
-    }, []);
-
-    const setId = this.files[0]?.setId;
+    const ids: number[] = this.selectedFiles.map((item) => item.id);
+    const fileNames: string[] = this.selectedFiles.map((item) => item.fileName);
+    const setId = this.selectedFiles[0]?.setId;
 
     const accept = () => {
       this.filesService.deleteFiles(ids).subscribe({
@@ -255,6 +250,7 @@ export class ShowFilesComponent implements OnInit {
 
           this.files = this.files.filter((file) => !ids.includes(file.id));
           this.uniqueDir = this.getUniqueDirectories();
+          this.selectedFiles = [];
 
           const remainingFiles: IRemainingFiles = {
             setId,
@@ -307,12 +303,7 @@ export class ShowFilesComponent implements OnInit {
       .replace(/:/g, '-')
       .replace(/[()]/g, '');
 
-    const ids: number[] = this.files.reduce((acc: number[], item) => {
-      if (item.isSelected) {
-        acc.push(item.id);
-      }
-      return acc;
-    }, []);
+    const ids: number[] = this.selectedFiles.map((item) => item.id);
 
     this.filesService.downloadFiles(ids).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
@@ -325,33 +316,23 @@ export class ShowFilesComponent implements OnInit {
   }
 
   addFileToSelected(file: IFileFullDetails) {
-    this.files = this.files.map((f) => {
-      if (f.id === file.id) {
-        return {
-          ...f,
-          isSelected: !f.isSelected,
-        };
-      }
+    const exists = this.selectedFiles.some((el) => el.id === file.id);
 
-      return {
-        ...f,
-      };
-    });
+    if (exists) {
+      this.selectedFiles = this.selectedFiles.filter((el) => el.id !== file.id);
+    } else {
+      this.selectedFiles = [...this.selectedFiles, file];
+    }
   }
 
-  countSelectedFiles(): number {
-    return this.files.reduce((acc, file) => {
-      return acc + (file.isSelected === true ? 1 : 0);
-    }, 0);
+  get allSelected(): boolean {
+    return this.selectedFiles.length === this.files.length;
   }
 
-  selectAll(event: { checked: boolean }): void {
+  selectAll(event: CheckboxChangeEvent): void {
     const checked = event.checked;
 
-    this.files = this.files.map((file) => ({
-      ...file,
-      isSelected: checked,
-    }));
+    this.selectedFiles = checked ? this.files : [];
 
     this.cd.markForCheck();
   }
@@ -365,7 +346,7 @@ export class ShowFilesComponent implements OnInit {
   }
 
   get isDeleteDisabled(): boolean {
-    if (this.countSelectedFiles() === 0) {
+    if (this.selectedFiles.length === 0) {
       return true;
     }
 
@@ -374,7 +355,7 @@ export class ShowFilesComponent implements OnInit {
     }
 
     if (this.who === 'client') {
-      return !this.files.every((file) => file.canDelete === true);
+      return !this.selectedFiles.every((file) => file.canDelete === true);
     }
 
     return true;

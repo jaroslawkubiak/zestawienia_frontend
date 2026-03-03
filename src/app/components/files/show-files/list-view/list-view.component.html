@@ -1,30 +1,3 @@
-<div class="list-top-action-btns">
-  <p-checkbox
-    pTooltip="Zaznacz wszystkie pliki"
-    tooltipPosition="bottom"
-    (onChange)="selectAll.emit($event)"
-    [binary]="true"
-    [ngModel]="allSelected"
-  ></p-checkbox>
-  <p-button
-    severity="info"
-    class="m-2"
-    icon="pi pi-download"
-    alt="Pobierz pliki"
-    pTooltip="Pobierz pliki"
-    [disabled]="countSelectedFiles() === 0"
-    (click)="downloadFiles.emit()"
-  />
-  <p-button
-    severity="danger"
-    class="m-2"
-    icon="pi pi-trash"
-    alt="Usuń pliki"
-    pTooltip="Usuń pliki"
-    [disabled]="isDeleteDisabled"
-    (click)="deleteFiles.emit()"
-  />
-</div>
 <p-table
   #dt
   dataKey="id"
@@ -77,12 +50,12 @@
             alt="Pobierz plik"
             pTooltip="Pobierz plik"
             (click)="downloadFile.emit(file.id)"
+            [disabled]="selectedFiles.length !== 0"
           />
-          <p-checkbox
-            [(ngModel)]="file.isSelected"
-            [binary]="true"
+          <p-tableCheckbox
+            [value]="file"
             pTooltip="Zaznacz plik"
-            (onChange)="addFileToSelected.emit(file)"
+            (click)="addFileToSelected.emit(file)"
           />
           <p-button
             severity="danger"
@@ -91,7 +64,7 @@
             alt="Usuń plik"
             pTooltip="Usuń plik"
             (click)="deleteFile.emit(file.id)"
-            [disabled]="!file.canDelete || countSelectedFiles() !== 0"
+            [disabled]="!file.canDelete || selectedFiles.length !== 0"
           />
         </div>
       </td>
