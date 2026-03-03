@@ -76,15 +76,14 @@ export class ClientsComponent implements OnInit {
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
+    secondEmail: new FormControl('', {
+      validators: [Validators.required, Validators.email],
+    }),
     telephone: new FormControl<string | null>(''),
     setCount: new FormControl<number | null>(null),
   });
 
   ngOnInit(): void {
-    this.getClients();
-  }
-
-  getClients() {
     this.clientsService.getClients().subscribe({
       next: (data) => {
         this.clients = data;
@@ -103,6 +102,7 @@ export class ClientsComponent implements OnInit {
       firstName: null,
       lastName: null,
       email: null,
+      secondEmail: null,
       telephone: null,
       setCount: null,
     });
@@ -118,6 +118,7 @@ export class ClientsComponent implements OnInit {
       firstName: this.client.firstName ?? null,
       lastName: this.client.lastName ?? null,
       email: this.client.email ?? null,
+      secondEmail: this.client.secondEmail ?? null,
       telephone: this.client.telephone ?? null,
       setCount: this.client.setCount ?? null,
     });
@@ -217,6 +218,7 @@ export class ClientsComponent implements OnInit {
         const editedClient: IClient = {
           id: this.client.id,
           email: this.form.value.email!,
+          secondEmail: this.form.value.secondEmail!,
           firstName: this.form.value.firstName!,
           lastName: this.form.value.lastName!,
           company: this.form.value.company || '',
@@ -240,6 +242,7 @@ export class ClientsComponent implements OnInit {
         // add client
         const newClient: Partial<IClient> = {
           email: this.form.value.email!,
+          secondEmail: this.form.value.secondEmail || '',
           firstName: this.form.value.firstName!,
           lastName: this.form.value.lastName!,
           company: this.form.value.company || undefined,
@@ -266,6 +269,7 @@ export class ClientsComponent implements OnInit {
       this.form.reset();
     }
   }
+  
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {

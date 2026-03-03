@@ -4,6 +4,7 @@ export interface IClient {
   firstName: string;
   lastName: string;
   email: string;
+  secondEmail?: string;
   hash?: string;
   telephone?: string;
   setCount?: number;

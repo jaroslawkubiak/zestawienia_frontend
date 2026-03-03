@@ -85,6 +85,10 @@
           E-mail
           <p-sortIcon field="email" />
         </th>
+        <th pSortableColumn="email" style="min-width: 10rem">
+          Dodatkowy e-mail
+          <p-sortIcon field="email" />
+        </th>
         <th pSortableColumn="telephone" style="min-width: 6rem">
           Telefon
           <p-sortIcon field="telephone" />
@@ -155,6 +159,15 @@
           (click)="handleCopy($event, client.email, 'Email')"
         >
           {{ client.email }}
+        </td>
+        <td
+          style="min-width: 12rem"
+          pTooltip="Kliknij, aby skopiować email"
+          tooltipPosition="bottom"
+          positionLeft="-100"
+          (click)="handleCopy($event, client.secondEmail, 'Email')"
+        >
+          {{ client.secondEmail }}
         </td>
         <td
           style="min-width: 10rem"
@@ -275,6 +288,35 @@
             </div>
           </div>
           <div class="field">
+            <label for="secondEmail">Dodatkowy e-mail</label>
+            <input
+              type="text"
+              pInputText
+              id="secondEmail"
+              formControlName="secondEmail"
+              fluid
+            />
+            <div class="error-container">
+              <div
+                *ngIf="
+                  form.controls['secondEmail'].invalid &&
+                  form.controls['secondEmail'].touched
+                "
+              >
+                <span
+                  class="error"
+                  *ngIf="form.controls['secondEmail'].errors?.['required']"
+                  >E-mail jest wymagany.</span
+                >
+                <span
+                  class="error"
+                  *ngIf="form.controls['secondEmail'].errors?.['email']"
+                  >Niepoprawny format adresu e-mail.</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="field">
             <label for="telephone">Telefon</label>
             <input
               type="text"
@@ -314,6 +356,7 @@
         size="large"
       />
       <p-button
+        [disabled]="!form.valid"
         label="Zapisz"
         icon="pi pi-check"
         (click)="saveClient()"
