@@ -346,6 +346,7 @@
         size="large"
       />
       <p-button
+        [disabled]="!form.valid"
         label="Zapisz"
         icon="pi pi-check"
         (click)="saveSupplier()"
