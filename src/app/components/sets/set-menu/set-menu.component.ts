@@ -80,6 +80,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   emailsList: ISendedEmails[] = [];
   attachmentBadge: number = 0;
   clientHash = '';
+  isGeneratingPdf = false;
 
   constructor(
     private notificationService: NotificationService,
@@ -112,6 +113,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
         suppliersFromSet: this.suppliersFromSet,
         emailsList: this.emailsList,
         isEdited: this.isEdited,
+        isGeneratingPdf: this.isGeneratingPdf,
         clientHash: this.clientHash,
         sendSetToClient: () => this.sendSetToClientViaEmail(),
         sendSetToSupplier: (supplier) =>
@@ -204,6 +206,11 @@ export class SetMenuComponent implements OnChanges, OnInit {
   }
 
   async generatePDF(): Promise<void> {
+    if (this.isGeneratingPdf) return;
+
+    this.isGeneratingPdf = true;
+    this.updateMenuItems();
+
     try {
       const resultPdf = await this.pdfService.generatePDF(
         this.set,
@@ -212,7 +219,13 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
       this.updateAttachedFiles(resultPdf.files);
     } catch (error) {
-      console.error('Błąd generowania PDF lub wysyłki:', error);
+      this.notificationService.showNotification(
+        'error',
+        'Nie udało się wygenerować PDF.\n' + error,
+      );
+    } finally {
+      this.isGeneratingPdf = false;
+      this.updateMenuItems();
     }
   }
 

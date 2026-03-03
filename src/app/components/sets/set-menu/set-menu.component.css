@@ -15,6 +15,7 @@
 ::ng-deep .p-menubar-item-content {
   padding: 8px 10px !important;
   transition: color 0.2s ease !important;
+  cursor: pointer;
 }
 
 ::ng-deep .p-menubar-item-content:hover {

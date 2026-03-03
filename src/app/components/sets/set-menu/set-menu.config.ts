@@ -1,30 +1,8 @@
 import { MenuItem } from 'primeng/api';
-import { TEmailAudience } from '../../sended-emails/types/EmailAudience.type';
-import { ISendedEmails } from '../../sended-emails/types/ISendedEmails';
-import { ISupplier } from '../../suppliers/types/ISupplier';
-import { ISet } from '../types/ISet';
-
-export interface SetMenuParams {
-  set: ISet;
-  suppliersFromSet: ISupplier[];
-  emailsList: ISendedEmails[];
-  isEdited: boolean;
-  clientHash: string;
-  sendSetToClient: () => void;
-  sendSetToSupplier: (supplier: ISupplier) => void;
-  openLink: (type: TEmailAudience, hash: string) => void;
-  copyLink: (type: TEmailAudience, hash: string) => void;
-  editHeader: () => void;
-  generatePDF: () => void;
-  showAttachedFiles: () => void;
-  openSendFilesDialog: () => void;
-  getCommentsBadgeSeverity: () => string;
-  getCommentsBadgeValue: () => number;
-  toggleShowAllComments: () => void;
-}
+import { ISetMenuParams } from './types/ISetMenuParams';
 
 export function buildSetMenu(
-  params: SetMenuParams,
+  params: ISetMenuParams,
   showAllComments: boolean,
 ): MenuItem[] {
   const {
@@ -32,6 +10,7 @@ export function buildSetMenu(
     suppliersFromSet,
     emailsList,
     isEdited,
+    isGeneratingPdf,
     clientHash,
     sendSetToClient,
     sendSetToSupplier,
@@ -145,7 +124,7 @@ export function buildSetMenu(
     {
       label: 'Stwórz PDF',
       icon: 'pi pi-file-pdf',
-      disabled: isEdited,
+      disabled: isEdited || isGeneratingPdf,
       command: generatePDF,
     },
     {
