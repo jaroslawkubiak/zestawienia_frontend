@@ -3,7 +3,9 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnChanges,
   Output,
+  SimpleChanges,
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -39,7 +41,7 @@ type TDirWithShowOptions = {
   templateUrl: './icons-view.component.html',
   styleUrl: './icons-view.component.css',
 })
-export class IconsViewComponent {
+export class IconsViewComponent implements OnChanges {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
   @Input() uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
@@ -60,16 +62,18 @@ export class IconsViewComponent {
 
   dirListWithShowOption: TDirWithShowOptions[] = [];
 
-  ngOnInit() {
-    this.sortedFiles = [...this.files];
-    this.sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['files']) {
+      this.sortedFiles = [...this.files];
+      this.sortedFiles.sort((a, b) => a.dir.localeCompare(b.dir));
+    }
 
-    this.dirListWithShowOption = this.uniqueDir.map((dir) => {
-      return {
+    if (changes['uniqueDir']) {
+      this.dirListWithShowOption = this.uniqueDir.map((dir) => ({
         ...dir,
         show: true,
-      };
-    });
+      }));
+    }
   }
 
   get allSelected(): boolean {
