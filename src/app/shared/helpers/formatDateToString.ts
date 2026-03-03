@@ -1,4 +1,8 @@
-export function formatDate(date: Date): string {
+export function formatDateToString(date: Date): string {
+  if (!date) {
+    return '';
+  }
+  
   const pad = (n: number) => n.toString().padStart(2, '0');
 
   return (

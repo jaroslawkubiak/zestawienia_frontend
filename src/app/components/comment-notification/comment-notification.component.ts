@@ -10,12 +10,12 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { Table, TableModule } from 'primeng/table';
 import { TooltipModule } from 'primeng/tooltip';
+import { formatDateToString } from '../../shared/helpers/formatDateToString';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
 import { CommentNotificationService } from './comment-notification.service';
 import { ICommentNotificationLogs } from './types/ICommentNotificationLogs';
 import { INotificationTimer } from './types/INotificationTimer';
-import { formatDate } from '../../shared/helpers/formatDate';
 
 @Component({
   selector: 'app-comment-notification',
@@ -58,9 +58,9 @@ export class CommentNotificationComponent {
         this.activeTimers = response.timers.map((timer) => {
           return {
             ...timer,
-            delayMs: (timer.delayMs / 1000) / 60,
-            startedAt: formatDate(new Date(timer.startedAt)),
-            fireAt: formatDate(new Date(timer.fireAt)),
+            delayMs: timer.delayMs / 1000 / 60,
+            startedAt: formatDateToString(new Date(timer.startedAt)),
+            fireAt: formatDateToString(new Date(timer.fireAt)),
           };
         });
 
