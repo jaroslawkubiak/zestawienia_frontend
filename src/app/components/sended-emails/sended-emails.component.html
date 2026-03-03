@@ -11,6 +11,7 @@
     [paginator]="true"
     [globalFilterFields]="[
       'emailTo',
+      'secondEmail',
       'company',
       'set.name',
       'sendBy.name',
@@ -46,6 +47,10 @@
           E-mail
           <p-sortIcon field="emailTo" />
         </th>
+        <th pSortableColumn="emailTo" style="min-width: 20rem">
+          Dodatkowy e-mail
+          <p-sortIcon field="emailTo" />
+        </th>
         <th pSortableColumn="set.name" style="min-width: 20rem">
           Inwestycja
           <p-sortIcon field="set.name" />
@@ -74,6 +79,9 @@
         </td>
         <td class="no-action">
           {{ email.emailTo }}
+        </td>
+        <td class="no-action">
+          {{ email.secondEmail }}
         </td>
         <td
           class="cursor-pointer set-name"

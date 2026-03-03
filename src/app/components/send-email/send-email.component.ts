@@ -68,6 +68,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
   senderEmail = '';
   receiverEmail = '';
+  receiverSecondEmail = '';
   emailSubject = '';
   emailMessage = '';
   linkToSet = '';
@@ -126,9 +127,18 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     this.applyTemplate(this.selectedTemplate);
 
-    this.receiverEmail = this.supplier
-      ? this.supplier.email
-      : this.set.clientId.email;
+    if (this.supplier) {
+      this.receiverEmail = this.supplier.email;
+    } else {
+      this.receiverEmail = this.set.clientId.email;
+      this.receiverSecondEmail = this.set.clientId.secondEmail;
+    }
+  }
+
+  get fullReceiverEmail(): string {
+    return [this.receiverEmail, this.receiverSecondEmail]
+      .filter(Boolean)
+      .join('; ');
   }
 
   applyTemplate(template: IEmailTemplateList) {
@@ -242,6 +252,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     const newEmail: IEmailDetailsLog = {
       to: this.receiverEmail,
+      secondEmail: this.receiverSecondEmail,
       subject: this.emailSubject,
       content: this.getFullEmailHtml(),
       setId: this.set.id,
@@ -252,9 +263,16 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     this.emailsService.sendEmail(newEmail).subscribe({
       next: (response) => {
+        let confirmationMessage = `Poprawnie wysłano e-mail na adres \n ${response?.accepted[0]}`;
+
+        if (response?.accepted.length > 1) {
+          const emailReceiver = response?.accepted.join('\n');
+          confirmationMessage = `Poprawnie wysłano e-mail na adresy \n ${emailReceiver}`;
+        }
+
         this.notificationService.showNotification(
           'success',
-          `E-mail na adres ${response?.accepted[0]} został wysłany poprawnie`,
+          confirmationMessage,
         );
 
         this.soundService.playSound(SoundType.emailSending);

@@ -11,6 +11,7 @@ export interface ISendedEmails {
     firstName: string;
     lastName: string;
     email: string;
+    secondEmail: string;
   };
   supplier?: {
     id: number;

@@ -62,25 +62,21 @@ export class SendedEmailsComponent implements OnInit {
     this.emailsService.getEmails().subscribe({
       next: (data) => {
         this.emails = data.map((email) => {
-          const isSupplier = email.supplier?.company ? true : false;
+          const supplier = email.supplier;
+          const client = email.client;
 
-          const icon = isSupplier
-            ? 'pi pi-truck i-supplier'
-            : 'pi pi-user i-client';
+          const isSupplier = !!supplier?.company;
+          const entity = isSupplier ? supplier : client;
 
-          const company = isSupplier
-            ? email.supplier?.company
-            : email.client?.company;
-
-          const emailTo = isSupplier
-            ? email.supplier?.email
-            : email.client?.email;
-
-          const fullName = isSupplier
-            ? `${email.supplier?.firstName}  ${email.supplier?.lastName}`
-            : `${email.client?.firstName}  ${email.client?.lastName}`;
-
-          return { ...email, company, icon, fullName, emailTo };
+          return {
+            ...email,
+            icon: isSupplier ? 'pi pi-truck i-supplier' : 'pi pi-user i-client',
+            company: entity?.company,
+            emailTo: entity?.email,
+            secondEmail: isSupplier ? '' : client?.secondEmail,
+            fullName:
+              `${entity?.firstName ?? ''} ${entity?.lastName ?? ''}`.trim(),
+          };
         });
 
         this.isLoading = false;

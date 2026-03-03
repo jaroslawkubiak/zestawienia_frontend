@@ -27,6 +27,7 @@ export interface ISet {
     lastName: string;
     firstName: string;
     email: string;
+    secondEmail: string;
     company: string;
     hash: string;
   };
