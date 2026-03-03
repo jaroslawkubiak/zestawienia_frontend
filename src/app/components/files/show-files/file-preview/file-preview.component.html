@@ -1,4 +1,13 @@
-<div class="preview-container">
+<div #fileElement class="preview-container">
+  <span class="preview-new-file-badge" *ngIf="!file.seenAt"> Nowy </span>
+  <span
+    class="preview-seen-file-badge"
+    *ngIf="who === 'user' && file.seenAt"
+    [pTooltip]="`Widziany \n${file.seenAt}`"
+    tooltipPosition="bottom"
+  >
+    <i class="pi pi-info-circle"></i>
+  </span>
   <div class="preview-file-wrapper" [ngClass]="getImageOrientation(file)">
     <div
       *ngIf="file | isImage"
@@ -38,7 +47,7 @@
   <div
     class="preview-file-name-label"
     [ngClass]="{ textBold: file.isSelected }"
-    pTooltip="{{ file.fileName.length > 40 ? file.fileName : '' }}"
+    pTooltip="{{ file.seenAt }}"
     tooltipPosition="bottom"
   >
     {{ file.fileName }}

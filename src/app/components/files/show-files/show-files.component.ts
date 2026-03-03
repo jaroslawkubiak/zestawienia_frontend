@@ -5,6 +5,7 @@ import {
   Component,
   EventEmitter,
   Input,
+  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -12,6 +13,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ButtonModule } from 'primeng/button';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { Subject, bufferTime, filter } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -43,7 +45,7 @@ import { ListViewComponent } from './list-view/list-view.component';
   styleUrl: './show-files.component.css',
   encapsulation: ViewEncapsulation.None,
 })
-export class ShowFilesComponent {
+export class ShowFilesComponent implements OnInit {
   constructor(
     private sanitizer: DomSanitizer,
     private filesService: FilesService,
@@ -70,14 +72,29 @@ export class ShowFilesComponent {
   defaultView: 'icons' | 'list' = 'icons';
   uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   isMobile = false;
+  private seenFiles = new Set<number>();
+  private visibleFiles$ = new Subject<number>();
+
+  ngOnInit() {
+    this.visibleFiles$
+      .pipe(
+        bufferTime(500),
+        filter((ids) => ids.length > 0),
+      )
+      .subscribe((ids) => {
+        this.filesService.markFileAsSeen(ids).subscribe();
+      });
+  }
 
   showDialog(set: ISet) {
+    this.seenFiles.clear();
     this.set = set;
     this.showFilesDialog = true;
 
     if (set.files) {
       this.files = set.files.map((file) => {
         const fullPath = this.createFilePath(file);
+
         let thumbnailPath = '';
         if (file.type.toUpperCase() === 'PDF') {
           thumbnailPath = this.createThumbnailPdfPath(file);
@@ -104,6 +121,15 @@ export class ShowFilesComponent {
     }
   }
 
+  onFileVisible(fileId: number) {
+    if (this.who === 'client') {
+      if (this.seenFiles.has(fileId)) return;
+
+      this.seenFiles.add(fileId);
+      this.visibleFiles$.next(fileId);
+    }
+  }
+
   findDirLabel(dir: EFileDirectory) {
     return FileDirectoryList.find((d) => d.type === dir)!.label;
   }
@@ -115,6 +141,7 @@ export class ShowFilesComponent {
       return this.createFilePath(file);
     }
   }
+
   createThumbnailPdfPath(file: IFileFullDetails): string {
     if (file.thumbnail) {
       return `${environment.FILES_URL}/${file.path}/${file.thumbnail}`;

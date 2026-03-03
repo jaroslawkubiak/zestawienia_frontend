@@ -31,6 +31,17 @@ export class FilesService {
     private notificationService: NotificationService,
   ) {}
 
+  // when client see new files - mark them as seenAt
+  markFileAsSeen(ids: number[]): Observable<void> {
+    return this.http.post<void>(
+      `${environment.API_URL}/files/markFilesAsSeen`,
+      ids,
+      {
+        headers: this.httpHeaders,
+      },
+    );
+  }
+
   // save created zip from set files
   downloadFiles(ids: number[]): Observable<Blob> {
     const directories: IDirectories[] = FileDirectoryList.map((dir) => {

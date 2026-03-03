@@ -69,6 +69,7 @@
           (download)="downloadFile(file.id)"
           (openPdf)="openPdf(file)"
           (openGalery)="openGalery(file)"
+          (fileVisible)="fileVisible.emit($event)"
         ></app-file-preview>
       </li>
     </ul>

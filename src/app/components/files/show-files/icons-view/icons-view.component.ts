@@ -45,6 +45,7 @@ export class IconsViewComponent {
   @Input() uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   @Input() deleteFile!: (id: number) => void;
   @Input() downloadFile!: (id: number) => void;
+  @Output() fileVisible = new EventEmitter<number>();
   @Input() openPdf!: (file: IFileFullDetails) => void;
   @Input() addFileToSelected!: (file: IFileFullDetails) => void;
   @Input() isDeleteDisabled!: boolean;

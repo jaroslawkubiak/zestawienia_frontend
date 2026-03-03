@@ -1,9 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -43,8 +45,29 @@ export class FilePreviewComponent {
   @Output() download = new EventEmitter<void>();
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
   @Output() openGalery = new EventEmitter<IFileFullDetails>();
-
+  @Output() fileVisible = new EventEmitter<number>();
+  @ViewChild('fileElement') fileElement!: ElementRef;
+  private observer!: IntersectionObserver;
   isLoading: boolean = true;
+
+  ngAfterViewInit() {
+    if (this.file.seenAt) return;
+    // observer for files in user screen
+    this.observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && this.who === 'client') {
+            this.fileVisible.emit(this.file.id);
+            this.observer.disconnect();
+          }
+        });
+      },
+      { threshold: 1 },
+    );
+
+    this.observer.observe(this.fileElement.nativeElement);
+  }
+
   onImageLoad() {
     this.isLoading = false;
   }

@@ -47,6 +47,7 @@
         [openPdf]="openPdf.bind(this)"
         [addFileToSelected]="addFileToSelected.bind(this)"
         (deleteFiles)="onDeleteFiles()"
+        (fileVisible)="onFileVisible($event)"
         (downloadFiles)="downloadFiles()"
         (selectAll)="selectAll($event)"
         [isDeleteDisabled]="isDeleteDisabled"

@@ -84,6 +84,28 @@
   inset: 0px;
 }
 
+.preview-new-file-badge {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  color: var(--burgund-color-05);
+  font-size: 1.6rem;
+  font-weight: 700;
+}
+
+.preview-seen-file-badge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.preview-seen-file-badge i {
+  color: var(--accent-color-06);
+  font-size: 1.6rem;
+  font-weight: 700;
+  cursor: auto;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .preview-container {
