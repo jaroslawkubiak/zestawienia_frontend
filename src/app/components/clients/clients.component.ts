@@ -77,7 +77,7 @@ export class ClientsComponent implements OnInit {
       validators: [Validators.required, Validators.email],
     }),
     secondEmail: new FormControl('', {
-      validators: [Validators.required, Validators.email],
+      validators: [Validators.email],
     }),
     telephone: new FormControl<string | null>(''),
     setCount: new FormControl<number | null>(null),
