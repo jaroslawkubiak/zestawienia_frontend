@@ -122,7 +122,7 @@
                 />
                 <app-loading-spinner
                   class="image-spinner"
-                  [size]="100"
+                  [size]="130"
                   stroke="4"
                 ></app-loading-spinner>
               </div>
@@ -183,7 +183,7 @@
                 }}
               </div>
               <!-- VIEW MODE -> type = image  -->
-              <div *ngSwitchCase="'image'" class="view-mode-image flex-center">
+              <div *ngSwitchCase="'image'" class="view-mode-image">
                 <app-image-clipboard-input
                   [setId]="+set.id"
                   [setHash]="set.hash"

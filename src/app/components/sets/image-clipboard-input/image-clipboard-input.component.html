@@ -1,23 +1,25 @@
 <div class="input-container">
-  <input
-    type="text"
-    placeholder="{{ onPasting ? 'Wklej obraz ' + getPasteShortcut() : '' }} "
-    (paste)="onPaste($event)"
-    class="input-field"
-    (blur)="blur.emit($event)"
-  />
-  @if(imagePreview) {
-  <div class="image-preview-container">
-    <img
-      [src]="imagePreview"
-      alt="Image Preview"
-      class="image-preview"
-      [ngClass]="{ 'image-overlay': onPasting }"
+  <div class="pasting-image-input-wrapper">
+    <input
+      type="text"
+      placeholder="{{ onPasting ? 'Wklej obraz ' + getPasteShortcut() : '' }} "
+      (paste)="onPaste($event)"
+      class="pasting-image-input-field"
+      (blur)="blur.emit($event)"
     />
   </div>
+  @if (imagePreview) {
+    <div class="image-preview-container">
+      <img
+        [src]="imagePreview"
+        alt="Image Preview"
+        class="image-preview"
+        [ngClass]="{ 'image-overlay': onPasting }"
+      />
+    </div>
   } @else {
-  <div class="default-image">
-    <i class="pi pi-image"></i>
-  </div>
+    <div class="default-image">
+      <i class="pi pi-image"></i>
+    </div>
   }
 </div>

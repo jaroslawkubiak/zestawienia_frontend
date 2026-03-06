@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { NotificationService } from '../../../services/notification.service';
-import { ImageService } from './image.service';
 import { SoundService } from '../../../services/sound.service';
 import { SoundType } from '../../../services/types/SoundType';
+import { ImageService } from './image.service';
 
 @Component({
   selector: 'app-image-clipboard-input',

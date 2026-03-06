@@ -1,9 +1,16 @@
 .input-container {
   width: 100% !important;
-  height: 100% !important;
+  height: var(--row-height) !important;
 }
 
-.input-field {
+.pasting-image-input-wrapper {
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+}
+
+.pasting-image-input-field {
   all: unset !important;
   width: 100% !important;
   height: 25px !important;
@@ -12,6 +19,10 @@
 
 .image-preview-container {
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .image-preview {
@@ -25,11 +36,11 @@
   align-items: center;
   justify-content: center;
   width: 100% !important;
-  height: 125px !important;
+  height: 100% !important;
 }
 
 .default-image i {
-  font-size: 70px;
+  font-size: 90px;
   color: var(--neutral-color-05);
 }
 
