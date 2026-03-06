@@ -29,6 +29,7 @@ import { isImage } from '../helper';
 import { EFileDirectory } from '../types/file-directory.enum';
 import { IFileFullDetails } from '../types/IFileFullDetails';
 import { IRemainingFiles } from '../types/IRemainingFiles';
+import { ISelectFilesFromDirectoryEvent } from '../types/ISelectFilesFromDirectoryEvent';
 import { IconsViewComponent } from './icons-view/icons-view.component';
 import { ListViewComponent } from './list-view/list-view.component';
 
@@ -323,6 +324,30 @@ export class ShowFilesComponent implements OnInit {
     } else {
       this.selectedFiles = [...this.selectedFiles, file];
     }
+  }
+
+  selectFilesFromDirectory(event: ISelectFilesFromDirectoryEvent) {
+    const { directory, checked } = event;
+
+    const filesFromDir = this.files.filter(
+      (file) => file.dir === directory.dir,
+    );
+
+    if (checked) {
+      const selectedIds = new Set(this.selectedFiles.map((f) => f.id));
+
+      filesFromDir.forEach((file) => {
+        if (!selectedIds.has(file.id)) {
+          this.addFileToSelected(file);
+        }
+      });
+    } else {
+      filesFromDir.forEach((file) => {
+        this.addFileToSelected(file);
+      });
+    }
+
+    this.cd.markForCheck();
   }
 
   get allSelected(): boolean {

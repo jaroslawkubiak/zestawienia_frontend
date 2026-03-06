@@ -6,24 +6,35 @@
     trackBy: trackByDir
   "
 >
-  <div
-    class="directory-name-wrapper"
-    [class.first]="i === 0"
-    (click)="toggleVisibility(directory.dir)"
-    [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
-    tooltipPosition="bottom"
-    [ngClass]="{ 'collapsed-label': !directory.show }"
-  >
-    <i class="pi pi-folder-open"></i>
-    {{ directory.dirLabel }}
-    <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
-    <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
-    <p-badge
-      [value]="countFilesBadge(directory.dir)"
-      severity="contrast"
-      class="badge-position"
-      [badgeSize]="isMobile ? 'small' : 'large'"
-    ></p-badge>
+  <div class="directory-container">
+    <div
+      class="directory-name-wrapper"
+      [class.first]="i === 0"
+      (click)="toggleVisibility(directory.dir)"
+      [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
+      tooltipPosition="bottom"
+      [ngClass]="{ 'collapsed-label': !directory.show }"
+    >
+      <i class="pi pi-folder-open"></i>
+      {{ directory.dirLabel }}
+      <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
+      <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
+      <p-badge
+        [value]="countFilesBadge(directory.dir)"
+        severity="contrast"
+        class="badge-position"
+        [badgeSize]="isMobile ? 'small' : 'large'"
+      ></p-badge>
+    </div>
+    <p-checkbox
+      [binary]="true"
+      [ngModel]="isDirectoryChecked(directory.dir)"
+      [indeterminate]="isDirectoryIndeterminate(directory.dir)"
+      (onChange)="onDirectoryCheckboxChange(directory, $event)"
+      size="large"
+      pTooltip="Zaznacz pliki"
+      tooltipPosition="bottom"
+    />
   </div>
 
   <div class="file-container-wrapper" [class.collapsed]="!directory.show">

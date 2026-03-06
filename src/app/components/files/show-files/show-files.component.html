@@ -78,6 +78,7 @@
         [addFileToSelected]="addFileToSelected.bind(this)"
         [isMobile]="isMobile"
         (fileVisible)="onFileVisible($event)"
+        (selectFilesFromDirectory)="selectFilesFromDirectory($event)"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"

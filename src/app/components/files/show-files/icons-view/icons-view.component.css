@@ -49,6 +49,13 @@
   cursor: default;
 }
 
+.directory-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+}
+
 .directory-name-wrapper {
   position: relative;
   display: flex;

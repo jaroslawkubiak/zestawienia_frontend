@@ -15,13 +15,11 @@
 .preview-file-wrapper.landscape img {
   width: 100%;
   object-fit: contain !important;
-  overflow: visible !important;
 }
 
 .preview-file-wrapper.portrait img {
   height: 100%;
   max-height: 150px !important;
-  overflow: visible !important;
 }
 
 .preview-image-wrapper {
@@ -32,6 +30,10 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+}
+
+.preview-image-wrapper img {
+  border-radius: 10px;
 }
 
 .preview-image-overlay {

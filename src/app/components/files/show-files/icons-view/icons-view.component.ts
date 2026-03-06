@@ -17,14 +17,10 @@ import { TAuthorType } from '../../../comments/types/authorType.type';
 import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
 import { EFileDirectory } from '../../types/file-directory.enum';
+import { IDirWithShowOptions } from '../../types/IDirWithShowOptions';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
+import { ISelectFilesFromDirectoryEvent } from '../../types/ISelectFilesFromDirectoryEvent';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
-
-type TDirWithShowOptions = {
-  dir: EFileDirectory;
-  dirLabel: string;
-  show: boolean;
-};
 
 @Component({
   selector: 'app-icons-view',
@@ -53,9 +49,11 @@ export class IconsViewComponent implements OnChanges {
   @Input() isMobile!: boolean;
 
   @Output() fileVisible = new EventEmitter<number>();
+  @Output() selectFilesFromDirectory =
+    new EventEmitter<ISelectFilesFromDirectoryEvent>();
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
   sortedFiles: IFileFullDetails[] = [];
-  dirListWithShowOption: TDirWithShowOptions[] = [];
+  dirListWithShowOption: IDirWithShowOptions[] = [];
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['files']) {
@@ -71,6 +69,33 @@ export class IconsViewComponent implements OnChanges {
     }
   }
 
+  onDirectoryCheckboxChange(directory: IDirWithShowOptions, event: any) {
+    this.selectFilesFromDirectory.emit({
+      directory,
+      checked: event.checked,
+    });
+  }
+
+  isDirectoryChecked(dir: string): boolean {
+    const files = this.files.filter((f) => f.dir === dir);
+
+    if (files.length === 0) return false;
+
+    return files.every((file) =>
+      this.selectedFiles.some((selected) => selected.id === file.id),
+    );
+  }
+
+  isDirectoryIndeterminate(dir: string): boolean {
+    const files = this.files.filter((f) => f.dir === dir);
+
+    const selectedCount = files.filter((file) =>
+      this.selectedFiles.some((selected) => selected.id === file.id),
+    ).length;
+
+    return selectedCount > 0 && selectedCount < files.length;
+  }
+
   filesFilteredByDir(dir: string): IFileFullDetails[] {
     return this.files.filter((file) => file.dir === dir);
   }
@@ -82,7 +107,7 @@ export class IconsViewComponent implements OnChanges {
     }
   }
 
-  trackByDir(_: number, item: TDirWithShowOptions): string {
+  trackByDir(_: number, item: IDirWithShowOptions): string {
     return item.dir;
   }
 
