@@ -326,7 +326,10 @@ export class ShowFilesComponent implements OnInit {
   }
 
   get allSelected(): boolean {
-    return this.selectedFiles.length === this.files.length;
+    return (
+      this.selectedFiles.length !== 0 &&
+      this.selectedFiles.length === this.files.length
+    );
   }
 
   selectAll(event: CheckboxChangeEvent): void {

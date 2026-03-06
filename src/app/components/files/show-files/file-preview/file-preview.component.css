@@ -7,6 +7,8 @@
 
 .preview-file-wrapper {
   overflow: hidden;
+  width: 100%;
+  aspect-ratio: 1/1;
 }
 
 .preview-image-wrapper {
@@ -17,6 +19,10 @@
   align-items: center;
   justify-content: center;
   flex: 1;
+}
+
+.preview-image-wrapper img {
+  border-radius: 10px;
 }
 
 .preview-file-name-label {
@@ -30,23 +36,26 @@
   padding-top: 5px;
 }
 
+.preview-action-btns-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
 .preview-action-btns {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 100%;
+  width: 95%;
   padding: 0px;
 }
 
 .preview-file-wrapper.landscape img {
   width: 100%;
   object-fit: contain !important;
-  overflow: visible !important;
 }
 
 .preview-file-wrapper.portrait img {
   height: 100%;
-  overflow: visible !important;
 }
 
 .preview-image-overlay {
@@ -87,7 +96,7 @@
 .preview-new-file-badge {
   position: absolute;
   top: 5px;
-  right: 10px;
+  right: 15px;
   color: var(--burgund-color-05);
   font-size: 1.6rem;
   font-weight: 700;

@@ -53,34 +53,36 @@
     {{ file.fileName }}
   </div>
 
-  <div class="preview-action-btns">
-    <p-button
-      severity="info"
-      class="m-2"
-      icon="pi pi-download"
-      alt="Pobierz plik"
-      pTooltip="Pobierz plik"
-      tooltipPosition="bottom"
-      (click)="download.emit()"
-      [disabled]="selectedFiles.length !== 0"
-    />
-    <p-checkbox
-      (onChange)="addFileToSelected.emit(file)"
-      [binary]="true"
-      size="large"
-      pTooltip="Zaznacz plik"
-      tooltipPosition="bottom"
-      [ngModel]="isSelected"
-    />
-    <p-button
-      severity="danger"
-      class="m-2"
-      icon="pi pi-trash"
-      alt="Usuń plik"
-      pTooltip="Usuń plik"
-      tooltipPosition="bottom"
-      (click)="delete.emit()"
-      [disabled]="!file.canDelete || selectedFiles.length !== 0"
-    />
+  <div class="preview-action-btns-wrapper">
+    <div class="preview-action-btns">
+      <p-button
+        severity="contrast"
+        class="m-2"
+        icon="pi pi-download"
+        alt="Pobierz plik"
+        pTooltip="Pobierz plik"
+        tooltipPosition="bottom"
+        (click)="download.emit()"
+        [disabled]="selectedFiles.length !== 0"
+      />
+      <p-checkbox
+        (onChange)="addFileToSelected.emit(file)"
+        [binary]="true"
+        size="large"
+        pTooltip="Zaznacz plik"
+        tooltipPosition="bottom"
+        [ngModel]="isSelected"
+      />
+      <p-button
+        severity="contrast"
+        class="m-2"
+        icon="pi pi-trash"
+        alt="Usuń plik"
+        pTooltip="Usuń plik"
+        tooltipPosition="bottom"
+        (click)="delete.emit()"
+        [disabled]="!file.canDelete || selectedFiles.length !== 0"
+      />
+    </div>
   </div>
 </div>

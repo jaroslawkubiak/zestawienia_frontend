@@ -30,10 +30,10 @@
 .file-container .file-item {
   position: relative;
   width: var(--img-container-width);
-  height: 350px;
+  height: 400px;
   width: 300px;
-  padding: 20px 10px;
-  border-radius: 18px;
+  padding: 20px;
+  border-radius: 30px;
   background-color: var(--neutral-color-01);
   border: 1px solid #606060 !important;
   box-shadow: 5px 5px 10px -4px #c4c4c450;

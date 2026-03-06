@@ -28,6 +28,7 @@
         (onChange)="selectAll($event)"
         [binary]="true"
         [ngModel]="allSelected"
+        [disabled]="files.length === 0"
       />
       <p-button
         severity="info"
