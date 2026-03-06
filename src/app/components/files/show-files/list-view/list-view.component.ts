@@ -45,7 +45,7 @@ export class ListViewComponent implements OnChanges {
   @Input() who!: TAuthorType;
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
-  
+
   @Output() deleteFile = new EventEmitter<number>();
   @Output() downloadFile = new EventEmitter<number>();
   @Output() addFileToSelected = new EventEmitter<IFileFullDetails>();

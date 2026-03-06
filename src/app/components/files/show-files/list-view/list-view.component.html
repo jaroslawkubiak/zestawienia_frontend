@@ -5,7 +5,7 @@
   stripedRows
   [rowTrackBy]="trackByFileId"
   [value]="files"
-  [(selection)]="files"
+  [(selection)]="selectedFiles"
   [tableStyle]="{ 'min-width': '80rem' }"
   [globalFilterFields]="[
     'fileName',
@@ -44,7 +44,7 @@
       <td>
         <div class="preview-row-action-btns">
           <p-button
-            severity="info"
+            severity="contrast"
             class="m-2"
             icon="pi pi-download"
             alt="Pobierz plik"
@@ -58,7 +58,7 @@
             (click)="addFileToSelected.emit(file)"
           />
           <p-button
-            severity="danger"
+            severity="contrast"
             class="m-2"
             icon="pi pi-trash"
             alt="Usuń plik"
