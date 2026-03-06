@@ -48,35 +48,37 @@
       </ng-template>
     </p-select>
   </div>
-  <div [ngClass]="!selectedDirectory ? 'upload-blocker' : ''"></div>
-  <p-fileupload
-    #fileUploader
-    [customUpload]="true"
-    (uploadHandler)="uploadFiles($event)"
-    [multiple]="true"
-    [uploadButtonProps]="uploadButtonProps"
-    [cancelButtonProps]="cancelButtonProps"
-    [chooseButtonProps]="chooseButtonProps"
-    (onSelect)="onFileSelect()"
-    (onRemove)="onFileRemove()"
-    (onClear)="onFileClear()"
-    [disabled]="isUploading"
-    mode="advanced"
-    [fileLimit]="fileLimit"
-    maxFileSize="1000000000"
-  >
-    <ng-template #empty>
-      <div class="send-files-wrapper">
-        <i class="pi pi-cloud-upload" (click)="openFileDialogManually()"></i>
-        <span class="file-limit">Maksymalnie {{ fileLimit }} plików</span>
-      </div>
-    </ng-template>
-    <ng-template #content>
-      <ul *ngIf="uploadedFiles.length">
-        <li *ngFor="let file of uploadedFiles">
-          {{ file.name }} - {{ file.size }} bytes
-        </li>
-      </ul>
-    </ng-template>
-  </p-fileupload>
+  <div class="file-upload-wrapper">
+    <div [ngClass]="!selectedDirectory ? 'upload-blocker' : ''"></div>
+    <p-fileupload
+      #fileUploader
+      [customUpload]="true"
+      (uploadHandler)="uploadFiles($event)"
+      [multiple]="true"
+      [uploadButtonProps]="uploadButtonProps"
+      [cancelButtonProps]="cancelButtonProps"
+      [chooseButtonProps]="chooseButtonProps"
+      (onSelect)="onFileSelect()"
+      (onRemove)="onFileRemove()"
+      (onClear)="onFileClear()"
+      [disabled]="isUploading"
+      mode="advanced"
+      [fileLimit]="fileLimit"
+      maxFileSize="1000000000"
+    >
+      <ng-template #empty>
+        <div class="send-files-wrapper">
+          <i class="pi pi-cloud-upload" (click)="openFileDialogManually()"></i>
+          <span class="file-limit">Maksymalnie {{ fileLimit }} plików</span>
+        </div>
+      </ng-template>
+      <ng-template #content>
+        <ul *ngIf="uploadedFiles.length">
+          <li *ngFor="let file of uploadedFiles">
+            {{ file.name }} - {{ file.size }} bytes
+          </li>
+        </ul>
+      </ng-template>
+    </p-fileupload>
+  </div>
 </p-dialog>
