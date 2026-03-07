@@ -7,7 +7,7 @@ import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsB
 import { calcCommentsBadgeTooltip } from '../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
 import { IPosition } from '../positions-table/types/IPosition';
-import { BadgeSeverity } from './types/badgeSeverity.type';
+import { TBadgeSeverity } from './types/badgeSeverity.type';
 
 @Component({
   selector: 'app-action-btns',
@@ -38,7 +38,7 @@ export class ActionBtnsComponent {
     return calcCommentsBadgeTooltip(currentPostition.newCommentsCount);
   }
 
-  getCommentsBadgeSeverity(positionId: number): BadgeSeverity {
+  getCommentsBadgeSeverity(positionId: number): TBadgeSeverity {
     const currentPostition = this.findCurrentPosition(positionId);
     if (!currentPostition?.newCommentsCount) return 'secondary';
 

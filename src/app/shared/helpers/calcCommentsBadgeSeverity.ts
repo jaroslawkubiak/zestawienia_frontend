@@ -1,9 +1,9 @@
 import { IUnreadComments } from '../../components/comments/types/IUnreadComments';
-import { BadgeSeverity } from '../../components/sets/action-btns/types/badgeSeverity.type';
+import { TBadgeSeverity } from '../../components/sets/action-btns/types/badgeSeverity.type';
 
 export function calcCommentsBadgeSeverity(
   newCommentsCount: IUnreadComments,
-): BadgeSeverity {
+): TBadgeSeverity {
   if (!newCommentsCount) return 'secondary';
 
   const { needsAttention, unread, all } = newCommentsCount;

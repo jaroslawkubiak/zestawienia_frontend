@@ -1,4 +1,4 @@
-export type BadgeSeverity =
+export type TBadgeSeverity =
   | 'success'
   | 'info'
   | 'warn'
