@@ -36,16 +36,11 @@
   padding-top: 5px;
 }
 
-.preview-action-btns-wrapper {
-  display: flex;
-  justify-content: center;
-}
-
 .preview-action-btns {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 95%;
+  width: 100%;
   padding: 0px;
 }
 
@@ -64,6 +59,7 @@
   background: rgba(0, 0, 0, 0.3);
   opacity: 0;
   transition: opacity 0.2s;
+  border-radius: 10px;
 }
 
 .preview-image-wrapper:hover .preview-image-overlay {

@@ -53,11 +53,9 @@
     {{ file.fileName }}
   </div>
 
-  <div class="preview-action-btns-wrapper">
     <div class="preview-action-btns">
       <p-button
         severity="contrast"
-        class="m-2"
         icon="pi pi-download"
         alt="Pobierz plik"
         pTooltip="Pobierz plik"
@@ -75,7 +73,6 @@
       />
       <p-button
         severity="contrast"
-        class="m-2"
         icon="pi pi-trash"
         alt="Usuń plik"
         pTooltip="Usuń plik"
@@ -84,5 +81,4 @@
         [disabled]="!file.canDelete || selectedFiles.length !== 0"
       />
     </div>
-  </div>
 </div>
