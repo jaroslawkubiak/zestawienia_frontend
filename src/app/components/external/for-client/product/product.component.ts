@@ -4,21 +4,21 @@ import {
   Component,
   EventEmitter,
   Input,
-  OnInit,
-  Output,
+  Output
 } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
+import { environment } from '../../../../../environments/environment';
 import { NotificationService } from '../../../../services/notification.service';
 import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
 import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { IComment } from '../../../comments/types/IComment';
-import { BadgeSeverity } from '../../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../../sets/positions-table/types/IPosition';
 import { ISet } from '../../../sets/types/ISet';
+import { TBadgeSeverity } from '../../../settings/types/badgeSeverity.type';
 import { ExternalService } from '../../external.service';
 
 @Component({
@@ -33,27 +33,23 @@ import { ExternalService } from '../../external.service';
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
-export class ProductComponent implements OnInit {
+export class ProductComponent {
   @Input() set!: ISet;
   @Input() position!: IPosition;
   @Input() clientHash!: string;
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
   commentsForPosition: IComment[] = [];
   positionId!: number;
-  setId!: number;
   showCommentsDialog = false;
   header = '';
   isMobile = window.innerWidth < 768;
+  FILES_URL = environment.FILES_URL;
 
   constructor(
     private externalService: ExternalService,
     private notificationService: NotificationService,
     private cd: ChangeDetectorRef,
   ) {}
-
-  ngOnInit() {
-    this.setId = this.set.id;
-  }
 
   showComments(positionId: number) {
     this.positionId = positionId;
@@ -81,7 +77,19 @@ export class ProductComponent implements OnInit {
     this.commentsUpdated.emit();
   }
 
-  getCommentsBadgeSeverity(): BadgeSeverity {
+  getImagePreviewUrl(position: IPosition): string {
+    const thumbnail = position['thumbnail'];
+    const image = position['image'];
+
+    const fileName = thumbnail || image;
+
+    if (!fileName) {
+      return '';
+    }
+
+    return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
+  }
+  getCommentsBadgeSeverity(): TBadgeSeverity {
     return calcCommentsBadgeSeverity(this.position.newCommentsCount);
   }
 

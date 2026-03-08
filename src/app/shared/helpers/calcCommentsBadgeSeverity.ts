@@ -1,5 +1,5 @@
 import { IUnreadComments } from '../../components/comments/types/IUnreadComments';
-import { TBadgeSeverity } from '../../components/sets/action-btns/types/badgeSeverity.type';
+import { TBadgeSeverity } from '../../components/settings/types/badgeSeverity.type';
 
 export function calcCommentsBadgeSeverity(
   newCommentsCount: IUnreadComments,

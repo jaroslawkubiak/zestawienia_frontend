@@ -34,9 +34,9 @@
 }
 
 ::ng-deep .p-tab {
-  font-size: 1.4rem;
-  background-color: var(--neutral-color-01);
-  color: var(--neutral-color-10);
+  font-size: 1.4rem !important;
+  background-color: var(--neutral-color-01) !important;
+  color: var(--neutral-color-10) !important;
 }
 
 ::ng-deep .p-tab:hover,
@@ -45,14 +45,14 @@
   background-color: var(--accent-color-01) !important;
 }
 
+::ng-deep .p-tabpanels {
+  padding: 0 !important;
+}
+
 .position-container {
   margin-top: 10px;
   border: 1px solid var(--neutral-color-05);
   font-size: 1.2rem;
-}
-
-::ng-deep .p-tabpanels {
-  padding: 0 !important;
 }
 
 ::ng-deep .p-cell-editing {

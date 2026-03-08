@@ -26,10 +26,10 @@ import { ShowFilesComponent } from '../../files/show-files/show-files.component'
 import { EFileDirectory } from '../../files/types/file-directory.enum';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../../files/types/IRemainingFiles';
-import { BadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
+import { TBadgeSeverity } from '../../settings/types/badgeSeverity.type';
 import { ExternalService } from '../external.service';
 import { ProductComponent } from './product/product.component';
 import { IClientData } from './types/IClientData';
@@ -225,7 +225,7 @@ export class ForClientComponent implements OnInit {
     return this.files.filter((f) => f.dir !== EFileDirectory.WORKING).length;
   }
 
-  getCommentsBadgeSeverity(): BadgeSeverity {
+  getCommentsBadgeSeverity(): TBadgeSeverity {
     return calcCommentsBadgeSeverity(this.set.newCommentsCount);
   }
 

@@ -3,14 +3,15 @@
   <div class="product-img-wrapper">
     <div class="product-img">
       <img
-        [src]="position['imageUrl']"
+        [src]="getImagePreviewUrl(position)"
         alt="image"
         *ngIf="position['imageUrl']"
       />
       <i
         class="pi pi-image"
-        *ngIf="!position['imageUrl']"
+        *ngIf="!getImagePreviewUrl(position)"
         pTooltip="Brak obrazu"
+        tooltipPosition="bottom"
       ></i>
     </div>
     <!-- ACTION BUTTONS - COMMENTS AND PRODUCT LINK -->

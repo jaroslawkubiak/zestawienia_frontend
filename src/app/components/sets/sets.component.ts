@@ -27,7 +27,7 @@ import { SendFilesComponent } from '../files/send-files/send-files.component';
 import { ShowFilesComponent } from '../files/show-files/show-files.component';
 import { IFileFullDetails } from '../files/types/IFileFullDetails';
 import { IRemainingFiles } from '../files/types/IRemainingFiles';
-import { TBadgeSeverity } from './action-btns/types/badgeSeverity.type';
+import { TBadgeSeverity } from '../settings/types/badgeSeverity.type';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';

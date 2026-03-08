@@ -22,7 +22,7 @@
             ></i>
             <p-badge
               [value]="filesCount"
-              [severity]="filesCount === 0 ? 'secondary' : 'contrast'"
+              severity="secondary"
               class="mobile-files-badge-position"
               badgeSize="small"
               [pTooltip]="'Ilość załączonych plików'"
@@ -72,7 +72,7 @@
           <p-badge
             *ngIf="filesCount"
             [value]="filesCount"
-            severity="contrast"
+            severity="secondary"
             class="badge-position"
             badgeSize="large"
             [pTooltip]="'Ilość załączonych plików'"

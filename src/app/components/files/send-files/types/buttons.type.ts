@@ -1,7 +1,7 @@
-import { TButtonSeverity } from "../../../settings/types/TButtonSeverity";
+import { TButtonAllSeverity } from "../../../settings/types/TButtonAllSeverity.type.";
 
 export type TFileUploadButton = {
-  severity: TButtonSeverity;
+  severity: TButtonAllSeverity;
   label: string;
   size: 'large' | 'small';
   disabled: boolean;

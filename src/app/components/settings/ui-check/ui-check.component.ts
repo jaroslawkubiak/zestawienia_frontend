@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
-import { TBadgeSeverity } from '../../sets/action-btns/types/badgeSeverity.type';
-import { TButtonSeverity } from '../types/TButtonSeverity';
+import { TBadgeSeverity } from '../types/badgeSeverity.type';
+import { TButtonSeverity } from '../types/TButtonSeverity.type';
 
 type badgeListOption = {
   severity: TBadgeSeverity;

@@ -111,6 +111,14 @@
 
   --p-tabs-active-bar-background: none !important;
   --p-tabs-tablist-border-width: 0 !important;
+
+  /* badge color  */
+  --p-badge-secondary-background: var(--neutral-color-01) !important;
+  --p-badge-contrast-background: #020617 !important;
+  --p-badge-info-background: #04a9f4 !important;
+  --p-badge-success-background: #4caf50 !important;
+  --p-badge-warn-background: #ff9800 !important;
+  --p-badge-danger-background: #f44336 !important;
 }
 
 /* primeNG custom elements style  */
@@ -154,29 +162,6 @@
 /* shared  */
 .spinner {
   margin-top: 100px;
-}
-
-/* file upload class  */
-::ng-deep .p-fileupload-header {
-  display: flex;
-  justify-content: space-between;
-}
-
-::ng-deep .p-fileupload .p-fileupload-highlight {
-  background-color: var(--accent-color-05) !important;
-  border: 1px dashed var(--accent-color-07) !important;
-}
-
-.p-fileupload-file-list {
-  font-size: 2rem !important;
-}
-
-::ng-deep .p-fileupload .p-progressbar {
-  display: none !important;
-}
-
-.p-fileupload {
-  margin-top: 20px !important;
 }
 
 ::ng-deep .p-badge-circle {

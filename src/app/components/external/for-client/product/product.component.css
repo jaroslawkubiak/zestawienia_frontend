@@ -3,7 +3,7 @@
   padding: 20px 0;
   grid-template-columns: auto repeat(4, 1fr);
   background-color: var(--neutral-color-01);
-  border-bottom: 3px solid var(--accent-color-06);
+  border-bottom: 3px solid var(--neutral-color-09);
   gap: 0px;
 }
 
@@ -13,7 +13,7 @@
   justify-content: center;
   font-size: 4rem;
   padding: 0 5px;
-  color: var(--accent-color-07);
+  color: var(--neutral-color-10);
 }
 
 .product-img-wrapper {
@@ -33,7 +33,6 @@
 }
 
 .product-img i {
-  height: 300px;
   font-size: 150px;
   color: var(--neutral-color-04);
   display: flex;
@@ -68,13 +67,13 @@
 }
 
 .product-title {
-  color: var(--neutral-color-10);
+  color: var(--neutral-color-08);
   font-size: 1.2rem;
 }
 
 .product-name {
   font-size: 2rem;
-  color: var(--accent-color-07);
+  color: var(--neutral-color-10);
 }
 
 .position-action-btn {
@@ -87,7 +86,7 @@
 
 .comments-wrapper {
   font-size: 2rem;
-  color: var(--accent-color-06);
+  color: var(--neutral-color-10);
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -117,7 +116,7 @@
 .link {
   gap: 10px;
   font-size: 2rem;
-  color: var(--accent-color-06);
+  color: var(--neutral-color-10);
   font-weight: 700;
   transition: color 0.2s ease;
 }
@@ -125,7 +124,7 @@
 .link i,
 .comments-cell i {
   font-size: 3rem;
-  color: var(--accent-color-06);
+  color: var(--neutral-color-10);
   transition: color 0.2s ease;
 }
 
@@ -150,12 +149,12 @@
   padding: 10px;
   border-radius: 10px;
   background-color: var(--neutral-color-01);
-  border: 1px solid #606060 !important;
+  border: 2px solid var(--neutral-color-10) !important;
   box-shadow: 0px 0px 10px -4px #c4c4c450;
 }
 
 .product-buttons:hover {
-  border: 1px solid #000000 !important;
+  border: 2px solid var(--neutral-color-08) !important;
   box-shadow: 0px 0px 10px -4px #000000;
 }
 
@@ -176,7 +175,7 @@
     height: 30px;
     font-size: 2rem;
     color: var(--neutral-color-01);
-    background-color: var(--accent-color-06);
+    background-color: var(--neutral-color-10);
   }
 
   .product-img-wrapper {
@@ -231,7 +230,7 @@
   }
 
   .product-group-price .product-name {
-    color: var(--accent-color-04);
+    color: var(--burgund-color-04);
   }
 
   .product-title {

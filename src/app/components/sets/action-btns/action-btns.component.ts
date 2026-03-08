@@ -6,8 +6,8 @@ import { TooltipModule } from 'primeng/tooltip';
 import { calcCommentsBadgeSeverity } from '../../../shared/helpers/calcCommentsBadgeSeverity';
 import { calcCommentsBadgeTooltip } from '../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
+import { TBadgeSeverity } from '../../settings/types/badgeSeverity.type';
 import { IPosition } from '../positions-table/types/IPosition';
-import { TBadgeSeverity } from './types/badgeSeverity.type';
 
 @Component({
   selector: 'app-action-btns',

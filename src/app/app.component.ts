@@ -14,6 +14,8 @@ import { ConfirmationModalService } from './services/confirmation.service';
     './app.component.css',
     './shared/css/basic.css',
     './shared/css/p-toast.css',
+    './shared/css/p-fileupload.css',
+    './shared/css/p-checkbox.css',
     './shared/css/theme.css',
   ],
   standalone: true,
