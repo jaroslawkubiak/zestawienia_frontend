@@ -3,6 +3,7 @@
 
 <div class="container" *ngIf="set">
   <div class="header-placeholder"></div>
+  <div class="tab-list-background"></div>
   <div class="header-background" [class.mobile-sticky]="isMobileSticky">
     <!-- MOBILE MENU -->
     <div
@@ -22,7 +23,7 @@
             ></i>
             <p-badge
               [value]="filesCount"
-              severity="secondary"
+              severity="contrast"
               class="mobile-files-badge-position"
               badgeSize="small"
               [pTooltip]="'Ilość załączonych plików'"
@@ -72,8 +73,8 @@
           <p-badge
             *ngIf="filesCount"
             [value]="filesCount"
-            severity="secondary"
-            class="badge-position"
+            severity="contrast"
+            class="desktop-files-badge-position"
             badgeSize="large"
             [pTooltip]="'Ilość załączonych plików'"
           ></p-badge>

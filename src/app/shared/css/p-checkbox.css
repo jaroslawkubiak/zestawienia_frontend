@@ -1,3 +1,8 @@
+
+::ng-deep .p-checkbox {
+  display: flex;
+}
+
 ::ng-deep .p-checkbox-box {
   border: 2px solid var(--neutral-color-10) !important;
 }

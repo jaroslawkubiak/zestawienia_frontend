@@ -96,6 +96,7 @@
   color: var(--burgund-color-05);
   font-size: 1.6rem;
   font-weight: 700;
+  z-index: 999;
 }
 
 .preview-seen-file-badge {
@@ -120,5 +121,11 @@
 
   .preview-file-name-label {
     font-size: 1rem;
+  }
+
+  .preview-new-file-badge {
+    top: 0;
+    right: 0;
+    font-size: 1.2rem;
   }
 }

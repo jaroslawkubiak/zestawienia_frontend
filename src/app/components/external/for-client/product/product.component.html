@@ -15,10 +15,10 @@
       ></i>
     </div>
     <!-- ACTION BUTTONS - COMMENTS AND PRODUCT LINK -->
-    <div class="position-action-btn">
+    <div class="position-action-btn-container">
       <!-- COMMENTS WRAPPER -->
       <div
-        class="comments-wrapper product-buttons flex-center"
+        class="product-buttons flex-center"
         pTooltip="Komentarze"
         tooltipPosition="bottom"
         (click)="showComments(position.id)"
@@ -38,8 +38,8 @@
       </div>
       <!-- PRODUCT LINK WRAPPER -->
       <div
-        class="link-wrapper {{
-          position.link ? 'cursor-pointer product-buttons flex-center' : ''
+        class="{{
+          position.link ? 'product-buttons flex-center' : ''
         }}"
         pTooltip="Otwórz link do produktu"
         tooltipPosition="bottom"
@@ -47,10 +47,10 @@
       >
         <a
           href="{{ position.link }}"
-          class="link flex-center"
+          class="link-cell flex-center"
           target="_blank"
           rel="noopener noreferrer"
-          ><i class="pi pi-link"></i>LINK</a
+          ><i class="pi pi-link"></i>Link</a
         >
       </div>
     </div>

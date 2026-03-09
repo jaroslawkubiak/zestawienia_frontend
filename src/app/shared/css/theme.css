@@ -155,8 +155,9 @@
   margin: 10px 0 !important;
 }
 
-::ng-deep .p-checkbox {
-  display: flex;
+::ng-deep .p-badge-contrast {
+  border: 1px solid rgb(255, 255, 255) !important;
+  height: 20px !important;
 }
 
 /* shared  */
