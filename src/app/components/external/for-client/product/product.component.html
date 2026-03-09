@@ -43,16 +43,15 @@
         }}"
         pTooltip="Otwórz link do produktu"
         tooltipPosition="bottom"
+        *ngIf="position.link"
       >
-        @if (position.link) {
-          <a
-            href="{{ position.link }}"
-            class="link flex-center"
-            target="_blank"
-            rel="noopener noreferrer"
-            ><i class="pi pi-link"></i>LINK</a
-          >
-        }
+        <a
+          href="{{ position.link }}"
+          class="link flex-center"
+          target="_blank"
+          rel="noopener noreferrer"
+          ><i class="pi pi-link"></i>LINK</a
+        >
       </div>
     </div>
   </div>
@@ -122,7 +121,7 @@
   <div
     class="product-details product-price"
     [style.margin-bottom]="
-      isMobile && position.status.cssClass ? '60px' : '0px'
+      isMobile && position.status.label ? '60px' : '0px'
     "
   >
     <!-- ILOŚĆ -->

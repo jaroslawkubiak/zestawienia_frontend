@@ -9,6 +9,7 @@
 
 .container {
   width: 100% !important;
+  position: relative;
 }
 
 .header-background {
@@ -20,7 +21,7 @@
   align-items: center;
   justify-content: center;
   background-color: var(--neutral-color-10);
-  height: 120px;
+  height: 156px;
 }
 
 .header-placeholder {
@@ -33,6 +34,10 @@
   justify-content: space-between;
   align-items: end;
   min-width: var(--screen-width);
+}
+
+::ng-deep .p-tablist-tab-list {
+  background-color: var(--neutral-color-03) !important;
 }
 
 .header-title-desktop {
