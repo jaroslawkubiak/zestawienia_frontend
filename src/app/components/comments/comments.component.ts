@@ -79,10 +79,10 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       changes['commentsDialog'] &&
       changes['commentsDialog'].currentValue === true
     ) {
-      setTimeout(() => this.scrollToBottom(), 0);
-
       this.markAllCommentsAsSeen(this.set.hash, this.positionId);
     }
+
+    setTimeout(() => this.scrollToBottom(), 0);
   }
 
   private markAllCommentsAsSeen(setHash: string, positionId: number) {
