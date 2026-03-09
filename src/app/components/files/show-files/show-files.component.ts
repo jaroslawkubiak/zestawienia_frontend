@@ -316,6 +316,13 @@ export class ShowFilesComponent implements OnInit {
     });
   }
 
+  isDirectoryIndeterminate(): boolean {
+    return (
+      this.selectedFiles.length > 0 &&
+      this.selectedFiles.length !== this.files.length
+    );
+  }
+
   addFileToSelected(file: IFileFullDetails) {
     const exists = this.selectedFiles.some((el) => el.id === file.id);
 

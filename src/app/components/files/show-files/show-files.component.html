@@ -26,6 +26,7 @@
         pTooltip="Zaznacz wszystkie pliki"
         tooltipPosition="bottom"
         (onChange)="selectAll($event)"
+        [indeterminate]="isDirectoryIndeterminate()"
         [binary]="true"
         [ngModel]="allSelected"
         [disabled]="files.length === 0"
