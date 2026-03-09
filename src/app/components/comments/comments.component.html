@@ -1,63 +1,65 @@
 <div class="comments-container">
-  <div class="chat-container" #chatContainer>
-    <div
-      *ngFor="let comment of comments"
-      class="message-wrapper"
-      [class.incoming]="isIncoming(comment)"
-      [class.outgoing]="!isIncoming(comment)"
-    >
-      <div class="message-bubble">
-        <!-- NEEDS ATTENTION ICON  -->
-        <div
-          class="needs-attention-wrapper"
-          tooltipPosition="top"
-          [pTooltip]="needsAttentionTooltip(comment)"
-          (click)="toggleCommentAsNeedAttention(comment.id)"
-          [class.active]="isNeedsAttention(comment)"
-          [class.incoming]="isIncoming(comment)"
-        >
-          <i class="pi pi-exclamation-circle"></i>
-        </div>
-        <!-- UNREAD MESSAGE  -->
-        <div
-          tooltipPosition="top"
-          [pTooltip]="isCommentNew(comment) ? 'Nieprzeczytany komentarz' : ''"
-          [ngClass]="isCommentNew(comment) ? 'unread-message' : ''"
-        ></div>
-        <!-- EDIT ICON  -->
-        <i
-          class="pi pi-pencil edit-icon"
-          (click)="markCommentToEdit(comment.id)"
-          pTooltip="Edytuj"
-          tooltipPosition="top"
-        ></i>
-        <!-- DELETE ICON  -->
-        <i
-          pTooltip="Usuń"
-          tooltipPosition="top"
-          class="pi pi-trash delete-icon"
-          (click)="deleteComment(comment.id)"
-        ></i>
-        <p
-          class="message-text"
-          [innerHTML]="parseTextWithLinks(comment.comment) | emojiConvert"
-        ></p>
-        <span class="timestamp">
-          {{ comment.authorName }}, {{ comment.createdAt }}
-        </span>
-        <!-- AVATAR  -->
-        <div
-          class="avatar-wrapper"
-          [class.avatar-user]="isIncoming(comment)"
-          [class.avatar-client]="!isIncoming(comment)"
-        >
-          <img
-            [src]="getCommentAvatar(comment)"
-            (error)="onAvatarError($event)"
-            [title]="comment.authorName"
-            alt="avatar"
-            class="avatar-image"
-          />
+  <div class="chat-wrapper">
+    <div class="chat-container" #chatContainer>
+      <div
+        *ngFor="let comment of comments"
+        class="message-wrapper"
+        [class.incoming]="isIncoming(comment)"
+        [class.outgoing]="!isIncoming(comment)"
+      >
+        <div class="message-bubble">
+          <!-- NEEDS ATTENTION ICON  -->
+          <div
+            class="needs-attention-wrapper"
+            tooltipPosition="top"
+            [pTooltip]="needsAttentionTooltip(comment)"
+            (click)="toggleCommentAsNeedAttention(comment.id)"
+            [class.active]="isNeedsAttention(comment)"
+            [class.incoming]="isIncoming(comment)"
+          >
+            <i class="pi pi-exclamation-circle"></i>
+          </div>
+          <!-- UNREAD MESSAGE  -->
+          <div
+            tooltipPosition="top"
+            [pTooltip]="isCommentNew(comment) ? 'Nieprzeczytany komentarz' : ''"
+            [ngClass]="isCommentNew(comment) ? 'unread-message' : ''"
+          ></div>
+          <!-- EDIT ICON  -->
+          <i
+            class="pi pi-pencil edit-icon"
+            (click)="markCommentToEdit(comment.id)"
+            pTooltip="Edytuj"
+            tooltipPosition="top"
+          ></i>
+          <!-- DELETE ICON  -->
+          <i
+            pTooltip="Usuń"
+            tooltipPosition="top"
+            class="pi pi-trash delete-icon"
+            (click)="deleteComment(comment.id)"
+          ></i>
+          <p
+            class="message-text"
+            [innerHTML]="parseTextWithLinks(comment.comment) | emojiConvert"
+          ></p>
+          <span class="timestamp">
+            {{ comment.authorName }}, {{ comment.createdAt }}
+          </span>
+          <!-- AVATAR  -->
+          <div
+            class="avatar-wrapper"
+            [class.avatar-user]="isIncoming(comment)"
+            [class.avatar-client]="!isIncoming(comment)"
+          >
+            <img
+              [src]="getCommentAvatar(comment)"
+              (error)="onAvatarError($event)"
+              [title]="comment.authorName"
+              alt="avatar"
+              class="avatar-image"
+            />
+          </div>
         </div>
       </div>
     </div>

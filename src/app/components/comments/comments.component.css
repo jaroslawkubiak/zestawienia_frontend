@@ -17,9 +17,13 @@
   height: 500px;
   overflow-y: auto;
   overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+.chat-wrapper {
   border: 1px solid var(--accent-color-06);
   border-radius: 10px;
-  scroll-behavior: smooth;
+  overflow: hidden;
 }
 
 .message-wrapper {
