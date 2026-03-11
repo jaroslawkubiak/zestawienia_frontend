@@ -24,6 +24,7 @@ import { IComment } from './types/IComment';
 import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { INewPartialComment } from './types/INewPartialComment';
 import { TAuthorType } from './types/authorType.type';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-comments',
@@ -45,7 +46,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() commentWatcher!: TAuthorType;
   newMessage: string = '';
   editedCommentId: number | null = null;
-  clientsAvatar = `assets/images/avatars/default.png`;
+  clientsAvatar = '';
+  AVATAR_URL = '/avatars/clients';
+
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 
   constructor(
@@ -63,18 +66,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    const avatars = {
-      light: ['chicken', 'cat', 'dog', 'shark', 'tiger', 'unicorn'],
-      dark: ['cat', 'dog', 'monkey', 'boar', 'unicorn'],
-    } as const;
-
-    const avatarsColor: keyof typeof avatars = 'light';
-
-    const images = avatars[avatarsColor];
-    const randomAvatar = images[Math.floor(Math.random() * images.length)];
-
-    this.clientsAvatar = `assets/images/avatars/clients/${avatarsColor}/${randomAvatar}.png`;
-
+    this.clientsAvatar = this.set.clientId.avatar;
     if (
       changes['commentsDialog'] &&
       changes['commentsDialog'].currentValue === true
@@ -260,8 +252,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     if (comment.authorType === 'user') {
       return `assets/images/avatars/users/${comment.authorId}.png`;
     }
-
-    return this.clientsAvatar;
+    
+    return `${environment.FILES_URL}/${this.AVATAR_URL}/${this.clientsAvatar}`;
   }
 
   onAvatarError(event: Event): void {
