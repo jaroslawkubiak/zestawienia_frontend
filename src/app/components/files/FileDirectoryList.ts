@@ -51,4 +51,11 @@ export const FileDirectoryList: IFileDirectoryList[] = [
     icon: 'pi pi-eye-slash',
     title: 'Katalog ukryty przed klientem',
   },
+  {
+    type: EFileDirectory.AVATARS,
+    label: 'Avatary',
+    safeDirName: 'avatars',
+    icon: 'pi pi-user',
+    hidden: true,
+  },
 ];

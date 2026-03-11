@@ -76,6 +76,21 @@ export class FilesService {
       },
     );
   }
+  
+  // save avatar file
+  saveAvatarFile(
+    formData: FormData,
+  ): Observable<HttpEvent<IUploadFileResponse>> {
+    return this.http.post<IUploadFileResponse>(
+      `${environment.API_URL}/files/upload/avatars`,
+      formData,
+      {
+        reportProgress: true,
+        observe: 'events',
+        headers: this.httpHeaders,
+      },
+    );
+  }
 
   // download file and save on client
   downloadAndSaveFile(file: IFileFullDetails, setId: number): void {

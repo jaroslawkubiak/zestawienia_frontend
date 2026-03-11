@@ -8,4 +8,5 @@ export enum EFileDirectory {
   SET_PDF = 'setPdf',
   INVOICE = 'invoice',
   WORKING = 'working',
+  AVATARS = 'avatars',
 }

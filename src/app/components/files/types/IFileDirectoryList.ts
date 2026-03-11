@@ -6,4 +6,5 @@ export interface IFileDirectoryList {
   safeDirName: string;
   icon?: string;
   title?: string;
+  hidden?: boolean;
 }

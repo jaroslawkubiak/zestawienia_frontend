@@ -67,10 +67,11 @@ export class SendFilesComponent {
   uploadProgress = 0;
   fileLimit = 30;
   selectedDirectory!: IFileDirectoryList;
-  directoryList: IFileDirectoryList[] = FileDirectoryList;
+  directoryList: IFileDirectoryList[] = [];
   isMobile = false;
   isUploading = false;
   hasFiles = false;
+  sendAvatar = false;
 
   get chooseButtonProps(): TFileUploadButton {
     return {
@@ -130,6 +131,7 @@ export class SendFilesComponent {
   }
 
   openSendFilesDialog(setId: number, setHash: string, setName: string) {
+    this.directoryList = FileDirectoryList.filter((dir) => !dir.hidden);
     this.setId = setId;
     this.setHash = setHash;
     this.setName = setName;
@@ -140,6 +142,28 @@ export class SendFilesComponent {
         (d) => d.type === EFileDirectory.INSPIRATIONS,
       )!;
     }
+  }
+
+  getDirectoryLabel(): string {
+    if (this.who === 'user') {
+      return 'Wybierz katalog docelowy';
+    }
+
+    return 'Katalog docelowy';
+  }
+
+  openSendAvatarDialog() {
+    this.directoryList = FileDirectoryList;
+    this.sendAvatar = true;
+    this.showSendFilesDialog = true;
+
+    this.selectedDirectory = FileDirectoryList.find(
+      (d) => d.type === EFileDirectory.AVATARS,
+    )!;
+  }
+
+  disableDirectoryChange(): boolean {
+    return this.who === 'client' || this.sendAvatar;
   }
 
   openFileDialogManually() {
@@ -160,57 +184,60 @@ export class SendFilesComponent {
 
     const files = event.files;
     const formData = new FormData();
-    const uploadFolder =
-      this.who === 'user'
-        ? this.selectedDirectory.type
-        : EFileDirectory.INSPIRATIONS;
+    const uploadFolder = this.selectedDirectory.type;
 
     for (let file of files) {
       formData.append('files', file, file.name);
     }
 
-    this.filesService
-      .saveFile(+this.setId, this.setHash, formData, uploadFolder)
-      .subscribe({
-        next: (event) => {
-          if (event.type === HttpEventType.UploadProgress && event.total) {
-            this.uploadProgress = Math.round(
-              (100 * event.loaded) / event.total,
-            );
-          }
-          this.cd.detectChanges();
+    const request$ = this.sendAvatar
+      ? this.filesService.saveAvatarFile(formData)
+      : this.filesService.saveFile(
+          +this.setId,
+          this.setHash,
+          formData,
+          uploadFolder,
+        );
 
-          if (event.type === HttpEventType.Response && event.body) {
-            this.fileUploader.clear();
-            this.showSendFilesDialog = false;
+    request$.subscribe({
+      next: (event) => {
+        if (event.type === HttpEventType.UploadProgress && event.total) {
+          this.uploadProgress = Math.round((100 * event.loaded) / event.total);
+        }
 
-            const files: IFileFullDetails[] = event.body.files;
-            this.updateFileList.emit(files);
-            this.completeUpload();
+        this.cd.detectChanges();
 
-            const uploadMessage = this.returnUploadMessage(
-              event.body.filesCount,
-              event.body.dir,
-            );
+        if (event.type === HttpEventType.Response && event.body) {
+          this.fileUploader.clear();
+          this.showSendFilesDialog = false;
 
-            // success - file saved
-            this.notificationService.showNotification('success', uploadMessage);
-          }
-        },
-
-        error: (err) => {
-          let message = 'Wystąpił błąd podczas przesyłania pliku';
-
-          if (err.error?.message) {
-            message = Array.isArray(err.error.message)
-              ? err.error.message.join(', ')
-              : err.error.message;
-          }
+          const files: IFileFullDetails[] = event.body.files;
+          this.updateFileList.emit(files);
           this.completeUpload();
 
-          this.notificationService.showNotification('error', message);
-        },
-      });
+          const uploadMessage = this.returnUploadMessage(
+            event.body.filesCount,
+            event.body.dir,
+          );
+
+          // success - file saved
+          this.notificationService.showNotification('success', uploadMessage);
+        }
+      },
+
+      error: (err) => {
+        let message = 'Wystąpił błąd podczas przesyłania pliku';
+
+        if (err.error?.message) {
+          message = Array.isArray(err.error.message)
+            ? err.error.message.join(', ')
+            : err.error.message;
+        }
+
+        this.completeUpload();
+        this.notificationService.showNotification('error', message);
+      },
+    });
   }
 
   returnUploadMessage(filesCount: number, dir: string): string {

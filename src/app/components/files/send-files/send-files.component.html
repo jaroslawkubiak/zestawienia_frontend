@@ -15,14 +15,15 @@
   </ng-template>
 
   <p-progressBar [value]="uploadProgress"></p-progressBar>
-  <div class="send-file-directory-wrapper" *ngIf="who === 'user'">
+  <div class="send-file-directory-wrapper">
     <label for="directory" class="label">
-      <i class="pi pi-folder"></i> Wybierz katalog docelowy</label
+      <i class="pi pi-folder"></i> {{ getDirectoryLabel() }}</label
     >
     <p-select
       name="selectedDirectory"
       optionLabel="label"
       id="directory"
+      [disabled]="disableDirectoryChange()"
       (onShow)="onSelectOpen()"
       [options]="directoryList"
       [(ngModel)]="selectedDirectory"
@@ -41,7 +42,13 @@
       </ng-template>
 
       <ng-template pTemplate="selectedItem" let-value>
-        <span class="select-span" *ngIf="value">
+        <span
+          class="select-span"
+          *ngIf="value"
+          [class]="
+            disableDirectoryChange() ? 'select-directory-distabled ' : ''
+          "
+        >
           <span>{{ value.label }}</span>
           <i *ngIf="value.icon" [class]="value.icon"></i>
         </span>
