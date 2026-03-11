@@ -1,15 +1,33 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { IChangePassword } from './types/IChangePassword';
 import { DbSettings } from './types/IDbSettings';
+import { IDeletedFileResponse } from '../files/types/IDeletedFileResponse';
+import { AuthService } from '../../login/auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SettingsService {
-  constructor(private http: HttpClient) {}
+  authorizationToken = () => this.authService.getAuthorizationToken();
+  userId = () => this.authService.getUserId();
+  get httpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.authorizationToken()}`,
+      'x-user-id': this.userId(),
+    });
+  }
+
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+  ) {}
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
       return throwError(() => new Error('DuplicateEntry'));
@@ -19,7 +37,9 @@ export class SettingsService {
 
   getSettingByNames(names: string[]): Observable<DbSettings[]> {
     return this.http
-      .post<DbSettings[]>(`${environment.API_URL}/settings/getSettingByNames`, names)
+      .post<
+        DbSettings[]
+      >(`${environment.API_URL}/settings/getSettingByNames`, names)
       .pipe(catchError(this.handleError));
   }
 
@@ -27,6 +47,22 @@ export class SettingsService {
     return this.http
       .get<DbSettings>(`${environment.API_URL}/settings/${name}`)
       .pipe(catchError(this.handleError));
+  }
+
+  getAvatars(): Observable<string[]> {
+    return this.http
+      .get<string[]>(`${environment.API_URL}/files/avatars`)
+      .pipe(catchError(this.handleError));
+  }
+
+  // delete one avatar file
+  deleteAvatarFile(fileName: string): Observable<IDeletedFileResponse> {
+    return this.http.delete<IDeletedFileResponse>(
+      `${environment.API_URL}/files/${fileName}/deleteAvatar`,
+      {
+        headers: this.httpHeaders,
+      },
+    );
   }
 
   findAll(): Observable<DbSettings[]> {

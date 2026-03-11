@@ -8,6 +8,7 @@ import { SendedEmailsComponent } from './components/sended-emails/sended-emails.
 import { EditSetComponent } from './components/sets/edit-set/edit-set.component';
 import { NewSetComponent } from './components/sets/new-set/new-set.component';
 import { SetsComponent } from './components/sets/sets.component';
+import { AvatarsComponent } from './components/settings/avatars/avatars.component';
 import { ColorsComponent } from './components/settings/colors/colors.component';
 import { DbSettingsComponent } from './components/settings/db-settings/db-settings.component';
 import { NotificationComponent } from './components/settings/notification/notification.component';
@@ -86,6 +87,10 @@ export const routes: Routes = [
       {
         path: 'db-settings',
         component: DbSettingsComponent,
+      },
+      {
+        path: 'avatars',
+        component: AvatarsComponent,
       },
     ],
   },

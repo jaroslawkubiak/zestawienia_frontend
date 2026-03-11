@@ -33,7 +33,11 @@ export class SettingsComponent implements OnInit {
         label: 'UI Check',
         icon: 'pi pi-sparkles',
         routerLink: 'ui-check',
-        requiredRole: 'admin',
+      },
+      {
+        label: 'Avatars',
+        icon: 'pi pi-users',
+        routerLink: 'avatars',
       },
       {
         label: 'Notification',

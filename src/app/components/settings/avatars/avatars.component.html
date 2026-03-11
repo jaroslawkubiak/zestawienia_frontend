@@ -1,0 +1,23 @@
+<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
+
+<div class="settings-avatar-container">
+  <div class="setting-avatar-header">
+    <p class="settings-avatar-label">Avatary klientów</p>
+    <i class="pi pi-cloud-upload" (click)="openSendFilesDialog()"></i>
+  </div>
+  <div class="avatar-wrapper">
+    <div *ngFor="let avatar of avatars" class="avatar">
+      <i
+        pTooltip="Usuń"
+        tooltipPosition="top"
+        class="pi pi-trash delete-icon"
+        (click)="deleteAvatar(avatar)"
+      ></i>
+      <img
+        [src]="getAvatarUrl(avatar)"
+        alt="avatar"
+        class="cursor-pointer avatar-image"
+      />
+    </div>
+  </div>
+</div>
