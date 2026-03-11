@@ -8,13 +8,14 @@
   <div class="avatar-wrapper">
     <div *ngFor="let avatar of avatars" class="avatar">
       <i
+        *ngIf="avatar.canDelete"
         pTooltip="Usuń"
         tooltipPosition="top"
         class="pi pi-trash delete-icon"
-        (click)="deleteAvatar(avatar)"
+        (click)="deleteAvatar(avatar.fileName)"
       ></i>
       <img
-        [src]="getAvatarUrl(avatar)"
+        [src]="getAvatarUrl(avatar.fileName)"
         alt="avatar"
         class="cursor-pointer avatar-image"
       />

@@ -6,10 +6,11 @@ import {
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
+import { AuthService } from '../../login/auth.service';
+import { IDeletedFileResponse } from '../files/types/IDeletedFileResponse';
+import { IAvatarList } from './avatars/types/IAvatarList';
 import { IChangePassword } from './types/IChangePassword';
 import { DbSettings } from './types/IDbSettings';
-import { IDeletedFileResponse } from '../files/types/IDeletedFileResponse';
-import { AuthService } from '../../login/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -49,9 +50,9 @@ export class SettingsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAvatars(): Observable<string[]> {
+  getAvatars(): Observable<IAvatarList[]> {
     return this.http
-      .get<string[]>(`${environment.API_URL}/files/getAvatars`)
+      .get<IAvatarList[]>(`${environment.API_URL}/files/getAvatars`)
       .pipe(catchError(this.handleError));
   }
 

@@ -12,6 +12,7 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { SettingsService } from '../settings.service';
+import { IAvatarList } from './types/IAvatarList';
 
 @Component({
   selector: 'app-avatars',
@@ -21,7 +22,7 @@ import { SettingsService } from '../settings.service';
   encapsulation: ViewEncapsulation.None,
 })
 export class AvatarsComponent {
-  avatars: string[] = [];
+  avatars: IAvatarList[] = [];
   AVATAR_URL = '/avatars/clients';
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
@@ -57,7 +58,9 @@ export class AvatarsComponent {
           if (response.severity === 'error') {
             return;
           }
-          this.avatars = this.avatars.filter((avatar) => avatar !== fileName);
+          this.avatars = this.avatars.filter(
+            (avatar) => avatar.fileName !== fileName,
+          );
 
           this.cd.markForCheck();
         },
@@ -72,8 +75,7 @@ export class AvatarsComponent {
     const confirmMessage: IConfirmationMessage = {
       header: 'Potwierdź usunięcie',
       message: `<div class="delete-file-wrapper">
-          <span>Czy na pewno usunąć plik avatara?</span>
-          <span>${fileName}</span>
+          <span>Czy na pewno usunąć plik?</span>
           ${deleteFilePreview}
           </div>`,
       accept,
@@ -83,7 +85,13 @@ export class AvatarsComponent {
   }
 
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    const fileNames = uploadedFiles.map((file) => file.fileName);
+    const fileNames = uploadedFiles.map((file) => {
+      return {
+        fileName: file.fileName,
+        canDelete: true,
+      };
+    });
+
     this.avatars = [...(this.avatars || []), ...fileNames];
   }
 
