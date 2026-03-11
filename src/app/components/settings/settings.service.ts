@@ -51,7 +51,7 @@ export class SettingsService {
 
   getAvatars(): Observable<string[]> {
     return this.http
-      .get<string[]>(`${environment.API_URL}/files/avatars`)
+      .get<string[]>(`${environment.API_URL}/files/getAvatars`)
       .pipe(catchError(this.handleError));
   }
 
