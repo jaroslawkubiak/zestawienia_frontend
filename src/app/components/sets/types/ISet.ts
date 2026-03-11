@@ -24,8 +24,9 @@ export interface ISet {
   fullName?: string;
   clientId: {
     id: number;
-    lastName: string;
     firstName: string;
+    lastName: string;
+    avatar: string;
     email: string;
     secondEmail: string;
     company: string;

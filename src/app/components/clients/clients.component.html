@@ -73,6 +73,7 @@
           />
         </th>
         <th style="width: 10rem"></th>
+        <th style="width: 3rem"></th>
         <th pSortableColumn="firstName" style="min-width: 10rem">
           Imię
           <p-sortIcon field="firstName" />
@@ -134,6 +135,15 @@
             [disabled]="getClientSetCount(client.id) !== 0"
             (click)="deleteClient(client)"
           />
+        </td>
+        <td pTooltip="Avatar" tooltipPosition="bottom">
+          <div class="flex-center">
+            <img
+              [src]="getAvatarUrl(client.avatar)"
+              alt="avatar"
+              class="avatar-image"
+            />
+          </div>
         </td>
         <td
           style="min-width: 8rem"
@@ -207,6 +217,7 @@
     <ng-template #content>
       <form [formGroup]="form">
         <div class="new-client-wrapper">
+          <!-- FIRST NAME  -->
           <div class="field">
             <i class="pi pi-asterisk"></i>
             <label for="firstName">Imię</label>
@@ -232,6 +243,7 @@
               </div>
             </div>
           </div>
+          <!-- LAST NAME  -->
           <div class="field">
             <i class="pi pi-asterisk"></i>
             <label for="lastName">Nazwisko</label>
@@ -257,6 +269,7 @@
               </div>
             </div>
           </div>
+          <!-- E-MAIL  -->
           <div class="field">
             <i class="pi pi-asterisk"></i>
             <label for="email">E-mail</label>
@@ -287,6 +300,7 @@
               </div>
             </div>
           </div>
+          <!-- SECOND E-MAIL  -->
           <div class="field">
             <label for="secondEmail">Dodatkowy e-mail</label>
             <input
@@ -311,6 +325,7 @@
               </div>
             </div>
           </div>
+          <!-- TELEPHONE  -->
           <div class="field">
             <label for="telephone">Telefon</label>
             <input
@@ -322,6 +337,7 @@
             />
             <div class="error-container"></div>
           </div>
+          <!-- COMPANY  -->
           <div class="field">
             <label for="company">Firma</label>
             <textarea
@@ -330,6 +346,32 @@
               fluid
               formControlName="company"
             ></textarea>
+          </div>
+          <!-- AVATAR  -->
+          <div class="field">
+            <label for="avatar">Avatar</label>
+            <input
+              type="hidden"
+              pInputText
+              id="avatar"
+              formControlName="avatar"
+              fluid
+            />
+            <div class="avatar-wrapper">
+              <div *ngFor="let avatar of avatars">
+                <img
+                  alt="avatar"
+                  class="cursor-pointer avatar-image"
+                  [src]="getAvatarUrl(avatar.fileName)"
+                  (click)="pickClientAvatar(avatar.fileName)"
+                  [ngClass]="
+                    form.controls['avatar'].value === avatar.fileName
+                      ? 'selected-avatar'
+                      : ''
+                  "
+                />
+              </div>
+            </div>
           </div>
         </div>
         <input

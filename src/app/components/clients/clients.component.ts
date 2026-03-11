@@ -18,11 +18,14 @@ import { Table, TableModule } from 'primeng/table';
 import { TextareaModule } from 'primeng/textarea';
 import { ToolbarModule } from 'primeng/toolbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { forkJoin } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
+import { IAvatarList } from '../settings/avatars/types/IAvatarList';
 import { ClientsService } from './clients.service';
 import { IClient } from './types/IClient';
 
@@ -58,6 +61,10 @@ export class ClientsComponent implements OnInit {
   selected!: IClient[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
+  AVATAR_URL = '/avatars/clients';
+  defaultAvatar = `default.png`;
+  avatars: IAvatarList[] = [];
+
   constructor(
     private clientsService: ClientsService,
     private notificationService: NotificationService,
@@ -80,18 +87,34 @@ export class ClientsComponent implements OnInit {
       validators: [Validators.email],
     }),
     telephone: new FormControl<string | null>(''),
+    avatar: new FormControl('', {
+      validators: [Validators.required],
+    }),
     setCount: new FormControl<number | null>(null),
   });
 
   ngOnInit(): void {
-    this.clientsService.getClients().subscribe({
-      next: (data) => {
-        this.clients = data;
+    forkJoin({
+      clients: this.clientsService.getClients(),
+      avatars: this.clientsService.getAvatars(),
+    }).subscribe({
+      next: ({ clients, avatars }) => {
+        this.clients = clients;
+        this.avatars = avatars;
 
         this.isLoading = false;
         this.cd.markForCheck();
       },
-      error: (err) => console.error('Error getting clients ', err),
+      error: (error) => {
+        console.error('Error loading data', error);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  pickClientAvatar(fileName: string) {
+    this.form.patchValue({
+      avatar: fileName,
     });
   }
 
@@ -105,6 +128,7 @@ export class ClientsComponent implements OnInit {
       secondEmail: null,
       telephone: null,
       setCount: null,
+      avatar: this.defaultAvatar,
     });
 
     this.clientDialog = true;
@@ -121,6 +145,7 @@ export class ClientsComponent implements OnInit {
       secondEmail: this.client.secondEmail ?? null,
       telephone: this.client.telephone ?? null,
       setCount: this.client.setCount ?? null,
+      avatar: this.client.avatar ?? this.defaultAvatar,
     });
 
     this.clientDialog = true;
@@ -137,7 +162,7 @@ export class ClientsComponent implements OnInit {
       this.selected = null;
 
       this.clientsService.removeClients(idList).subscribe({
-        next: (response) => {
+        next: () => {
           this.notificationService.showNotification(
             'success',
             'Klienci zostali usunięci',
@@ -166,7 +191,7 @@ export class ClientsComponent implements OnInit {
   deleteClient(client: IClient) {
     const accept = () => {
       this.clientsService.removeClients([client.id]).subscribe({
-        next: (response) => {
+        next: () => {
           this.notificationService.showNotification(
             'success',
             'Klient został usunięty',
@@ -223,6 +248,7 @@ export class ClientsComponent implements OnInit {
           lastName: this.form.value.lastName!,
           company: this.form.value.company || '',
           telephone: this.form.value.telephone || '',
+          avatar: this.form.value.avatar || this.defaultAvatar,
         };
 
         this.clientsService.saveClient(editedClient).subscribe({
@@ -245,6 +271,7 @@ export class ClientsComponent implements OnInit {
           secondEmail: this.form.value.secondEmail || '',
           firstName: this.form.value.firstName!,
           lastName: this.form.value.lastName!,
+          avatar: this.form.value.avatar || this.defaultAvatar,
           company: this.form.value.company || undefined,
           telephone: this.form.value.telephone || undefined,
         };
@@ -269,7 +296,7 @@ export class ClientsComponent implements OnInit {
       this.form.reset();
     }
   }
-  
+
   onGlobalFilter(event: Event) {
     const inputElement = event.target as HTMLInputElement;
     if (this.dt) {
@@ -302,5 +329,9 @@ export class ClientsComponent implements OnInit {
 
     this.copyToClipboard(value, label);
     event.stopPropagation();
+  }
+
+  getAvatarUrl(avatar: string): string {
+    return `${environment.FILES_URL}/${this.AVATAR_URL}/${avatar}`;
   }
 }
