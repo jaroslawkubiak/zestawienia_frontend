@@ -13,10 +13,11 @@ import { SendFilesComponent } from '../../files/send-files/send-files.component'
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { SettingsService } from '../settings.service';
 import { IAvatarList } from './types/IAvatarList';
+import { Tooltip } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-avatars',
-  imports: [CommonModule, SendFilesComponent],
+  imports: [CommonModule, SendFilesComponent, Tooltip],
   templateUrl: './avatars.component.html',
   styleUrl: './avatars.component.css',
   encapsulation: ViewEncapsulation.None,

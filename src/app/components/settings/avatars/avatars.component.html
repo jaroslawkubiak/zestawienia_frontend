@@ -14,6 +14,12 @@
         class="pi pi-trash delete-icon"
         (click)="deleteAvatar(avatar.fileName)"
       ></i>
+      <i
+        *ngIf="!avatar.canDelete"
+        pTooltip="Avatar używany"
+        tooltipPosition="top"
+        class="pi pi-question question-icon"
+      ></i>
       <img
         [src]="getAvatarUrl(avatar.fileName)"
         alt="avatar"

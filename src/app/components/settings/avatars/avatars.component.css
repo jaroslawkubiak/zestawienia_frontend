@@ -44,6 +44,7 @@
   align-items: center;
 }
 
+.question-icon,
 .delete-icon {
   position: absolute;
   top: 0;
@@ -62,10 +63,15 @@
   background-color: var(--neutral-color-05);
 }
 
+.question-icon:hover {
+  background-color: var(--accent-color-06);
+}
+
 .delete-icon:hover {
   background-color: var(--error-color);
 }
 
+.avatar:hover .question-icon,
 .avatar:hover .delete-icon {
   opacity: 1;
   visibility: visible;
@@ -73,6 +79,7 @@
 
 .img-delete {
   height: 150px;
+  border-radius: 50%;
 }
 
 .delete-file-wrapper {
