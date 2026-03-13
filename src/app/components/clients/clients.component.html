@@ -73,7 +73,7 @@
           />
         </th>
         <th style="width: 10rem"></th>
-        <th style="width: 3rem"></th>
+        <th style="width: 5rem"></th>
         <th pSortableColumn="firstName" style="min-width: 10rem">
           Imię
           <p-sortIcon field="firstName" />
@@ -136,12 +136,12 @@
             (click)="deleteClient(client)"
           />
         </td>
-        <td pTooltip="Avatar" tooltipPosition="bottom">
-          <div class="flex-center">
+        <td pTooltip="Edytuj klienta" tooltipPosition="bottom">
+          <div class="flex-center" *ngIf="getAvatarUrl(client.avatar)">
             <img
               [src]="getAvatarUrl(client.avatar)"
               alt="avatar"
-              class="avatar-image"
+              class="avatar-image-mini"
             />
           </div>
         </td>
@@ -350,25 +350,18 @@
           <!-- AVATAR  -->
           <div class="field">
             <label for="avatar">Avatar</label>
-            <input
-              type="hidden"
-              pInputText
-              id="avatar"
-              formControlName="avatar"
-              fluid
-            />
             <div class="avatar-wrapper">
               <div *ngFor="let avatar of avatars">
                 <img
                   alt="avatar"
                   class="cursor-pointer avatar-image"
-                  [src]="getAvatarUrl(avatar.fileName)"
-                  (click)="pickClientAvatar(avatar.fileName)"
-                  [ngClass]="
-                    form.controls['avatar'].value === avatar.fileName
-                      ? 'selected-avatar'
-                      : ''
-                  "
+                  [src]="getAvatarUrl(avatar)"
+                  (click)="pickClientAvatar(avatar)"
+                  [ngClass]="{
+                    'selected-avatar':
+                      form.controls['avatar'].value?.fileName ===
+                      avatar.fileName,
+                  }"
                 />
               </div>
             </div>

@@ -25,7 +25,7 @@ import { NotificationService } from '../../services/notification.service';
 import { IConfirmationMessage } from '../../services/types/IConfirmationMessage';
 import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { IColumn } from '../../shared/types/ITable';
-import { IAvatarList } from '../settings/avatars/types/IAvatarList';
+import { IAvatar } from '../settings/avatars/types/IAvatarList';
 import { ClientsService } from './clients.service';
 import { IClient } from './types/IClient';
 
@@ -61,9 +61,8 @@ export class ClientsComponent implements OnInit {
   selected!: IClient[] | null;
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
-  AVATAR_URL = '/avatars/clients';
-  defaultAvatar = `default.png`;
-  avatars: IAvatarList[] = [];
+  defaultAvatar!: IAvatar;
+  avatars: IAvatar[] = [];
 
   constructor(
     private clientsService: ClientsService,
@@ -87,7 +86,7 @@ export class ClientsComponent implements OnInit {
       validators: [Validators.email],
     }),
     telephone: new FormControl<string | null>(''),
-    avatar: new FormControl('', {
+    avatar: new FormControl<IAvatar | null>(null, {
       validators: [Validators.required],
     }),
     setCount: new FormControl<number | null>(null),
@@ -102,6 +101,13 @@ export class ClientsComponent implements OnInit {
         this.clients = clients;
         this.avatars = avatars;
 
+        this.defaultAvatar = this.avatars.find(
+          (avatar) => avatar.fileName === 'default.png',
+        )!;
+        this.form.patchValue({
+          avatar: this.defaultAvatar,
+        });
+
         this.isLoading = false;
         this.cd.markForCheck();
       },
@@ -112,9 +118,9 @@ export class ClientsComponent implements OnInit {
     });
   }
 
-  pickClientAvatar(fileName: string) {
+  pickClientAvatar(avatar: IAvatar) {
     this.form.patchValue({
-      avatar: fileName,
+      avatar: avatar,
     });
   }
 
@@ -145,7 +151,7 @@ export class ClientsComponent implements OnInit {
       secondEmail: this.client.secondEmail ?? null,
       telephone: this.client.telephone ?? null,
       setCount: this.client.setCount ?? null,
-      avatar: this.client.avatar ?? this.defaultAvatar,
+      avatar: this.client.avatar ?? null,
     });
 
     this.clientDialog = true;
@@ -331,7 +337,11 @@ export class ClientsComponent implements OnInit {
     event.stopPropagation();
   }
 
-  getAvatarUrl(avatar: string): string {
-    return `${environment.FILES_URL}/${this.AVATAR_URL}/${avatar}`;
+  getAvatarUrl(avatar: IAvatar): string {
+    if (!avatar) {
+      return '';
+    }
+
+    return `${environment.FILES_URL}/${avatar.path}/${avatar.fileName}`;
   }
 }

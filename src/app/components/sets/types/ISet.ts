@@ -2,6 +2,7 @@ import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWith
 import { IComment } from '../../comments/types/IComment';
 import { IUnreadComments } from '../../comments/types/IUnreadComments';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
+import { IAvatar } from '../../settings/avatars/types/IAvatarList';
 
 export interface ISet {
   id: number;
@@ -26,7 +27,7 @@ export interface ISet {
     id: number;
     firstName: string;
     lastName: string;
-    avatar: string;
+    avatar: IAvatar;
     email: string;
     secondEmail: string;
     company: string;

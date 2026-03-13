@@ -66,7 +66,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.clientsAvatar = this.set.clientId.avatar;
+    this.clientsAvatar = this.set.clientId.avatar?.fileName;
+
     if (
       changes['commentsDialog'] &&
       changes['commentsDialog'].currentValue === true
@@ -252,7 +253,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
     if (comment.authorType === 'user') {
       return `assets/images/avatars/users/${comment.authorId}.png`;
     }
-    
+
     return `${environment.FILES_URL}/${this.AVATAR_URL}/${this.clientsAvatar}`;
   }
 

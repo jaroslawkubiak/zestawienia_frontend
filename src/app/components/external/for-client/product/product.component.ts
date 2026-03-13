@@ -12,7 +12,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { environment } from '../../../../../environments/environment';
 import { NotificationService } from '../../../../services/notification.service';
 import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
-import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { IComment } from '../../../comments/types/IComment';
@@ -95,9 +94,5 @@ export class ProductComponent {
 
   getCommentsBadgeValue(): number {
     return countCommentsBadgeValue(this.position.newCommentsCount);
-  }
-
-  getCommentsTooltipInfo(): string {
-    return calcCommentsBadgeTooltip(this.position.newCommentsCount);
   }
 }

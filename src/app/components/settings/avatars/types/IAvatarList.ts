@@ -2,5 +2,6 @@ export interface IAvatar {
   id: number;
   fileName: string;
   path: string;
-  canDelete: boolean;
+  type: string;
+  canDelete?: boolean;
 }

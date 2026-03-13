@@ -144,6 +144,10 @@
   color: var(--neutral-color-10) !important;
 }
 
+::ng-deep .p-badge-contrast {
+  border: 1px solid rgb(255, 255, 255) !important;
+}
+
 /* MOBILE  */
 @media (max-width: 768px) {
   .positions-item {
@@ -262,9 +266,5 @@
   .comments-badge-position {
     top: -5px;
     right: -16px;
-  }
-
-  ::ng-deep .p-badge-contrast {
-    height: 14px !important;
   }
 }

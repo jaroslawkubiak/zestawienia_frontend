@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { IAvatar } from '../settings/avatars/types/IAvatarList';
 import { SettingsService } from '../settings/settings.service';
 import { IClient } from './types/IClient';
 
@@ -21,7 +22,11 @@ export class ClientsService {
     });
   }
 
-  constructor(private http: HttpClient, private authService: AuthService, private settingsService: SettingsService) {}
+  constructor(
+    private http: HttpClient,
+    private authService: AuthService,
+    private settingsService: SettingsService,
+  ) {}
 
   private handleError(error: HttpErrorResponse) {
     if (error.status === 400 && error.error.error === 'DuplicateEntry') {
@@ -40,7 +45,7 @@ export class ClientsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAvatars() {
+  getAvatars(): Observable<IAvatar[]> {
     return this.settingsService.getAvatars();
   }
 
@@ -58,14 +63,17 @@ export class ClientsService {
     const { id, ...updatedClient } = client as Partial<IClient>;
 
     return this.http
-      .patch<IClient>(`${environment.API_URL}/clients/${id}/saveClient`, updatedClient, {
-        headers: this.httpHeaders,
-      })
+      .patch<IClient>(
+        `${environment.API_URL}/clients/${id}/saveClient`,
+        updatedClient,
+        {
+          headers: this.httpHeaders,
+        },
+      )
       .pipe(catchError(this.handleError));
   }
 
   removeClients(ids: number[]): Observable<any> {
-
     return this.http
       .request('delete', `${environment.API_URL}/clients/deleteClient`, {
         body: { ids },

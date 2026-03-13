@@ -1,9 +1,11 @@
+import { IAvatar } from "../../settings/avatars/types/IAvatarList";
+
 export interface IClient {
   id: number;
   company: string;
   firstName: string;
   lastName: string;
-  avatar: string;
+  avatar?: IAvatar;
   email: string;
   secondEmail?: string;
   hash?: string;
