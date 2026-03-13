@@ -5,6 +5,7 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import { Tooltip } from 'primeng/tooltip';
 import { environment } from '../../../../environments/environment';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
@@ -12,8 +13,7 @@ import { IConfirmationMessage } from '../../../services/types/IConfirmationMessa
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { SettingsService } from '../settings.service';
-import { IAvatarList } from './types/IAvatarList';
-import { Tooltip } from 'primeng/tooltip';
+import { IAvatar } from './types/IAvatarList';
 
 @Component({
   selector: 'app-avatars',
@@ -23,7 +23,7 @@ import { Tooltip } from 'primeng/tooltip';
   encapsulation: ViewEncapsulation.None,
 })
 export class AvatarsComponent {
-  avatars: IAvatarList[] = [];
+  avatars: IAvatar[] = [];
   AVATAR_URL = '/avatars/clients';
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
@@ -48,19 +48,21 @@ export class AvatarsComponent {
     this.dialogSendFilesComponent.openSendAvatarDialog();
   }
 
-  deleteAvatar(fileName: string) {
+  deleteAvatar(avatar: IAvatar) {
     const accept = () => {
-      this.settingsService.deleteAvatarFile(fileName).subscribe({
+      this.settingsService.deleteAvatarFile(avatar.id).subscribe({
         next: (response) => {
           this.notificationService.showNotification(
             response.severity,
             response.message,
           );
+
           if (response.severity === 'error') {
             return;
           }
+
           this.avatars = this.avatars.filter(
-            (avatar) => avatar.fileName !== fileName,
+            (avatar) => avatar.fileName !== response.fileName,
           );
 
           this.cd.markForCheck();
@@ -71,12 +73,12 @@ export class AvatarsComponent {
       });
     };
 
-    const deleteFilePreview = `<img class="img-delete" src="${this.getAvatarUrl(fileName)}" alt="${fileName}" />`;
+    const deleteFilePreview = `<img class="img-delete" src="${this.getAvatarUrl(avatar)}" alt="${avatar.fileName}" />`;
 
     const confirmMessage: IConfirmationMessage = {
       header: 'Potwierdź usunięcie',
       message: `<div class="delete-file-wrapper">
-          <span>Czy na pewno usunąć plik?</span>
+          <span>Czy na pewno usunąć ten avatar?</span>
           ${deleteFilePreview}
           </div>`,
       accept,
@@ -88,7 +90,7 @@ export class AvatarsComponent {
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     const fileNames = uploadedFiles.map((file) => {
       return {
-        fileName: file.fileName,
+        ...file,
         canDelete: true,
       };
     });
@@ -96,7 +98,7 @@ export class AvatarsComponent {
     this.avatars = [...(this.avatars || []), ...fileNames];
   }
 
-  getAvatarUrl(avatar: string): string {
-    return `${environment.FILES_URL}/${this.AVATAR_URL}/${avatar}`;
+  getAvatarUrl(avatar: IAvatar): string {
+    return `${environment.FILES_URL}/${avatar.path}/${avatar.fileName}`;
   }
 }

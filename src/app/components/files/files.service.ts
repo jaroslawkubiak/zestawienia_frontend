@@ -82,7 +82,7 @@ export class FilesService {
     formData: FormData,
   ): Observable<HttpEvent<IUploadFileResponse>> {
     return this.http.post<IUploadFileResponse>(
-      `${environment.API_URL}/files/upload/avatars`,
+      `${environment.API_URL}/avatar/upload`,
       formData,
       {
         reportProgress: true,

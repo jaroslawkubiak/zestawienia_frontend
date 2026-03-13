@@ -8,7 +8,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { IDeletedFileResponse } from '../files/types/IDeletedFileResponse';
-import { IAvatarList } from './avatars/types/IAvatarList';
+import { IAvatar } from './avatars/types/IAvatarList';
 import { IChangePassword } from './types/IChangePassword';
 import { DbSettings } from './types/IDbSettings';
 
@@ -50,16 +50,16 @@ export class SettingsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAvatars(): Observable<IAvatarList[]> {
+  getAvatars(): Observable<IAvatar[]> {
     return this.http
-      .get<IAvatarList[]>(`${environment.API_URL}/files/getAvatars`)
+      .get<IAvatar[]>(`${environment.API_URL}/avatar/getAvatars`)
       .pipe(catchError(this.handleError));
   }
 
   // delete one avatar file
-  deleteAvatarFile(fileName: string): Observable<IDeletedFileResponse> {
+  deleteAvatarFile(id: number): Observable<IDeletedFileResponse> {
     return this.http.delete<IDeletedFileResponse>(
-      `${environment.API_URL}/files/${fileName}/deleteAvatar`,
+      `${environment.API_URL}/avatar/${id}/deleteAvatar`,
       {
         headers: this.httpHeaders,
       },

@@ -12,7 +12,7 @@
         pTooltip="Usuń"
         tooltipPosition="top"
         class="pi pi-trash delete-icon"
-        (click)="deleteAvatar(avatar.fileName)"
+        (click)="deleteAvatar(avatar)"
       ></i>
       <i
         *ngIf="!avatar.canDelete"
@@ -21,7 +21,7 @@
         class="pi pi-question question-icon"
       ></i>
       <img
-        [src]="getAvatarUrl(avatar.fileName)"
+        [src]="getAvatarUrl(avatar)"
         alt="avatar"
         class="cursor-pointer avatar-image"
       />
