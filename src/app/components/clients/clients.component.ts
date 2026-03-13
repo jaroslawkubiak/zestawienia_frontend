@@ -252,6 +252,7 @@ export class ClientsComponent implements OnInit {
           secondEmail: this.form.value.secondEmail!,
           firstName: this.form.value.firstName!,
           lastName: this.form.value.lastName!,
+          hash: this.client.hash,
           company: this.form.value.company || '',
           telephone: this.form.value.telephone || '',
           avatar: this.form.value.avatar || this.defaultAvatar,

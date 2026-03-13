@@ -8,7 +8,7 @@ export interface IClient {
   avatar?: IAvatar;
   email: string;
   secondEmail?: string;
-  hash?: string;
+  hash: string;
   telephone?: string;
   setCount?: number;
 }
