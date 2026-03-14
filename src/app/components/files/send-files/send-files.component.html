@@ -9,7 +9,7 @@
 >
   <ng-template pTemplate="header">
     <span class="dialog-header" *ngIf="!isMobile"
-      >Prześlij pliki do zestawienia: {{ setName }}</span
+      >{{ dialogHeader }} {{ setName }}</span
     >
     <span class="dialog-header" *ngIf="isMobile">Pliki: {{ setName }}</span>
   </ng-template>

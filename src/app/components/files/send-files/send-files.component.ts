@@ -20,7 +20,6 @@ import { NotificationService } from '../../../services/notification.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
-
 import { EFileDirectory } from '../types/file-directory.enum';
 import { IFileDirectoryList } from '../types/IFileDirectoryList';
 import { IFileFullDetails } from '../types/IFileFullDetails';
@@ -62,6 +61,7 @@ export class SendFilesComponent {
   setId!: number;
   setHash!: string;
   setName: string = '';
+  dialogHeader: string = 'Prześlij pliki do zestawienia: ';
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
   uploadProgress = 0;
@@ -72,6 +72,8 @@ export class SendFilesComponent {
   isUploading = false;
   hasFiles = false;
   sendAvatar = false;
+  clientId: number | null = null;
+  clientHash: string | null = null;
 
   get chooseButtonProps(): TFileUploadButton {
     return {
@@ -145,14 +147,21 @@ export class SendFilesComponent {
   }
 
   getDirectoryLabel(): string {
-    if (this.who === 'user') {
-      return 'Wybierz katalog docelowy';
-    }
-
-    return 'Katalog docelowy';
+    return this.who === 'client' || this.sendAvatar
+      ? 'Katalog docelowy'
+      : 'Wybierz katalog docelowy';
   }
 
-  openSendAvatarDialog() {
+  openSendAvatarDialog(clientId: number | null, clientHash: string | null) {
+    this.dialogHeader = 'Prześlij avatary';
+    this.clientId = clientId;
+    this.clientHash = clientHash;
+
+    if (this.clientId && this.clientHash) {
+      this.dialogHeader = 'Prześlij avatar';
+      this.fileLimit = 1;
+    }
+
     this.directoryList = FileDirectoryList;
     this.sendAvatar = true;
     this.showSendFilesDialog = true;
@@ -184,7 +193,13 @@ export class SendFilesComponent {
 
     const files = event.files;
     const formData = new FormData();
-    const uploadFolder = this.selectedDirectory.type;
+
+    if (this.clientId) {
+      formData.append('clientId', this.clientId.toString());
+    }
+    if (this.clientHash) {
+      formData.append('clientHash', this.clientHash);
+    }
 
     for (let file of files) {
       formData.append('files', file, file.name);
@@ -196,7 +211,7 @@ export class SendFilesComponent {
           +this.setId,
           this.setHash,
           formData,
-          uploadFolder,
+          this.selectedDirectory.type,
         );
 
     request$.subscribe({

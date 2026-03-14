@@ -76,7 +76,7 @@ export class FilesService {
       },
     );
   }
-  
+
   // save avatar file
   saveAvatarFile(
     formData: FormData,
