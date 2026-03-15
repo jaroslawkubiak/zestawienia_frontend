@@ -1,9 +1,15 @@
-<app-send-files who="client" (updateFileList)="updateAttachedFiles($event)" />
+<app-send-files
+  who="client"
+  (updateAttachedFiles)="updateAttachedFiles($event)"
+/>
 <app-show-files who="client" (deleteFiles)="onDeleteFile($event)" />
 
 <div class="container" *ngIf="set">
   <div class="header-placeholder"></div>
-  <div class="tab-list-background"></div>
+  <div
+    class="tab-list-background"
+    [ngClass]="contentToLoad === 'set' ? '' : 'hidden'"
+  ></div>
   <div class="header-background" [class.mobile-sticky]="isMobileSticky">
     <!-- MOBILE MENU -->
     <div
@@ -39,6 +45,14 @@
               "
             ></i>
           </div>
+          <!-- AVATAR  -->
+          <img
+            [src]="getAvatarForComment()"
+            (error)="onAvatarError($event)"
+            (click)="openAvatarComponent(); toggleMobileMenu()"
+            alt="avatar"
+            class="avatar-img"
+          />
         </div>
         <i class="pi pi-times close-icon" (click)="toggleMobileMenu()"></i>
       </div>
@@ -54,13 +68,11 @@
     </div>
 
     <div class="header">
-      <div>
-        <div class="header-title-desktop">
-          <h3>Witamy w zestawieniu do inwestycji</h3>
-          <h1>{{ set.name }}</h1>
-        </div>
-        <div class="header-title-mobile">{{ set.name }}</div>
+      <div class="header-title-desktop">
+        <h3>Witamy w zestawieniu do inwestycji</h3>
+        <h1>{{ set.name }}</h1>
       </div>
+      <div class="header-title-mobile">{{ set.name }}</div>
 
       <div class="mobile-menu-icon-wrapper" (click)="toggleMobileMenu()">
         <i class="pi pi-bars"></i>
@@ -86,13 +98,21 @@
           (click)="openSendFilesDialog(set.id, set.hash, set.name)"
         >
           <i id="upload-icon" class="pi pi-cloud-upload"></i>
-          <label for="upload-icon"> Wgraj pliki </label>
+          <label for="upload-icon"> Prześlij inspiracje </label>
         </div>
+        <!-- AVATAR  -->
+        <img
+          [src]="getAvatarForComment()"
+          (error)="onAvatarError($event)"
+          (click)="openAvatarComponent()"
+          alt="avatar"
+          class="avatar-img"
+        />
       </div>
     </div>
   </div>
 
-  <div class="set-content">
+  <div class="content" *ngIf="contentToLoad === 'set'">
     <p-tabs [value]="selectedBookmarkId" scrollable>
       <p-tablist>
         @for (bookmark of set.bookmarks; track bookmark.id) {
@@ -133,5 +153,12 @@
         }
       </p-tabpanels>
     </p-tabs>
+  </div>
+
+  <div class="content" *ngIf="contentToLoad === 'avatar'">
+    <app-avatars
+      [client]="client"
+      (onSetNewAvatar)="onSetNewAvatar($event)"
+    ></app-avatars>
   </div>
 </div>

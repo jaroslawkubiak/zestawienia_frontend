@@ -12,6 +12,13 @@
   font-weight: 800;
 }
 
+.setting-avatar-header {
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
 .setting-avatar-header i {
   font-size: 4rem;
   color: var(--accent-color-06);
@@ -26,22 +33,31 @@
   width: 100px;
   border-radius: 50%;
   padding: 4px;
+  border: 2px solid transparent;
 }
 
-.avatar-wrapper {
+.setting-avatar-images {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 20px;
 }
 
 .avatar {
   position: relative;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.setting-avatar-header {
-  display: flex;
-  gap: 50px;
-  align-items: center;
+.avatar span {
+  font-size: 1.4rem;
+}
+
+.selected-avatar {
+  border: 2px solid var(--burgund-color-06);
+}
+
+.selected-avatar-hover:hover {
+  border: 2px solid var(--burgund-color-06);
 }
 
 .question-icon,

@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
+  EventEmitter,
+  Input,
+  Output,
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
@@ -10,8 +13,10 @@ import { environment } from '../../../../environments/environment';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
+import { IClient } from '../../clients/types/IClient';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
+import { IUploadAvatarResponse } from '../../files/types/IUploadAvatarResponse';
 import { SettingsService } from '../settings.service';
 import { IAvatar } from './types/IAvatarList';
 
@@ -24,8 +29,14 @@ import { IAvatar } from './types/IAvatarList';
 })
 export class AvatarsComponent {
   avatars: IAvatar[] = [];
+  clientAvatars: IAvatar[] = [];
   AVATAR_URL = '/avatars/clients';
+  header = 'Avatary klientów';
+  clientHeader = 'Avatary wgrane przez klientów';
+  @Input() client!: IClient | null;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
+
+  @Output() onSetNewAvatar = new EventEmitter();
 
   constructor(
     private settingsService: SettingsService,
@@ -35,17 +46,64 @@ export class AvatarsComponent {
   ) {}
 
   ngOnInit() {
-    this.settingsService.getAvatars().subscribe({
+    this.loadData();
+    if (this.client) {
+      this.header = 'Dostępne avatary';
+      this.clientHeader = 'Twój avatar';
+    }
+  }
+
+  loadData() {
+    this.settingsService.getAvatars(this.client?.id ?? null).subscribe({
       next: (response) => {
-        this.avatars = [...response];
+        this.sortAvatars(response);
       },
     });
 
     this.cd.markForCheck();
   }
 
+  sortAvatars(avatars: IAvatar[]) {
+    this.avatars = [];
+    this.clientAvatars = [];
+    avatars.map((avatar) => {
+      if (avatar.clientName) {
+        this.clientAvatars.push(avatar);
+      } else {
+        this.avatars.push(avatar);
+      }
+    });
+  }
+
+  setAvatar(avatarId: number) {
+    if (this.client) {
+      this.settingsService.setAvatar(this.client.id, avatarId).subscribe({
+        next: (response) => {
+          this.notificationService.showNotification(
+            'success',
+            'Avatar został zmieniony',
+          );
+
+          this.onSetNewAvatar.emit(response);
+          this.loadData();
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
+    }
+  }
+
+  updateAvatarList(response: IUploadAvatarResponse) {
+    this.setAvatar(response.files[0].id);
+  }
+
   openSendFilesDialog() {
-    this.dialogSendFilesComponent.openSendAvatarDialog();
+    this.dialogSendFilesComponent.openSendAvatarDialog(this.client?.id ?? null);
+  }
+
+  updateAttachedFiles() {
+    this.loadData();
   }
 
   deleteAvatar(avatar: IAvatar) {
@@ -85,17 +143,6 @@ export class AvatarsComponent {
     };
 
     this.confirmationModalService.showConfirmation(confirmMessage);
-  }
-
-  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
-    const fileNames = uploadedFiles.map((file) => {
-      return {
-        ...file,
-        canDelete: true,
-      };
-    });
-
-    this.avatars = [...(this.avatars || []), ...fileNames];
   }
 
   getAvatarUrl(avatar: IAvatar): string {

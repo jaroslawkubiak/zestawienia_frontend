@@ -19,6 +19,7 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
+import { IClient } from '../../clients/types/IClient';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
@@ -29,10 +30,12 @@ import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
+import { AvatarsComponent } from '../../settings/avatars/avatars.component';
+import { IAvatar } from '../../settings/avatars/types/IAvatarList';
 import { TBadgeSeverity } from '../../settings/types/badgeSeverity.type';
 import { ExternalService } from '../external.service';
 import { ProductComponent } from './product/product.component';
-import { IClientData } from './types/IClientData';
+import { CONTENT_TOGGLE, ContentType } from './types/contentType';
 
 @Component({
   selector: 'app-for-client',
@@ -45,6 +48,7 @@ import { IClientData } from './types/IClientData';
     TabsModule,
     SummaryComponent,
     ProductComponent,
+    AvatarsComponent,
   ],
   templateUrl: './for-client.component.html',
   styleUrl: './for-client.component.css',
@@ -53,7 +57,7 @@ export class ForClientComponent implements OnInit {
   set!: ISet;
   positions: IPosition[] = [];
   positionsFromBookmark: IPosition[] = [];
-  client!: IClientData;
+  client!: IClient;
   uniquePositionIds: number[] = [];
   files: IFileFullDetails[] = [];
   FILES_URL = environment.FILES_URL;
@@ -63,6 +67,7 @@ export class ForClientComponent implements OnInit {
   isMobileSticky = false;
   positionsWithComments: IPositionWithComments[] = [];
   comments: IComment[] = [];
+  contentToLoad: ContentType = 'avatar';
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
@@ -113,6 +118,10 @@ export class ForClientComponent implements OnInit {
         },
         error: () => this.router.navigate(['/notfound']),
       });
+  }
+
+  toggleContent() {
+    this.contentToLoad = CONTENT_TOGGLE[this.contentToLoad];
   }
 
   modifyData(positions: IPosition[]) {
@@ -199,7 +208,6 @@ export class ForClientComponent implements OnInit {
     this.cd.markForCheck();
   }
 
-  // update attached files after sending new files to server
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     this.files = [...(this.files || []), ...uploadedFiles];
   }
@@ -211,6 +219,23 @@ export class ForClientComponent implements OnInit {
       name: this.set.name,
       files: this.files,
     } as ISet);
+  }
+
+  getAvatarForComment(): string {
+    return `${environment.FILES_URL}/${this.client.avatar?.path}/${this.client.avatar?.fileName}`;
+  }
+
+  onAvatarError(event: Event): void {
+    const img = event.target as HTMLImageElement;
+    img.src = 'assets/images/avatars/default.png';
+  }
+
+  onSetNewAvatar(newAvatar: IAvatar) {
+    this.client.avatar = newAvatar;
+  }
+
+  openAvatarComponent() {
+    this.toggleContent();
   }
 
   openSendFilesDialog(setId: number, setHash: string, setName: string) {

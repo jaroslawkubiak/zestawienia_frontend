@@ -1,30 +1,74 @@
-<app-send-files who="user" (updateFileList)="updateAttachedFiles($event)" />
+<app-send-files
+  who="user"
+  (updateAvatarList)="updateAvatarList($event)"
+/>
 
 <div class="settings-avatar-container">
-  <div class="setting-avatar-header">
-    <p class="settings-avatar-label">Avatary klientów</p>
-    <i class="pi pi-cloud-upload" (click)="openSendFilesDialog()"></i>
+  <div>
+    <div class="setting-avatar-header">
+      <p class="settings-avatar-label">{{ header }}</p>
+      <i
+        *ngIf="!client?.id"
+        class="pi pi-cloud-upload"
+        (click)="openSendFilesDialog()"
+        pTooltip="Wgraj avatar"
+        tooltipPosition="bottom"
+      ></i>
+    </div>
+    <div class="setting-avatar-images">
+      <div *ngFor="let avatar of avatars" class="avatar flex-center">
+        <i
+          *ngIf="!client?.id && avatar.usageCount === 0"
+          pTooltip="Usuń"
+          tooltipPosition="top"
+          class="pi pi-trash delete-icon"
+          (click)="deleteAvatar(avatar)"
+        ></i>
+        <i
+          *ngIf="!client?.id && avatar.usageCount !== 0"
+          pTooltip="Avatar używany"
+          tooltipPosition="top"
+          class="pi pi-question question-icon"
+        ></i>
+        <img
+          [src]="getAvatarUrl(avatar)"
+          alt="avatar"
+          class="avatar-image"
+          [ngClass]="{
+            'cursor-pointer selected-avatar-hover': client?.id,
+            'selected-avatar': client?.avatar?.id === avatar.id,
+          }"
+          (click)="client?.id && setAvatar(avatar.id)"
+        />
+        <span *ngIf="!client?.id">Użycia: {{ avatar.usageCount }}</span>
+      </div>
+    </div>
   </div>
-  <div class="avatar-wrapper">
-    <div *ngFor="let avatar of avatars" class="avatar">
+  <div>
+    <div class="setting-avatar-header">
+      <p class="settings-avatar-label">{{ clientHeader }}</p>
       <i
-        *ngIf="avatar.canDelete"
-        pTooltip="Usuń"
-        tooltipPosition="top"
-        class="pi pi-trash delete-icon"
-        (click)="deleteAvatar(avatar)"
+        *ngIf="client?.id"
+        class="pi pi-cloud-upload"
+        (click)="openSendFilesDialog()"
+        pTooltip="Wgraj avatar"
+        tooltipPosition="bottom"
       ></i>
-      <i
-        *ngIf="!avatar.canDelete"
-        pTooltip="Avatar używany"
-        tooltipPosition="top"
-        class="pi pi-question question-icon"
-      ></i>
-      <img
-        [src]="getAvatarUrl(avatar)"
-        alt="avatar"
-        class="cursor-pointer avatar-image"
-      />
+    </div>
+    <div class="setting-avatar-images" *ngIf="clientAvatars.length !== 0">
+      <div *ngFor="let avatar of clientAvatars" class="avatar flex-center">
+        <img
+          [src]="getAvatarUrl(avatar)"
+          alt="avatar"
+          class="avatar-image"
+          [ngClass]="{
+            'cursor-pointer selected-avatar-hover': client?.id,
+            'selected-avatar': client?.avatar?.id === avatar.id,
+          }"
+          (click)="client?.id && setAvatar(avatar.id)"
+        />
+        <span *ngIf="!client?.id">{{ avatar.clientName }}</span>
+      </div>
     </div>
   </div>
 </div>
