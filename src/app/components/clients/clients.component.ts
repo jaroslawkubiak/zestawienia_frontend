@@ -62,7 +62,8 @@ export class ClientsComponent implements OnInit {
   @ViewChild('dt') dt!: Table;
   cols!: IColumn[];
   defaultAvatar!: IAvatar;
-  avatars: IAvatar[] = [];
+  allAvatars: IAvatar[] = [];
+  filteredAvatars: IAvatar[] = [];
 
   constructor(
     private clientsService: ClientsService,
@@ -99,9 +100,9 @@ export class ClientsComponent implements OnInit {
     }).subscribe({
       next: ({ clients, avatars }) => {
         this.clients = clients;
-        this.avatars = avatars;
+        this.allAvatars = avatars;
 
-        this.defaultAvatar = this.avatars.find(
+        this.defaultAvatar = this.allAvatars.find(
           (avatar) => avatar.fileName === 'default.png',
         )!;
         this.form.patchValue({
@@ -126,6 +127,10 @@ export class ClientsComponent implements OnInit {
 
   openNew() {
     this.client = {} as IClient;
+    this.filteredAvatars = [...this.allAvatars].filter(
+      (avatar) => avatar.clientName === null,
+    );
+
     this.form.setValue({
       company: null,
       firstName: null,
@@ -143,6 +148,12 @@ export class ClientsComponent implements OnInit {
 
   editClient(client: IClient) {
     this.client = { ...client };
+    const clientAvatarId = this.client.avatar?.id;
+
+    this.filteredAvatars = [...this.allAvatars].filter(
+      (avatar) => avatar.clientName === null || clientAvatarId === avatar.id,
+    );
+
     this.form.setValue({
       company: this.client.company ?? null,
       firstName: this.client.firstName ?? null,
