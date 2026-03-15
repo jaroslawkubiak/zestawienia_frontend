@@ -1,7 +1,4 @@
-<app-send-files
-  who="user"
-  (updateAvatarList)="updateAvatarList($event)"
-/>
+<app-send-files who="user" (updateAvatarList)="updateAvatarList($event)" (updateAttachedFiles)="updateAttachedFiles()"/>
 
 <div class="settings-avatar-container">
   <div>
@@ -39,6 +36,8 @@
             'selected-avatar': client?.avatar?.id === avatar.id,
           }"
           (click)="client?.id && setAvatar(avatar.id)"
+          [pTooltip]="client?.id ? 'Wybierz jako swój avatar' : ''"
+          tooltipPosition="bottom"
         />
         <span *ngIf="!client?.id">Użycia: {{ avatar.usageCount }}</span>
       </div>
@@ -56,7 +55,10 @@
       ></i>
     </div>
     <div class="setting-avatar-images" *ngIf="clientAvatars.length !== 0">
-      <div *ngFor="let avatar of clientAvatars" class="settings-avatar flex-center">
+      <div
+        *ngFor="let avatar of clientAvatars"
+        class="settings-avatar flex-center"
+      >
         <img
           [src]="getAvatarUrl(avatar)"
           alt="avatar"
