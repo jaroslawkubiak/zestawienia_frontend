@@ -43,10 +43,10 @@
 }
 
 .settings-color-neutral-title {
-  color: var(--neutral-color-08);
+  color: var(--neutral-color-07);
 }
 
 .settings-color-border {
-  background-color: var(--neutral-color-10);
-  color: var(--neutral-color-01);
+  background-color: var(--neutral-color-09);
+  color: var(--neutral-color-03);
 }

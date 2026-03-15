@@ -72,7 +72,7 @@
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;

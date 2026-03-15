@@ -86,7 +86,7 @@
   padding: 0px 8px !important;
   font-size: 3rem !important;
   border: 1px solid var(--accent-color-07) !important;
-  background-color: var(--white-color) !important;
+  background-color: var(--neutral-color-02) !important;
 }
 
 .p-select.p-variant-filled {
@@ -96,7 +96,7 @@
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: var(--white-color) !important;
+  background-color: var(--neutral-color-02) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;

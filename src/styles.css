@@ -8,16 +8,16 @@ html {
   --table-header-bg: #e3e3e3;
   --app-menu-bg: #2c2c2e;
 
-  --neutral-color-01: #f9f9f9;
-  --neutral-color-02: #e6e6e6;
-  --neutral-color-03: #d4d4d4;
-  --neutral-color-04: #c2c2c2;
-  --neutral-color-05: #b0b0b0;
-  --neutral-color-06: #9d9d9d;
-  --neutral-color-07: #8b8b8b;
-  --neutral-color-08: #787878;
-  --neutral-color-09: #565656;
-  --neutral-color-10: #1e1e1e;
+  --neutral-color-01: #ffffff;
+  --neutral-color-02: #f6f5f5;
+  --neutral-color-03: #e6e6e6;
+  --neutral-color-04: #d4d4d4;
+  --neutral-color-05: #c2c2c2;
+  --neutral-color-06: #b0b0b0;
+  --neutral-color-07: #9d9d9d;
+  --neutral-color-08: #646464;
+  --neutral-color-09: #111111;
+  --neutral-color-10: #000000;
 
   --accent-color-01: #e2f6f1;
   --accent-color-02: #cdefe8;
@@ -42,11 +42,6 @@ html {
   --burgund-color-10: #28040d;
 
   --error-color: var(--burgund-color-06);
-
-  --white-color: #f4f3f3;
-  --pure-white-color: #ffffff;
-  --black-color: #111111;
-  --pure-black-color: #000000;
 
   /* position status color  */
   --status-empty-color: #f8fafc;

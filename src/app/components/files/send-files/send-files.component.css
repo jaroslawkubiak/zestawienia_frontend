@@ -58,7 +58,7 @@
   font-weight: normal !important;
   border-radius: 0 !important;
   border: 1px solid var(--accent-color-08) !important;
-  background-color: var(--white-color) !important;
+  background-color: var(--neutral-color-02) !important;
   width: 300px !important;
 }
 
@@ -126,7 +126,7 @@
 }
 
 .p-message-text {
-  color: var(--white-color);
+  color: var(--neutral-color-02);
   font-size: 2rem;
 }
 

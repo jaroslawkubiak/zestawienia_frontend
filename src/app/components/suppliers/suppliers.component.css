@@ -4,7 +4,7 @@
 }
 
 ::ng-deep .p-toolbar.p-component {
-  background-color: var(--neutral-color-01) !important;
+  background-color: var(--neutral-color-02) !important;
 }
 
 ::ng-deep .p-dialog.p-component {
@@ -101,7 +101,7 @@ i {
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  color: var(--neutral-color-10) !important;
+  color: var(--neutral-color-09) !important;
   background-color: var(--accent-color-03) !important;
 }
 
@@ -110,16 +110,16 @@ i {
   font-size: 1rem !important;
   padding: 8px 24px !important;
   font-weight: normal !important;
-  border: 1px solid var(--black-color) !important;
+  border: 1px solid var(--neutral-color-09) !important;
   border-radius: 0 !important;
   width: 300px !important;
-  color: var(--black-color) !important;
+  color: var(--neutral-color-09) !important;
 }
 
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: var(--white-color) !important;
+  background-color: var(--neutral-color-02) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;

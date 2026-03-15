@@ -2,8 +2,8 @@
   display: grid;
   padding: 20px 0;
   grid-template-columns: auto repeat(4, 1fr);
-  background-color: var(--pure-white-color);
-  border-bottom: 3px solid var(--neutral-color-10);
+  background-color: var(--neutral-color-01);
+  border-bottom: 3px solid var(--neutral-color-09);
   gap: 0px;
 }
 
@@ -13,7 +13,7 @@
   justify-content: center;
   font-size: 4rem;
   padding: 0 5px;
-  color: var(--neutral-color-10);
+  color: var(--neutral-color-09);
 }
 
 .product-img-wrapper {
@@ -22,7 +22,7 @@
   align-items: center;
   gap: 15px;
   justify-content: flex-end;
-  background-color: var(--pure-white-color);
+  background-color: var(--neutral-color-01);
 }
 
 .product-img {
@@ -67,13 +67,13 @@
 }
 
 .product-title {
-  color: var(--neutral-color-08);
+  color: var(--neutral-color-07);
   font-size: 1.2rem;
 }
 
 .product-name {
   font-size: 2rem;
-  color: var(--neutral-color-10);
+  color: var(--neutral-color-09);
 }
 
 .position-action-btn-container {
@@ -100,7 +100,7 @@
 .link-cell {
   font-size: 2rem;
   gap: 20px;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   font-weight: 700;
   transition: color 0.2s ease;
 }
@@ -108,7 +108,7 @@
 .link-cell i,
 .comments-cell i {
   font-size: 3rem;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   transition: color 0.2s ease;
 }
 
@@ -117,12 +117,12 @@
   padding: 8px 4px;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   gap: 20px;
   transition: color 0.2s ease;
 
   border-radius: 10px;
-  background-color: var(--neutral-color-10);
+  background-color: var(--neutral-color-09);
   box-shadow: 0px 0px 10px -4px #c4c4c450;
   cursor: pointer;
 }
@@ -141,7 +141,7 @@
   align-items: center;
   padding: 10px;
   border-radius: 5px;
-  color: var(--neutral-color-10) !important;
+  color: var(--neutral-color-09) !important;
 }
 
 ::ng-deep .p-badge-contrast {
@@ -164,8 +164,8 @@
     width: 30px;
     height: 30px;
     font-size: 2rem;
-    color: var(--neutral-color-01);
-    background-color: var(--neutral-color-10);
+    color: var(--neutral-color-03);
+    background-color: var(--neutral-color-09);
   }
 
   .product-img-wrapper {
@@ -188,7 +188,7 @@
 
     align-items: center;
     justify-content: center;
-    background-color: var(--black-color);
+    background-color: var(--neutral-color-09);
     padding: 10px;
     margin-top: 10px;
     z-index: 10;
@@ -215,7 +215,7 @@
   }
 
   .product-group-price .product-title {
-    color: var(--white-color);
+    color: var(--neutral-color-02);
   }
 
   .product-group-price .product-name {

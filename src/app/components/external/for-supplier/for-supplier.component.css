@@ -21,7 +21,7 @@ th {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  color: var(--neutral-color-10);
+  color: var(--neutral-color-09);
 }
 
 .client-data {
@@ -107,7 +107,7 @@ th {
 }
 
 .product-img {
-  background-color: var(--pure-white-color) !important;
+  background-color: var(--neutral-color-01) !important;
 }
 
 .view-mode-image {

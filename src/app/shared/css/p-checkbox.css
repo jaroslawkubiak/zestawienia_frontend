@@ -1,26 +1,25 @@
-
 ::ng-deep .p-checkbox {
   display: flex;
 }
 
 ::ng-deep .p-checkbox-box {
-  border: 2px solid var(--neutral-color-10) !important;
+  border: 2px solid var(--neutral-color-09) !important;
 }
 
 ::ng-deep
   .p-checkbox:not(.p-checkbox-checked)
   .p-checkbox-box:not(:has(minusicon)) {
-  background-color: var(--neutral-color-01) !important;
+  background-color: var(--neutral-color-03) !important;
 }
 
 ::ng-deep .p-checkbox .p-checkbox-box:has(minusicon) {
-  background-color: var(--neutral-color-10) !important;
+  background-color: var(--neutral-color-09) !important;
 }
 
 ::ng-deep .p-checkbox.p-checkbox-checked .p-checkbox-box {
-  background-color: var(--neutral-color-10) !important;
+  background-color: var(--neutral-color-09) !important;
 }
 
 ::ng-deep .p-checkbox-box .p-checkbox-icon {
-  color: var(--neutral-color-01) !important;
+  color: var(--neutral-color-03) !important;
 }

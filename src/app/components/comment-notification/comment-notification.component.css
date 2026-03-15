@@ -41,10 +41,10 @@ th i {
   font-size: 1rem !important;
   padding: 8px 24px !important;
   font-weight: normal !important;
-  border: 1px solid var(--black-color) !important;
+  border: 1px solid var(--neutral-color-09) !important;
   border-radius: 0 !important;
   width: 400px !important;
-  color: var(--black-color) !important;
+  color: var(--neutral-color-09) !important;
 }
 
 .col-lp {

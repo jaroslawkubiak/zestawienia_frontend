@@ -14,7 +14,7 @@
 /* content message font size */
 ::ng-deep .p-toast-detail {
   font-size: 18px !important;
-  color: var(--neutral-color-10) !important;
+  color: var(--neutral-color-09) !important;
 }
 /* flex gap */
 ::ng-deep .p-toast-message-content {

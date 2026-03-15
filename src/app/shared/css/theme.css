@@ -1,7 +1,7 @@
 :root {
   --screen-width: 1600px;
-  --p-tooltip-background: var(--pure-black-color) !important;
-  --p-tooltip-color: var(--pure-white-color) !important;
+  --p-tooltip-background: var(--neutral-color-10) !important;
+  --p-tooltip-color: var(--neutral-color-01) !important;
   --p-tooltip-padding: 6px !important;
   --p-tooltip-border-radius: 0 !important;
 
@@ -113,7 +113,7 @@
   --p-tabs-tablist-border-width: 0 !important;
 
   /* badge color  */
-  --p-badge-secondary-background: var(--neutral-color-01) !important;
+  --p-badge-secondary-background: var(--neutral-color-03) !important;
   --p-badge-contrast-background: #020617 !important;
   --p-badge-info-background: #04a9f4 !important;
   --p-badge-success-background: #4caf50 !important;

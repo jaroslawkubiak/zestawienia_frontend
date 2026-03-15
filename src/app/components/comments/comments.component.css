@@ -71,13 +71,13 @@
 
 .message-wrapper.incoming .message-bubble {
   background-color: var(--outgoing-message-bg-color);
-  color: var(--neutral-color-10);
+  color: var(--neutral-color-09);
   z-index: 3;
 }
 
 .message-wrapper.outgoing .message-bubble {
   background-color: var(--incoming-message-bg-color);
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   z-index: 3;
 }
 
@@ -160,11 +160,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 100%;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-02);
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s ease;
-  background-color: var(--neutral-color-05);
+  background-color: var(--neutral-color-06);
 }
 
 .edit-icon {
@@ -277,14 +277,14 @@
 }
 
 .disabled {
-  background-color: var(--neutral-color-03);
+  background-color: var(--neutral-color-06);
 }
 
 .new-message-action-btns {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
 }
 
 .send-icon,

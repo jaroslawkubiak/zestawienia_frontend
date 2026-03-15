@@ -19,7 +19,7 @@
   width: 100%;
   justify-content: start;
   background-color: var(--app-menu-bg);
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
 }
 
 li {
@@ -43,7 +43,7 @@ li:hover,
 
 .logout {
   display: flex;
-  color: var(--neutral-color-01);
+  color: var(--neutral-color-03);
   justify-content: center;
   align-items: center;
   cursor: pointer;

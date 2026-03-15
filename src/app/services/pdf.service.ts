@@ -53,12 +53,12 @@ export class PdfService {
   colors = {
     accent: getCssVariable('--accent-color-06'),
     accentLighter: getCssVariable('--accent-color-04'),
-    accentDarker: getCssVariable('--black-color'),
+    accentDarker: getCssVariable('--neutral-color-09'),
     accentDark: getCssVariable('--accent-color-08'),
-    black: getCssVariable('--black-color'),
-    neutral: getCssVariable('--neutral-color-01'),
+    black: getCssVariable('--neutral-color-09'),
+    neutral: getCssVariable('--neutral-color-03'),
     neutralDarker: getCssVariable('--neutral-color-05'),
-    white: getCssVariable('--white-color'),
+    white: getCssVariable('--neutral-color-02'),
   };
 
   ROW_HEIGHT = 60;
