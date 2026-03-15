@@ -46,7 +46,7 @@ export class ClientsService {
   }
 
   getAvatars(): Observable<IAvatar[]> {
-    return this.settingsService.getAvatars();
+    return this.settingsService.getAvatars(null);
   }
 
   addClient(client: Partial<IClient>): Observable<IClient> {
