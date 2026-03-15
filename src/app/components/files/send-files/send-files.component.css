@@ -20,6 +20,13 @@
   color: var(--accent-color-08);
 }
 
+.avatar-warning {
+  color: var(--error-color);
+  font-size: 1.6rem;
+  font-weight: 700;
+  padding-bottom: 8px;
+}
+
 .file-limit {
   font-size: 1rem;
   color: var(--error-color);

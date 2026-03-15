@@ -64,6 +64,7 @@ export class SendFilesComponent {
   setHash!: string;
   setName: string = '';
   dialogHeader: string = 'Prześlij pliki do zestawienia: ';
+  avatarWarning = '';
   @ViewChild('fileUploader') fileUploader: FileUpload | any;
   uploadedFiles: any[] = [];
   uploadProgress = 0;
@@ -160,6 +161,7 @@ export class SendFilesComponent {
     if (this.clientId) {
       this.dialogHeader = 'Prześlij avatar';
       this.fileLimit = 1;
+      this.avatarWarning = 'Obecny avatar zostanie usunięty!';
     }
 
     this.directoryList = FileDirectoryList;
@@ -223,9 +225,10 @@ export class SendFilesComponent {
           this.fileUploader.clear();
           this.showSendFilesDialog = false;
           const files: IFileFullDetails[] = event.body.files;
-          if (this.sendAvatar) {
+          if (this.sendAvatar && this.clientId) {
             this.updateAvatarList.emit(event.body);
           } else {
+
             this.updateAttachedFiles.emit(files);
           }
 
