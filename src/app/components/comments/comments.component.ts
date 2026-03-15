@@ -47,8 +47,6 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   newMessage: string = '';
   editedCommentId: number | null = null;
   clientsAvatar = '';
-  AVATAR_URL = '/avatars/clients';
-
   @ViewChild('chatContainer') private chatContainerRef!: ElementRef;
 
   constructor(
@@ -66,7 +64,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    this.clientsAvatar = this.set.clientId.avatar?.fileName;
+    this.clientsAvatar =
+      this.set.clientId.avatar.path + '/' + this.set.clientId.avatar.fileName;
 
     if (
       changes['commentsDialog'] &&
@@ -254,7 +253,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
       return `assets/images/avatars/users/${comment.authorId}.png`;
     }
 
-    return `${environment.FILES_URL}/${this.AVATAR_URL}/${this.clientsAvatar}`;
+    return `${environment.FILES_URL}/${this.clientsAvatar}`;
   }
 
   onAvatarError(event: Event): void {
