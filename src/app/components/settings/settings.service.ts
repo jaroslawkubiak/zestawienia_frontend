@@ -2,6 +2,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
+  HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
@@ -50,9 +51,26 @@ export class SettingsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAvatars(): Observable<IAvatar[]> {
+  getAvatars(clientId: number | null): Observable<IAvatar[]> {
+    let params = new HttpParams();
+
+    if (clientId !== null) {
+      params = params.set('clientId', clientId);
+    }
+
     return this.http
-      .get<IAvatar[]>(`${environment.API_URL}/avatar/getAvatars`)
+      .get<IAvatar[]>(`${environment.API_URL}/avatar/getAvatars`, { params })
+      .pipe(catchError(this.handleError));
+  }
+
+  setAvatar(clientId: number, avatarId: number): Observable<IAvatar> {
+    return this.http
+      .patch<IAvatar>(
+        `${environment.API_URL}/avatar/${clientId}/${avatarId}/setAvatar`,
+        {
+          headers: this.httpHeaders,
+        },
+      )
       .pipe(catchError(this.handleError));
   }
 
