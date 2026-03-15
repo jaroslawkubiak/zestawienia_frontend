@@ -16,7 +16,7 @@
       ></i>
     </div>
     <div class="setting-avatar-images">
-      <div *ngFor="let avatar of avatars" class="avatar flex-center">
+      <div *ngFor="let avatar of avatars" class="settings-avatar flex-center">
         <i
           *ngIf="!client?.id && avatar.usageCount === 0"
           pTooltip="Usuń"
@@ -33,7 +33,7 @@
         <img
           [src]="getAvatarUrl(avatar)"
           alt="avatar"
-          class="avatar-image"
+          class="settings-avatar-image"
           [ngClass]="{
             'cursor-pointer selected-avatar-hover': client?.id,
             'selected-avatar': client?.avatar?.id === avatar.id,
@@ -56,11 +56,11 @@
       ></i>
     </div>
     <div class="setting-avatar-images" *ngIf="clientAvatars.length !== 0">
-      <div *ngFor="let avatar of clientAvatars" class="avatar flex-center">
+      <div *ngFor="let avatar of clientAvatars" class="settings-avatar flex-center">
         <img
           [src]="getAvatarUrl(avatar)"
           alt="avatar"
-          class="avatar-image"
+          class="settings-avatar-image"
           [ngClass]="{
             'cursor-pointer selected-avatar-hover': client?.id,
             'selected-avatar': client?.avatar?.id === avatar.id,

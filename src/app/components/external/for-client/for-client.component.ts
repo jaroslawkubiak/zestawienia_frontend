@@ -67,7 +67,7 @@ export class ForClientComponent implements OnInit {
   isMobileSticky = false;
   positionsWithComments: IPositionWithComments[] = [];
   comments: IComment[] = [];
-  contentToLoad: ContentType = 'avatar';
+  contentToLoad: ContentType = 'set';
 
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;

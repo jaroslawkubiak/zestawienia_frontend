@@ -28,7 +28,7 @@
   color: var(--accent-color-08);
 }
 
-.avatar-image {
+.settings-avatar-image {
   height: 100px;
   width: 100px;
   border-radius: 50%;
@@ -42,13 +42,13 @@
   gap: 20px;
 }
 
-.avatar {
+.settings-avatar {
   position: relative;
   flex-direction: column;
   gap: 5px;
 }
 
-.avatar span {
+.settings-avatar span {
   font-size: 1.4rem;
 }
 
@@ -87,8 +87,8 @@
   background-color: var(--error-color);
 }
 
-.avatar:hover .question-icon,
-.avatar:hover .delete-icon {
+.settings-avatar:hover .question-icon,
+.settings-avatar:hover .delete-icon {
   opacity: 1;
   visibility: visible;
 }

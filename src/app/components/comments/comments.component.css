@@ -50,22 +50,22 @@
   border-radius: 12px;
 }
 
-.avatar-wrapper {
+.comment-avatar-wrapper {
   position: absolute;
   bottom: -2px;
 }
 
-.avatar-image {
+.comment-avatar-image {
   height: 25px;
   width: 25px;
   border-radius: 50%;
 }
 
-.avatar-user {
+.comment-avatar-user {
   left: -28px;
 }
 
-.avatar-client {
+.comment-avatar-client {
   right: -28px;
 }
 

@@ -48,16 +48,16 @@
           </span>
           <!-- AVATAR  -->
           <div
-            class="avatar-wrapper"
-            [class.avatar-user]="isIncoming(comment)"
-            [class.avatar-client]="!isIncoming(comment)"
+            class="comment-avatar-wrapper"
+            [class.comment-avatar-user]="isIncoming(comment)"
+            [class.comment-avatar-client]="!isIncoming(comment)"
           >
             <img
               [src]="getCommentAvatar(comment)"
               (error)="onAvatarError($event)"
               [title]="comment.authorName"
               alt="avatar"
-              class="avatar-image"
+              class="comment-avatar-image"
             />
           </div>
         </div>
