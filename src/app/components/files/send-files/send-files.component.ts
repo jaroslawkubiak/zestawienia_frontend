@@ -23,6 +23,7 @@ import { FilesService } from '../files.service';
 import { EFileDirectory } from '../types/file-directory.enum';
 import { IFileDirectoryList } from '../types/IFileDirectoryList';
 import { IFileFullDetails } from '../types/IFileFullDetails';
+import { IUploadAvatarResponse } from '../types/IUploadAvatarResponse';
 import { TFileUploadButton } from './types/buttons.type';
 
 @Component({
@@ -55,7 +56,8 @@ export class SendFilesComponent {
   }
 
   @Input() who!: TAuthorType;
-  @Output() updateFileList = new EventEmitter<IFileFullDetails[]>();
+  @Output() updateAttachedFiles = new EventEmitter<IFileFullDetails[]>();
+  @Output() updateAvatarList = new EventEmitter<IUploadAvatarResponse>();
 
   showSendFilesDialog = false;
   setId!: number;
@@ -73,7 +75,6 @@ export class SendFilesComponent {
   hasFiles = false;
   sendAvatar = false;
   clientId: number | null = null;
-  clientHash: string | null = null;
 
   get chooseButtonProps(): TFileUploadButton {
     return {
@@ -152,12 +153,11 @@ export class SendFilesComponent {
       : 'Wybierz katalog docelowy';
   }
 
-  openSendAvatarDialog(clientId: number | null, clientHash: string | null) {
+  openSendAvatarDialog(clientId: number | null) {
     this.dialogHeader = 'Prześlij avatary';
     this.clientId = clientId;
-    this.clientHash = clientHash;
 
-    if (this.clientId && this.clientHash) {
+    if (this.clientId) {
       this.dialogHeader = 'Prześlij avatar';
       this.fileLimit = 1;
     }
@@ -197,9 +197,6 @@ export class SendFilesComponent {
     if (this.clientId) {
       formData.append('clientId', this.clientId.toString());
     }
-    if (this.clientHash) {
-      formData.append('clientHash', this.clientHash);
-    }
 
     for (let file of files) {
       formData.append('files', file, file.name);
@@ -215,7 +212,7 @@ export class SendFilesComponent {
         );
 
     request$.subscribe({
-      next: (event) => {
+      next: (event: any) => {
         if (event.type === HttpEventType.UploadProgress && event.total) {
           this.uploadProgress = Math.round((100 * event.loaded) / event.total);
         }
@@ -225,9 +222,13 @@ export class SendFilesComponent {
         if (event.type === HttpEventType.Response && event.body) {
           this.fileUploader.clear();
           this.showSendFilesDialog = false;
-
           const files: IFileFullDetails[] = event.body.files;
-          this.updateFileList.emit(files);
+          if (this.sendAvatar) {
+            this.updateAvatarList.emit(event.body);
+          } else {
+            this.updateAttachedFiles.emit(files);
+          }
+
           this.completeUpload();
 
           const uploadMessage = this.returnUploadMessage(

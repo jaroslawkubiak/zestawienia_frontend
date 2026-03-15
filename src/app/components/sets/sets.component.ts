@@ -164,7 +164,7 @@ export class SetsComponent implements OnInit {
   }
 
   // update attached files after sending new files to server
-  updateFileList(uploadedFiles: IFileFullDetails[]) {
+  updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     const uploadedSetId = +uploadedFiles[0].setId;
     this.sets = this.sets.map((set) =>
       set.id === uploadedSetId
