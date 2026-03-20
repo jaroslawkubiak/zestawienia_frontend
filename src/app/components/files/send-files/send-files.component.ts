@@ -18,6 +18,7 @@ import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
+import { IAvatar } from '../../settings/avatars/types/IAvatarList';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
 import { EFileDirectory } from '../types/file-directory.enum';
@@ -81,7 +82,7 @@ export class SendFilesComponent {
     return {
       severity: 'primary',
       label: 'Wybierz pliki',
-      size: 'large',
+      size: this.isMobile ? 'small' : 'large',
       disabled: this.isUploading || !this.selectedDirectory,
     };
   }
@@ -90,7 +91,7 @@ export class SendFilesComponent {
     return {
       severity: 'info',
       label: this.isUploading ? 'Wgrywanie...' : 'Wgraj',
-      size: 'large',
+      size: this.isMobile ? 'small' : 'large',
       disabled: !this.hasFiles || this.isUploading,
     };
   }
@@ -99,7 +100,7 @@ export class SendFilesComponent {
     return {
       severity: 'danger',
       label: 'Anuluj',
-      size: 'large',
+      size: this.isMobile ? 'small' : 'large',
       disabled: !this.hasFiles || this.isUploading,
     };
   }
@@ -154,14 +155,17 @@ export class SendFilesComponent {
       : 'Wybierz katalog docelowy';
   }
 
-  openSendAvatarDialog(clientId: number | null) {
+  openSendAvatarDialog(clientId: number | null, clientAvatars: IAvatar[]) {
     this.dialogHeader = 'Prześlij avatary';
     this.clientId = clientId;
 
     if (this.clientId) {
       this.dialogHeader = 'Prześlij avatar';
       this.fileLimit = 1;
-      this.avatarWarning = 'Obecny avatar zostanie usunięty!';
+      this.avatarWarning =
+        clientAvatars.length !== 0
+          ? 'Obecny avatar zostanie usunięty!'
+          : 'Możesz mieć tylko jednego avatara';
     }
 
     this.directoryList = FileDirectoryList;
@@ -228,7 +232,6 @@ export class SendFilesComponent {
           if (this.sendAvatar && this.clientId) {
             this.updateAvatarList.emit(event.body);
           } else {
-
             this.updateAttachedFiles.emit(files);
           }
 

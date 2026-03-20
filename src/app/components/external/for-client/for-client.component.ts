@@ -162,6 +162,7 @@ export class ForClientComponent implements OnInit {
   }
 
   loadContentForBookmark(bookmarkId: number) {
+    this.contentToLoad = 'set';
     this.externalService
       .updateLastActiveClientBookmark(this.set.hash, bookmarkId)
       .subscribe({
@@ -232,9 +233,10 @@ export class ForClientComponent implements OnInit {
 
   onSetNewAvatar(newAvatar: IAvatar) {
     this.client.avatar = newAvatar;
+    this.set.clientId.avatar = newAvatar;
   }
 
-  openAvatarComponent() {
+  toggleAvatarComponent() {
     this.toggleContent();
   }
 

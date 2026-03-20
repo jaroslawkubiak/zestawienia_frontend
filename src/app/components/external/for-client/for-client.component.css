@@ -177,7 +177,7 @@ h3 {
 
   .header {
     min-width: auto;
-    padding: 15px;
+    padding: 16px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -225,7 +225,7 @@ h3 {
     height: 100vh;
     background-color: var(--neutral-color-09);
     z-index: 50;
-    padding: 15px;
+    padding: 16px;
     animation: slideDown 0.3s ease;
   }
 
@@ -261,8 +261,8 @@ h3 {
     display: flex;
     align-items: center;
     gap: 15px;
-    font-size: 2.5rem;
-    margin: 5px;
+    font-size: 2.4rem;
+    margin: 4px;
     color: var(--neutral-color-03);
   }
 
@@ -290,7 +290,7 @@ h3 {
   }
 
   .mobile-menu-list li {
-    padding: 10px 0;
+    padding: 8px 0;
     font-size: 1.6rem;
     font-weight: 600;
     border-bottom: 1px solid var(--neutral-color-03);
@@ -302,15 +302,15 @@ h3 {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 5px 10px;
+    padding: 4px 8px;
     color: var(--neutral-color-09);
     background-color: var(--neutral-color-03);
     border-bottom: 3px solid var(--neutral-color-09);
   }
 
   .avatar-img {
-    width: 35px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
 }
 

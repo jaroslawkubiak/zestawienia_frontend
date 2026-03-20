@@ -12,7 +12,7 @@
 }
 
 .send-files-wrapper i {
-  font-size: 50px;
+  font-size: 5rem;
   color: var(--accent-color-06);
 }
 
@@ -36,7 +36,7 @@
   display: flex;
   align-items: center;
   gap: 20px;
-  padding: 30px 0 10px 12px;
+  padding: 30px 0 8px 12px;
   width: 100%;
 }
 
@@ -105,11 +105,11 @@
   display: flex;
   gap: 8px;
   align-items: center;
-  font-size: 20px;
+  font-size: 2rem;
 }
 
 .select-span i {
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .select-directory-distabled {
@@ -131,5 +131,34 @@
 }
 
 .p-progressbar-determinate {
-  height: 20px;
+  height: 16px !important;
+}
+
+/* MOBILE  */
+@media (max-width: 768px) {
+  .send-file-directory-wrapper {
+    gap: 8px;
+    padding: 16px 8px;
+    justify-content: space-between;
+  }
+
+  .p-select {
+    padding: 0px 8px !important;
+    width: 200px !important;
+  }
+
+  .send-file-directory-wrapper label,
+  .send-file-directory-wrapper label i,
+  .select-span,
+  .select-span i {
+    font-size: 1.4rem;
+  }
+
+  .p-progressbar-determinate {
+    height: 12px !important;
+  }
+
+  .avatar-warning {
+    font-size: 1.2rem;
+  }
 }

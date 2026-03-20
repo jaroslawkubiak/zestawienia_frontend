@@ -37,9 +37,7 @@
       </div>
       <!-- PRODUCT LINK WRAPPER -->
       <div
-        class="{{
-          position.link ? 'product-buttons flex-center' : ''
-        }}"
+        class="{{ position.link ? 'product-buttons flex-center' : '' }}"
         pTooltip="Otwórz link do produktu"
         tooltipPosition="bottom"
         *ngIf="position.link"
@@ -119,9 +117,7 @@
   <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO STATUS-->
   <div
     class="product-details product-price"
-    [style.margin-bottom]="
-      isMobile && position.status.label ? '60px' : '0px'
-    "
+    [style.margin-bottom]="isMobile && position.status.label ? '60px' : '0px'"
   >
     <!-- ILOŚĆ -->
     <div
@@ -184,8 +180,8 @@
   (onHide)="onDialogClosed()"
   [style]="{
     width: '70rem',
-    height: isMobile ? '100vh' : '',
-    borderRadius: '20px',
+    height: isMobile ? '' : '',
+    borderRadius: isMobile ? '10px' : '20px',
   }"
   [dismissableMask]="true"
 >

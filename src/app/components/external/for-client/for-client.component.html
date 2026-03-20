@@ -18,10 +18,10 @@
       [class.closing]="mobileMenuClosing"
       (click)="$event.stopPropagation()"
     >
-      <!-- mobile menu header  -->
+      <!-- MOBILE MENU HEADER  -->
       <div class="mobile-menu-header">
         <div class="mobile-menu-actions">
-          <!-- SHOW ATTACHED FILES BTN MOBILE -->
+          <!-- MOBILE SHOW ATTACHED FILES BTN -->
           <div class="position-relative">
             <i
               class="pi pi-cloud"
@@ -35,7 +35,7 @@
               [pTooltip]="'Ilość załączonych plików'"
             ></p-badge>
           </div>
-          <!-- SEND FILES BTN MOBILE -->
+          <!-- MOBILE SEND FILES BTN -->
           <div>
             <i
               class="pi pi-cloud-upload"
@@ -45,11 +45,11 @@
               "
             ></i>
           </div>
-          <!-- AVATAR  -->
+          <!-- MOBILE AVATAR  -->
           <img
             [src]="getAvatarForComment()"
             (error)="onAvatarError($event)"
-            (click)="openAvatarComponent(); toggleMobileMenu()"
+            (click)="toggleAvatarComponent(); toggleMobileMenu()"
             alt="avatar"
             class="avatar-img"
             pTooltip="Avatary"
@@ -59,7 +59,7 @@
         <i class="pi pi-times close-icon" (click)="toggleMobileMenu()"></i>
       </div>
 
-      <!-- mobile menu bookmarks -->
+      <!-- MOBILE MENU BOOKMARKS -->
       <ul class="mobile-menu-list">
         @for (bookmark of set.bookmarks; track bookmark.id) {
           <li (click)="loadContentForBookmark(bookmark.id); toggleMobileMenu()">
@@ -69,6 +69,7 @@
       </ul>
     </div>
 
+    <!-- DESKTOP MENU -->
     <div class="header">
       <div class="header-title-desktop">
         <h3>Witamy w zestawieniu do inwestycji</h3>
@@ -81,7 +82,7 @@
       </div>
 
       <div class="header-actions-btn">
-        <!-- SHOW ATTACHED FILES BTN  -->
+        <!-- DESKTOP SHOW ATTACHED FILES BTN  -->
         <div class="action-btn-wrapper" (click)="showAttachedFiles()">
           <i class="pi pi-cloud"></i>
           <p-badge
@@ -94,7 +95,7 @@
           ></p-badge>
           <label> Załączone pliki </label>
         </div>
-        <!-- SEND FILES BTN  -->
+        <!-- DESKTOP SEND FILES BTN  -->
         <div
           class="action-btn-wrapper"
           (click)="openSendFilesDialog(set.id, set.hash, set.name)"
@@ -102,11 +103,11 @@
           <i id="upload-icon" class="pi pi-cloud-upload"></i>
           <label for="upload-icon"> Prześlij inspiracje </label>
         </div>
-        <!-- AVATAR  -->
+        <!-- DESKTOP AVATAR  -->
         <img
           [src]="getAvatarForComment()"
           (error)="onAvatarError($event)"
-          (click)="openAvatarComponent()"
+          (click)="toggleAvatarComponent()"
           alt="avatar"
           class="avatar-img"
           pTooltip="Avatary"
