@@ -18,7 +18,7 @@
 }
 /* flex gap */
 ::ng-deep .p-toast-message-content {
-  gap: 15px !important;
+  gap: 16px !important;
   align-items: flex-start;
   justify-content: center;
 }

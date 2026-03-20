@@ -254,13 +254,13 @@ h3 {
   .mobile-menu-actions {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
   }
 
   .mobile-menu-actions i {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 16px;
     font-size: 2.4rem;
     margin: 4px;
     color: var(--neutral-color-03);
@@ -286,7 +286,7 @@ h3 {
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 10px;
+    gap: 12px;
   }
 
   .mobile-menu-list li {

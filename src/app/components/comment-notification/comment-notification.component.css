@@ -1,11 +1,11 @@
 .comment-nofitication-container {
   width: var(--screen-width);
-  margin: 10px auto;
+  margin: 12px auto;
 }
 
 .active-timers {
   width: 1000px;
-  margin: 10px auto;
+  margin: 12px auto;
 }
 
 .header {
@@ -20,7 +20,7 @@ tr {
 }
 
 th {
-  padding: 1rem 0.5rem !important;
+  padding: 16px 8px !important;
 }
 
 th i {
@@ -28,7 +28,7 @@ th i {
 }
 
 ::ng-deep .custom-table .p-datatable-tbody > tr > td {
-  padding: 1rem 0.5rem;
+  padding: 16px 8px;
 }
 
 .search-wrapper {
@@ -81,7 +81,7 @@ th i {
   align-items: center;
   justify-content: center;
   width: 100px;
-  gap: 10px;
+  gap: 12px;
   padding: 0;
   margin: 0;
 }

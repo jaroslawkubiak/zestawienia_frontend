@@ -45,7 +45,7 @@
 .settings-avatar {
   position: relative;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 }
 
 .settings-avatar span {
@@ -121,7 +121,7 @@
   }
 
   .setting-avatar-images {
-    gap: 10px;
+    gap: 12px;
   }
 
   .settings-avatar-label {

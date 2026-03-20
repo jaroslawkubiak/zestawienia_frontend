@@ -23,7 +23,7 @@
 
 .send-email-title {
   font-size: 1.8rem;
-  padding: 0.75rem 1.5rem;
+  padding: 8px 16px;
   background-color: var(--neutral-color-09);
   color: var(--neutral-color-03);
   border-bottom: 1px solid var(--neutral-color-03);
@@ -34,7 +34,7 @@
   justify-content: start;
   align-items: center;
   font-size: 1.6rem;
-  padding: 0.75rem 1.5rem;
+  padding: 8px 16px;
   background-color: var(--neutral-color-02);
 }
 
@@ -47,7 +47,7 @@
   display: flex;
   justify-content: center;
   font-weight: 700;
-  padding: 1.5rem;
+  padding: 16px;
   position: relative;
   color: var(--neutral-color-03);
   background-color: var(--neutral-color-09);
@@ -99,7 +99,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 1rem;
+  padding: 16px;
   background-color: var(--neutral-color-09);
 }
 
@@ -114,7 +114,7 @@
 
 .send-email-template-wrapper {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: center;
   justify-content: flex-end;
   background-color: var(--neutral-color-09);
@@ -163,7 +163,7 @@
 
 ::ng-deep .p-select-clear-icon {
   position: absolute !important;
-  margin-right: 10px !important;
+  margin-right: 12px !important;
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {

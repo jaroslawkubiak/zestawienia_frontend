@@ -20,7 +20,7 @@ th {
 .header-cell-client {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
   color: var(--neutral-color-09);
 }
 
@@ -95,7 +95,7 @@ th {
 }
 
 .link {
-  gap: 5px;
+  gap: 4px;
   font-size: 1.4rem;
   font-weight: 700;
   cursor: pointer;

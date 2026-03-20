@@ -39,7 +39,7 @@ th {
 .action-btns-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 4px;
 }
 
 .no-arrows::-webkit-inner-spin-button,
@@ -176,7 +176,7 @@ th {
 
 ::ng-deep .p-select-clear-icon {
   position: absolute !important;
-  margin-right: 10px !important;
+  margin-right: 12px !important;
   color: var(--accent-color-07) !important;
   top: calc((var(--row-height) / 2) - 3px) !important;
 }

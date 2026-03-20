@@ -9,24 +9,24 @@
 .settings-color-row {
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 12px;
 }
 
 .settings-color-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .settings-color-wrapper span {
-  padding: 10px;
+  padding: 12px;
 }
 
 .settings-color-item {
   width: 100px;
   height: 150px;
-  margin: 2px;
+  margin: 4px;
 }
 
 .settings-color-container p {

@@ -2,17 +2,17 @@
   display: flex;
   justify-content: center;
   font-size: 3rem;
-  margin-top: 8rem;
+  margin-top: 50px;
 }
 
 .unread-comments-wrapper {
-  margin-top: 4rem;
+  margin-top: 40px;
 }
 
 .unread-comments {
   display: flex;
   justify-content: center;
   font-size: 2rem;
-  padding: 5px;
+  padding: 4px;
   color: var(--neutral-color-07);
 }

@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   padding: 20px 30px;
-  gap: 1.5rem;
+  gap: 20px;
   background-color: var(--chat-bg);
   height: 500px;
   overflow-y: auto;
@@ -283,7 +283,7 @@
 .new-message-action-btns {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   color: var(--neutral-color-03);
 }
 
@@ -351,12 +351,12 @@
   }
 
   ::ng-deep .p-dialog-header {
-    padding: 6px;
+    padding: 8px;
   }
 
   ::ng-deep .p-dialog-title {
     font-size: 12px !important;
-    padding: 6px;
+    padding: 8px;
   }
 
   ::ng-deep .p-dialog-content {
@@ -366,7 +366,7 @@
   .chat-container {
     flex: 1;
     min-height: 0;
-    gap: 5px;
+    gap: 4px;
   }
 
   .new-message-input-wrapper {
@@ -374,7 +374,7 @@
   }
 
   .message-wrapper {
-    padding: 6px 4px 8px 4px;
+    padding: 8px 4px 8px 4px;
   }
 
   .new-message-textarea {

@@ -25,7 +25,7 @@
 .file-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 25px;
+  gap: 24px;
 }
 
 .file-container .file-item {
@@ -70,7 +70,7 @@
 }
 
 .directory-name-wrapper.first {
-  margin-top: 10px;
+  margin-top: 12px;
 }
 
 .directory-name-wrapper i {
@@ -102,26 +102,26 @@
 @media (max-width: 768px) {
   .file-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 12px;
     margin: 0 auto;
   }
 
   .show-file-directory-wrapper {
-    gap: 10px;
+    gap: 12px;
     width: 100%;
-    padding-top: 10px;
+    padding-top: 12px;
   }
 
   .directory-name-wrapper {
-    gap: 10px;
-    margin-top: 10px;
-    margin-bottom: 5px;
+    gap: 12px;
+    margin-top: 12px;
+    margin-bottom: 4px;
     font-size: 2rem;
   }
 
   .directory-name-wrapper i {
     font-size: 1.6rem;
-    margin-right: 5px;
+    margin-right: 4px;
   }
 
   .icons-top-action-btns {
@@ -133,7 +133,7 @@
   .file-container .file-item {
     width: 150px;
     height: 250px;
-    padding: 10px;
+    padding: 12px;
     border-radius: 5px;
   }
 

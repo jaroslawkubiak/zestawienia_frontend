@@ -1,7 +1,7 @@
 .preview-container {
   display: grid;
   grid-template-rows: 1fr 40px 40px;
-  gap: 10px;
+  gap: 12px;
   height: 100%;
 }
 
@@ -33,7 +33,7 @@
   text-align: center;
   width: 100%;
   color: var(--accent-color-09);
-  padding-top: 5px;
+  padding-top: 4px;
 }
 
 .preview-action-btns {
@@ -116,7 +116,7 @@
 @media (max-width: 768px) {
   .preview-container {
     grid-template-rows: 1fr 40px 35px;
-    gap: 5px;
+    gap: 4px;
   }
 
   .preview-file-name-label {
