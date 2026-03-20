@@ -15,7 +15,6 @@ import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { IClient } from '../../clients/types/IClient';
 import { SendFilesComponent } from '../../files/send-files/send-files.component';
-import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IUploadAvatarResponse } from '../../files/types/IUploadAvatarResponse';
 import { SettingsService } from '../settings.service';
 import { IAvatar } from './types/IAvatarList';
@@ -62,7 +61,7 @@ export class AvatarsComponent {
 
     this.cd.markForCheck();
   }
-
+  
   sortAvatars(avatars: IAvatar[]) {
     this.avatars = [];
     this.clientAvatars = [];
@@ -99,7 +98,7 @@ export class AvatarsComponent {
   }
 
   openSendFilesDialog() {
-    this.dialogSendFilesComponent.openSendAvatarDialog(this.client?.id ?? null);
+    this.dialogSendFilesComponent.openSendAvatarDialog(this.client?.id ?? null, this.clientAvatars);
   }
 
   updateAttachedFiles() {
