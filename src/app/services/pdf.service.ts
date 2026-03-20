@@ -47,7 +47,7 @@ export class PdfService {
   ];
 
   drawSummaryPage = false;
-  drawFooter = false;
+  drawFooter = true;
 
   // get colors from css variables
   colors = {
@@ -119,6 +119,7 @@ export class PdfService {
     //   },
     //   {} as { [key: number]: { cellWidth: number | 'auto' } },
     // );
+
     // suma szerokości kolumn zdefiniowanych przez pdfWidth
     const fixedWidthSum = this.visibleColumns
       .filter((col) => col.pdfWidth)
@@ -323,9 +324,6 @@ export class PdfService {
 
       // totals for footer
       let totals = {
-        ilosc: 0,
-        netto: 0,
-        brutto: 0,
         wartoscNetto: 0,
         wartoscBrutto: 0,
       };
@@ -342,11 +340,8 @@ export class PdfService {
             ? calculateWartosc(row.ilosc, brutto)
             : 0;
 
-          totals.ilosc += row.ilosc;
-          totals.netto += row.netto;
-          totals.brutto += brutto;
-          totals.wartoscNetto += wartoscNetto;
-          totals.wartoscBrutto += wartoscBrutto;
+          totals.wartoscNetto += row.status.summary ? wartoscNetto : 0;
+          totals.wartoscBrutto += row.status.summary ? wartoscBrutto : 0;
 
           // prepare row in order according to visibleColumns
           const formatRow = (row: any) => {
@@ -532,8 +527,6 @@ export class PdfService {
       if (this.drawFooter) {
         // calculate footer
         const footerRow = this.visibleColumns.map(({ key }) => {
-          if (key === 'ilosc') return totals.ilosc;
-
           const value = totals[key as keyof typeof totals];
           return value !== undefined && typeof value === 'number'
             ? formatPLN(value)
@@ -569,7 +562,8 @@ export class PdfService {
 
     // draw header and footer for every page
     const totalPages = doc.getNumberOfPages();
-    for (let i = 2; i <= totalPages; i++) {
+    const startingPageNumber = this.drawSummaryPage ? 2 : 1;
+    for (let i = startingPageNumber; i <= totalPages; i++) {
       doc.setPage(i);
 
       this.drawRectLeft(
@@ -586,7 +580,7 @@ export class PdfService {
         14,
         14,
         this.colors.white,
-        set.clientId.firstName,
+        set.clientId.firstName + ' ' + set.clientId.lastName,
       );
       this.drawRectFull(
         doc,
@@ -625,29 +619,44 @@ export class PdfService {
       `Copyright @${new Date().getFullYear()} Żurawicki Design`,
     );
 
-    const pdfBlob = doc.output('blob');
-    const formData = new FormData();
-    formData.append('files', pdfBlob, `${set.name}.pdf`);
-    const uploadFolder = EFileDirectory.SET_PDF;
+    const finalAction: Array<'openInNewCard' | 'sendToFtp'> = [
+      // 'openInNewCard',
+      'sendToFtp',
+    ];
 
-    return new Promise((resolve, reject) => {
-      this.filesService
-        .saveFile(set.id, set.hash, formData, uploadFolder)
-        .pipe(
-          filter((event) => event.type === HttpEventType.Response),
-          map((event) => event.body),
-        )
-        .subscribe({
-          next: (body) => {
-            this.notificationService.showNotification(
-              'success',
-              'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
-            );
+    // execute final actions
+    finalAction.forEach((action) => {
+      switch (action) {
+        case 'openInNewCard':
+          const pdfUrl = doc.output('bloburl');
+          window.open(pdfUrl, '_blank');
+          break;
+        case 'sendToFtp':
+          const pdfBlob = doc.output('blob');
+          const formData = new FormData();
+          formData.append('files', pdfBlob, `${set.name}.pdf`);
+          const uploadFolder = EFileDirectory.SET_PDF;
 
-            resolve(body);
-          },
-          error: (err) => reject(err),
-        });
+          new Promise((resolve, reject) => {
+            this.filesService
+              .saveFile(set.id, set.hash, formData, uploadFolder)
+              .pipe(
+                filter((event) => event.type === HttpEventType.Response),
+                map((event) => event.body),
+              )
+              .subscribe({
+                next: (body) => {
+                  this.notificationService.showNotification(
+                    'success',
+                    'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
+                  );
+
+                  resolve(body);
+                },
+                error: (err) => reject(err),
+              });
+          });
+      }
     });
   }
 
