@@ -1,3 +1,7 @@
+.position-container {
+  border: 1px solid var(--neutral-color-05);
+}
+
 td {
   padding: 0 !important;
   height: var(--row-height) !important;
