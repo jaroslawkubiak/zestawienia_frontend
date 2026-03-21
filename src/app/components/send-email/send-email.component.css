@@ -44,10 +44,8 @@
 }
 
 .send-email-label {
-  display: flex;
-  justify-content: center;
   font-weight: 700;
-  padding: 16px;
+  height: 50px;
   position: relative;
   color: var(--neutral-color-03);
   background-color: var(--neutral-color-09);
@@ -99,12 +97,13 @@
   position: absolute;
   top: 0;
   right: 0;
-  padding: 16px;
+  height: 50px;
+  padding: 0 16px;
   background-color: var(--neutral-color-09);
 }
 
 .send-email-btn i {
-  font-size: 3rem;
+  font-size: 2.4rem;
   color: var(--neutral-color-03);
 }
 
@@ -119,6 +118,8 @@
   justify-content: flex-end;
   background-color: var(--neutral-color-09);
   color: var(--neutral-color-03);
+  height: 50px;
+  border-bottom: 1px solid var(--neutral-color-03);
 }
 
 .send-email-to-off i {
