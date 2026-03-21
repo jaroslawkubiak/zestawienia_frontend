@@ -619,44 +619,34 @@ export class PdfService {
       `Copyright @${new Date().getFullYear()} Żurawicki Design`,
     );
 
-    const finalAction: Array<'openInNewCard' | 'sendToFtp'> = [
-      // 'openInNewCard',
-      'sendToFtp',
-    ];
+    // openInNewCard
+    // const pdfUrl = doc.output('bloburl');
+    // window.open(pdfUrl, '_blank');
 
-    // execute final actions
-    finalAction.forEach((action) => {
-      switch (action) {
-        case 'openInNewCard':
-          const pdfUrl = doc.output('bloburl');
-          window.open(pdfUrl, '_blank');
-          break;
-        case 'sendToFtp':
-          const pdfBlob = doc.output('blob');
-          const formData = new FormData();
-          formData.append('files', pdfBlob, `${set.name}.pdf`);
-          const uploadFolder = EFileDirectory.SET_PDF;
+    // send PDF file to FTP
+    const pdfBlob = doc.output('blob');
+    const formData = new FormData();
+    formData.append('files', pdfBlob, `${set.name}.pdf`);
+    const uploadFolder = EFileDirectory.SET_PDF;
 
-          new Promise((resolve, reject) => {
-            this.filesService
-              .saveFile(set.id, set.hash, formData, uploadFolder)
-              .pipe(
-                filter((event) => event.type === HttpEventType.Response),
-                map((event) => event.body),
-              )
-              .subscribe({
-                next: (body) => {
-                  this.notificationService.showNotification(
-                    'success',
-                    'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
-                  );
+    return new Promise((resolve, reject) => {
+      this.filesService
+        .saveFile(set.id, set.hash, formData, uploadFolder)
+        .pipe(
+          filter((event) => event.type === HttpEventType.Response),
+          map((event) => event.body),
+        )
+        .subscribe({
+          next: (body) => {
+            this.notificationService.showNotification(
+              'success',
+              'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
+            );
 
-                  resolve(body);
-                },
-                error: (err) => reject(err),
-              });
-          });
-      }
+            resolve(body);
+          },
+          error: (err) => reject(err),
+        });
     });
   }
 
