@@ -34,16 +34,37 @@
     </div>
   </div>
   <div class="send-email-content-container">
-    <label class="send-email-label flex-center"
-      >Podgląd treści wiadomości</label
-    >
-    <div class="send-email-btn flex-center" [class.send-email-to-off]="isSendingDisabled">
-      <i
-        class="pi pi-send"
-        (click)="sendEmail()"
-        tooltipPosition="left"
-        pTooltip="{{ tooltipText }}"
-      ></i>
+    <div class="send-email-preview-header">
+      <div
+        *ngIf="editEmailBody"
+        class="send-email-btn flex-center"
+        tooltipPosition="bottom"
+        pTooltip="Podgląd treści"
+      >
+        <i class="pi pi-eye" (click)="toggleEditEmailBody()"></i>
+      </div>
+      <div
+        *ngIf="!editEmailBody"
+        class="send-email-btn flex-center"
+        tooltipPosition="bottom"
+        pTooltip="Edytuj treść"
+      >
+        <i class="pi pi-pencil" (click)="toggleEditEmailBody()"></i>
+      </div>
+      <label class="send-email-label flex-center">{{
+        editEmailBody ? "Edytuj treść e-mail" : "Podgląd treści e-mail"
+      }}</label>
+      <div
+        class="send-email-btn flex-center"
+        [class.send-email-to-off]="isSendingDisabled"
+      >
+        <i
+          class="pi pi-send"
+          (click)="sendEmail()"
+          tooltipPosition="bottom"
+          pTooltip="{{ tooltipText }}"
+        ></i>
+      </div>
     </div>
     <div class="send-email-preview-container">
       <div class="send-email-iframe-wrapper">
@@ -52,12 +73,18 @@
           class="send-email-preview-iframe-header"
         ></iframe>
         <textarea
+          *ngIf="editEmailBody"
           class="send-email-textarea"
           id="message"
           [(ngModel)]="emailMessage"
           (ngModelChange)="onMessageChange($event)"
           rows="6"
         ></textarea>
+        <iframe
+          *ngIf="!editEmailBody"
+          #iframeRefBody
+          class="send-email-preview-iframe-body"
+        ></iframe>
         <iframe
           #iframeRefFooter
           class="send-email-preview-iframe-footer"

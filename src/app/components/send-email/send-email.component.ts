@@ -40,6 +40,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
   allTemplates: IEmailTemplateList[] = [];
   templates: IEmailTemplateList[] = [];
   selectedTemplate!: IEmailTemplateList;
+  editEmailBody = false;
   private _supplier?: ISupplier;
   @Input() set!: ISet;
   @Input()
@@ -61,6 +62,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
   @ViewChild('iframeRefHeader') iframeRefHeader!: ElementRef<HTMLIFrameElement>;
   @ViewChild('iframeRefFooter') iframeRefFooter!: ElementRef<HTMLIFrameElement>;
+  @ViewChild('iframeRefBody') iframeRefBody!: ElementRef<HTMLIFrameElement>;
   @Output() getEmailsList = new EventEmitter<any>();
   @Output() hideEmailDialog = new EventEmitter<any>();
 
@@ -154,6 +156,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     const checkAndLoadPreview = () => {
       loadedIframes++;
+
       if (loadedIframes === this.TOTAL_IFRAME) {
         this.viewInitialized = true;
         this.loadPreview();
@@ -161,18 +164,12 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
     };
 
     const iframeHeader = this.iframeRefHeader.nativeElement;
-    iframeHeader.srcdoc = `
-    <html><body style="margin:0;padding:0;font-family:Arial;">
-      <div id="previewHeader"></div>
-    </body></html>`;
-    iframeHeader.onload = checkAndLoadPreview;
-
+    const iframeBody = this.iframeRefBody.nativeElement;
     const iframeFooter = this.iframeRefFooter.nativeElement;
-    iframeFooter.srcdoc = `
-    <html><body style="margin:0;padding:0;font-family:Arial;">
-      <div id="previewFooter"></div>
-    </body></html>`;
-    iframeFooter.onload = checkAndLoadPreview;
+
+    this.initIframe(iframeHeader, 'previewHeader', checkAndLoadPreview);
+    this.initIframe(iframeBody, 'previewBody', checkAndLoadPreview);
+    this.initIframe(iframeFooter, 'previewFooter', checkAndLoadPreview);
   }
 
   loadPreview() {
@@ -209,6 +206,8 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
         }
 
         this.emailMessage = response.content;
+        this.renderBody();
+
         this.emailSubject = response.emailSubject;
         this.linkToSet = response.linkToSet;
 
@@ -216,8 +215,25 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
       });
   }
 
+  renderBody() {
+    const iframeBody = this.iframeRefBody.nativeElement;
+    const docBody = iframeBody.contentDocument;
+
+    if (!docBody) return;
+
+    const container = docBody.getElementById('previewBody');
+
+    if (container) {
+      container.innerHTML = this.emailMessage.replace(/\n/g, '<br/>');
+    }
+  }
+
   onMessageChange(value: string) {
     this.emailMessage = value;
+
+    if (!this.editEmailBody) {
+      this.renderBody();
+    }
   }
 
   get isSendingDisabled(): boolean {
@@ -298,9 +314,10 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     const headerHtml =
       docHeader?.getElementById('previewHeader')?.innerHTML || '';
+
     const footerHtml =
       docFooter?.getElementById('previewFooter')?.innerHTML || '';
-    const bodyHtml = (this.emailMessage || '').replace(/\n/g, '<br/>');
+    const bodyHtml = (this.emailMessage || '').replace(/\n/g, '<br />');
 
     return `
     <table align='center' width='800px' border='0' style='margin:20px auto; max-width:800px; border-collapse: collapse;'>
@@ -321,5 +338,39 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
       </tr>
     </table>
   `;
+  }
+
+  initIframe(
+    iframe: HTMLIFrameElement,
+    id: string,
+    onLoadCallback?: () => void,
+  ) {
+    iframe.onload = () => {
+      onLoadCallback?.();
+    };
+
+    iframe.srcdoc = `
+    <html>
+      <body style="margin:0;padding:0;font-family:Arial;">
+        <div id="${id}"></div>
+      </body>
+    </html>
+  `;
+  }
+
+  toggleEditEmailBody() {
+    this.editEmailBody = !this.editEmailBody;
+
+    if (!this.editEmailBody) {
+      setTimeout(() => {
+        const iframe = this.iframeRefBody?.nativeElement;
+
+        if (!iframe) return;
+
+        this.initIframe(iframe, 'previewBody', () => {
+          this.renderBody();
+        });
+      });
+    }
   }
 }
