@@ -22,7 +22,7 @@
 
 .chat-wrapper {
   border: 1px solid var(--accent-color-06);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
 }
 
@@ -159,7 +159,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 100%;
+  border-radius: 6px;
   color: var(--neutral-color-02);
   opacity: 0;
   visibility: hidden;
@@ -248,7 +248,7 @@
   font-family: "Poppins", sans-serif;
 
   width: auto;
-  border-radius: 0px;
+  border-radius: 8px;
   border: 1px solid var(--accent-color-07) !important;
 }
 
@@ -269,7 +269,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 100%;
+  border-radius: 8px;
   height: 40px;
   aspect-ratio: 1/1;
   cursor: pointer;
@@ -296,7 +296,7 @@
 .message-mark-all-not-needs-attention-btn {
   width: 35px;
   aspect-ratio: 1/1;
-  border-radius: 100%;
+  border-radius: 8px;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease;
