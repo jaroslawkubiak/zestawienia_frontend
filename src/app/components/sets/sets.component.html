@@ -106,18 +106,18 @@
         <td (click)="$event.stopPropagation()">
           <div class="action-btn-wrapper">
             <p-button
+              severity="contrast"
               icon="pi pi-pencil"
               class="m-8"
-              severity="contrast"
               alt="Edytuj zestawienie"
               pTooltip="Edytuj zestawienie"
               tooltipPosition="bottom"
               (click)="editSet(set.id)"
             />
             <p-button
+              severity="contrast"
               icon="pi pi-trash"
               class="m-8"
-              severity="contrast"
               alt="Usuń Zestawienie"
               pTooltip="{{
                 set.status !== statusesList.new
@@ -130,9 +130,9 @@
             />
             <div class="btn-comments-wrapper">
               <p-button
+                severity="contrast"
                 icon="pi pi-cloud"
                 class="m-8"
-                severity="contrast"
                 alt="Załączniki"
                 pTooltip="{{
                   set.files?.length > 0
@@ -152,9 +152,9 @@
               />
             </div>
             <p-button
+              severity="contrast"
               icon="pi pi-paperclip"
               class="m-8"
-              severity="contrast"
               alt="Prześlij pliki"
               pTooltip="Prześlij pliki"
               tooltipPosition="bottom"
@@ -162,9 +162,9 @@
             />
             <div class="btn-comments-wrapper">
               <p-button
+                severity="contrast"
                 icon="pi pi-comments"
                 class="m-8"
-                severity="contrast"
                 alt="Zobacz komentarze"
                 pTooltip="Zobacz komentarze"
                 tooltipPosition="bottom"

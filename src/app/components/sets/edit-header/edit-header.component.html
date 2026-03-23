@@ -37,28 +37,29 @@
     </div>
 
     <div class="field bookmarks-container">
-      @if(isLoading) {
-      <app-loading-spinner [size]="100"></app-loading-spinner>
+      @if (isLoading) {
+        <app-loading-spinner [size]="100"></app-loading-spinner>
       } @else {
-      <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
-        <p-checkbox
-          name="bookmarks"
-          size="large"
-          class="bookmarks-checkbox"
-          [inputId]="bookmark.id.toString()"
-          [value]="bookmark"
-          [(ngModel)]="selectedBookmarks"
-        >
-        </p-checkbox>
-        <label [for]="bookmark.id.toString()" class="ml-2">
-          {{ bookmark.name }}
-        </label>
-      </div>
+        <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
+          <p-checkbox
+            name="bookmarks"
+            size="large"
+            class="bookmarks-checkbox"
+            [inputId]="bookmark.id.toString()"
+            [value]="bookmark"
+            [(ngModel)]="selectedBookmarks"
+          >
+          </p-checkbox>
+          <label [for]="bookmark.id.toString()" class="ml-2">
+            {{ bookmark.name }}
+          </label>
+        </div>
       }
     </div>
 
     <div class="actions">
       <p-button
+        severity="contrast"
         label="Anuluj"
         icon="pi pi-times"
         text
@@ -66,6 +67,7 @@
         size="large"
       />
       <p-button
+        severity="contrast"
         label="Zapisz"
         icon="pi pi-check"
         (click)="save()"
