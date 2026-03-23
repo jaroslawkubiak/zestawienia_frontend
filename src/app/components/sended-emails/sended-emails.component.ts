@@ -72,8 +72,6 @@ export class SendedEmailsComponent implements OnInit {
             ...email,
             icon: isSupplier ? 'pi pi-truck i-supplier' : 'pi pi-user i-client',
             company: entity?.company,
-            emailTo: entity?.email,
-            secondEmail: isSupplier ? '' : client?.secondEmail,
             fullName:
               `${entity?.firstName ?? ''} ${entity?.lastName ?? ''}`.trim(),
           };

@@ -6,15 +6,15 @@
   <p-table
     #dt
     [value]="emails"
-    [rows]="10"
+    [rows]="20"
     [columns]="cols"
     [paginator]="true"
     [globalFilterFields]="[
-      'emailTo',
+      'to',
       'secondEmail',
       'company',
       'set.name',
-      'sendBy.name',
+      'subject',
       'fullName',
     ]"
     [tableStyle]="{ 'min-width': '105rem' }"
@@ -34,7 +34,7 @@
             pTooltip="Filtruj e-maile"
             tooltipPosition="bottom"
             (input)="onGlobalFilter($event)"
-            placeholder="Firma, e-mail, nazwa inwestycji, wysłał"
+            placeholder="Firma, e-mail, tytuł e-mail, nazwa inwestycji"
           />
         </p-iconfield>
       </div>
@@ -51,9 +51,9 @@
           Dodatkowy e-mail
           <p-sortIcon field="emailTo" />
         </th>
-        <th pSortableColumn="set.name" style="min-width: 20rem">
-          Inwestycja
-          <p-sortIcon field="set.name" />
+        <th pSortableColumn="subject" style="min-width: 20rem">
+          Tytuł e-mail
+          <p-sortIcon field="subject" />
         </th>
         <th style="min-width: 10rem">Link</th>
         <th pSortableColumn="company" style="min-width: 12rem">
@@ -78,7 +78,7 @@
           <i class="{{ email.icon }}"></i>
         </td>
         <td class="no-action">
-          {{ email.emailTo }}
+          {{ email.to }}
         </td>
         <td class="no-action">
           {{ email.secondEmail }}
@@ -89,7 +89,7 @@
           pTooltip="Przejdź do zestawienia"
           tooltipPosition="left"
         >
-          {{ email.set.name }}
+          {{ email.subject }}
         </td>
         <td class="cursor-pointer">
           <a
