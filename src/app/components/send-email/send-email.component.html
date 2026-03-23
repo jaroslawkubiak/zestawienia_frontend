@@ -57,6 +57,7 @@
       <div
         class="send-email-btn flex-center"
         [class.send-email-to-off]="isSendingDisabled"
+        [class.sending-email-in-progress]="sendingInProgress"
       >
         <i
           class="pi pi-send"
@@ -68,6 +69,12 @@
     </div>
     <div class="send-email-preview-container">
       <div class="send-email-iframe-wrapper">
+        <div
+          class="sending-email-is-in-progress flex-center"
+          *ngIf="sendingInProgress"
+        >
+          <app-loading-spinner [size]="200"></app-loading-spinner>
+        </div>
         <iframe
           #iframeRefHeader
           class="send-email-preview-iframe-header"

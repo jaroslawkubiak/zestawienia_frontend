@@ -75,11 +75,10 @@
 }
 
 .send-email-preview-iframe-header {
-  height: 220px !important;
+  height: 235px !important;
 }
 
 .send-email-preview-iframe-body {
-  height: 300px !important;
   padding: 0 20px;
 }
 
@@ -95,10 +94,23 @@
 }
 
 .send-email-iframe-wrapper {
+  position: relative;
   width: 840px;
   display: flex;
   flex-direction: column;
   justify-self: center;
+}
+
+.sending-email-is-in-progress {
+  position: absolute;
+  z-index: 999;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+
+  animation: fadeIn 0.4s ease-out forwards;
+  opacity: 0;
 }
 
 .send-email-textarea {
@@ -175,4 +187,12 @@
 
 ::ng-deep .p-select-list-container {
   background-color: var(--neutral-color-03) !important;
+}
+
+.sending-email-in-progress i {
+  color: var(--neutral-color-08);
+}
+
+.sending-email-in-progress i:hover {
+  color: var(--neutral-color-08);
 }

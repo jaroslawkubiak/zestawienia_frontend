@@ -14,9 +14,11 @@ import {
 import { FormsModule } from '@angular/forms';
 import { SelectModule } from 'primeng/select';
 import { TooltipModule } from 'primeng/tooltip';
+import { finalize } from 'rxjs';
 import { NotificationService } from '../../services/notification.service';
 import { SoundService } from '../../services/sound.service';
 import { SoundType } from '../../services/types/SoundType';
+import { LoadingSpinnerComponent } from '../../shared/loading-spinner/loading-spinner.component';
 import { EmailsService } from '../sended-emails/email.service';
 import { TEmailAudience } from '../sended-emails/types/EmailAudience.type';
 import { IEmailDetailsLog } from '../sended-emails/types/IEmailDetailsLog';
@@ -30,7 +32,13 @@ import { IEmailTemplateList } from './types/IEmailTemplateList';
 
 @Component({
   selector: 'app-send-email',
-  imports: [FormsModule, TooltipModule, SelectModule, CommonModule],
+  imports: [
+    FormsModule,
+    TooltipModule,
+    SelectModule,
+    CommonModule,
+    LoadingSpinnerComponent,
+  ],
   templateUrl: './send-email.component.html',
   styleUrl: './send-email.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -82,7 +90,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
     'sendingEmailsToSupplier',
     'senderEmail',
   ];
-
+  sendingInProgress = false;
   constructor(
     private settingsService: SettingsService,
     private emailsService: EmailsService,
@@ -225,6 +233,8 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
 
     if (container) {
       container.innerHTML = this.emailMessage.replace(/\n/g, '<br/>');
+
+      this.adjustIframeHeight(iframeBody);
     }
   }
 
@@ -244,7 +254,11 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
   }
 
   get tooltipText(): string {
-    return this.isSendingDisabled ? 'Wysyłanie wyłączone' : 'Wyślij e-mail';
+    return this.isSendingDisabled
+      ? 'Wysyłanie wyłączone'
+      : this.sendingInProgress
+        ? 'Wysyłanie'
+        : 'Wyślij e-mail';
   }
 
   get disabledMessage(): string {
@@ -259,6 +273,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
   }
 
   sendEmail() {
+    this.sendingInProgress = true;
     if (this.isSendingDisabled) {
       this.notificationService.showNotification('warn', this.disabledMessage);
 
@@ -277,32 +292,39 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
       link: this.linkToSet,
     };
 
-    this.emailsService.sendEmail(newEmail).subscribe({
-      next: (response) => {
-        let confirmationMessage = `Poprawnie wysłano e-mail na adres \n ${response?.accepted[0]}`;
+    this.emailsService
+      .sendEmail(newEmail)
+      .pipe(
+        finalize(() => {
+          this.sendingInProgress = false;
+        }),
+      )
+      .subscribe({
+        next: (response) => {
+          let confirmationMessage = `Poprawnie wysłano e-mail na adres \n ${response?.accepted[0]}`;
 
-        if (response?.accepted.length > 1) {
-          const emailReceiver = response?.accepted.join('\n');
-          confirmationMessage = `Poprawnie wysłano e-mail na adresy \n ${emailReceiver}`;
-        }
+          if (response?.accepted.length > 1) {
+            const emailReceiver = response?.accepted.join('\n');
+            confirmationMessage = `Poprawnie wysłano e-mail na adresy \n ${emailReceiver}`;
+          }
 
-        this.notificationService.showNotification(
-          'success',
-          confirmationMessage,
-        );
+          this.notificationService.showNotification(
+            'success',
+            confirmationMessage,
+          );
 
-        this.soundService.playSound(SoundType.emailSending);
-        this.getEmailsList.emit();
-        this.hideEmailDialog.emit();
-      },
-      error: (error) => {
-        const sendigError = error?.error?.message
-          ? `${error.error.message} : ${error.error?.error}`
-          : 'Nie udało się wysłać e-maila.';
+          this.soundService.playSound(SoundType.emailSending);
+          this.getEmailsList.emit();
+          this.hideEmailDialog.emit();
+        },
+        error: (error) => {
+          const sendigError = error?.error?.message
+            ? `${error.error.message} : ${error.error?.error}`
+            : 'Nie udało się wysłać e-maila.';
 
-        this.notificationService.showNotification('error', sendigError);
-      },
-    });
+          this.notificationService.showNotification('error', sendigError);
+        },
+      });
   }
 
   private getFullEmailHtml(): string {
@@ -371,6 +393,14 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
           this.renderBody();
         });
       });
+    }
+  }
+
+  adjustIframeHeight(iframe: HTMLIFrameElement) {
+    if (iframe.contentDocument) {
+      const doc = iframe.contentDocument;
+      const height = doc.body.scrollHeight;
+      iframe.style.height = height + 'px';
     }
   }
 }
