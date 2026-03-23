@@ -6,7 +6,7 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        severity="primary"
+        severity="contrast"
         label="Nowy"
         icon="pi pi-plus"
         size="large"
@@ -16,10 +16,10 @@
         (onClick)="openNew()"
       />
       <p-button
-        severity="danger"
+        severity="contrast"
         label="Usuń"
         icon="pi pi-trash"
-        class="m-6"
+        class="m-4"
         size="large"
         alt="Usuń zaznaczonych dostawców"
         pTooltip="Usuń zaznaczonych dostawców"
@@ -112,6 +112,7 @@
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
+            severity="contrast"
             icon="pi pi-pencil"
             class="m-4"
             alt="Edytuj dostawcę"
@@ -121,7 +122,7 @@
             (click)="editSupplier(supplier)"
           />
           <p-button
-            severity="danger"
+            severity="contrast"
             icon="pi pi-trash"
             class="m-4"
             alt="Usuń dostawcę"

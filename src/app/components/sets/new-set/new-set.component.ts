@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { InputTextModule } from 'primeng/inputtext';
@@ -35,36 +35,50 @@ export class NewSetComponent implements OnInit {
   name: string = '';
   address: string = '';
   allClients: IClient[] = [];
-  selectedClient = '';
+  selectedClient!: IClient;
   allBookmarks: IBookmarksWithTableColumns[] = [];
   selectedBookmarks: IBookmarksWithTableColumns[] = [];
 
   constructor(
     private bookmarksService: BookmarksService,
     private router: Router,
+    private route: ActivatedRoute,
     private setsService: SetsService,
     private clientsService: ClientsService,
     private notificationService: NotificationService,
   ) {}
 
   ngOnInit() {
-    this.getClients();
-    this.getBookmarks();
-  }
+    let clientIdFromQuery: number | null = null;
+    this.route.queryParams.subscribe((params) => {
+      if (params['clientId']) {
+        clientIdFromQuery = +params['clientId'];
+      }
+    });
 
-  getClients() {
     this.clientsService.getClients().subscribe({
       next: (data) => {
         this.allClients = data.map((client) => ({
           ...client,
           fullName: `${client.firstName} ${client.lastName}`,
         }));
+
+        this.allClients = this.allClients.sort((a, b) =>
+          a.lastName.localeCompare(b.lastName),
+        );
+
+        if (clientIdFromQuery) {
+          const selected = this.allClients.find(
+            (c) => c.id === clientIdFromQuery,
+          );
+          if (selected) {
+            this.selectedClient = selected;
+          }
+        }
       },
       error: (err) => console.error('Error getting clients ', err),
     });
-  }
 
-  getBookmarks() {
     this.bookmarksService.getBookmarks().subscribe({
       next: (data) => {
         this.allBookmarks = data;
@@ -91,7 +105,6 @@ export class NewSetComponent implements OnInit {
       name: this.name,
       address: this.address,
       clientId: client.id,
-      createdBy: 0,
       bookmarks,
     };
 

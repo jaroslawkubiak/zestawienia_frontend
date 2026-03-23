@@ -6,7 +6,7 @@
   <p-toolbar>
     <ng-template #start>
       <p-button
-        severity="primary"
+        severity="contrast"
         label="Nowy"
         icon="pi pi-plus"
         size="large"
@@ -16,7 +16,7 @@
         (onClick)="openNew()"
       />
       <p-button
-        severity="danger"
+        severity="contrast"
         label="Usuń"
         icon="pi pi-trash"
         class="m-4"
@@ -72,7 +72,9 @@
             tooltipPosition="bottom"
           />
         </th>
-        <th style="width: 10rem"></th>
+        <!-- ACTION BTNS -->
+        <th style="width: 14rem"></th>
+        <!-- AVATAR -->
         <th style="width: 5rem"></th>
         <th pSortableColumn="firstName" style="min-width: 10rem">
           Imię
@@ -112,6 +114,17 @@
         </td>
         <td (click)="$event.stopPropagation()">
           <p-button
+            severity="contrast"
+            icon="pi pi-plus"
+            class="m-4"
+            alt="Dodaj zestawienie"
+            pTooltip="Dodaj zestawienie"
+            tooltipPosition="bottom"
+            positionTop="5"
+            (click)="addSet(client)"
+          />
+          <p-button
+            severity="contrast"
             icon="pi pi-pencil"
             class="m-4"
             alt="Edytuj klienta"
@@ -121,8 +134,8 @@
             (click)="editClient(client)"
           />
           <p-button
+            severity="contrast"
             icon="pi pi-trash"
-            severity="danger"
             class="m-4"
             alt="Usuń klienta"
             [pTooltip]="

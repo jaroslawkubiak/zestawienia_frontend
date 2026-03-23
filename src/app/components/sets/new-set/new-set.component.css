@@ -105,3 +105,7 @@
 .p-textarea.p-variant-filled {
   background-image: none !important;
 }
+
+::ng-deep .p-select-list-container {
+  max-height: 400px !important;
+}

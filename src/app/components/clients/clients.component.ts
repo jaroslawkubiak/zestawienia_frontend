@@ -28,6 +28,7 @@ import { IColumn } from '../../shared/types/ITable';
 import { IAvatar } from '../settings/avatars/types/IAvatarList';
 import { ClientsService } from './clients.service';
 import { IClient } from './types/IClient';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clients',
@@ -66,6 +67,7 @@ export class ClientsComponent implements OnInit {
   filteredAvatars: IAvatar[] = [];
 
   constructor(
+    private router: Router,
     private clientsService: ClientsService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
@@ -116,6 +118,11 @@ export class ClientsComponent implements OnInit {
         console.error('Error loading data', error);
         this.isLoading = false;
       },
+    });
+  }
+  addSet(client: IClient) {
+    this.router.navigate(['/sets/new'], {
+      queryParams: { clientId: client.id },
     });
   }
 
