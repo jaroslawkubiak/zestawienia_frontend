@@ -120,7 +120,9 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   ngOnInit() {
     // map option list for select fields
     this.dropwownColumnOptions = {
-      allSuppliers: this.allSuppliers,
+      allSuppliers: this.allSuppliers.sort((a, b) =>
+        a.company.localeCompare(b.company),
+      ),
       positionStatus: this.positionStatus,
     };
 
