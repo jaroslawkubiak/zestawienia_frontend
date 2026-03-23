@@ -121,7 +121,7 @@
   gap: 20px;
   transition: color 0.2s ease;
 
-  border-radius: 10px;
+  border-radius: 14px;
   background-color: var(--neutral-color-09);
   box-shadow: 0px 0px 10px -4px #c4c4c450;
   cursor: pointer;
@@ -142,10 +142,6 @@
   padding: 8px;
   border-radius: 5px;
   color: var(--neutral-color-09) !important;
-}
-
-::ng-deep .p-badge-contrast {
-  border: 1px solid rgb(255, 255, 255) !important;
 }
 
 /* MOBILE  */
@@ -234,6 +230,7 @@
 
   .product-buttons {
     font-size: 1.6rem;
+    border-radius: 10px;
   }
 
   .link-cell {
