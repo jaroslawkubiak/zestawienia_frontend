@@ -37,15 +37,17 @@
         alt="Pobierz pliki"
         pTooltip="Pobierz pliki"
         tooltipPosition="bottom"
+        class="top-action-btn"
         (click)="downloadFiles()"
         [disabled]="selectedFiles.length === 0"
-      />
-      <p-button
+        />
+        <p-button
         severity="contrast"
         icon="pi pi-trash"
         alt="Usuń pliki"
         pTooltip="Usuń pliki"
         tooltipPosition="bottom"
+        class="top-action-btn"
         [disabled]="isDeleteDisabled"
         (click)="onDeleteFiles()"
       />
