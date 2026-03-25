@@ -61,11 +61,11 @@ th i {
 }
 
 .i-client-to-office {
-  color: var(--btn-primary-bg);
+  color: var(--p-button-primary-background);
 }
 
 .i-office-to-client {
-  color: var(--btn-info-bg);
+  color: var(--p-button-info-background);
 }
 
 .no-action {

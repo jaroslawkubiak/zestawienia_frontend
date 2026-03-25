@@ -5,105 +5,61 @@
   --p-tooltip-padding: 6px !important;
   --p-tooltip-border-radius: 0 !important;
 
-  --btn-primary-bg: var(--accent-color-08);
-  --btn-primary-bg-hover: var(--accent-color-06);
-  --btn-primary-text: #ecf1f0;
+  --p-button-primary-background: var(--accent-color-08) !important;
+  --p-button-primary-active-background: var(--accent-color-08) !important;
+  --p-button-primary-hover-background: var(--accent-color-06) !important;
+  --p-button-primary-color: #ecf1f0 !important;
+  --p-button-primary-active-color: #ecf1f0 !important;
+  --p-button-primary-hover-color: #ecf1f0 !important;
 
-  --btn-secondary-bg: #f1f5f9;
-  --btn-secondary-bg-hover: #d4d7da;
-  --btn-secondary-text: #020617;
+  --p-button-secondary-background: #f1f5f9 !important;
+  --p-button-secondary-active-background: #f1f5f9 !important;
+  --p-button-secondary-hover-background: #d4d7da !important;
+  --p-button-secondary-color: #020617 !important;
+  --p-button-secondary-active-color: #020617 !important;
+  --p-button-secondary-hover-color: #020617 !important;
 
-  --btn-danger-bg: var(--burgund-color-06);
-  --btn-danger-bg-hover: var(--burgund-color-03);
-  --btn-danger-text: #ecf1f0;
+  --p-button-info-background: #03a9f4 !important;
+  --p-button-info-active-background: #03a9f4 !important;
+  --p-button-info-hover-background: #058ecd !important;
+  --p-button-info-color: #ecf1f0 !important;
+  --p-button-info-active-color: #ecf1f0 !important;
+  --p-button-info-hover-color: #ecf1f0 !important;
 
-  --btn-info-bg: #03a9f4;
-  --btn-info-bg-hover: #058ecd;
-  --btn-info-text: #ecf1f0;
+  --p-button-success-background: #b2b2b2 !important;
+  --p-button-success-active-background: #b2b2b2 !important;
+  --p-button-success-hover-background: #868686 !important;
+  --p-button-success-color: #ecf1f0 !important;
+  --p-button-success-active-color: #ecf1f0 !important;
+  --p-button-success-hover-color: #ecf1f0 !important;
 
-  --btn-help-bg: #9c27b0;
-  --btn-help-bg-hover: #b82fd0;
-  --btn-help-text: #ecf1f0;
+  --p-button-warn-background: #ff9800 !important;
+  --p-button-warn-active-background: #ff9800 !important;
+  --p-button-warn-hover-background: #cc7c04 !important;
+  --p-button-warn-color: #ecf1f0 !important;
+  --p-button-warn-active-color: #ecf1f0 !important;
+  --p-button-warn-hover-color: #ecf1f0 !important;
 
-  --btn-warn-bg: #ff9800;
-  --btn-warn-bg-hover: #cc7c04;
-  --btn-warn-text: #ecf1f0;
+  --p-button-help-background: #9c27b0 !important;
+  --p-button-help-active-background: #9c27b0 !important;
+  --p-button-help-hover-background: #b82fd0 !important;
+  --p-button-help-color: #ecf1f0 !important;
+  --p-button-help-active-color: #ecf1f0 !important;
+  --p-button-help-hover-color: #ecf1f0 !important;
 
-  --btn-contrast-bg: var(--neutral-color-09);
-  --btn-contrast-bg-hover: var(--neutral-color-08);
-  --btn-contrast-text: var(--neutral-color-01);
+  --p-button-danger-background: var(--burgund-color-06) !important;
+  --p-button-danger-active-background: var(--burgund-color-06) !important;
+  --p-button-danger-hover-background: var(--burgund-color-03) !important;
+  --p-button-danger-color: #ecf1f0 !important;
+  --p-button-danger-active-color: #ecf1f0 !important;
+  --p-button-danger-hover-color: #ecf1f0 !important;
 
-  --btn-success-bg: #b2b2b2;
-  --btn-success-bg-hover: #868686;
-  --btn-success-text: #ecf1f0;
-
-  --p-button-primary-background: var(--btn-primary-bg) !important;
-  --p-button-primary-hover-background: var(--btn-primary-bg-hover) !important;
-  --p-button-primary-active-background: var(
-    --p-button-primary-background
-  ) !important;
-  --p-button-primary-color: var(--btn-primary-text) !important;
-  --p-button-primary-hover-color: var(--btn-primary-text) !important;
-  --p-button-primary-active-color: var(--p-button-primary-color) !important;
-
-  --p-button-secondary-background: var(--btn-secondary-bg) !important;
-  --p-button-secondary-hover-background: var(
-    --btn-secondary-bg-hover
-  ) !important;
-  --p-button-secondary-active-background: var(
-    --p-button-secondary-background
-  ) !important;
-  --p-button-secondary-color: var(--btn-secondary-text) !important;
-  --p-button-secondary-hover-color: var(--btn-secondary-text) !important;
-  --p-button-secondary-active-color: var(--p-button-secondary-color) !important;
-
-  --p-button-info-background: var(--btn-info-bg) !important;
-  --p-button-info-hover-background: var(--btn-info-bg-hover) !important;
-  --p-button-info-active-background: var(--p-button-info-background) !important;
-  --p-button-info-color: var(--btn-info-text) !important;
-  --p-button-info-hover-color: var(--btn-info-text) !important;
-  --p-button-info-active-color: var(--p-button-info-color) !important;
-
-  --p-button-success-background: var(--btn-success-bg) !important;
-  --p-button-success-hover-background: var(--btn-success-bg-hover) !important;
-  --p-button-success-active-background: var(
-    --p-button-success-background
-  ) !important;
-  --p-button-success-color: var(--btn-success-text) !important;
-  --p-button-success-hover-color: var(--btn-success-text) !important;
-  --p-button-success-active-color: var(--p-button-success-color) !important;
-
-  --p-button-warn-background: var(--btn-warn-bg) !important;
-  --p-button-warn-hover-background: var(--btn-warn-bg-hover) !important;
-  --p-button-warn-active-background: var(--p-button-warn-background) !important;
-  --p-button-warn-color: var(--btn-warn-text) !important;
-  --p-button-warn-hover-color: var(--btn-warn-text) !important;
-  --p-button-warn-active-color: var(--p-button-warn-color) !important;
-
-  --p-button-help-background: var(--btn-help-bg) !important;
-  --p-button-help-hover-background: var(--btn-help-bg-hover) !important;
-  --p-button-help-active-background: var(--p-button-help-background) !important;
-  --p-button-help-color: var(--btn-help-text) !important;
-  --p-button-help-hover-color: var(--btn-help-text) !important;
-  --p-button-help-active-color: var(--p-button-help-color) !important;
-
-  --p-button-danger-background: var(--btn-danger-bg) !important;
-  --p-button-danger-hover-background: var(--btn-danger-bg-hover) !important;
-  --p-button-danger-active-background: var(
-    --p-button-danger-background
-  ) !important;
-  --p-button-danger-color: var(--btn-danger-text) !important;
-  --p-button-danger-hover-color: var(--btn-danger-text) !important;
-  --p-button-danger-active-color: var(--p-button-danger-color) !important;
-
-  --p-button-contrast-background: var(--btn-contrast-bg) !important;
-  --p-button-contrast-hover-background: var(--btn-contrast-bg-hover) !important;
-  --p-button-contrast-active-background: var(
-    --p-button-contrast-background
-  ) !important;
-  --p-button-contrast-color: var(--btn-contrast-text) !important;
-  --p-button-contrast-hover-color: var(--btn-contrast-text) !important;
-  --p-button-contrast-active-color: var(--p-button-contrast-color) !important;
+  --p-button-contrast-background: var(--neutral-color-09) !important;
+  --p-button-contrast-active-background: var(--neutral-color-09) !important;
+  --p-button-contrast-hover-background: var(--neutral-color-08) !important;
+  --p-button-contrast-color: var(--neutral-color-01) !important;
+  --p-button-contrast-active-color: var(--neutral-color-01) !important;
+  --p-button-contrast-hover-color: var(--neutral-color-01) !important;
 
   --p-radiobutton-icon-checked-color: var(--accent-color-06) !important;
   --p-radiobutton-checked-background: var(--accent-color-06) !important;

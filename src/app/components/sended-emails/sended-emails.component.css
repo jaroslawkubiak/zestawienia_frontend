@@ -37,11 +37,11 @@ th {
 }
 
 .i-client {
-  color: var(--btn-primary-bg);
+  color: var(--p-button-primary-background);
 }
 
 .i-supplier {
-  color: var(--btn-info-bg);
+  color: var(--p-button-info-background);
 }
 
 .link {
