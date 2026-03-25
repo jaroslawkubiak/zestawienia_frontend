@@ -2,8 +2,9 @@
   display: flex;
   justify-content: center;
   flex-direction: column;
-  gap: 50px;
+  gap: 30px;
   padding: 20px 0;
+  align-items: center; 
 }
 
 .settings-color-row {
@@ -24,8 +25,8 @@
 }
 
 .settings-color-item {
-  width: 100px;
-  height: 150px;
+  width: 70px;
+  height: 100px;
   margin: 4px;
 }
 
@@ -44,6 +45,14 @@
 
 .settings-color-neutral-title {
   color: var(--neutral-color-07);
+}
+
+.settings-color-status-title {
+  color: rgb(35, 90, 76);
+}
+
+.settings-color-badge-title {
+  color: rgb(243, 97, 35);
 }
 
 .settings-color-border {

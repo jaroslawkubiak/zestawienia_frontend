@@ -1,5 +1,5 @@
 <div class="settings-color-container">
-  <p class="settings-color-accent-title">Accent color</p>
+  <p class="settings-color-accent-title">Accent colors</p>
   <div class="settings-color-row">
     <div
       class="settings-color-wrapper"
@@ -12,10 +12,11 @@
         class="settings-color-item"
         [style.background-color]="color.color"
       ></div>
+      {{ color.color }}
     </div>
   </div>
 
-  <p class="settings-color-burgund-title">Burgund color</p>
+  <p class="settings-color-burgund-title">Burgund colors</p>
   <div class="settings-color-row">
     <div
       class="settings-color-wrapper"
@@ -28,10 +29,11 @@
         class="settings-color-item"
         [style.background-color]="color.color"
       ></div>
+      {{ color.color }}
     </div>
   </div>
 
-  <p class="settings-color-neutral-title">Neutral color</p>
+  <p class="settings-color-neutral-title">Neutral colors</p>
   <div class="settings-color-row">
     <div
       class="settings-color-wrapper"
@@ -42,6 +44,37 @@
         class="settings-color-item"
         [style.background-color]="color.color"
       ></div>
+      {{ color.color }}
+    </div>
+  </div>
+
+  <p class="settings-color-status-title">Status colors</p>
+  <div class="settings-color-row">
+    <div
+      class="settings-color-wrapper"
+      *ngFor="let color of statusColors; let i = index"
+    >
+      <span> {{ color.name }}</span>
+      <div
+        class="settings-color-item"
+        [style.background-color]="color.color"
+      ></div>
+      {{ color.color }}
+    </div>
+  </div>
+
+  <p class="settings-color-badge-title">Badge colors</p>
+  <div class="settings-color-row">
+    <div
+      class="settings-color-wrapper"
+      *ngFor="let color of badgeColors; let i = index"
+    >
+      <span> {{ color.name }}</span>
+      <div
+        class="settings-color-item"
+        [style.background-color]="color.color"
+      ></div>
+      {{ color.color }}
     </div>
   </div>
 </div>
