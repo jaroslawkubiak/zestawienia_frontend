@@ -70,7 +70,7 @@
 .p-textarea:focus,
 .p-textarea:hover,
 .p-textarea:active {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .p-select {
@@ -80,12 +80,12 @@
   font-weight: normal;
   border-radius: 0 !important;
   border: 1px solid var(--accent-color-07) !important;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--neutral-color-01) !important;
   width: 100% !important;
 }
 
 .p-select:hover {
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-02) !important;
 }
 
 .p-select.p-variant-filled {
@@ -105,7 +105,7 @@
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--neutral-color-01) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;

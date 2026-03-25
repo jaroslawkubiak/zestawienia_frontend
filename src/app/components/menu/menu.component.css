@@ -18,7 +18,7 @@
   width: 100%;
   justify-content: start;
   background-color: var(--app-menu-bg);
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
 }
 
 li {
@@ -37,12 +37,12 @@ li a {
 li:hover,
 .logout:hover,
 .selected {
-  color: var(--accent-color-04);
+  color: var(--accent-color-06);
 }
 
 .logout {
   display: flex;
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
   justify-content: center;
   align-items: center;
   cursor: pointer;

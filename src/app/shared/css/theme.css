@@ -29,9 +29,9 @@
   --btn-warn-bg-hover: #cc7c04;
   --btn-warn-text: #ecf1f0;
 
-  --btn-contrast-bg: #020617;
-  --btn-contrast-bg-hover: #061141;
-  --btn-contrast-text: #ecf1f0;
+  --btn-contrast-bg: var(--neutral-color-09);
+  --btn-contrast-bg-hover: var(--neutral-color-08);
+  --btn-contrast-text: var(--neutral-color-01);
 
   --btn-success-bg: #b2b2b2;
   --btn-success-bg-hover: #868686;

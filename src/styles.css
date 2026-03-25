@@ -5,18 +5,18 @@
 }
 
 html {
-  --table-header-bg: #e3e3e3;
+  --table-header-bg: #dbdbdb;
   --app-menu-bg: #2c2c2e;
 
   --neutral-color-01: #ffffff;
-  --neutral-color-02: #f6f5f5;
-  --neutral-color-03: #e6e6e6;
-  --neutral-color-04: #d4d4d4;
-  --neutral-color-05: #c2c2c2;
-  --neutral-color-06: #b0b0b0;
-  --neutral-color-07: #9d9d9d;
-  --neutral-color-08: #646464;
-  --neutral-color-09: #111111;
+  --neutral-color-02: #e3e3e3;
+  --neutral-color-03: #c6c6c6;
+  --neutral-color-04: #a9a9a9;
+  --neutral-color-05: #8e8e8e;
+  --neutral-color-06: #717171;
+  --neutral-color-07: #555555;
+  --neutral-color-08: #393939;
+  --neutral-color-09: #1c1c1c;
   --neutral-color-10: #000000;
 
   --accent-color-01: #e2f6f1;
@@ -44,7 +44,7 @@ html {
   --error-color: var(--burgund-color-06);
 
   /* position status color  */
-  --status-empty-color: #f8fafc;
+  --status-empty-color: #ffffff;
   --status-pink-color: #ffe1ea;
   --status-green-color: #7fd1c1ab;
   --status-red-color: #fdb3c9;

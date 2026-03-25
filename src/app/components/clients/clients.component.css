@@ -93,7 +93,7 @@ i {
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;
   width: 654px !important;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--neutral-color-01) !important;
 }
 
 .p-inputtext:focus,
@@ -120,7 +120,7 @@ i {
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--neutral-color-01) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;

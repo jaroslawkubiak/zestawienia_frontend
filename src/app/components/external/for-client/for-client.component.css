@@ -34,7 +34,7 @@
   top: 120px;
   height: 36px;
   width: 100%;
-  background-color: var(--neutral-color-03) !important;
+  background-color: var(--table-header-bg) !important;
 }
 
 .header {
@@ -45,7 +45,7 @@
 }
 
 ::ng-deep .p-tablist-tab-list {
-  background-color: var(--neutral-color-03) !important;
+  background-color: var(--table-header-bg) !important;
 }
 
 .header-title-desktop {
@@ -67,7 +67,7 @@ h1 {
 }
 
 h3 {
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
 }
 
 .header-actions-btn {
@@ -89,7 +89,7 @@ h3 {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-02);
   transition: color 0.2s ease;
 }
 
@@ -132,13 +132,13 @@ h3 {
 
 ::ng-deep .p-tab {
   font-size: 1.4rem !important;
-  background-color: var(--neutral-color-03) !important;
-  color: var(--neutral-color-09) !important;
+  background-color: var(--table-header-bg) !important;
+  color: var(--neutral-color-10) !important;
 }
 
 ::ng-deep .p-tab:hover,
 ::ng-deep .p-tab-active {
-  color: var(--neutral-color-03) !important;
+  color: var(--neutral-color-01) !important;
   background-color: var(--neutral-color-09) !important;
 }
 
@@ -208,7 +208,7 @@ h3 {
 
   .mobile-menu-icon-wrapper i {
     font-size: 3rem;
-    color: var(--neutral-color-03);
+    color: var(--neutral-color-01);
   }
 
   /* hide PrimeNG bookmarks */
@@ -245,7 +245,7 @@ h3 {
   .close-icon {
     font-size: 2.5rem;
     cursor: pointer;
-    color: var(--neutral-color-03);
+    color: var(--neutral-color-02);
     font-size: 3rem;
     z-index: 99;
   }
@@ -263,7 +263,7 @@ h3 {
     gap: 16px;
     font-size: 2.4rem;
     margin: 4px;
-    color: var(--neutral-color-03);
+    color: var(--neutral-color-02);
   }
 
   .mobile-files-badge-position {
@@ -293,9 +293,9 @@ h3 {
     padding: 8px 0;
     font-size: 1.6rem;
     font-weight: 600;
-    border-bottom: 1px solid var(--neutral-color-03);
+    border-bottom: 1px solid var(--neutral-color-01);
     cursor: pointer;
-    color: var(--neutral-color-03);
+    color: var(--neutral-color-02);
   }
 
   .mobile-bookmark-name {

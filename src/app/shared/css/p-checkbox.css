@@ -9,7 +9,7 @@
 ::ng-deep
   .p-checkbox:not(.p-checkbox-checked)
   .p-checkbox-box:not(:has(minusicon)) {
-  background-color: var(--neutral-color-03) !important;
+  background-color: var(--neutral-color-02) !important;
 }
 
 ::ng-deep .p-checkbox .p-checkbox-box:has(minusicon) {
@@ -21,5 +21,5 @@
 }
 
 ::ng-deep .p-checkbox-box .p-checkbox-icon {
-  color: var(--neutral-color-03) !important;
+  color: var(--neutral-color-01) !important;
 }

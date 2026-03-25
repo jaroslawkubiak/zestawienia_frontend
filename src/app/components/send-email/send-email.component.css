@@ -25,8 +25,8 @@
   font-size: 1.8rem;
   padding: 8px 16px;
   background-color: var(--neutral-color-09);
-  color: var(--neutral-color-03);
-  border-bottom: 1px solid var(--neutral-color-03);
+  color: var(--neutral-color-01);
+  border-bottom: 1px solid var(--neutral-color-01);
 }
 
 .send-email-email {
@@ -35,7 +35,7 @@
   align-items: center;
   font-size: 1.6rem;
   padding: 8px 16px;
-  background-color: var(--neutral-color-02);
+  background-color: var(--neutral-color-01);
 }
 
 .send-email-content-container {
@@ -52,7 +52,7 @@
 
 .send-email-preview-header i {
   font-size: 2.4rem;
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
   padding: 0 24px;
 }
 
@@ -62,7 +62,7 @@
 
 .send-email-label {
   font-weight: 700;
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
 }
 
 .send-email-preview-iframe-header,
@@ -131,9 +131,9 @@
   align-items: center;
   justify-content: flex-end;
   background-color: var(--neutral-color-09);
-  color: var(--neutral-color-03);
+  color: var(--neutral-color-01);
   height: 50px;
-  border-bottom: 1px solid var(--neutral-color-03);
+  border-bottom: 1px solid var(--neutral-color-01);
 }
 
 .send-email-to-off i {
@@ -147,11 +147,11 @@
   height: 100% !important;
   display: flex !important;
   align-items: center !important;
-  border: 0px solid var(--neutral-color-03) !important;
+  border: 0px solid var(--neutral-color-01) !important;
 }
 
 .p-select:hover {
-  background-color: var(--neutral-color-08) !important;
+  background-color: var(--neutral-color-06) !important;
 }
 
 .p-select.p-variant-filled {
@@ -160,7 +160,7 @@
 
 ::ng-deep .p-select-label {
   padding: 4px !important;
-  color: var(--neutral-color-03) !important;
+  color: var(--neutral-color-01) !important;
 }
 
 ::ng-deep .p-select-option {
@@ -172,8 +172,8 @@
 }
 
 ::ng-deep .p-select-option:hover {
-  color: var(--neutral-color-03) !important;
-  background-color: var(--neutral-color-07) !important;
+  color: var(--neutral-color-01) !important;
+  background-color: var(--neutral-color-06) !important;
 }
 
 ::ng-deep .p-select-clear-icon {
@@ -182,7 +182,7 @@
 }
 
 ::ng-deep .p-select-dropdown .p-iconwrapper {
-  color: var(--neutral-color-03) !important;
+  color: var(--neutral-color-01) !important;
 }
 
 ::ng-deep .p-select-list-container {

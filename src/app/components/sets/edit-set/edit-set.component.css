@@ -35,7 +35,7 @@
 
 ::ng-deep .p-tab {
   font-size: 1.4rem !important;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--table-header-bg) !important;
   color: var(--neutral-color-09) !important;
 }
 
@@ -47,6 +47,10 @@
 
 ::ng-deep .p-tabpanels {
   padding: 0 !important;
+}
+
+::ng-deep .p-tablist-tab-list {
+  background-color: var(--table-header-bg) !important;
 }
 
 .position-container {

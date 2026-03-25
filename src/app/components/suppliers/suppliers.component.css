@@ -102,7 +102,7 @@ i {
 .p-textarea:hover,
 .p-textarea:active {
   color: var(--neutral-color-09) !important;
-  background-color: var(--accent-color-03) !important;
+  background-color: var(--accent-color-01) !important;
 }
 
 .search-input {
@@ -119,7 +119,7 @@ i {
 .p-textarea {
   resize: none;
   border-radius: 0px;
-  background-color: var(--neutral-color-02) !important;
+  background-color: var(--neutral-color-01) !important;
   padding: 8px 16px !important;
   font-size: 2rem !important;
   border: 1px solid var(--accent-color-07) !important;
