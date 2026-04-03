@@ -83,7 +83,7 @@
 @media (max-width: 768px) {
   ::ng-deep .p-galleria-mask .p-galleria-content {
     width: 100% !important;
-    height: 100vh !important;
+    height: 80vh !important;
   }
 
   ::ng-deep .p-galleria-content {

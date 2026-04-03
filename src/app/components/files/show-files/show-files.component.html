@@ -4,7 +4,8 @@
   [style]="{
     width: '100%',
     maxWidth: '160rem',
-    maxHeight: '90%',
+    height: '90vh',
+    maxHeight: '90vh',
   }"
   [breakpoints]="{
     '640px': '100vw',
@@ -40,8 +41,8 @@
         class="top-action-btn"
         (click)="downloadFiles()"
         [disabled]="selectedFiles.length === 0"
-        />
-        <p-button
+      />
+      <p-button
         severity="contrast"
         icon="pi pi-trash"
         alt="Usuń pliki"
