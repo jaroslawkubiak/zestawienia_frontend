@@ -12,4 +12,5 @@ export interface IColumnList {
   optionList?: any;
   optionLabel?: string;
   pdfWidth?: number | 50;
+  autocomplete?: boolean;
 }

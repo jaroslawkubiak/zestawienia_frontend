@@ -88,6 +88,15 @@
             <!-- EDIT MODE  -->
             <ng-template pTemplate="input" [ngSwitch]="column.type">
               <ng-container *ngIf="!column.readOnly">
+                <!-- EDIT MODE -> type = textarea DEFAULT -->
+                <textarea
+                  *ngSwitchCase="'textarea'"
+                  pTextarea
+                  [(ngModel)]="position[column.key]"
+                  (focus)="selectAll($event)"
+                  (keydown.enter)="$event.stopPropagation()"
+                  (blur)="applyAction($event, i, column)"
+                ></textarea>
                 <!-- EDIT MODE -> type = number  -->
                 <input
                   *ngSwitchCase="'number'"
@@ -127,28 +136,17 @@
                     stroke="4"
                   ></app-loading-spinner>
                 </div>
-                <!-- EDIT MODE -> type = string DEFAULT -->
+                <!-- EDIT MODE -> type = string -->
                 <input
                   *ngSwitchCase="'string'"
                   pInputText
                   type="text"
-                  autocomplete="on"
-                  [attr.name]="'field_' + column.key + '_' + i"
                   [readonly]="column.readOnly"
                   [(ngModel)]="position[column.key]"
                   (blur)="applyAction($event, i, column)"
                   (keydown.enter)="applyAction($event, i, column)"
                   (focus)="selectAll($event)"
                 />
-                <!-- EDIT MODE -> type = textarea  -->
-                <textarea
-                  *ngSwitchCase="'textarea'"
-                  pTextarea
-                  [(ngModel)]="position[column.key]"
-                  (focus)="selectAll($event)"
-                  (keydown.enter)="$event.stopPropagation()"
-                  (blur)="applyAction($event, i, column)"
-                ></textarea>
                 <!-- EDIT MODE -> type = link  -->
                 <textarea
                   *ngSwitchCase="'link'"
@@ -233,7 +231,7 @@
     <!-- table footer  -->
     <ng-template pTemplate="footer">
       <tr>
-        <th style="width: 4rem" class="position-header">{{positionsFromBookmark.length}}</th>
+        <th style="width: 4rem" class="position-header"></th>
         <th style="width: 4rem" class="position-header">
           <p-button
             severity="contrast"

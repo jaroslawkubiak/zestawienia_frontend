@@ -36,6 +36,7 @@ export const ColumnList: IColumnList[] = [
     key: 'produkt',
     type: 'textarea',
     pdfWidth: 50,
+    autocomplete: true,
   },
   {
     name: 'PRODUCENT',
@@ -48,6 +49,7 @@ export const ColumnList: IColumnList[] = [
     key: 'kolekcja',
     type: 'textarea',
     pdfWidth: 70,
+    autocomplete: true,
   },
   {
     name: 'NR KATALOGOWY',
