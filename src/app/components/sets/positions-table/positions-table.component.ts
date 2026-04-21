@@ -85,19 +85,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   positionToDelete: number[] = [];
   DEFAULT_COLUMN_WIDTH = 200;
   columnList = ColumnList;
-  footerRow: IFooterRow[] = [
-    {
-      name: 'lp',
-      key: 'lp',
-      type: 'number',
-    },
-    {
-      name: 'actions',
-      key: 'actions',
-      type: 'string',
-    },
-    ...ColumnList,
-  ];
+  footerRow: IFooterRow[] = ColumnList;
   positionStatus: IPositionStatus[] = PositionStatusList.filter((s) => s.label);
   setId: number = 0;
   positionIdForComments: number = 0;

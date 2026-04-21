@@ -29,7 +29,7 @@
             class="m-4"
             alt="Nowa pusta pozycja"
             pTooltip="Nowa pusta pozycja"
-            (click)="addEmptyPosition(1)"
+            (click)="addEmptyPosition(0)"
           />
         </th>
         <th
@@ -132,6 +132,8 @@
                   *ngSwitchCase="'string'"
                   pInputText
                   type="text"
+                  autocomplete="on"
+                  [attr.name]="'field_' + column.key + '_' + i"
                   [readonly]="column.readOnly"
                   [(ngModel)]="position[column.key]"
                   (blur)="applyAction($event, i, column)"
@@ -231,6 +233,17 @@
     <!-- table footer  -->
     <ng-template pTemplate="footer">
       <tr>
+        <th style="width: 4rem" class="position-header">{{positionsFromBookmark.length}}</th>
+        <th style="width: 4rem" class="position-header">
+          <p-button
+            severity="contrast"
+            icon="pi pi-plus"
+            class="m-4"
+            alt="Nowa pusta pozycja"
+            pTooltip="Nowa pusta pozycja"
+            (click)="addEmptyPosition(positionsFromBookmark.length)"
+          />
+        </th>
         <th
           *ngFor="let column of footerRow; let i = index"
           class="position-footer"
