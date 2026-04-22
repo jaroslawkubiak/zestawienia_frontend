@@ -11,6 +11,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { ButtonModule } from 'primeng/button';
 import { Dialog } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -64,6 +65,7 @@ import { IPositionStatus } from './types/IPositionStatus';
     CommentsComponent,
     ImageGalleryComponent,
     TooltipModule,
+    AutoCompleteModule,
   ],
   standalone: true,
   templateUrl: './positions-table.component.html',
@@ -92,6 +94,8 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   showCommentsDialog = false;
   commentsForPosition: IComment[] = [];
   header = '';
+  autocompleteOptions: Record<string, any[]> = {};
+  autocompleteOptionsRaw: Record<string, any[]> = {};
   @ViewChild('table') table!: Table;
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
 
@@ -160,9 +164,33 @@ export class PositionsTableComponent implements OnInit, OnChanges {
       return obj;
     });
 
+    // filtering data for autocomplete field types
+    this.columnList
+      .filter((col) => col.type === 'autocomplete')
+      .forEach((col) => {
+        const values = this.positionsFromBookmark
+          .map((p: IPosition) => p[col.key])
+          .filter((v) => v !== null && v !== undefined);
+
+        const unique = Array.from(new Set(values));
+
+        this.autocompleteOptionsRaw[col.key] = unique;
+        this.autocompleteOptions[col.key] = unique;
+      });
+
     this.calculateFooterRow();
 
     this.refresh();
+  }
+
+  filterAutocomplete(event: any, key: string) {
+    const query = (event.query || '').toLowerCase();
+
+    const source = this.autocompleteOptionsRaw[key] || [];
+
+    this.autocompleteOptions[key] = source.filter((item) =>
+      (item?.toString?.() || '').toLowerCase().includes(query),
+    );
   }
 
   // add empty position
@@ -353,9 +381,10 @@ export class PositionsTableComponent implements OnInit, OnChanges {
 
   // for select content (like ctrl+a) of input field when edit mode,
   // need property (focus)="selectAll($event)" in HTML input
-  selectAll(event: FocusEvent): void {
+  selectAll(event: any): void {
     setTimeout(() => {
-      (event.target as HTMLInputElement).select();
+      const input = event?.target || event?.originalEvent?.target;
+      (input as HTMLInputElement)?.select?.();
     }, 1);
   }
 

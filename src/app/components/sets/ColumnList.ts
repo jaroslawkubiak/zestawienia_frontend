@@ -34,14 +34,13 @@ export const ColumnList: IColumnList[] = [
   {
     name: 'PRODUKT',
     key: 'produkt',
-    type: 'textarea',
+    type: 'autocomplete',
     pdfWidth: 50,
-    autocomplete: true,
   },
   {
     name: 'PRODUCENT',
     key: 'producent',
-    type: 'textarea',
+    type: 'autocomplete',
     pdfWidth: 50,
   },
   {
@@ -49,7 +48,6 @@ export const ColumnList: IColumnList[] = [
     key: 'kolekcja',
     type: 'textarea',
     pdfWidth: 70,
-    autocomplete: true,
   },
   {
     name: 'NR KATALOGOWY',
@@ -60,7 +58,7 @@ export const ColumnList: IColumnList[] = [
   {
     name: 'KOLOR',
     key: 'kolor',
-    type: 'textarea',
+    type: 'autocomplete',
     pdfWidth: 40,
   },
   {
@@ -109,7 +107,7 @@ export const ColumnList: IColumnList[] = [
   {
     name: 'POMIESZCZENIE',
     key: 'pomieszczenie',
-    type: 'textarea',
+    type: 'autocomplete',
     pdfWidth: 60,
   },
   {

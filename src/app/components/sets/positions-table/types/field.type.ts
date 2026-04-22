@@ -3,5 +3,6 @@ export type TField =
   | 'string'
   | 'select'
   | 'image'
+  | 'autocomplete'
   | 'textarea'
   | 'link';

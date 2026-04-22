@@ -29,7 +29,7 @@
             class="m-4"
             alt="Nowa pusta pozycja"
             pTooltip="Nowa pusta pozycja"
-            (click)="addEmptyPosition(0)"
+            (click)="addEmptyPosition(positionsFromBookmark.length)"
           />
         </th>
         <th
@@ -88,6 +88,16 @@
             <!-- EDIT MODE  -->
             <ng-template pTemplate="input" [ngSwitch]="column.type">
               <ng-container *ngIf="!column.readOnly">
+                <!-- EDIT MODE -> type = textarea DEFAULT -->
+                <p-autoComplete
+                  appendTo="body"
+                  *ngSwitchCase="'autocomplete'"
+                  [(ngModel)]="position[column.key]"
+                  [suggestions]="autocompleteOptions[column.key]"
+                  (completeMethod)="filterAutocomplete($event, column.key)"
+                  (onFocus)="selectAll($event)"
+                  (onBlur)="applyAction($event, i, column)"
+                ></p-autoComplete>
                 <!-- EDIT MODE -> type = textarea DEFAULT -->
                 <textarea
                   *ngSwitchCase="'textarea'"
@@ -206,6 +216,13 @@
                 <!-- VIEW MODE -> type = textarea  -->
                 <div
                   *ngSwitchCase="'textarea'"
+                  class="view-mode-textarea"
+                  style="white-space: pre-wrap"
+                >
+                  {{ position[column.key] }}
+                </div>
+                <div
+                  *ngSwitchCase="'autocomplete'"
                   class="view-mode-textarea"
                   style="white-space: pre-wrap"
                 >
