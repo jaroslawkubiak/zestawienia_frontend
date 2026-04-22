@@ -211,7 +211,7 @@ export class EditSetComponent
 
   // load positions for a given bookmarkID
   loadContentForBookmark(bookmarkId: number) {
-    this.onSubmit();
+    this.onSubmit(true);
     this.editSetService.lastActiveUserBookmark(this.set, bookmarkId).subscribe({
       next: (response) => {
         this.set = {
@@ -279,7 +279,7 @@ export class EditSetComponent
   }
 
   // save data
-  onSubmit() {
+  onSubmit(autoSave: boolean = false) {
     if (this.positionsTableComponent) {
       this.latestFormData = this.positionsTableComponent?.formData;
     }
@@ -317,10 +317,12 @@ export class EditSetComponent
           this.set.updatedAt = response.updatedAt;
         }
 
-        this.notificationService.showNotification(
-          'success',
-          'Dane zestawienia zostały zapisane',
-        );
+        if (!autoSave) {
+          this.notificationService.showNotification(
+            'success',
+            'Dane zestawienia zostały zapisane',
+          );
+        }
       },
       error: (error) => {
         this.notificationService.showNotification('error', error.message);
