@@ -1,4 +1,7 @@
-<app-send-files who="user" (updateAttachedFiles)="updateAttachedFiles($event)" />
+<app-send-files
+  who="user"
+  (updateAttachedFiles)="updateAttachedFiles($event)"
+/>
 <app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
 
 <p-menubar [model]="menuItems">
@@ -33,7 +36,7 @@
 
       <div class="btn-wrapper">
         <button
-          class="menu-label-preview"
+          class="menu-label-preview flex-center"
           *ngIf="item.preview"
           type="button"
           (click)="
@@ -44,7 +47,7 @@
         </button>
 
         <button
-          class="menu-label-preview"
+          class="menu-label-preview flex-center"
           *ngIf="item.preview"
           type="button"
           (click)="

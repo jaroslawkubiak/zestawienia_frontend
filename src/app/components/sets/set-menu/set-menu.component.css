@@ -90,18 +90,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 8px;
+  cursor: auto;
+  margin: 8px;
 }
 
 .menu-label-preview {
   padding: 4px;
+  background-color: var(--neutral-color-10) !important;
+  border-radius: 4px;
+  cursor: pointer;
+  aspect-ratio: 1/1;
+  display: flex; 
 }
 
 .menu-label-preview i {
-  color: var(--accent-color-07);
+  color: var(--accent-color-01);
   font-size: 1.8rem;
   transition: color 0.2s ease;
 }
 
-.menu-label-preview i:hover {
-  color: var(--error-color);
+.menu-label-preview:hover i {
+  color: var(--accent-color-06);
 }
