@@ -211,6 +211,7 @@ export class EditSetComponent
 
   // load positions for a given bookmarkID
   loadContentForBookmark(bookmarkId: number) {
+    this.onSubmit();
     this.editSetService.lastActiveUserBookmark(this.set, bookmarkId).subscribe({
       next: (response) => {
         this.set = {
