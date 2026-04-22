@@ -188,6 +188,7 @@ export class SendEmailComponent implements OnInit, AfterViewInit {
       setId: this.set.id,
       audienceType: this.audience,
       client: this.set.clientId,
+      supplier: this._supplier,
     };
 
     this.emailsService
