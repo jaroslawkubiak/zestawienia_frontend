@@ -43,7 +43,7 @@
     </div>
   </div>
   <p-tabs [value]="selectedBookmark" scrollable class="bookmarks">
-    <div class="save-btn">
+    <div class="top-save-btn">
       @if (setIsDirty) {
         <p-button
           label="Zapisz"
@@ -77,7 +77,7 @@
             *ngIf="selectedBookmark === bookmark.id && !showAllComments"
           >
             <div
-              [ngClass]="{ 'form-dirty': setIsDirty }"
+              [ngClass]="setIsDirty ? 'form-dirty' : 'form-clean'"
               class="position-container"
             >
               <!-- bookmark = podsumowanie -->
@@ -96,6 +96,17 @@
                   (isEdited)="isEdited($event)"
                   (updateSetPositions)="updatePositions()"
                   (updateSetComments)="updateSetComments()"
+                />
+              }
+            </div>
+            <div class="bottom-save-btn">
+              @if (setIsDirty) {
+                <p-button
+                  label="Zapisz"
+                  icon="pi pi-save"
+                  size="large"
+                  styleClass="btn-xl"
+                  (click)="onSubmit()"
                 />
               }
             </div>

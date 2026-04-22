@@ -64,7 +64,11 @@
 }
 
 .form-dirty {
-  border: 3px solid var(--error-color) !important;
+  border: 2px solid var(--error-color) !important;
+}
+
+.form-clean {
+  border: 2px solid var(--neutral-color-10) !important;
 }
 
 ::ng-deep .btn-xl .p-button-icon,
@@ -75,10 +79,16 @@
   height: 18px;
 }
 
-.save-btn {
+.top-save-btn {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 999;
+}
+
+.bottom-save-btn {
+  display: flex;
+  justify-content: end;
   z-index: 999;
 }
 
