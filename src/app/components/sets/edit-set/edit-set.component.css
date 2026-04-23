@@ -84,16 +84,10 @@
   height: 18px;
 }
 
-.top-save-btn {
+.save-btn {
   position: absolute;
   top: 0;
   right: 0;
-  z-index: 999;
-}
-
-.bottom-save-btn {
-  display: flex;
-  justify-content: end;
   z-index: 999;
 }
 

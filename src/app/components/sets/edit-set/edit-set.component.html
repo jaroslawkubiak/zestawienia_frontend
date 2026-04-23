@@ -43,16 +43,14 @@
     </div>
   </div>
   <p-tabs [value]="selectedBookmark" scrollable class="bookmarks">
-    <div class="top-save-btn">
-      @if (setIsDirty) {
-        <p-button
-          label="Zapisz"
-          icon="pi pi-save"
-          size="large"
-          styleClass="btn-xl"
-          (click)="onSubmit()"
-        />
-      }
+    <div class="save-btn">
+      <p-button
+        label="Zapisz"
+        icon="pi pi-save"
+        size="large"
+        styleClass="btn-xl"
+        (click)="onSubmit()"
+      />
     </div>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
@@ -93,20 +91,10 @@
                   [positionsFromBookmark]="positionsFromBookmark"
                   [selectedBookmark]="selectedBookmark"
                   [allSuppliers]="allSuppliers"
+                  (fieldChanged)="onFieldChanged($event)"
                   (isEdited)="isEdited($event)"
                   (updateSetPositions)="updatePositions()"
                   (updateSetComments)="updateSetComments()"
-                />
-              }
-            </div>
-            <div class="bottom-save-btn">
-              @if (setIsDirty) {
-                <p-button
-                  label="Zapisz"
-                  icon="pi pi-save"
-                  size="large"
-                  styleClass="btn-xl"
-                  (click)="onSubmit()"
                 />
               }
             </div>
