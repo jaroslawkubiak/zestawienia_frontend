@@ -46,7 +46,7 @@ export const ColumnList: IColumnList[] = [
   {
     name: 'KOLEKCJA/SERIA',
     key: 'kolekcja',
-    type: 'textarea',
+    type: 'autocomplete',
     pdfWidth: 70,
   },
   {
