@@ -41,7 +41,7 @@ html {
   --burgund-color-09: #440717;
   --burgund-color-10: #28040d;
 
-  --error-color: var(--burgund-color-06);
+  --error-color: #e84118;
 
   /* position status color  */
   --status-empty-color: #ffffff;

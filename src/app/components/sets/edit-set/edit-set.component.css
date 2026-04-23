@@ -10,7 +10,7 @@
   background-color: var(--accent-color-01);
   color: var(--accent-color-10);
   width: 100%;
-  padding: 16px;
+  padding: 8px 16px;
 }
 
 .set-header-cell {
@@ -21,15 +21,21 @@
 }
 
 .set-header-title {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--accent-color-10);
-  height: 30px;
+  height: 25px;
 }
 
 .set-header-value {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   font-size: 1.6rem;
-  height: 40px;
+  height: 20px;
   color: var(--neutral-color-09);
 }
 
@@ -54,7 +60,6 @@
 }
 
 .position-container {
-  margin-top: 12px;
   font-size: 1.2rem;
 }
 
@@ -68,7 +73,7 @@
 }
 
 .form-clean {
-  border: 2px solid var(--neutral-color-10) !important;
+  border: 2px solid var(--neutral-color-02) !important;
 }
 
 ::ng-deep .btn-xl .p-button-icon,

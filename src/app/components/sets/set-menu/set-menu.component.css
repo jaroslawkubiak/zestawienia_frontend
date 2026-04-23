@@ -13,7 +13,7 @@
 }
 
 ::ng-deep .p-menubar-item-content {
-  padding: 8px 12px !important;
+  padding: 4px 12px !important;
   transition: color 0.2s ease !important;
   cursor: pointer;
 }
@@ -92,16 +92,16 @@
   justify-content: center;
   gap: 8px;
   cursor: auto;
-  margin: 8px;
+  margin-left: 12px;
 }
 
 .menu-label-preview {
-  padding: 4px;
+  padding: 6px;
   background-color: var(--neutral-color-10) !important;
   border-radius: 4px;
   cursor: pointer;
   aspect-ratio: 1/1;
-  display: flex; 
+  display: flex;
 }
 
 .menu-label-preview i {
@@ -110,6 +110,6 @@
   transition: color 0.2s ease;
 }
 
-.menu-label-preview:hover i {
-  color: var(--accent-color-06);
+.menu-label-preview:hover {
+  background-color: var(--neutral-color-09) !important;
 }

@@ -8,7 +8,7 @@
 .menu {
   display: flex;
   width: var(--screen-width);
-  padding: 16px 0;
+  padding: 8px 0;
   justify-content: space-between;
 }
 
@@ -22,12 +22,17 @@
 }
 
 li {
+  all: unset;
   cursor: pointer;
   padding: 8px 12px;
   font-size: 1.8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 li a {
+  line-height: normal;
   display: flex;
   justify-content: center;
   align-items: center;

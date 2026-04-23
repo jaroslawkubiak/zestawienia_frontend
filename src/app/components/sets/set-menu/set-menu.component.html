@@ -34,10 +34,9 @@
         ></i>
       </a>
 
-      <div class="btn-wrapper">
+      <div class="btn-wrapper" *ngIf="item.preview">
         <button
           class="menu-label-preview flex-center"
-          *ngIf="item.preview"
           type="button"
           (click)="
             item.preview(); $event.stopPropagation(); $event.preventDefault()
@@ -48,7 +47,6 @@
 
         <button
           class="menu-label-preview flex-center"
-          *ngIf="item.preview"
           type="button"
           (click)="
             item.copy(); $event.stopPropagation(); $event.preventDefault()
