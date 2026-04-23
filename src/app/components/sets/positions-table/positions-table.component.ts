@@ -47,6 +47,7 @@ import { SetStatus } from '../types/set-status.enum';
 import { IColumnList } from './types/IColumnList';
 import { IPosition } from './types/IPosition';
 import { IPositionStatus } from './types/IPositionStatus';
+import { AuthService } from '../../../login/auth.service';
 
 @Component({
   selector: 'app-positions-table',
@@ -99,9 +100,10 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   autocompleteOptionsRaw: Record<string, any[]> = {};
   @ViewChild('table') table!: Table;
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
-
+  tableScrollHeight = '700px';
   constructor(
     private editSetService: EditSetService,
+    private authService: AuthService,
     private notificationService: NotificationService,
     private footerService: FooterService,
     private commentsService: CommentsService,
@@ -111,6 +113,26 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    const userId = this.authService.userId();
+
+    switch (userId) {
+      case 1:
+        this.tableScrollHeight = '950px';
+        break;
+
+      case 2:
+        this.tableScrollHeight = '950px';
+        break;
+
+      case 3:
+        this.tableScrollHeight = '650px';
+        break;
+
+      default:
+        this.tableScrollHeight = '700px';
+        break;
+    }
+
     // map option list for select fields
     this.dropwownColumnOptions = {
       allSuppliers: this.allSuppliers.sort((a, b) =>
