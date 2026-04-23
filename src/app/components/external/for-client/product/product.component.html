@@ -74,8 +74,10 @@
       *ngIf="!isMobile || position.supplierId"
     >
       <div class="product-title">DOSTAWCA</div>
-      <div class="product-name">
-        {{ position.supplierId ? position.supplierId["company"] : "" }}
+      <div class="product-name product-supplier" *ngIf="position.supplierId">
+        <p>{{ position.supplierId["company"] }}</p>
+        <p>{{ position.supplierId["email"] }}</p>
+        <p>{{ position.supplierId["telephone"] }}</p>
       </div>
     </div>
   </div>

@@ -76,6 +76,12 @@
   color: var(--neutral-color-09);
 }
 
+.product-supplier{
+  display: flex; 
+  flex-direction: column;
+  gap: 12px;
+}
+
 .position-action-btn-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
