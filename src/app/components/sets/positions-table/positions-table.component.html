@@ -9,7 +9,7 @@
     class="p-datatable-gridlines"
     [virtualScroll]="false"
     [virtualScrollItemSize]="190"
-    [scrollHeight]="'600px'"
+    [scrollHeight]="'650px'"
     [resizableColumns]="true"
     [scrollable]="true"
     [value]="formData"
@@ -88,7 +88,7 @@
             <!-- EDIT MODE  -->
             <ng-template pTemplate="input" [ngSwitch]="column.type">
               <ng-container *ngIf="!column.readOnly">
-                <!-- EDIT MODE -> type = textarea DEFAULT -->
+                <!-- EDIT MODE -> type = autoComplete -->
                 <p-autoComplete
                   appendTo="body"
                   *ngSwitchCase="'autocomplete'"
@@ -98,7 +98,7 @@
                   (onFocus)="selectAll($event)"
                   (onBlur)="applyAction($event, i, column)"
                 ></p-autoComplete>
-                <!-- EDIT MODE -> type = textarea DEFAULT -->
+                <!-- EDIT MODE -> type = textarea -->
                 <textarea
                   *ngSwitchCase="'textarea'"
                   pTextarea

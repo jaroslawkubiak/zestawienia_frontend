@@ -80,6 +80,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   @Output() isEdited = new EventEmitter<boolean>();
   @Output() updateSetPositions = new EventEmitter<IPosition>();
   @Output() updateSetComments = new EventEmitter();
+  @Output() fieldChanged = new EventEmitter<IPosition>();
 
   formData: IPosition[] = [];
   newOrClonePosition: IPosition | undefined;
@@ -377,6 +378,8 @@ export class PositionsTableComponent implements OnInit, OnChanges {
         );
         break;
     }
+
+    this.fieldChanged.emit(this.formData[rowIndex]);
   }
 
   // for select content (like ctrl+a) of input field when edit mode,

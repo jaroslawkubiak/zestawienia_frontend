@@ -63,6 +63,7 @@ export class EditSetComponent
   setId!: number;
   set!: ISet;
   positions: IPosition[] = [];
+  private changedPositions = new Map<number, IPosition>();
   positionsFromBookmark: IPosition[] = [];
   latestFormData: IPosition[] = [];
   selectedBookmark: number = 0;
@@ -290,18 +291,17 @@ export class EditSetComponent
       lastActiveUserBookmark: { id: this.selectedBookmark },
     };
 
+    const updatedPositions = Array.from(this.changedPositions.values());
+    
     // replaca null status for EMPTY_STATUS
-    const updatedPositions = this.positions.map((position) => {
-      if (!position.status) {
-        return { ...position, status: EMPTY_STATUS };
-      }
-
-      return { ...position };
-    });
+    const normalizedPositions = updatedPositions.map((p) => ({
+      ...p,
+      status: p.status ?? EMPTY_STATUS,
+    }));
 
     const savedSet: IUpdateSet = {
       set: updatedSet,
-      positions: updatedPositions,
+      positions: normalizedPositions,
       positionToDelete: [...this.positionToDelete],
     };
 
@@ -404,5 +404,9 @@ export class EditSetComponent
     };
 
     this.confirmationModalService.showConfirmation(confirmMessage);
+  }
+
+  onFieldChanged(position: IPosition) {
+    this.changedPositions.set(position.id, position);
   }
 }
