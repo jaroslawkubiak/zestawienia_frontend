@@ -9,4 +9,5 @@ export interface IPositionForSupplier {
   pomieszczenie: string;
   link: string;
   image: string;
+  uwagi: string;
 }

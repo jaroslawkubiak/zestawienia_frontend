@@ -10,7 +10,7 @@ export const ColumnListForSupplier: IColumnList[] = [
   {
     name: 'PRODUKT',
     key: 'produkt',
-    type: 'textarea',
+    type: 'string',
   },
   {
     name: 'PRODUCENT',
@@ -46,5 +46,10 @@ export const ColumnListForSupplier: IColumnList[] = [
     name: 'LINK',
     key: 'link',
     type: 'link',
+  },
+  {
+    name: 'UWAGI',
+    key: 'uwagi',
+    type: 'textarea',
   },
 ];

@@ -94,16 +94,10 @@ th {
   font-size: 1.2rem;
 }
 
-.link {
-  gap: 4px;
-  font-size: 1.4rem;
-  font-weight: 700;
-  cursor: pointer;
-  color: var(--color-primary);
-}
-
 .link i {
-  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--neutral-color-10);
+  font-size: 2rem;
 }
 
 .product-img {
