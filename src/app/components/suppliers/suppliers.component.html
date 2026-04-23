@@ -245,7 +245,6 @@
             ></textarea>
           </div>
           <div class="field">
-            <i class="pi pi-asterisk"></i>
             <label for="firstName">Imię</label>
             <input
               type="text"
@@ -254,23 +253,8 @@
               formControlName="firstName"
               fluid
             />
-            <div class="error-container">
-              <div
-                *ngIf="
-                  form.controls['firstName'].invalid &&
-                  form.controls['firstName'].touched
-                "
-              >
-                <span
-                  class="error"
-                  *ngIf="form.controls['firstName'].errors?.['required']"
-                  >Imię jest wymagane.</span
-                >
-              </div>
-            </div>
           </div>
           <div class="field">
-            <i class="pi pi-asterisk"></i>
             <label for="lastName">Nazwisko</label>
             <input
               type="text"
@@ -279,20 +263,6 @@
               formControlName="lastName"
               fluid
             />
-            <div class="error-container">
-              <div
-                *ngIf="
-                  form.controls['lastName'].invalid &&
-                  form.controls['lastName'].touched
-                "
-              >
-                <span
-                  class="error"
-                  *ngIf="form.controls['lastName'].errors?.['required']"
-                  >Nazwisko jest wymagane.</span
-                >
-              </div>
-            </div>
           </div>
           <div class="field">
             <i class="pi pi-asterisk"></i>

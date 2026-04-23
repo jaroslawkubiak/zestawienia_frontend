@@ -71,12 +71,8 @@ export class SuppliersComponent implements OnInit {
       validators: [Validators.required],
     }),
     address: new FormControl(''),
-    firstName: new FormControl('', {
-      validators: [Validators.required],
-    }),
-    lastName: new FormControl('', {
-      validators: [Validators.required],
-    }),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
     email: new FormControl('', {
       validators: [Validators.required, Validators.email],
     }),
