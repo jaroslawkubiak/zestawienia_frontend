@@ -73,7 +73,7 @@
 }
 
 .form-clean {
-  border: 2px solid var(--neutral-color-02) !important;
+  border: 2px solid var(--table-header-bg) !important;
 }
 
 ::ng-deep .btn-xl .p-button-icon,

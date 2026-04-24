@@ -508,6 +508,17 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     }
   }
 
+  // delete image from position
+  onDeleteImage(event: MouseEvent, rowIndex: number) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.formData[rowIndex]['image'] = '';
+    this.formData[rowIndex]['thumbnail'] = '';
+
+    this.fieldChanged.emit(this.formData[rowIndex]);
+  }
+
   // open gallery with bookmark images
   onShowImageClick(event: MouseEvent, position: IPosition) {
     event.stopPropagation();

@@ -202,11 +202,22 @@
                     [imagePreview]="getImagePreviewUrl(position, true)"
                   />
                   <div
-                    class="show-image-wrapper"
+                    class="show-image-wrapper flex-center"
                     *ngIf="position[column.key]"
                     (click)="onShowImageClick($event, position)"
+                    pTooltip="Pokaż obraz"
+                    tooltipPosition="bottom"
                   >
                     <i class="pi pi-search-plus"></i>
+                  </div>
+                  <div
+                    class="delete-image-wrapper flex-center"
+                    *ngIf="position[column.key]"
+                    (click)="onDeleteImage($event, i)"
+                    pTooltip="Usuń obraz"
+                    tooltipPosition="bottom"
+                  >
+                    <i class="pi pi-trash"></i>
                   </div>
                 </div>
                 <!-- VIEW MODE default -> type = string  -->
