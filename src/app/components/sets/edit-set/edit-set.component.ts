@@ -292,7 +292,7 @@ export class EditSetComponent
     };
 
     const updatedPositions = Array.from(this.changedPositions.values());
-    
+
     // replaca null status for EMPTY_STATUS
     const normalizedPositions = updatedPositions.map((p) => ({
       ...p,
@@ -309,6 +309,7 @@ export class EditSetComponent
       next: (response) => {
         this.isEdited(false);
         this.positionToDelete.clear();
+        this.changedPositions = new Map<number, IPosition>();
 
         if (this.positionsTableComponent) {
           this.positionsTableComponent.positionToDelete = [];
