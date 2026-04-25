@@ -5,7 +5,6 @@ export interface IColumnList {
   key: string;
   type: TField;
   width?: number;
-  readOnly?: boolean;
   classHeader?: string;
   classColumn?: string;
   classFooter?: string;

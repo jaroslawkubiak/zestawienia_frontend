@@ -87,7 +87,7 @@
           <p-cellEditor>
             <!-- EDIT MODE  -->
             <ng-template pTemplate="input" [ngSwitch]="column.type">
-              <ng-container *ngIf="!column.readOnly">
+              <ng-container>
                 <!-- EDIT MODE -> type = autoComplete -->
                 <p-autoComplete
                   appendTo="body"
@@ -113,7 +113,6 @@
                   pInputText
                   type="number"
                   class="no-arrows"
-                  [readonly]="column.readOnly"
                   [(ngModel)]="position[column.key]"
                   (blur)="applyAction($event, i, column)"
                   (keydown.enter)="applyAction($event, i, column)"
@@ -151,7 +150,6 @@
                   *ngSwitchCase="'string'"
                   pInputText
                   type="text"
-                  [readonly]="column.readOnly"
                   [(ngModel)]="position[column.key]"
                   (blur)="applyAction($event, i, column)"
                   (keydown.enter)="applyAction($event, i, column)"
@@ -166,16 +164,6 @@
                   (keydown.enter)="$event.stopPropagation()"
                   (blur)="applyAction($event, i, column)"
                 ></textarea>
-              </ng-container>
-              <!-- if field read only, when edited show view-mode -->
-              <ng-container *ngIf="column.readOnly">
-                <span class="view-mode">
-                  @if (column.type === "number") {
-                    {{ position[column.key] | number: "1.2-2" }}
-                  } @else {
-                    {{ position[column.key] }}
-                  }
-                </span>
               </ng-container>
             </ng-template>
             <!-- VIEW MODE  -->

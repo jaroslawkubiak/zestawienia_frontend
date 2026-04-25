@@ -74,6 +74,7 @@ th {
   background-color: var(--accent-color-01) !important;
   width: 100% !important;
   height: 100% !important;
+  font-size: 1.2rem !important;
 }
 
 .p-textarea {
@@ -85,10 +86,6 @@ th {
 
 .p-textarea.p-variant-filled {
   background-image: none !important;
-}
-
-.read-only {
-  cursor: no-drop;
 }
 
 .view-mode {

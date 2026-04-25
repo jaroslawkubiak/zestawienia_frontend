@@ -359,46 +359,84 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     const ilosc = +this.formData[rowIndex]['ilosc'];
     const netto = +this.formData[rowIndex]['netto'];
 
-    switch (column.key) {
-      // column ilosc has changed - calculate new wartoscNetto i wartoscBrutto columns
-      case 'ilosc':
-        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
-          ilosc,
-          netto,
-        );
-        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
-          ilosc,
-          calculateBrutto(netto),
-        );
-        break;
+    const keysToUpdate = [
+      'ilosc',
+      'netto',
+      'brutto',
+      'wartoscNetto',
+      'wartoscBrutto',
+    ];
 
-      // column netto has changed - calculate new brutto, wartoscNetto i wartoscBrutto columns
-      case 'netto':
-        const newBrutto = calculateBrutto(+newValue);
-        this.formData[rowIndex]['brutto'] = newBrutto;
-        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
-          ilosc,
-          +newValue,
-        );
-        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
-          ilosc,
-          newBrutto,
-        );
-        break;
+    if (keysToUpdate.includes(column.key)) {
+      if (!ilosc || ilosc === 0) {
+        return;
+      }
 
-      // column brutto has changed - calculate new brutto, wartoscbrutto i wartoscBrutto columns
-      case 'brutto':
-        const newNetto = calculateNetto(+newValue);
-        this.formData[rowIndex]['netto'] = newNetto;
-        this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
-          ilosc,
-          +newValue,
-        );
-        this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
-          ilosc,
-          newNetto,
-        );
-        break;
+      switch (column.key) {
+        // column ilosc has changed - calculate new wartoscNetto and wartoscBrutto columns
+        case 'ilosc':
+          this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+            ilosc,
+            netto,
+          );
+          this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+            ilosc,
+            calculateBrutto(netto),
+          );
+          break;
+
+        // column netto has changed - calculate new brutto, wartoscNetto and wartoscBrutto columns
+        case 'netto':
+          const caseNetto = +newValue;
+          const newBrutto = calculateBrutto(caseNetto);
+          this.formData[rowIndex]['brutto'] = newBrutto;
+          this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+            ilosc,
+            caseNetto,
+          );
+          this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+            ilosc,
+            newBrutto,
+          );
+          break;
+
+        // column brutto has changed - calculate new brutto, wartoscbrutto and wartoscBrutto columns
+        case 'brutto':
+          const caseBrutto = +newValue;
+          const newNetto = calculateNetto(caseBrutto);
+          this.formData[rowIndex]['netto'] = newNetto;
+          this.formData[rowIndex]['wartoscBrutto'] = calculateWartosc(
+            ilosc,
+            caseBrutto,
+          );
+          this.formData[rowIndex]['wartoscNetto'] = calculateWartosc(
+            ilosc,
+            newNetto,
+          );
+          break;
+
+        // column wartoscNetto has changed - calculate new netto, brutto, and wartoscBrutto columns
+        case 'wartoscNetto':
+          const caseWartoscNetto = +newValue;
+          const priceNetto = caseWartoscNetto / ilosc;
+          this.formData[rowIndex]['netto'] = priceNetto;
+          this.formData[rowIndex]['wartoscBrutto'] =
+            calculateBrutto(caseWartoscNetto);
+          this.formData[rowIndex]['brutto'] = calculateBrutto(priceNetto);
+          break;
+
+        // column wartoscBrutto has changed - calculate new netto, brutto, and wartoscNetto columns
+        case 'wartoscBrutto':
+          const caseWartoscBrutto = +newValue;
+          const priceBrutto = caseWartoscBrutto / ilosc;
+          this.formData[rowIndex]['netto'] = calculateNetto(priceBrutto);
+          this.formData[rowIndex]['wartoscNetto'] =
+            calculateNetto(caseWartoscBrutto);
+          this.formData[rowIndex]['brutto'] = priceBrutto;
+          break;
+      }
+
+      this.updateFooter();
     }
 
     this.fieldChanged.emit(this.formData[rowIndex]);

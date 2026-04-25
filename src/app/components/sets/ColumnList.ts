@@ -83,16 +83,12 @@ export const ColumnList: IColumnList[] = [
     name: 'WARTOŚĆ NETTO',
     key: 'wartoscNetto',
     type: 'number',
-    readOnly: true,
-    classColumn: 'read-only',
     pdfWidth: 40,
   },
   {
     name: 'WARTOŚĆ BRUTTO',
     key: 'wartoscBrutto',
     type: 'number',
-    readOnly: true,
-    classColumn: 'read-only',
     pdfWidth: 40,
   },
   {
