@@ -289,15 +289,15 @@ export class PdfService {
             return;
           }
 
-          const imageName = removeMiniSuffix(row.image);
+          const positionImage = row.thumbnail != '' ? row.thumbnail : row.image;
 
-          const imageUrl = `${environment.FILES_URL}/sets/${set.id}/${set.hash}/positions/${row.id}/${imageName}`;
+          const imageUrl = `${environment.FILES_URL}/sets/${set.id}/${set.hash}/positions/${row.id}/${positionImage}`;
           try {
             const base64Image = await this.getBase64Image(imageUrl);
             const { width, height } = await this.getImageSize(
               base64Image as string,
             );
-            imageMap.set(row.id + '/' + imageName, {
+            imageMap.set(row.id + '/' + positionImage, {
               base64: base64Image as string,
               width,
               height,
@@ -334,8 +334,7 @@ export class PdfService {
             return this.visibleColumns.map((col) => {
               const key = col.key;
 
-              const imageName = row.image && removeMiniSuffix(row.image);
-
+              const imageName = row.thumbnail != '' ? row.thumbnail : row.image;
               // special case for couple columns like image and supplier
               switch (key) {
                 case 'image':
@@ -793,10 +792,6 @@ function blendHexWithBackground(
     blend(g, background[1]),
     blend(b, background[2]),
   ];
-}
-
-function removeMiniSuffix(filename: string): string {
-  return filename.replace(/_mini(?=\.[^.]+$)/, '');
 }
 
 function formatPLN(value: number) {
