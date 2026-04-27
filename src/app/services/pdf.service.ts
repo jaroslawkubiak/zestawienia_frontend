@@ -46,7 +46,7 @@ export class PdfService {
     ...ColumnList,
   ];
 
-  drawSummaryPage = false;
+  drawSummaryPage = true;
   drawFooter = true;
 
   // get colors from css variables
@@ -185,20 +185,6 @@ export class PdfService {
 
       doc.setPage(1);
 
-      // draw background
-      const backgroundBase64 = await this.getBase64Image(
-        'assets/images/background1.jpg',
-      );
-
-      doc.addImage(
-        backgroundBase64,
-        'JPG', // format
-        0, // X
-        0, // Y
-        this.pageWidth,
-        this.pageHeight,
-      );
-
       // header summary
       const summaryRowHeight = 40;
       this.drawSummaryTitle(doc, `Podsumowanie inwestycji ${set.name}`);
@@ -223,13 +209,13 @@ export class PdfService {
       autoTable(doc, {
         head: summaryHead,
         body: summaryBody,
-        margin: { left: 520 },
-        startY: summaryTableYPos,
+        margin: { left: 0 },
+        startY: 60,
         theme: 'grid',
         headStyles: {
           font: 'Roboto',
           fontStyle: 'bold',
-          fillColor: this.colors.accentDark,
+          fillColor: this.colors.black,
           textColor: this.colors.white,
           halign: 'center',
           cellPadding: {
@@ -254,22 +240,22 @@ export class PdfService {
         },
         columnStyles: {
           0: { cellWidth: 30 },
-          1: { cellWidth: 180 },
-          2: { cellWidth: 100 },
+          1: { cellWidth: 250 },
+          2: { cellWidth: 130 },
         },
 
         didParseCell: (data) => {
-          data.cell.styles.fontSize = 20;
+          data.cell.styles.fontSize = 24;
           const isLastRow = data.row.index === summaryBody.length - 1;
 
-          if (isLastRow && data.section === 'body') {
-            data.cell.styles.fillColor = this.colors.accentDark;
+          if (data.column.index === 0 && data.section === 'body') {
+            data.cell.styles.fillColor = this.colors.black;
             data.cell.styles.textColor = this.colors.white;
             data.cell.styles.fontStyle = 'bold';
           }
 
-          if (data.column.index === 0) {
-            data.cell.styles.fillColor = this.colors.accentDark;
+          if (isLastRow) {
+            data.cell.styles.fillColor = this.colors.accent;
             data.cell.styles.textColor = this.colors.white;
             data.cell.styles.fontStyle = 'bold';
           }
@@ -544,7 +530,7 @@ export class PdfService {
           bodyStyles: {
             font: 'Roboto',
             fontStyle: 'bold',
-            fillColor: this.colors.accentDarker,
+            fillColor: this.colors.accent,
             textColor: this.colors.white,
             halign: 'center',
             valign: 'middle',
