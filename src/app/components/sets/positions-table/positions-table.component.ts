@@ -82,6 +82,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   @Output() updateSetPositions = new EventEmitter<IPosition>();
   @Output() updateSetComments = new EventEmitter();
   @Output() fieldChanged = new EventEmitter<IPosition>();
+  @Output() changePositionOrder = new EventEmitter<IPosition[]>();
 
   formData: IPosition[] = [];
   newOrClonePosition: IPosition | undefined;
@@ -456,6 +457,8 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };
     });
+    
+    this.changePositionOrder.emit(this.formData);
   }
 
   // resize column event - save new column width to this.set.bookmark property

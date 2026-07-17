@@ -293,7 +293,6 @@ export class EditSetComponent
 
     const updatedPositions = Array.from(this.changedPositions.values());
 
-    // replaca null status for EMPTY_STATUS
     const normalizedPositions = updatedPositions.map((p) => ({
       ...p,
       status: p.status ?? EMPTY_STATUS,
@@ -409,5 +408,11 @@ export class EditSetComponent
 
   onFieldChanged(position: IPosition) {
     this.changedPositions.set(position.id, position);
+  }
+
+  onChangePositionOrder(positions: IPosition[]) {
+    positions.map((item) => {
+      this.changedPositions.set(item.id, item);
+    });
   }
 }
