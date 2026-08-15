@@ -26,14 +26,15 @@
 }
 
 .preview-file-name-label {
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
+  display: block;
   font-size: 1.2rem;
   text-align: center;
   width: 100%;
   color: var(--accent-color-09);
   padding-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .preview-action-btns {
@@ -121,6 +122,10 @@
 
   .preview-file-name-label {
     font-size: 1rem;
+  }
+
+  .preview-image-wrapper img {
+    border-radius: 6px;
   }
 
   .preview-new-file-badge {
