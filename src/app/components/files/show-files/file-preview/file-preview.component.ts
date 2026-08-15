@@ -38,6 +38,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
 })
 export class FilePreviewComponent {
   @Input() who!: TAuthorType;
+  @Input() isMobile: boolean = false;
   @Input() file!: IFileFullDetails;
   @Input() files: IFileFullDetails[] = [];
   @Input() selectedFiles: IFileFullDetails[] = [];
