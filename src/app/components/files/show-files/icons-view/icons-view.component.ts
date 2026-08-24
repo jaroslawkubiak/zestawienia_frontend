@@ -47,8 +47,8 @@ export class IconsViewComponent implements OnChanges {
   @Input() openPdf!: (file: IFileFullDetails) => void;
   @Input() addFileToSelected!: (file: IFileFullDetails) => void;
   @Input() isMobile!: boolean;
-
   @Output() fileVisible = new EventEmitter<number>();
+  @Output() showComments = new EventEmitter<number>();
   @Output() selectFilesFromDirectory =
     new EventEmitter<ISelectFilesFromDirectoryEvent>();
   @ViewChild('imageGallery') imageGallery!: ImageGalleryComponent;
@@ -138,5 +138,9 @@ export class IconsViewComponent implements OnChanges {
 
     this.imageGallery.images = galleryImages;
     this.imageGallery.openGallery(activeIndex);
+  }
+
+  triggerShowComments(fileId: number) {
+    this.showComments.emit(fileId);
   }
 }

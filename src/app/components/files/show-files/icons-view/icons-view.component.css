@@ -31,10 +31,10 @@
 .file-container .file-item {
   position: relative;
   width: var(--img-container-width);
-  height: 400px;
+  height: 440px;
   width: 300px;
   padding: 30px 20px;
-  border-radius: 30px;
+  border-radius: 20px;
   background-color: var(--neutral-color-01);
   border: 1px solid #606060 !important;
   box-shadow: 5px 5px 10px -4px #c4c4c450;
@@ -94,6 +94,19 @@
 .collapsed-label i {
   color: var(--neutral-color-05);
 }
+
+/* .btn-comments-wrapper {
+  position: absolute;
+  top: 5px;
+  left: 15px;
+} */
+
+/* .comments-value-badge {
+  position: absolute;
+  top: -10px;
+  right: -5px;
+  cursor: auto;
+} */
 
 /* MOBILE  */
 @media (max-width: 768px) {

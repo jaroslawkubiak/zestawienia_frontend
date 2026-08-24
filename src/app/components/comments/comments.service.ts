@@ -33,6 +33,22 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
+  getCommentsForFile(fileId: number): Observable<IComment[]> {
+    return this.http
+      .get<
+        IComment[]
+      >(`${environment.API_URL}/comments/${fileId}/getCommentsForFile`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllCommentsForFiles(setId: number): Observable<IComment[]> {
+    return this.http
+      .get<
+        IComment[]
+      >(`${environment.API_URL}/comments/${setId}/getAllCommentsForFiles`)
+      .pipe(catchError(this.handleError));
+  }
+
   addComment(newComment: INewPartialComment): Observable<IComment> {
     const { set, ...rest } = newComment;
     const isClient = newComment.authorType === 'client';

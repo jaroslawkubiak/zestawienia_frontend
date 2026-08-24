@@ -85,6 +85,7 @@
         [isMobile]="isMobile"
         (fileVisible)="onFileVisible($event)"
         (selectFilesFromDirectory)="selectFilesFromDirectory($event)"
+        (showComments)="showComments($event)"
       ></app-icons-view>
       <app-list-view
         *ngIf="defaultView === 'list'"
@@ -119,4 +120,22 @@
     height="900px"
     style="border: none"
   ></iframe>
+</p-dialog>
+
+<p-dialog
+  [header]="header"
+  [modal]="true"
+  [(visible)]="showCommentsDialog"
+  (onHide)="onCloseCommentsDialog()"
+  [style]="{ width: '70rem', borderRadius: '20px' }"
+  [dismissableMask]="true"
+>
+  <app-comments
+    [comments]="commentsForFile"
+    [fileId]="fileIdForComments"
+    [set]="set"
+    [commentsDialog]="showCommentsDialog"
+    [commentWatcher]="'user'"
+    [commentType]="'fileId'"
+  />
 </p-dialog>

@@ -21,7 +21,10 @@ import { ConfirmationModalService } from '../../../services/confirmation.service
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
+import { CommentsComponent } from '../../comments/comments.component';
+import { CommentsService } from '../../comments/comments.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
+import { IComment } from '../../comments/types/IComment';
 import { ISet } from '../../sets/types/ISet';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
@@ -45,6 +48,7 @@ import { ListViewComponent } from './list-view/list-view.component';
     ButtonModule,
     IconsViewComponent,
     ListViewComponent,
+    CommentsComponent,
   ],
   templateUrl: './show-files.component.html',
   styleUrl: './show-files.component.css',
@@ -56,6 +60,8 @@ export class ShowFilesComponent implements OnInit {
     private filesService: FilesService,
     private notificationService: NotificationService,
     private confirmationModalService: ConfirmationModalService,
+    private commentsService: CommentsService,
+
     private cd: ChangeDetectorRef,
     private breakpointObserver: BreakpointObserver,
   ) {
@@ -78,6 +84,12 @@ export class ShowFilesComponent implements OnInit {
   defaultView: 'icons' | 'list' = 'icons';
   uniqueDir: { dir: EFileDirectory; dirLabel: string }[] = [];
   isMobile = false;
+  commentsForFile: IComment[] = [];
+  allComments: IComment[] = [];
+  header = '';
+  showCommentsDialog = false;
+  fileIdForComments: number = 0;
+
   private seenFiles = new Set<number>();
   private visibleFiles$ = new Subject<number>();
 
@@ -98,34 +110,70 @@ export class ShowFilesComponent implements OnInit {
     this.showFilesDialog = true;
     this.selectedFiles = [];
 
-    if (set.files) {
-      this.files = set.files.map((file) => {
-        const fullPath = this.createFilePath(file);
+    if (this.set.id) {
+      this.commentsService.getAllCommentsForFiles(this.set.id).subscribe({
+        next: (response) => {
+          this.allComments = response;
+          if (set.files) {
+            this.files = set.files.map((file) => {
+              const fullPath = this.createFilePath(file);
 
-        let thumbnailPath = '';
-        if (file.type.toUpperCase() === 'PDF') {
-          thumbnailPath = this.createThumbnailPdfPath(file);
-        } else {
-          thumbnailPath = this.createThumbnailPath(file);
-        }
+              const comments = this.allComments.filter(
+                (c) => c.fileId === file.id,
+              );
 
-        return {
-          ...file,
-          fullPath,
-          dirLabel: this.findDirLabel(file.dir),
-          thumbnailPath,
-          canDelete:
-            this.who === 'user'
-              ? true
-              : file.dir === EFileDirectory.INSPIRATIONS,
-        };
+              let thumbnailPath = '';
+              if (file.type.toUpperCase() === 'PDF') {
+                thumbnailPath = this.createThumbnailPdfPath(file);
+              } else {
+                thumbnailPath = this.createThumbnailPath(file);
+              }
+
+              return {
+                ...file,
+                fullPath,
+                dirLabel: this.findDirLabel(file.dir),
+                thumbnailPath,
+                comments,
+                canDelete:
+                  this.who === 'user'
+                    ? true
+                    : file.dir === EFileDirectory.INSPIRATIONS,
+              };
+            });
+
+            this.files = this.files.sort((a, b) =>
+              a.fileName.localeCompare(b.fileName),
+            );
+
+            this.uniqueDir = this.getUniqueDirectories();
+          }
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
       });
+    }
+  }
 
-      this.files = this.files.sort((a, b) =>
-        a.fileName.localeCompare(b.fileName),
-      );
+  showComments(fileId: number) {
+    const file = this.files.find((item) => item.id === fileId);
 
-      this.uniqueDir = this.getUniqueDirectories();
+    if (file) {
+      this.fileIdForComments = fileId;
+      this.commentsService.getCommentsForFile(fileId).subscribe({
+        next: (response) => {
+          this.commentsForFile = response;
+          const shortName = file.fileName.slice(0, 40) + '...';
+          this.header = `Plik ${shortName}`;
+
+          this.showCommentsDialog = true;
+          this.cd.markForCheck();
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
     }
   }
 
@@ -394,5 +442,10 @@ export class ShowFilesComponent implements OnInit {
     }
 
     return true;
+  }
+
+  // on close dialog with comments
+  onCloseCommentsDialog() {
+    // this.updateSetComments.emit();
   }
 }

@@ -1,3 +1,4 @@
+import { IComment } from '../../comments/types/IComment';
 import { EFileDirectory } from './file-directory.enum';
 
 export interface IFileFullDetails {
@@ -19,4 +20,5 @@ export interface IFileFullDetails {
   createdAtTimestamp: number;
   fullPath?: string;
   canDelete?: boolean;
+  comments?: IComment[];
 }

@@ -12,6 +12,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { Textarea } from 'primeng/textarea';
 import { TooltipModule } from 'primeng/tooltip';
+import { environment } from '../../../environments/environment';
 import { EmojiConvertPipe } from '../../pipe/emoji-convert.pipe';
 import { ConfirmationModalService } from '../../services/confirmation.service';
 import { NotificationService } from '../../services/notification.service';
@@ -24,7 +25,7 @@ import { IComment } from './types/IComment';
 import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { INewPartialComment } from './types/INewPartialComment';
 import { TAuthorType } from './types/authorType.type';
-import { environment } from '../../../environments/environment';
+import { TCommentType } from './types/commentType.type';
 
 @Component({
   selector: 'app-comments',
@@ -41,9 +42,11 @@ import { environment } from '../../../environments/environment';
 export class CommentsComponent implements AfterViewInit, OnChanges {
   @Input() set!: ISet;
   @Input() positionId!: number;
+  @Input() fileId!: number;
   @Input() comments: IComment[] = [];
   @Input() commentsDialog = false;
   @Input() commentWatcher!: TAuthorType;
+  @Input() commentType!: TCommentType;
   newMessage: string = '';
   editedCommentId: number | null = null;
   clientsAvatar = '';
@@ -65,7 +68,7 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.clientsAvatar =
-      this.set.clientId.avatar.path + '/' + this.set.clientId.avatar.fileName;
+      this.set?.clientId?.avatar.path + '/' + this.set?.clientId?.avatar.fileName;
 
     if (
       changes['commentsDialog'] &&
@@ -96,7 +99,8 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
         comment: this.newMessage,
         authorType: this.commentWatcher,
         setId: this.set.id,
-        positionId: this.positionId,
+        positionId: this.positionId || null,
+        fileId: this.fileId || null,
         set: this.set,
       };
 

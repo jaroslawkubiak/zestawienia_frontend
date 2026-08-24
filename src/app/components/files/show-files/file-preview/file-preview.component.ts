@@ -9,6 +9,7 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
@@ -27,6 +28,7 @@ import { IFileFullDetails } from '../../types/IFileFullDetails';
     CommonModule,
     TooltipModule,
     ButtonModule,
+    BadgeModule,
     PdfThumbnailComponent,
     IsImagePipe,
     IsPdfPipe,
@@ -49,6 +51,7 @@ export class FilePreviewComponent {
   @Output() openPdf = new EventEmitter<IFileFullDetails>();
   @Output() openGalery = new EventEmitter<IFileFullDetails>();
   @Output() fileVisible = new EventEmitter<number>();
+  @Output() showComments = new EventEmitter<number>();
   @ViewChild('fileElement') fileElement!: ElementRef;
   private observer!: IntersectionObserver;
   isLoading: boolean = true;
@@ -91,5 +94,9 @@ export class FilePreviewComponent {
     event.stopPropagation();
     event.preventDefault();
     this.openGalery.emit(file);
+  }
+
+  triggerShowComments(fileId: number) {
+    this.showComments.emit(fileId);
   }
 }

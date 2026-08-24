@@ -1,14 +1,17 @@
 .preview-container {
   display: grid;
-  grid-template-rows: 1fr 40px 40px;
+  grid-template-rows: 1fr 24px 40px 40px;
   gap: 12px;
   height: 100%;
 }
 
 .preview-file-wrapper {
+  position: relative;
   overflow: hidden;
   width: 100%;
   aspect-ratio: 1/1;
+  border-radius: 10px;
+  background-color: var(--neutral-color-02) !important;
 }
 
 .preview-image-wrapper {
@@ -23,6 +26,7 @@
 
 .preview-image-wrapper img {
   border-radius: 10px;
+  padding: 4px;
 }
 
 .preview-file-name-label {
@@ -31,18 +35,72 @@
   text-align: center;
   width: 100%;
   color: var(--accent-color-09);
-  padding-top: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
 .preview-action-btns {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 40px;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 0px;
+  gap: 4px;
+}
+
+.preview-file-comment {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--neutral-color-10);
+}
+
+.preview-file-comment span {
+  cursor: pointer;
+  position: relative;
+}
+
+.preview-file-comment i {
+  cursor: pointer;
+  font-size: 2rem;
+  padding-right: 8px;
+}
+
+.preview-file-comment span:hover {
+  color: var(--neutral-color-08);
+}
+
+.preview-file-comments-badge-position {
+  position: absolute;
+  top: -6px;
+  right: -20px;
+}
+
+.preview-delete-btn {
+  display: grid;
+  justify-self: end;
+  height: 26px;
+}
+
+.preview-download-btn {
+  width: 90%;
+  height: 26px;
+}
+
+.preview-select-file {
+  position: absolute;
+  z-index: 999;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.p-button-label,
+.p-button-icon {
+  font-size: 14px;
+}
+
+.p-button-contrast {
+  gap: 8px;
 }
 
 .preview-file-wrapper.landscape img {
@@ -93,7 +151,7 @@
 .preview-new-file-badge {
   position: absolute;
   top: 5px;
-  right: 15px;
+  left: 20px;
   color: var(--burgund-color-05);
   font-size: 1.6rem;
   font-weight: 700;
@@ -103,14 +161,11 @@
 .preview-seen-file-badge {
   position: absolute;
   top: 5px;
-  right: 8px;
-}
-
-.preview-seen-file-badge i {
-  color: var(--accent-color-06);
-  font-size: 1.6rem;
+  left: 20px;
+  color: var(--accent-color-07);
+  font-size: 1.4rem;
   font-weight: 700;
-  cursor: auto;
+  z-index: 999;
 }
 
 /* MOBILE  */
