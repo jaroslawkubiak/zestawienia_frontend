@@ -151,7 +151,11 @@ export class ForClientComponent implements OnInit {
     );
 
     this.uniquePositionIds = [
-      ...new Set(this.set.comments?.map((c) => c.positionId)),
+      ...new Set(
+        this.set.comments
+          ?.map((c) => c.positionId)
+          .filter((id): id is number => id !== null),
+      ),
     ];
   }
 

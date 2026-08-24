@@ -172,7 +172,11 @@ export class EditSetComponent
       next: (response) => {
         this.comments = response ?? [];
         this.uniquePositionIds = [
-          ...new Set(this.comments.map((comment) => comment.positionId)),
+          ...new Set(
+            this.comments
+              .map((comment) => comment.positionId)
+              .filter((id): id is number => id !== null),
+          ),
         ];
 
         this.assignCommentsToPosition();
@@ -186,9 +190,14 @@ export class EditSetComponent
   assignCommentsToPosition() {
     const commentsByPosition = this.comments.reduce<Record<number, IComment[]>>(
       (acc, comment) => {
+        if (comment.positionId === null) {
+          return acc;
+        }
+
         if (!acc[comment.positionId]) {
           acc[comment.positionId] = [];
         }
+
         acc[comment.positionId].push(comment);
         return acc;
       },

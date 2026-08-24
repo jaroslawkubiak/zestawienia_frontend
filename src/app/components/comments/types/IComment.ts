@@ -1,4 +1,4 @@
-import { TAuthorType } from "./authorType.type";
+import { TAuthorType } from './authorType.type';
 
 export interface IComment {
   id: number;
@@ -10,6 +10,7 @@ export interface IComment {
   needsAttention: boolean;
   createdAt: string;
   createdAtTimestamp: number;
-  positionId: number;
+  positionId: number | null;
+  fileId: number | null;
   setId: number;
 }
