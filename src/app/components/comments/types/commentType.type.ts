@@ -1,1 +1,1 @@
-export type TCommentType = 'position' | 'file';
+export type TCommentType = 'positionId' | 'fileId';
