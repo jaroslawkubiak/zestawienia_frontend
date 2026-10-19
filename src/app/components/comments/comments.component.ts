@@ -68,23 +68,30 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.clientsAvatar =
-      this.set?.clientId?.avatar.path + '/' + this.set?.clientId?.avatar.fileName;
+      this.set?.clientId?.avatar.path +
+      '/' +
+      this.set?.clientId?.avatar.fileName;
 
     if (
       changes['commentsDialog'] &&
       changes['commentsDialog'].currentValue === true
     ) {
-      this.markAllCommentsAsSeen(this.set.hash, this.positionId);
+      this.markAllCommentsAsSeen(this.set.hash, this.positionId, this.fileId);
     }
 
     setTimeout(() => this.scrollToBottom(), 0);
   }
 
-  private markAllCommentsAsSeen(setHash: string, positionId: number) {
+  private markAllCommentsAsSeen(
+    setHash: string,
+    positionId: number,
+    fileId: number,
+  ) {
     this.commentsService
       .markAllCommentsAsSeen(
         setHash,
         positionId,
+        fileId,
         this.comments,
         this.commentWatcher,
       )

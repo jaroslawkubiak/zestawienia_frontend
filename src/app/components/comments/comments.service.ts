@@ -132,6 +132,7 @@ export class CommentsService {
   markAllCommentsAsSeen(
     setHash: string,
     positionId: number,
+    fileId: number,
     comments: IComment[],
     authorType: TAuthorType,
   ): Observable<void> {
@@ -145,6 +146,7 @@ export class CommentsService {
       `${environment.API_URL}/comments/${setHash}/markAllAsSeen`,
       {
         positionId,
+        fileId,
         authorType,
       },
     );

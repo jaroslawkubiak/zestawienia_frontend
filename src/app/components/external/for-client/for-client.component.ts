@@ -218,12 +218,7 @@ export class ForClientComponent implements OnInit {
   }
 
   showAttachedFiles() {
-    this.dialogShowFilesComponent.showDialog({
-      id: this.set.id,
-      hash: this.set.hash,
-      name: this.set.name,
-      files: this.files,
-    } as ISet);
+    this.dialogShowFilesComponent.showDialog(this.set);
   }
 
   getAvatarForComment(): string {
