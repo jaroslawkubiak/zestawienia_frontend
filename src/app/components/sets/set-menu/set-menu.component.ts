@@ -136,14 +136,16 @@ export class SetMenuComponent implements OnChanges, OnInit {
 
   // calc comments badge color
   getCommentsBadgeSeverity(): string {
-    const badgeSeverity = calcCommentsBadgeSeverity(this.set.newCommentsCount);
+    const badgeSeverity = calcCommentsBadgeSeverity(
+      this.set.newCommentsCountForPositions,
+    );
 
     return `p-badge-${badgeSeverity}`;
   }
 
   // calc comments badge value
   getCommentsBadgeValue(): number {
-    return countCommentsBadgeValue(this.set.newCommentsCount);
+    return countCommentsBadgeValue(this.set.newCommentsCountForPositions);
   }
 
   // open edit set header dialog

@@ -198,18 +198,18 @@ export class SetsComponent implements OnInit {
   getCommentsBadgeValue(setId: number): number {
     const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    return countCommentsBadgeValue(currentSet.newCommentsCount);
+    return countCommentsBadgeValue(currentSet.newCommentsCountForPositions);
   }
 
   getCommentsTooltipInfo(setId: number): string {
     const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    return calcCommentsBadgeTooltip(currentSet.newCommentsCount);
+    return calcCommentsBadgeTooltip(currentSet.newCommentsCountForPositions);
   }
 
   getCommentsBadgeSeverity(setId: number): TBadgeSeverity {
     const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    return calcCommentsBadgeSeverity(currentSet.newCommentsCount);
+    return calcCommentsBadgeSeverity(currentSet.newCommentsCountForPositions);
   }
 }
