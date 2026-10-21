@@ -68,9 +68,9 @@ export class CommentsComponent implements AfterViewInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.clientsAvatar =
-      this.set?.clientId?.avatar.path +
+      this.set?.clientId?.avatar?.path +
       '/' +
-      this.set?.clientId?.avatar.fileName;
+      this.set?.clientId?.avatar?.fileName;
 
     if (
       changes['commentsDialog'] &&
