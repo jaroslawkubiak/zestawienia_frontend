@@ -1,4 +1,5 @@
 import { IComment } from '../../comments/types/IComment';
+import { IUnreadComments } from '../../comments/types/IUnreadComments';
 import { EFileDirectory } from './file-directory.enum';
 
 export interface IFileFullDetails {
@@ -21,4 +22,5 @@ export interface IFileFullDetails {
   fullPath?: string;
   canDelete?: boolean;
   comments?: IComment[];
+  newCommentsCount?: IUnreadComments;
 }
