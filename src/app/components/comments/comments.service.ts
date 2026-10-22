@@ -1,15 +1,16 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, throwError, EMPTY } from 'rxjs';
+import { EMPTY, Observable, catchError, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { TAuthorType } from './types/authorType.type';
 import { IComment } from './types/IComment';
+import { ICommentsWithSummary } from './types/ICommentsWithSummary';
 import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { INewComment } from './types/INewComment';
 import { INewPartialComment } from './types/INewPartialComment';
 import { IUnreadComments } from './types/IUnreadComments';
 import { IUpdatedComment } from './types/IUpdatedComment';
-import { TAuthorType } from './types/authorType.type';
 
 @Injectable({
   providedIn: 'root',
@@ -41,11 +42,14 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCommentsForFiles(setId: number): Observable<IComment[]> {
+  getAllCommentsForFiles(
+    setId: number,
+    who: TAuthorType,
+  ): Observable<ICommentsWithSummary> {
     return this.http
-      .get<
-        IComment[]
-      >(`${environment.API_URL}/comments/${setId}/getAllCommentsForFiles`)
+      .get<ICommentsWithSummary>(
+        `${environment.API_URL}/comments/${setId}/${who}/getAllCommentsForFiles`,
+      )
       .pipe(catchError(this.handleError));
   }
 
