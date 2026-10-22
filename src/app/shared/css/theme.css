@@ -70,6 +70,7 @@
 
   /* badge color  */
   --p-badge-secondary-background: var(--neutral-color-03) !important;
+  --p-badge-secondary-color: black !important;
   --p-badge-contrast-background: #020617 !important;
   --p-badge-info-background: #04a9f4 !important;
   --p-badge-success-background: #4caf50 !important;
