@@ -25,6 +25,7 @@ import { CommentsComponent } from '../../comments/comments.component';
 import { CommentsService } from '../../comments/comments.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
 import { IComment } from '../../comments/types/IComment';
+import { IFilesWithUnreadComments } from '../../comments/types/IFilesWithUnreadComments';
 import { ISet } from '../../sets/types/ISet';
 import { FileDirectoryList } from '../FileDirectoryList';
 import { FilesService } from '../files.service';
@@ -111,48 +112,58 @@ export class ShowFilesComponent implements OnInit {
     this.selectedFiles = [];
 
     if (this.set.id) {
-      this.commentsService.getAllCommentsForFiles(this.set.id).subscribe({
-        next: (response) => {
-          this.allComments = response;
-          if (set.files) {
-            this.files = set.files.map((file) => {
-              const fullPath = this.createFilePath(file);
+      this.commentsService
+        .getAllCommentsForFiles(this.set.id, this.who)
+        .subscribe({
+          next: (response) => {
+            this.allComments = response.comments;
+            const fileIdsWithUnreadComments: IFilesWithUnreadComments[] =
+              response.files;
 
-              const comments = this.allComments.filter(
-                (c) => c.fileId === file.id,
+            if (set.files) {
+              this.files = set.files.map((file) => {
+                const fullPath = this.createFilePath(file);
+
+                const comments = this.allComments.filter(
+                  (c) => c.fileId === file.id,
+                );
+
+                let thumbnailPath = '';
+                if (file.type.toUpperCase() === 'PDF') {
+                  thumbnailPath = this.createThumbnailPdfPath(file);
+                } else {
+                  thumbnailPath = this.createThumbnailPath(file);
+                }
+
+                const newCommentsCount = fileIdsWithUnreadComments.find(
+                  (item) => item.fileId === file.id,
+                )?.unreadComments;
+
+                return {
+                  ...file,
+                  fullPath,
+                  dirLabel: this.findDirLabel(file.dir),
+                  thumbnailPath,
+                  comments,
+                  newCommentsCount,
+                  canDelete:
+                    this.who === 'user'
+                      ? true
+                      : file.dir === EFileDirectory.INSPIRATIONS,
+                };
+              });
+
+              this.files = this.files.sort((a, b) =>
+                a.fileName.localeCompare(b.fileName),
               );
 
-              let thumbnailPath = '';
-              if (file.type.toUpperCase() === 'PDF') {
-                thumbnailPath = this.createThumbnailPdfPath(file);
-              } else {
-                thumbnailPath = this.createThumbnailPath(file);
-              }
-
-              return {
-                ...file,
-                fullPath,
-                dirLabel: this.findDirLabel(file.dir),
-                thumbnailPath,
-                comments,
-                canDelete:
-                  this.who === 'user'
-                    ? true
-                    : file.dir === EFileDirectory.INSPIRATIONS,
-              };
-            });
-
-            this.files = this.files.sort((a, b) =>
-              a.fileName.localeCompare(b.fileName),
-            );
-
-            this.uniqueDir = this.getUniqueDirectories();
-          }
-        },
-        error: (error) => {
-          this.notificationService.showNotification('error', error.message);
-        },
-      });
+              this.uniqueDir = this.getUniqueDirectories();
+            }
+          },
+          error: (error) => {
+            this.notificationService.showNotification('error', error.message);
+          },
+        });
     }
   }
 
