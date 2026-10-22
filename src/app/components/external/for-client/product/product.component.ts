@@ -89,7 +89,7 @@ export class ProductComponent {
     return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
   }
   getCommentsBadgeSeverity(): TBadgeSeverity {
-    return calcCommentsBadgeSeverity(this.position.newCommentsCount, 'client');
+    return calcCommentsBadgeSeverity(this.position.newCommentsCount, 'light');
   }
 
   getCommentsBadgeValue(): number {
