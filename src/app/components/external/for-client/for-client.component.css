@@ -40,7 +40,7 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: start;
   min-width: var(--screen-width);
 }
 
@@ -73,7 +73,7 @@ h3 {
 .header-actions-btn {
   display: flex;
   justify-content: flex-end;
-  align-items: end;
+  align-items: start;
   gap: 40px;
 }
 
@@ -87,8 +87,9 @@ h3 {
 .action-btn-wrapper {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: start;
   align-items: center;
+  gap: 10px;
   color: var(--neutral-color-02);
   transition: color 0.2s ease;
 }
@@ -103,9 +104,32 @@ h3 {
   cursor: pointer;
 }
 
+.attachments-action-btn-wrapper {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  width: 220px;
+}
+
+.attachments-info-wrapper {
+  color: var(--neutral-color-02);
+  font-size: 1.2rem;
+  width: 100%;
+  display: flex;
+  gap: 20px;
+  margin-top: 4px;
+}
+
+.attachments-info-wrapper i {
+  cursor: auto;
+}
+
+.new-comments-for-files {
+  color: var(--danger-color);
+}
+
 .action-btn-wrapper i {
   font-size: 3rem;
-  padding: 0 20px;
 }
 
 .action-btn-wrapper i,

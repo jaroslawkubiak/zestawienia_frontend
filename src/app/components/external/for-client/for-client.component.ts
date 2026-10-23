@@ -19,6 +19,7 @@ import {
   calculateWartosc,
 } from '../../../shared/helpers/calculate';
 import { countCommentsBadgeValue } from '../../../shared/helpers/countCommentsBadgeValue';
+import { pluralizePL } from '../../../shared/helpers/pluralizePL';
 import { IClient } from '../../clients/types/IClient';
 import { IComment } from '../../comments/types/IComment';
 import { IPositionWithComments } from '../../comments/types/IPositionWithComments';
@@ -251,16 +252,62 @@ export class ForClientComponent implements OnInit {
     return this.files.filter((f) => f.dir !== EFileDirectory.WORKING).length;
   }
 
+  get filesCountString(): string {
+    const fileCount = this.files.filter(
+      (f) => f.dir !== EFileDirectory.WORKING,
+    ).length;
+
+    const fileText = pluralizePL(fileCount, 'plik', 'pliki', 'plików');
+
+    return `${fileCount} ${fileText}`;
+  }
+
+  get commentsCount(): string {
+    const commentCount = countCommentsBadgeValue(
+      this.set.newCommentsCountForFiles,
+    );
+
+    const isDanger = this.getCommentsForFilesBadgeSeverity() === 'danger';
+
+    if (isDanger) {
+      const commentText = pluralizePL(
+        commentCount,
+        'nowy komentarz',
+        'nowe komentarze',
+        'nowych komentarzy',
+      );
+
+      return `${commentCount} ${commentText}`;
+    }
+
+    const filesText = pluralizePL(
+      commentCount,
+      'komentarz',
+      'komentarze',
+      'komentarzy',
+    );
+
+    return `${commentCount} ${filesText}`;
+  }
+
   getCommentsBadgeSeverity(): TBadgeSeverity {
-    return calcCommentsBadgeSeverity(this.set.newCommentsCount);
+    return calcCommentsBadgeSeverity(this.set.newCommentsCountForPositions);
   }
 
   getCommentsBadgeValue(): number {
-    return countCommentsBadgeValue(this.set.newCommentsCount);
+    return countCommentsBadgeValue(this.set.newCommentsCountForPositions);
   }
 
   getCommentsTooltipInfo(): string {
-    return calcCommentsBadgeTooltip(this.set.newCommentsCount);
+    return calcCommentsBadgeTooltip(this.set.newCommentsCountForPositions);
+  }
+
+  getCommentsForFilesBadgeSeverity(): TBadgeSeverity {
+    return calcCommentsBadgeSeverity(this.set.newCommentsCountForFiles);
+  }
+
+  getCommentsForFilesBadgeValue(): number {
+    return countCommentsBadgeValue(this.set.newCommentsCountForFiles);
   }
 
   toggleMobileMenu() {

@@ -32,7 +32,6 @@
               severity="secondary"
               class="mobile-files-badge-position"
               badgeSize="small"
-              [pTooltip]="'Ilość załączonych plików'"
             ></p-badge>
           </div>
           <!-- MOBILE SEND FILES BTN -->
@@ -83,17 +82,26 @@
 
       <div class="header-actions-btn">
         <!-- DESKTOP SHOW ATTACHED FILES BTN  -->
-        <div class="action-btn-wrapper" (click)="showAttachedFiles()">
-          <i class="pi pi-cloud"></i>
-          <p-badge
-            *ngIf="filesCount"
-            [value]="filesCount"
-            severity="secondary"
-            class="desktop-files-badge-position"
-            badgeSize="large"
-            [pTooltip]="'Ilość załączonych plików'"
-          ></p-badge>
-          <label> Załączniki </label>
+        <div
+          class="attachments-action-btn-wrapper"
+          (click)="showAttachedFiles()"
+        >
+          <div class="action-btn-wrapper">
+            <i class="pi pi-cloud"></i>
+            <label> Załączniki </label>
+          </div>
+          <span class="attachments-info-wrapper"
+            ><span> <i class="pi pi-paperclip"></i> {{ filesCountString }} </span>
+            <span
+              [ngClass]="
+                getCommentsForFilesBadgeSeverity() === 'danger'
+                  ? 'new-comments-for-files'
+                  : ''
+              "
+            >
+              <i class="pi pi-comment"></i> {{ commentsCount }}
+            </span>
+          </span>
         </div>
         <!-- DESKTOP SEND FILES BTN  -->
         <div
