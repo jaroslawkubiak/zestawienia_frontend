@@ -2,7 +2,11 @@
   who="client"
   (updateAttachedFiles)="updateAttachedFiles($event)"
 />
-<app-show-files who="client" (deleteFiles)="onDeleteFile($event)" />
+<app-show-files
+  who="client"
+  (deleteFiles)="onDeleteFile($event)"
+  (commentsUpdated)="commentsUpdated()"
+/>
 
 <div class="container" *ngIf="set">
   <div class="header-placeholder"></div>
@@ -91,7 +95,9 @@
             <label> Załączniki </label>
           </div>
           <span class="attachments-info-wrapper"
-            ><span> <i class="pi pi-paperclip"></i> {{ filesCountString }} </span>
+            ><span>
+              <i class="pi pi-paperclip"></i> {{ filesCountString }}
+            </span>
             <span
               [ngClass]="
                 getCommentsForFilesBadgeSeverity() === 'danger'

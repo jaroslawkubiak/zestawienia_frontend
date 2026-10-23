@@ -74,6 +74,8 @@ export class ShowFilesComponent implements OnInit {
 
   @Input() who!: TAuthorType;
   @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
+  @Output() commentsUpdated = new EventEmitter<IComment[]>();
+
   set!: ISet;
   displayPdf = false;
   displayPdfHeader: string = '';
@@ -111,58 +113,62 @@ export class ShowFilesComponent implements OnInit {
     this.selectedFiles = [];
 
     if (this.set.id) {
-      this.commentsService
-        .countCommentsForFiles(this.set.id, this.who)
-        .subscribe({
-          next: (response) => {
-            const fileIdsWithUnreadComments = response;
-
-            if (set.files) {
-              this.files = set.files.map((file) => {
-                const fullPath = this.createFilePath(file);
-
-                let thumbnailPath = '';
-                if (file.type.toUpperCase() === 'PDF') {
-                  thumbnailPath = this.createThumbnailPdfPath(file);
-                } else {
-                  thumbnailPath = this.createThumbnailPath(file);
-                }
-
-                const newCommentsCount = fileIdsWithUnreadComments.find(
-                  (item) => item.fileId === file.id,
-                )?.unreadComments;
-
-                const emptyCommentCount = {
-                  unread: 0,
-                  needsAttention: 0,
-                  all: 0,
-                };
-
-                return {
-                  ...file,
-                  fullPath,
-                  dirLabel: this.findDirLabel(file.dir),
-                  thumbnailPath,
-                  newCommentsCount: newCommentsCount ?? emptyCommentCount,
-                  canDelete:
-                    this.who === 'user'
-                      ? true
-                      : file.dir === EFileDirectory.INSPIRATIONS,
-                };
-              });
-
-              this.files = this.files.sort((a, b) =>
-                a.fileName.localeCompare(b.fileName),
-              );
-
-              this.uniqueDir = this.getUniqueDirectories();
-            }
-          },
-          error: (error) => {
-            this.notificationService.showNotification('error', error.message);
-          },
-        });
+      this.countCommentsForFiles();
     }
+  }
+
+  countCommentsForFiles() {
+    this.commentsService
+      .countCommentsForFiles(this.set.id, this.who)
+      .subscribe({
+        next: (response) => {
+          const fileIdsWithUnreadComments = response;
+
+          if (this.set.files) {
+            this.files = this.set.files.map((file) => {
+              const fullPath = this.createFilePath(file);
+
+              let thumbnailPath = '';
+              if (file.type.toUpperCase() === 'PDF') {
+                thumbnailPath = this.createThumbnailPdfPath(file);
+              } else {
+                thumbnailPath = this.createThumbnailPath(file);
+              }
+
+              const newCommentsCount = fileIdsWithUnreadComments.find(
+                (item) => item.fileId === file.id,
+              )?.unreadComments;
+
+              const emptyCommentCount = {
+                unread: 0,
+                needsAttention: 0,
+                all: 0,
+              };
+
+              return {
+                ...file,
+                fullPath,
+                dirLabel: this.findDirLabel(file.dir),
+                thumbnailPath,
+                newCommentsCount: newCommentsCount ?? emptyCommentCount,
+                canDelete:
+                  this.who === 'user'
+                    ? true
+                    : file.dir === EFileDirectory.INSPIRATIONS,
+              };
+            });
+
+            this.files = this.files.sort((a, b) =>
+              a.fileName.localeCompare(b.fileName),
+            );
+
+            this.uniqueDir = this.getUniqueDirectories();
+          }
+        },
+        error: (error) => {
+          this.notificationService.showNotification('error', error.message);
+        },
+      });
   }
 
   showComments(fileId: number) {
@@ -459,6 +465,7 @@ export class ShowFilesComponent implements OnInit {
 
   // on close dialog with comments
   onCloseCommentsDialog() {
-    // this.updateSetComments.emit();
+    this.commentsUpdated.emit();
+    this.countCommentsForFiles();
   }
 }

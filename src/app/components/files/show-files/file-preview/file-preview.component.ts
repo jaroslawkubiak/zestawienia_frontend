@@ -106,7 +106,6 @@ export class FilePreviewComponent {
 
   getCommentsBadgeSeverity(): TBadgeSeverity {
     const unread = this.file.newCommentsCount;
-    if (!unread) return 'contrast';
 
     return calcCommentsBadgeSeverity(unread);
   }
@@ -119,7 +118,6 @@ export class FilePreviewComponent {
   }
   getCommentsTooltip(): string {
     const unread = this.file.newCommentsCount;
-    if (!unread) return '';
 
     return calcCommentsBadgeTooltip(unread);
   }
