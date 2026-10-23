@@ -7,16 +7,16 @@
     <p-checkbox
       (onChange)="addFileToSelected.emit(file)"
       [binary]="true"
+      [ngModel]="isSelected"
       size="large"
       pTooltip="Zaznacz plik"
       tooltipPosition="bottom"
-      [ngModel]="isSelected"
       class="preview-select-file"
     />
     <div
       *ngIf="file | isImage"
-      class="preview-image-wrapper"
       (click)="onShowImageClick($event, file)"
+      class="preview-image-wrapper"
     >
       <app-loading-spinner
         *ngIf="isLoading"
@@ -24,9 +24,9 @@
       ></app-loading-spinner>
       <img
         [src]="file.thumbnailPath"
-        alt="Załączony plik"
         (load)="onImageLoad()"
         (error)="onImageError()"
+        alt="Załączony plik"
       />
       <div class="preview-image-overlay flex-center">
         <i class="pi pi-search-plus preview-indicator"></i>
@@ -41,16 +41,16 @@
     </div>
 
     <div
-      class="preview-file-other flex-center"
       *ngIf="!(file | isImage) && !(file | isPdf)"
+      class="preview-file-other flex-center"
     >
       <i class="pi pi-file"></i>
     </div>
   </div>
 
   <div
-    class="preview-file-name-label"
     [ngClass]="{ textBold: isSelected }"
+    class="preview-file-name-label"
     pTooltip="{{ file.seenAt }}"
     tooltipPosition="bottom"
   >
@@ -59,39 +59,43 @@
 
   <div class="preview-file-comment">
     <span (click)="triggerShowComments(file.id)">
-      <i class="pi pi-comments"></i>Pokaż komentarze
+      <i class="pi pi-comments"></i>{{ getCommentsBtnText() }}
 
       <p-badge
-        [value]="file.comments?.length ?? 0"
-        severity="contrast"
-        class="preview-file-comments-badge-position"
+        *ngIf="getCommentsBadgeValue() !== 0"
+        [value]="getCommentsBadgeValue()"
+        [severity]="getCommentsBadgeSeverity()"
+        [pTooltip]="getCommentsTooltip()"
         [badgeSize]="isMobile ? 'small' : 'large'"
+        class="preview-file-comments-badge-position"
       ></p-badge>
     </span>
   </div>
 
   <div class="preview-action-btns">
     <p-button
+      [label]="isMobile ? '' : 'Pobierz plik'"
+      [size]="isMobile ? 'small' : 'large'"
+      (click)="download.emit()"
+      [disabled]="selectedFiles.length !== 0"
       severity="contrast"
       icon="pi pi-download"
       alt="Pobierz plik"
       pTooltip="Pobierz plik"
-      [label]="isMobile ? '' : 'Pobierz plik'"
       tooltipPosition="bottom"
-      (click)="download.emit()"
-      [disabled]="selectedFiles.length !== 0"
       styleClass="preview-download-btn"
     />
 
     <p-button
+      [size]="isMobile ? 'small' : 'large'"
+      (click)="delete.emit()"
+      [disabled]="!file.canDelete || selectedFiles.length !== 0"
       severity="secondary"
       icon="pi pi-trash"
       alt="Usuń plik"
       pTooltip="Usuń plik"
       tooltipPosition="bottom"
       styleClass="preview-delete-btn"
-      (click)="delete.emit()"
-      [disabled]="!file.canDelete || selectedFiles.length !== 0"
     />
   </div>
 </div>

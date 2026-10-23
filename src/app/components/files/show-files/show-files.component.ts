@@ -175,7 +175,11 @@ export class ShowFilesComponent implements OnInit {
       this.commentsService.getCommentsForFile(fileId).subscribe({
         next: (response) => {
           this.commentsForFile = response;
-          const shortName = file.fileName.slice(0, 40) + '...';
+
+          let shortName = file.fileName;
+          if (file.fileName.length > 40) {
+            shortName = file.fileName.slice(0, 40) + '...';
+          }
           this.header = `Plik ${shortName}`;
 
           this.showCommentsDialog = true;

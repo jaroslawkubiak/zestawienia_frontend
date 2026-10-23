@@ -13,8 +13,12 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
+import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { LoadingSpinnerComponent } from '../../../../shared/loading-spinner/loading-spinner.component';
 import { TAuthorType } from '../../../comments/types/authorType.type';
+import { TBadgeSeverity } from '../../../settings/types/badgeSeverity.type';
 import { PdfThumbnailComponent } from '../../pdf-thumbnail/pdf-thumbnail.component';
 import { IsImagePipe } from '../../pipe/is-image.pipe';
 import { IsPdfPipe } from '../../pipe/is-pdf.pipe';
@@ -98,5 +102,31 @@ export class FilePreviewComponent {
 
   triggerShowComments(fileId: number) {
     this.showComments.emit(fileId);
+  }
+
+  getCommentsBadgeSeverity(): TBadgeSeverity {
+    const unread = this.file.newCommentsCount;
+    if (!unread) return 'contrast';
+
+    return calcCommentsBadgeSeverity(unread);
+  }
+
+  getCommentsBadgeValue(): number {
+    const unread = this.file.newCommentsCount;
+    if (!unread) return 0;
+
+    return countCommentsBadgeValue(unread);
+  }
+  getCommentsTooltip(): string {
+    const unread = this.file.newCommentsCount;
+    if (!unread) return '';
+
+    return calcCommentsBadgeTooltip(unread);
+  }
+
+  getCommentsBtnText(): string {
+    return this.getCommentsBadgeValue() !== 0
+      ? 'Pokaż komentarze'
+      : 'Dodaj komentarz';
   }
 }
