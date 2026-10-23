@@ -5,8 +5,8 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
 import { TAuthorType } from './types/authorType.type';
 import { IComment } from './types/IComment';
-import { ICommentsWithSummary } from './types/ICommentsWithSummary';
 import { IEditedPartialComment } from './types/IEditedPartialComment';
+import { IFilesWithUnreadComments } from './types/IFilesWithUnreadComments';
 import { INewComment } from './types/INewComment';
 import { INewPartialComment } from './types/INewPartialComment';
 import { IUnreadComments } from './types/IUnreadComments';
@@ -42,14 +42,14 @@ export class CommentsService {
       .pipe(catchError(this.handleError));
   }
 
-  getAllCommentsForFiles(
+  countCommentsForFiles(
     setId: number,
     who: TAuthorType,
-  ): Observable<ICommentsWithSummary> {
+  ): Observable<IFilesWithUnreadComments[]> {
     return this.http
-      .get<ICommentsWithSummary>(
-        `${environment.API_URL}/comments/${setId}/${who}/getAllCommentsForFiles`,
-      )
+      .get<
+        IFilesWithUnreadComments[]
+      >(`${environment.API_URL}/comments/${setId}/${who}/countCommentsForFiles`)
       .pipe(catchError(this.handleError));
   }
 
