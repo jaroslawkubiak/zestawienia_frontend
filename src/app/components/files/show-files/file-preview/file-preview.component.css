@@ -72,23 +72,14 @@
 .preview-action-btns {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
-.preview-download-btn {
-  width: 200px;
-  height: 20px;
-}
-
+.preview-download-btn,
 .preview-delete-btn {
   height: 20px;
-}
-
-.preview-select-file {
-  position: absolute;
-  z-index: 999;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100px;
 }
 
 .p-button-label,
@@ -189,7 +180,7 @@
   .preview-download-btn,
   .preview-delete-btn {
     width: 20px;
-    height: 2px;
+    height: 10px;
   }
 
   .preview-file-comment {

@@ -4,15 +4,6 @@
     Widziany {{ file.seenAt }}
   </span>
   <div class="preview-file-wrapper" [ngClass]="getImageOrientation(file)">
-    <p-checkbox
-      (onChange)="addFileToSelected.emit(file)"
-      [binary]="true"
-      [ngModel]="isSelected"
-      size="large"
-      pTooltip="Zaznacz plik"
-      tooltipPosition="bottom"
-      class="preview-select-file"
-    />
     <div
       *ngIf="file | isImage"
       (click)="onShowImageClick($event, file)"
@@ -86,7 +77,17 @@
       styleClass="preview-download-btn"
     />
 
+    <p-checkbox
+      (onChange)="addFileToSelected.emit(file)"
+      [binary]="true"
+      [ngModel]="isSelected"
+      size="large"
+      pTooltip="Zaznacz plik"
+      tooltipPosition="bottom"
+    />
+
     <p-button
+      [label]="isMobile ? '' : 'Usuń plik'"
       [size]="isMobile ? 'small' : 'large'"
       (click)="delete.emit()"
       [disabled]="!file.canDelete || selectedFiles.length !== 0"
