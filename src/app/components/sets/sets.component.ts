@@ -31,6 +31,7 @@ import { TBadgeSeverity } from '../settings/types/badgeSeverity.type';
 import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
+import { pluralizePL } from '../../shared/helpers/pluralizePL';
 
 @Component({
   selector: 'app-sets',
@@ -195,21 +196,66 @@ export class SetsComponent implements OnInit {
     );
   }
 
-  getCommentsBadgeValue(setId: number): number {
+  getCommentsBadgeValue(
+    setId: number,
+    commentFor: 'files' | 'positions',
+  ): number {
     const currentSet = this.sets.find((set) => set.id === setId)!;
+    const newComments =
+      commentFor === 'positions'
+        ? currentSet.newCommentsCountForPositions
+        : currentSet.newCommentsCountForFiles;
 
-    return countCommentsBadgeValue(currentSet.newCommentsCountForPositions);
+    return countCommentsBadgeValue(newComments);
   }
 
-  getCommentsTooltipInfo(setId: number): string {
+  getCommentsTooltipInfo(
+    setId: number,
+    commentFor: 'files' | 'positions',
+  ): string {
     const currentSet = this.sets.find((set) => set.id === setId)!;
+    const newComments =
+      commentFor === 'positions'
+        ? currentSet.newCommentsCountForPositions
+        : currentSet.newCommentsCountForFiles;
 
-    return calcCommentsBadgeTooltip(currentSet.newCommentsCountForPositions);
+    return calcCommentsBadgeTooltip(newComments);
   }
 
-  getCommentsBadgeSeverity(setId: number): TBadgeSeverity {
+  getCommentsBadgeSeverity(
+    setId: number,
+    commentFor: 'files' | 'positions',
+  ): TBadgeSeverity {
+    const currentSet = this.sets.find((set) => set.id === setId)!;
+    const newComments =
+      commentFor === 'positions'
+        ? currentSet.newCommentsCountForPositions
+        : currentSet.newCommentsCountForFiles;
+
+    return calcCommentsBadgeSeverity(newComments);
+  }
+
+  getFilesTooltipInfo(setId: number): string {
     const currentSet = this.sets.find((set) => set.id === setId)!;
 
-    return calcCommentsBadgeSeverity(currentSet.newCommentsCountForPositions);
+    const filesCount = currentSet.files?.length ?? 0;
+    if (filesCount === 0) return 'Brak załączników';
+
+    const returnMessage = pluralizePL(
+      filesCount,
+      'załącznik',
+      'załączniki',
+      'załączników',
+    );
+
+    return `Pokaż ${filesCount} ${returnMessage}`;
+  }
+
+  getDeleteSetTooltipInfo(setId: number): string {
+    const currentSet = this.sets.find((set) => set.id === setId)!;
+
+    return currentSet.status !== this.statusesList.new
+      ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
+      : 'Usuń Zestawienie';
   }
 }

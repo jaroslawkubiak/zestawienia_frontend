@@ -108,7 +108,6 @@
             <p-button
               severity="contrast"
               icon="pi pi-pencil"
-              class="m-8"
               alt="Edytuj zestawienie"
               pTooltip="Edytuj zestawienie"
               tooltipPosition="bottom"
@@ -117,14 +116,9 @@
             <p-button
               severity="contrast"
               icon="pi pi-trash"
-              class="m-8"
               alt="Usuń Zestawienie"
-              pTooltip="{{
-                set.status !== statusesList.new
-                  ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
-                  : 'Usuń Zestawienie'
-              }}"
               tooltipPosition="bottom"
+              [pTooltip]="getDeleteSetTooltipInfo(set.id)"
               [disabled]="set.status !== statusesList.new"
               (click)="deleteSet(set.id)"
             />
@@ -132,29 +126,22 @@
               <p-button
                 severity="contrast"
                 icon="pi pi-cloud"
-                class="m-8"
-                alt="Załączniki"
-                pTooltip="{{
-                  set.files?.length > 0
-                    ? 'Pokaż załączniki'
-                    : 'Brak załączników'
-                }}"
                 tooltipPosition="bottom"
                 [disabled]="set.files?.length === 0"
                 (click)="showAttachedFiles(set)"
+                [pTooltip]="getFilesTooltipInfo(set.id)"
               />
               <p-badge
-                *ngIf="set.files?.length !== 0"
-                [value]="set.files?.length"
-                severity="contrast"
                 class="nr-comments"
-                pTooltip="Ilość załączników"
+                *ngIf="getCommentsBadgeValue(set.id, 'files')"
+                [value]="getCommentsBadgeValue(set.id, 'files')"
+                [severity]="getCommentsBadgeSeverity(set.id, 'files')"
+                [pTooltip]="getCommentsTooltipInfo(set.id, 'files')"
               />
             </div>
             <p-button
               severity="contrast"
               icon="pi pi-cloud-upload"
-              class="m-8"
               alt="Prześlij pliki"
               pTooltip="Prześlij pliki"
               tooltipPosition="bottom"
@@ -164,7 +151,6 @@
               <p-button
                 severity="contrast"
                 icon="pi pi-comments"
-                class="m-8"
                 alt="Zobacz komentarze"
                 pTooltip="Zobacz komentarze"
                 tooltipPosition="bottom"
@@ -172,11 +158,11 @@
                 (click)="showAllComments(set.id)"
               />
               <p-badge
-                *ngIf="getCommentsBadgeValue(set.id)"
-                [value]="getCommentsBadgeValue(set.id)"
-                [severity]="getCommentsBadgeSeverity(set.id)"
                 class="nr-comments"
-                [pTooltip]="getCommentsTooltipInfo(set.id)"
+                *ngIf="getCommentsBadgeValue(set.id, 'positions')"
+                [value]="getCommentsBadgeValue(set.id, 'positions')"
+                [severity]="getCommentsBadgeSeverity(set.id, 'positions')"
+                [pTooltip]="getCommentsTooltipInfo(set.id, 'positions')"
               />
             </div>
           </div>
