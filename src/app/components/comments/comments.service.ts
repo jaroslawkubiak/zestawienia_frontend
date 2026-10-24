@@ -9,8 +9,8 @@ import { IEditedPartialComment } from './types/IEditedPartialComment';
 import { IFilesWithUnreadComments } from './types/IFilesWithUnreadComments';
 import { INewComment } from './types/INewComment';
 import { INewPartialComment } from './types/INewPartialComment';
-import { IUnreadComments } from './types/IUnreadComments';
 import { IUpdatedComment } from './types/IUpdatedComment';
+import { IWelcomeScreenUnread } from './types/IWelcomeScreenUnread';
 
 @Injectable({
   providedIn: 'root',
@@ -126,9 +126,9 @@ export class CommentsService {
   }
 
   // for welcome screen
-  unreadComments(): Observable<IUnreadComments> {
+  unreadComments(): Observable<IWelcomeScreenUnread> {
     return this.http
-      .get<IUnreadComments>(`${environment.API_URL}/comments/unreadComments`)
+      .get<IWelcomeScreenUnread>(`${environment.API_URL}/comments/unreadComments`)
       .pipe(catchError(this.handleError));
   }
 

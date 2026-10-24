@@ -1,3 +1,7 @@
+.welcome-container {
+  display: flex;
+  flex-direction: column;
+}
 .welcome {
   display: flex;
   justify-content: center;
@@ -7,6 +11,10 @@
 
 .unread-comments-wrapper {
   margin-top: 40px;
+  width: 750px;
+  display: flex;
+  flex-direction: column;
+  align-self: center;
 }
 
 .unread-comments {

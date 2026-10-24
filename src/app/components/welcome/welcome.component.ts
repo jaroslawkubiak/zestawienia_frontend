@@ -1,5 +1,6 @@
 import { Component, computed, OnInit } from '@angular/core';
 import { AuthService } from '../../login/auth.service';
+import { pluralizePL } from '../../shared/helpers/pluralizePL';
 import { CommentsService } from '../comments/comments.service';
 
 @Component({
@@ -9,8 +10,10 @@ import { CommentsService } from '../comments/comments.service';
   imports: [],
 })
 export class WelcomeComponent implements OnInit {
-  messageUnread: string = '';
-  messageNeedsAttention: string = '';
+  messageUnreadForPositions: string = '';
+  messageNeedsAttentionForPositions: string = '';
+  messageUnreadForFiles: string = '';
+  messageNeedsAttentionForFiles: string = '';
   user = computed(() => this.authService.user());
 
   constructor(
@@ -19,43 +22,38 @@ export class WelcomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.commentsService.unreadComments().subscribe((unreadComments) => {
-      const { unread, needsAttention } = { ...unreadComments };
+    this.commentsService.unreadComments().subscribe((response) => {
+      const { unreadForPositions, needsAttentionForPositions } =
+        response.positions;
+      const { unreadForFiles, needsAttentionForFiles } = response.files;
 
-      this.messageUnread = `Masz ${unread} ${this.pluralize(
-        unread,
+      this.messageUnreadForPositions = `Masz ${unreadForPositions} ${pluralizePL(
+        unreadForPositions,
         'nowy komentarz',
         'nowe komentarze',
         'nowych komentarzy',
-      )}`;
+      )} dla pozycji`;
 
-      this.messageNeedsAttention = `Masz ${needsAttention} ${this.pluralize(
-        needsAttention,
+      this.messageNeedsAttentionForPositions = `Masz ${needsAttentionForPositions} ${pluralizePL(
+        needsAttentionForPositions,
         'komentarz oznaczony jako wymagający uwagi',
         'komentarze oznaczone jako wymagające uwagi',
         'komentarzy oznaczonych jako wymagające uwagi',
-      )}`;
+      )} dla pozycji`;
+
+      this.messageUnreadForFiles = `Masz ${unreadForFiles} ${pluralizePL(
+        unreadForFiles,
+        'nowy komentarz',
+        'nowe komentarze',
+        'nowych komentarzy',
+      )} dla plików`;
+
+      this.messageNeedsAttentionForFiles = `Masz ${needsAttentionForFiles} ${pluralizePL(
+        needsAttentionForFiles,
+        'komentarz oznaczony jako wymagający uwagi',
+        'komentarze oznaczone jako wymagające uwagi',
+        'komentarzy oznaczonych jako wymagające uwagi',
+      )} dla plików`;
     });
-  }
-
-  private pluralize(
-    count: number,
-    one: string,
-    few: string,
-    many: string,
-  ): string {
-    if (count === 1) {
-      return one;
-    }
-
-    if (
-      count % 10 >= 2 &&
-      count % 10 <= 4 &&
-      !(count % 100 >= 12 && count % 100 <= 14)
-    ) {
-      return few;
-    }
-
-    return many;
   }
 }

@@ -1,5 +1,10 @@
-<p class="welcome">Witaj {{ user() }}!</p>
-<div class="unread-comments-wrapper">
-  <p class="unread-comments">{{ messageUnread }}</p>
-  <p class="unread-comments">{{ messageNeedsAttention }}</p>
+<div class="welcome-container">
+  <p class="welcome">Witaj {{ user() }}!</p>
+  <div class="unread-comments-wrapper">
+    <p class="unread-comments">{{ messageUnreadForPositions }}</p>
+    <p class="unread-comments">{{ messageNeedsAttentionForPositions }}</p>
+    <br /><br />
+    <p class="unread-comments">{{ messageUnreadForFiles }}</p>
+    <p class="unread-comments">{{ messageNeedsAttentionForFiles }}</p>
+  </div>
 </div>
