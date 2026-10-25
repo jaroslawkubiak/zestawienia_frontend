@@ -216,6 +216,7 @@ export class ForClientComponent implements OnInit {
 
   updateAttachedFiles(uploadedFiles: IFileFullDetails[]) {
     this.files = [...(this.files || []), ...uploadedFiles];
+    this.set.files = this.files;
   }
 
   showAttachedFiles() {
