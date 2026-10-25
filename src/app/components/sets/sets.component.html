@@ -2,7 +2,11 @@
   who="user"
   (updateAttachedFiles)="updateAttachedFiles($event)"
 />
-<app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
+<app-show-files
+  who="user"
+  (deleteFiles)="onDeleteFile($event)"
+  (showSendFilesWindow)="onShowSendFilesWindow($event)"
+/>
 
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>

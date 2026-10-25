@@ -160,6 +160,18 @@ export class SetsComponent implements OnInit {
     this.dialogSendFilesComponent.openSendFilesDialog(setId, setHash, setName);
   }
 
+  onShowSendFilesWindow(setId: number) {
+    const setHash = this.sets.find((item) => item.id === setId)?.hash;
+    const setName = this.sets.find((item) => item.id === setId)?.name;
+    if (setHash && setName) {
+      this.dialogSendFilesComponent.openSendFilesDialog(
+        setId,
+        setHash,
+        setName,
+      );
+    }
+  }
+
   showAttachedFiles(set: ISet) {
     this.dialogShowFilesComponent.showDialog(set);
   }

@@ -75,7 +75,7 @@ export class ShowFilesComponent implements OnInit {
   @Input() who!: TAuthorType;
   @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
-  @Output() showSendFilesWindow = new EventEmitter();
+  @Output() showSendFilesWindow = new EventEmitter<number>();
 
   set!: ISet;
   displayPdf = false;
@@ -354,7 +354,7 @@ export class ShowFilesComponent implements OnInit {
 
   onShowSendFilesWindow() {
     this.showFilesDialog = false;
-    this.showSendFilesWindow.emit();
+    this.showSendFilesWindow.emit(this.set.id);
   }
 
   getSendFilesLabel(): string {
