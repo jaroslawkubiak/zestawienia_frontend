@@ -37,9 +37,9 @@
         icon="pi pi-download"
         alt="Pobierz pliki"
         pTooltip="Pobierz pliki"
-        [label]="isMobile ? '' : 'Pobierz pliki'"
         tooltipPosition="bottom"
         class="top-action-btn"
+        [label]="isMobile ? '' : 'Pobierz pliki'"
         (click)="downloadFiles()"
         [disabled]="selectedFiles.length === 0"
       />
@@ -48,27 +48,36 @@
         icon="pi pi-trash"
         alt="Usuń pliki"
         pTooltip="Usuń pliki"
-        [label]="isMobile ? '' : 'Usuń pliki'"
         tooltipPosition="bottom"
         class="top-action-btn"
+        [label]="isMobile ? '' : 'Usuń pliki'"
         [disabled]="isDeleteDisabled"
         (click)="onDeleteFiles()"
+      />
+      <p-button
+        severity="contrast"
+        icon="pi pi-cloud-upload"
+        tooltipPosition="bottom"
+        class="top-action-btn"
+        [pTooltip]="getSendFilesLabel()"
+        [label]="getSendFilesLabel()"
+        (click)="onShowSendFilesWindow()"
       />
     </div>
     <div class="file-change-view-mode-btn" *ngIf="!isMobile">
       <i
         class="pi pi-th-large"
-        (click)="changeView('icons')"
-        [ngClass]="{ active: defaultView === 'icons' }"
         pTooltip="Widok ikon"
         tooltipPosition="bottom"
+        (click)="changeView('icons')"
+        [ngClass]="{ active: defaultView === 'icons' }"
       ></i>
       <i
         class="pi pi-list"
-        (click)="changeView('list')"
-        [ngClass]="{ active: defaultView === 'list' }"
         pTooltip="Widok listy"
         tooltipPosition="bottom"
+        (click)="changeView('list')"
+        [ngClass]="{ active: defaultView === 'list' }"
       ></i>
     </div>
     <div *ngIf="files.length > 0">

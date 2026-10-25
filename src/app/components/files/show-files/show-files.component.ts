@@ -75,6 +75,7 @@ export class ShowFilesComponent implements OnInit {
   @Input() who!: TAuthorType;
   @Output() deleteFiles = new EventEmitter<IRemainingFiles>();
   @Output() commentsUpdated = new EventEmitter<IComment[]>();
+  @Output() showSendFilesWindow = new EventEmitter();
 
   set!: ISet;
   displayPdf = false;
@@ -349,6 +350,18 @@ export class ShowFilesComponent implements OnInit {
     };
 
     this.confirmationModalService.showConfirmation(confirmMessage);
+  }
+
+  onShowSendFilesWindow() {
+    this.showFilesDialog = false;
+    this.showSendFilesWindow.emit();
+  }
+
+  getSendFilesLabel(): string {
+    const label =
+      this.who === 'user' ? 'Prześlij pliki' : 'Prześlij inspiracje';
+
+    return this.isMobile ? '' : label;
   }
 
   // open pdf preview

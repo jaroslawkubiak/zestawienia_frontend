@@ -6,6 +6,7 @@
   who="client"
   (deleteFiles)="onDeleteFile($event)"
   (commentsUpdated)="commentsUpdated()"
+  (showSendFilesWindow)="openSendFilesDialog(set.id, set.hash, set.name)"
 />
 
 <div class="container" *ngIf="set">

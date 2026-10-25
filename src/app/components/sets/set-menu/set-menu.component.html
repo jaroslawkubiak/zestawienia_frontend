@@ -6,6 +6,7 @@
   who="user"
   (deleteFiles)="onDeleteFile($event)"
   (commentsUpdated)="onCommentsUpdated()"
+  (showSendFilesWindow)="openSendFilesDialog()"
 />
 
 <p-menubar [model]="menuItems">
@@ -64,9 +65,9 @@
 </p-menubar>
 
 <p-dialog
+  header="Edytuj zestawienie"
   [(visible)]="editHeaderDialog"
   [style]="{ width: '650px' }"
-  header="Edytuj zestawienie"
   [modal]="true"
   [dismissableMask]="true"
 >
