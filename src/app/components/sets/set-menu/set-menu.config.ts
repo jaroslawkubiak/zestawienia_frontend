@@ -1,4 +1,5 @@
 import { MenuItem } from 'primeng/api';
+import { pluralizePL } from '../../../shared/helpers/pluralizePL';
 import { ISetMenuParams } from './types/ISetMenuParams';
 
 export function buildSetMenu(
@@ -20,8 +21,10 @@ export function buildSetMenu(
     generatePDF,
     showAttachedFiles,
     openSendFilesDialog,
-    getCommentsBadgeSeverity,
-    getCommentsBadgeValue,
+    getCommentsForPositionsBadgeSeverity,
+    getCommentsForPositionsBadgeValue,
+    getCommentsForFilesBadgeSeverity,
+    getCommentsForFilesBadgeValue,
     toggleShowAllComments,
   } = params;
 
@@ -46,7 +49,7 @@ export function buildSetMenu(
   })();
 
   const CommentsMenuItem =
-    getCommentsBadgeValue() === 0
+    getCommentsForPositionsBadgeValue() === 0
       ? {
           label: 'Komentarze',
           icon: 'pi pi-comments',
@@ -55,8 +58,8 @@ export function buildSetMenu(
       : {
           label: 'Komentarze',
           icon: 'pi pi-comments',
-          badgeStyleClass: getCommentsBadgeSeverity(),
-          badge: getCommentsBadgeValue().toString(),
+          badgeStyleClass: getCommentsForPositionsBadgeSeverity(),
+          badge: getCommentsForPositionsBadgeValue().toString(),
           command: toggleShowAllComments,
         };
 
@@ -70,22 +73,27 @@ export function buildSetMenu(
         ...CommentsMenuItem,
       };
 
-  const attachmentsMenuItem =
-    set?.files?.length === 0
-      ? {
-          label: 'Załączniki',
-          icon: 'pi pi-cloud',
-          command: showAttachedFiles,
-        }
-      : {
-          label: 'Załączniki',
-          icon: 'pi pi-cloud',
-          badge: String(set?.files?.length || 0),
-          badgeStyleClass: set?.files?.length
-            ? 'p-badge-contrast'
-            : 'p-badge-secondary',
-          command: showAttachedFiles,
-        };
+  const filesCount = set?.files?.length ?? 0;
+  const commentsBadgeValue = getCommentsForFilesBadgeValue();
+  const verbAttachments = pluralizePL(
+    filesCount,
+    'Załącznik',
+    'Załączniki',
+    'Załączników',
+  );
+
+  const attachmentsMenuItem = {
+    label:
+      filesCount > 0 ? `${filesCount} ${verbAttachments}` : 'Brak załączników',
+    icon: 'pi pi-cloud',
+    command: showAttachedFiles,
+
+    ...(commentsBadgeValue !== 0 && {
+      badgeStyleClass: getCommentsForFilesBadgeSeverity(),
+      badge: commentsBadgeValue.toString(),
+      tooltip: 'opis',
+    }),
+  };
 
   return [
     {

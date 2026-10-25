@@ -18,7 +18,9 @@ export interface ISetMenuParams {
   generatePDF: () => void;
   showAttachedFiles: () => void;
   openSendFilesDialog: () => void;
-  getCommentsBadgeSeverity: () => string;
-  getCommentsBadgeValue: () => number;
+  getCommentsForPositionsBadgeSeverity: () => string;
+  getCommentsForPositionsBadgeValue: () => number;
+  getCommentsForFilesBadgeSeverity: () => string;
+  getCommentsForFilesBadgeValue: () => number;
   toggleShowAllComments: () => void;
 }

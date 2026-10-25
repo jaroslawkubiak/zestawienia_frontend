@@ -124,8 +124,14 @@ export class SetMenuComponent implements OnChanges, OnInit {
         generatePDF: () => this.generatePDF(),
         showAttachedFiles: () => this.showAttachedFiles(),
         openSendFilesDialog: () => this.openSendFilesDialog(),
-        getCommentsBadgeSeverity: () => this.getCommentsBadgeSeverity(),
-        getCommentsBadgeValue: () => this.getCommentsBadgeValue(),
+        getCommentsForPositionsBadgeSeverity: () =>
+          this.getCommentsForPositionsBadgeSeverity(),
+        getCommentsForPositionsBadgeValue: () =>
+          this.getCommentsForPositionsBadgeValue(),
+        getCommentsForFilesBadgeSeverity: () =>
+          this.getCommentsForFilesBadgeSeverity(),
+        getCommentsForFilesBadgeValue: () =>
+          this.getCommentsForFilesBadgeValue(),
         toggleShowAllComments: () => this.toggleShowAllComments(),
       },
       this.showAllComments,
@@ -134,8 +140,8 @@ export class SetMenuComponent implements OnChanges, OnInit {
     this.cd.detectChanges();
   }
 
-  // calc comments badge color
-  getCommentsBadgeSeverity(): string {
+  // calc comments badge color for positions
+  getCommentsForPositionsBadgeSeverity(): string {
     const badgeSeverity = calcCommentsBadgeSeverity(
       this.set.newCommentsCountForPositions,
     );
@@ -143,9 +149,23 @@ export class SetMenuComponent implements OnChanges, OnInit {
     return `p-badge-${badgeSeverity}`;
   }
 
-  // calc comments badge value
-  getCommentsBadgeValue(): number {
+  // calc comments badge value for positions
+  getCommentsForPositionsBadgeValue(): number {
     return countCommentsBadgeValue(this.set.newCommentsCountForPositions);
+  }
+
+  // calc comments badge color for files
+  getCommentsForFilesBadgeSeverity(): string {
+    const badgeSeverity = calcCommentsBadgeSeverity(
+      this.set.newCommentsCountForFiles,
+    );
+
+    return `p-badge-${badgeSeverity}`;
+  }
+
+  // calc comments badge value for files
+  getCommentsForFilesBadgeValue(): number {
+    return countCommentsBadgeValue(this.set.newCommentsCountForFiles);
   }
 
   // open edit set header dialog
