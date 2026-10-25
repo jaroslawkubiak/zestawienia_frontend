@@ -107,7 +107,12 @@
         (openPdf)="openPdf($event)"
       ></app-list-view>
     </div>
-    <div class="no-files" *ngIf="files.length === 0">Brak załączników</div>
+    <div class="no-files" *ngIf="isLoading">
+      <app-loading-spinner [size]="200" />
+    </div>
+    <div class="no-files" *ngIf="!isLoading && files.length === 0">
+      Brak załączników
+    </div>
   </div>
 </p-dialog>
 

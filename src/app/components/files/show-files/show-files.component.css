@@ -57,6 +57,7 @@
   padding: 40px;
   font-size: 4rem;
   color: var(--error-color);
+  margin-top: 200px;
 }
 
 .file-change-view-mode-btn {

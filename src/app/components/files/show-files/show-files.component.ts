@@ -15,12 +15,13 @@ import { ButtonModule } from 'primeng/button';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { Dialog, DialogModule } from 'primeng/dialog';
 import { TooltipModule } from 'primeng/tooltip';
-import { Subject, bufferTime, filter } from 'rxjs';
+import { Subject, bufferTime, filter, finalize } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { ConfirmationModalService } from '../../../services/confirmation.service';
 import { NotificationService } from '../../../services/notification.service';
 import { IConfirmationMessage } from '../../../services/types/IConfirmationMessage';
 import { getFormatedDate } from '../../../shared/helpers/getFormatedDate';
+import { LoadingSpinnerComponent } from '../../../shared/loading-spinner/loading-spinner.component';
 import { CommentsComponent } from '../../comments/comments.component';
 import { CommentsService } from '../../comments/comments.service';
 import { TAuthorType } from '../../comments/types/authorType.type';
@@ -49,6 +50,7 @@ import { ListViewComponent } from './list-view/list-view.component';
     IconsViewComponent,
     ListViewComponent,
     CommentsComponent,
+    LoadingSpinnerComponent,
   ],
   templateUrl: './show-files.component.html',
   styleUrl: './show-files.component.css',
@@ -92,6 +94,7 @@ export class ShowFilesComponent implements OnInit {
   header = '';
   showCommentsDialog = false;
   fileIdForComments: number = 0;
+  isLoading = false;
 
   private seenFiles = new Set<number>();
   private visibleFiles$ = new Subject<number>();
@@ -119,8 +122,14 @@ export class ShowFilesComponent implements OnInit {
   }
 
   countCommentsForFiles() {
+    this.isLoading = true;
     this.commentsService
       .countCommentsForFiles(this.set.id, this.who)
+      .pipe(
+        finalize(() => {
+          this.isLoading = false;
+        }),
+      )
       .subscribe({
         next: (response) => {
           const fileIdsWithUnreadComments = response;
