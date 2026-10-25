@@ -86,6 +86,7 @@ export function buildSetMenu(
     label:
       filesCount > 0 ? `${filesCount} ${verbAttachments}` : 'Brak załączników',
     icon: 'pi pi-cloud',
+    disabled: isEdited,
     command: showAttachedFiles,
 
     ...(commentsBadgeValue !== 0 && {

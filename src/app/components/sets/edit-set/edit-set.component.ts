@@ -155,6 +155,9 @@ export class EditSetComponent
       error: (err) => console.error('Error loading data', err),
     });
   }
+  commentsUpdated() {
+    this.loadData();
+  }
 
   showAllCommentsComponent() {
     this.showAllComments = !this.showAllComments;

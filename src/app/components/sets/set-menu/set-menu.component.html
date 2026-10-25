@@ -2,7 +2,11 @@
   who="user"
   (updateAttachedFiles)="updateAttachedFiles($event)"
 />
-<app-show-files who="user" (deleteFiles)="onDeleteFile($event)" />
+<app-show-files
+  who="user"
+  (deleteFiles)="onDeleteFile($event)"
+  (commentsUpdated)="onCommentsUpdated()"
+/>
 
 <p-menubar [model]="menuItems">
   <ng-template #item let-item let-root="root">

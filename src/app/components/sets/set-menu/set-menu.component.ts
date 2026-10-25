@@ -64,6 +64,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @Input() showAllComments: boolean = false;
   @Output() editStarted = new EventEmitter<void>();
   @Output() updateBookmarks = new EventEmitter<void>();
+  @Output() commentsUpdated = new EventEmitter<void>();
   @Output() showAllCommentsComponent = new EventEmitter<void>();
 
   @ViewChild(SendFilesComponent, { static: false })
@@ -105,6 +106,9 @@ export class SetMenuComponent implements OnChanges, OnInit {
     }
   }
 
+  onCommentsUpdated() {
+    this.commentsUpdated.emit();
+  }
   // create and update menu if set is edited or number of unique supplier is changed
   updateMenuItems(): void {
     this.menuItems = buildSetMenu(
