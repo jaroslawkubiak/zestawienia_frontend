@@ -263,6 +263,15 @@ export class SetsComponent implements OnInit {
     return `Pokaż ${filesCount} ${returnMessage}`;
   }
 
+  getFilesLengthLabel(setId: number): string {
+    const currentSet = this.sets.find((set) => set.id === setId)!;
+
+    const filesCount = currentSet.files?.length ?? 0;
+    if (filesCount === 0) return ' ';
+
+    return String(filesCount);
+  }
+
   getDeleteSetTooltipInfo(setId: number): string {
     const currentSet = this.sets.find((set) => set.id === setId)!;
 

@@ -77,3 +77,13 @@ tr {
   color: var(--accent-color-06);
   align-items: center;
 }
+
+::ng-deep .files-button {
+  width: 24px !important;
+  justify-content: center !important;
+}
+
+::ng-deep .files-button .p-button {
+  width: 24px !important;
+  justify-content: center !important;
+}
