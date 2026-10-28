@@ -457,7 +457,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
     this.formData = this.formData.map((item: IPosition, index: number) => {
       return { ...item, kolejnosc: index + 1 };
     });
-    
+
     this.changePositionOrder.emit(this.formData);
   }
 
@@ -553,6 +553,7 @@ export class PositionsTableComponent implements OnInit, OnChanges {
   onDeleteImage(event: MouseEvent, rowIndex: number) {
     event.stopPropagation();
     event.preventDefault();
+    this.isEdited.emit(true);
 
     this.formData[rowIndex]['image'] = '';
     this.formData[rowIndex]['thumbnail'] = '';
