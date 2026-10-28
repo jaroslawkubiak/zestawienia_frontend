@@ -25,7 +25,6 @@
 }
 
 .preview-image-wrapper img {
-  border-radius: 10px;
   padding: 4px;
 }
 
@@ -167,14 +166,10 @@
     font-size: 1rem;
   }
 
-  .preview-image-wrapper img {
-    border-radius: 6px;
-  }
-
   .preview-new-file-badge {
     top: 0;
-    right: 0;
-    font-size: 1.2rem;
+    left: 12px;
+    font-size: 1rem;
   }
 
   .preview-download-btn,
@@ -194,5 +189,9 @@
   .preview-file-comments-badge-position {
     top: -8px;
     right: -15px;
+  }
+
+  .preview-file-wrapper {
+    border-radius: 5px;
   }
 }
