@@ -9,31 +9,37 @@
   <div class="directory-container">
     <div
       class="directory-name-wrapper"
+      tooltipPosition="bottom"
+      positionTop="5"
+      showDelay="500"
       [class.first]="i === 0"
       (click)="toggleVisibility(directory.dir)"
       [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
-      tooltipPosition="bottom"
       [ngClass]="{ 'collapsed-label': !directory.show }"
     >
       <i class="pi pi-folder-open"></i>
-      {{ directory.dirLabel }}
+      {{ getDirectoryHeader(directory) }}
       <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
       <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
       <p-badge
-        [value]="countFilesBadge(directory.dir)"
-        severity="contrast"
         class="badge-position"
+        positionLeft="5"
+        *ngIf="getCommentsDirectoryBadgeValue(directory.dir)"
+        [pTooltip]="getCommentsDirectoryTooltipInfo(directory.dir)"
+        [severity]="getCommentsDirectoryBadgeSeverity(directory.dir)"
+        [value]="getCommentsDirectoryBadgeValue(directory.dir)"
         [badgeSize]="isMobile ? 'small' : 'large'"
       ></p-badge>
     </div>
     <p-checkbox
-      [binary]="true"
+      tooltipPosition="bottom"
+      size="large"
+      pTooltip="Zaznacz pliki"
+      showDelay="500"
       [ngModel]="isDirectoryChecked(directory.dir)"
       [indeterminate]="isDirectoryIndeterminate(directory.dir)"
       (onChange)="onDirectoryCheckboxChange(directory, $event)"
-      size="large"
-      pTooltip="Zaznacz pliki"
-      tooltipPosition="bottom"
+      [binary]="true"
     />
   </div>
 

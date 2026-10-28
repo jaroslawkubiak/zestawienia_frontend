@@ -13,7 +13,10 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
+import { pluralizePL } from '../../../../shared/helpers/pluralizePL';
 import { TAuthorType } from '../../../comments/types/authorType.type';
+import { IUnreadComments } from '../../../comments/types/IUnreadComments';
 import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
 import { EFileDirectory } from '../../types/file-directory.enum';
@@ -21,6 +24,9 @@ import { IDirWithShowOptions } from '../../types/IDirWithShowOptions';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { ISelectFilesFromDirectoryEvent } from '../../types/ISelectFilesFromDirectoryEvent';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
+import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { TBadgeSeverity } from '../../../settings/types/badgeSeverity.type';
+import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 
 @Component({
   selector: 'app-icons-view',
@@ -142,5 +148,45 @@ export class IconsViewComponent implements OnChanges {
 
   triggerShowComments(fileId: number) {
     this.showComments.emit(fileId);
+  }
+
+  countComments(dirName: string): number {
+    const filesCount = this.files.filter((file) => file.dir === dirName);
+    return filesCount.length;
+  }
+
+  getDirectoryHeader(dir: IDirWithShowOptions): string {
+    const filesCount = this.countFilesBadge(dir.dir);
+    const header = `${dir.dirLabel} - ${filesCount} ${pluralizePL(filesCount, 'plik', 'pliki', 'plików')}`;
+
+    return header;
+  }
+
+  getCommentsDirectoryBadgeSeverity(dirName: string): TBadgeSeverity {
+    return calcCommentsBadgeSeverity(this.sumUnreadComments(dirName));
+  }
+
+  getCommentsDirectoryBadgeValue(dirName: string): number {
+    return countCommentsBadgeValue(this.sumUnreadComments(dirName));
+  }
+
+  getCommentsDirectoryTooltipInfo(dirName: string): string {
+    return calcCommentsBadgeTooltip(this.sumUnreadComments(dirName));
+  }
+
+  sumUnreadComments(dirName: string): IUnreadComments {
+    const { unread, needsAttention, all } = this.files
+      .filter((file) => file.dir === dirName)
+      .reduce(
+        (total, file) => ({
+          unread: total.unread + file.newCommentsCount.unread,
+          needsAttention:
+            total.needsAttention + file.newCommentsCount.needsAttention,
+          all: total.all + file.newCommentsCount.all,
+        }),
+        { unread: 0, needsAttention: 0, all: 0 },
+      );
+
+    return { unread, needsAttention, all };
   }
 }
