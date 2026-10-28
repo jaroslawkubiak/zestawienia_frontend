@@ -23,14 +23,15 @@
         alt="Nowe zestawienie"
         pTooltip="Nowe zestawienie"
         tooltipPosition="bottom"
+        positionTop="5"
         (onClick)="addNew()"
       />
       <div class="status-wrapper">
         <p-checkbox
           inputId="showClosedSets"
+          binary="true"
           [(ngModel)]="showClosed"
           (onChange)="showClosedSets()"
-          binary="true"
         >
         </p-checkbox>
         <label
@@ -62,10 +63,11 @@
             pInputText
             type="text"
             class="search-input"
-            (input)="onGlobalFilter($event)"
             placeholder="Klient, inwestycja, adres, status"
             pTooltip="Filtruj zestawienia"
+            positionTop="5"
             tooltipPosition="bottom"
+            (input)="onGlobalFilter($event)"
           />
         </p-iconfield>
       </div>
@@ -115,6 +117,7 @@
               alt="Edytuj zestawienie"
               pTooltip="Edytuj zestawienie"
               tooltipPosition="bottom"
+              positionTop="5"
               (click)="editSet(set.id)"
             />
             <p-button
@@ -122,21 +125,27 @@
               icon="pi pi-trash"
               alt="Usuń Zestawienie"
               tooltipPosition="bottom"
+              positionTop="5"
               [pTooltip]="getDeleteSetTooltipInfo(set.id)"
               [disabled]="set.status !== statusesList.new"
               (click)="deleteSet(set.id)"
             />
             <div class="btn-comments-wrapper">
               <p-button
+                styleClass="files-button"
                 severity="contrast"
                 icon="pi pi-cloud"
                 tooltipPosition="bottom"
+                iconPos="right"
+                positionTop="10"
+                [label]="getFilesLengthLabel(set.id)"
                 [disabled]="set.files?.length === 0"
                 (click)="showAttachedFiles(set)"
                 [pTooltip]="getFilesTooltipInfo(set.id)"
               />
               <p-badge
                 class="nr-comments"
+                positionLeft="5"
                 *ngIf="getCommentsBadgeValue(set.id, 'files')"
                 [value]="getCommentsBadgeValue(set.id, 'files')"
                 [severity]="getCommentsBadgeSeverity(set.id, 'files')"
@@ -149,6 +158,7 @@
               alt="Prześlij pliki"
               pTooltip="Prześlij pliki"
               tooltipPosition="bottom"
+              positionTop="5"
               (click)="openSendFilesDialog(set.id, set.hash, set.name)"
             />
             <div class="btn-comments-wrapper">
@@ -158,11 +168,13 @@
                 alt="Zobacz komentarze"
                 pTooltip="Zobacz komentarze"
                 tooltipPosition="bottom"
+                positionTop="10"
                 [disabled]="set?.comments?.length === 0"
                 (click)="showAllComments(set.id)"
               />
               <p-badge
                 class="nr-comments"
+                positionLeft="5"
                 *ngIf="getCommentsBadgeValue(set.id, 'positions')"
                 [value]="getCommentsBadgeValue(set.id, 'positions')"
                 [severity]="getCommentsBadgeSeverity(set.id, 'positions')"

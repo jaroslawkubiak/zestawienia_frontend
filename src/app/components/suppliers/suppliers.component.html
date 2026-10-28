@@ -13,6 +13,7 @@
         alt="Dodaj nowego dostawcę"
         pTooltip="Dodaj nowego dostawcę"
         tooltipPosition="bottom"
+        positionTop="5"
         (onClick)="openNew()"
       />
       <p-button
@@ -24,6 +25,7 @@
         alt="Usuń zaznaczonych dostawców"
         pTooltip="Usuń zaznaczonych dostawców"
         tooltipPosition="bottom"
+        positionTop="5"
         (onClick)="deleteSelectedSupplier()"
         [disabled]="!selected || !selected.length"
       />
@@ -59,8 +61,9 @@
             type="text"
             class="search-input"
             pTooltip="Filtruj dostawców"
-            (input)="onGlobalFilter($event)"
+            positionLeft="5"
             placeholder="Firma, adres, imię, nazwisko, email, telefon"
+            (input)="onGlobalFilter($event)"
           />
         </p-iconfield>
       </div>
@@ -70,6 +73,7 @@
         <th style="width: 3rem">
           <p-tableHeaderCheckbox
             pTooltip="Zaznacz wszystkich"
+            positionTop="5"
             tooltipPosition="bottom"
           />
         </th>
@@ -104,9 +108,10 @@
       <tr (click)="editSupplier(supplier)" class="row">
         <td style="width: 3rem" (click)="$event.stopPropagation()">
           <p-tableCheckbox
-            [value]="supplier"
             pTooltip="Zaznacz dostawcę"
             tooltipPosition="bottom"
+            positionTop="5"
+            [value]="supplier"
             [disabled]="getSupplierPositionCount(supplier.id) !== 0"
           />
         </td>
@@ -118,7 +123,7 @@
             alt="Edytuj dostawcę"
             pTooltip="Edytuj dostawcę"
             tooltipPosition="bottom"
-            positionTop="5"
+            positionTop="10"
             (click)="editSupplier(supplier)"
           />
           <p-button
@@ -126,13 +131,13 @@
             icon="pi pi-trash"
             class="m-4"
             alt="Usuń dostawcę"
+            tooltipPosition="bottom"
+            positionTop="10"
             [pTooltip]="
               getSupplierPositionCount(supplier.id) !== 0
                 ? 'Dostawca widnieje w zestawieniach'
                 : 'Usuń dostawcę'
             "
-            tooltipPosition="bottom"
-            positionTop="5"
             [disabled]="getSupplierPositionCount(supplier.id) !== 0"
             (click)="deleteSupplier(supplier)"
           />
@@ -142,18 +147,20 @@
           pTooltip="Edytuj dostawcę"
           tooltipPosition="bottom"
           positionLeft="-90"
+          positionTop="5"
         >
           {{ supplier.company }}
         </td>
         <td
           style="min-width: 16rem"
+          tooltipPosition="bottom"
+          positionLeft="-100"
+          positionTop="5"
           [pTooltip]="
             supplier.address
               ? 'Kliknij, aby skopiować adres'
               : 'Edytuj dostawcę'
           "
-          tooltipPosition="bottom"
-          positionLeft="-100"
           (click)="handleCopy($event, supplier.address, 'Adres')"
         >
           {{ supplier.address }}
@@ -162,7 +169,8 @@
           style="min-width: 10rem"
           pTooltip="Edytuj dostawcę"
           tooltipPosition="bottom"
-          positionLeft="-60"
+          positionLeft="-30"
+          positionTop="5"
         >
           {{ supplier.firstName }}
         </td>
@@ -170,7 +178,8 @@
           style="min-width: 12rem"
           pTooltip="Edytuj dostawcę"
           tooltipPosition="bottom"
-          positionLeft="-60"
+          positionLeft="-30"
+          positionTop="5"
         >
           {{ supplier.lastName }}
         </td>
@@ -179,19 +188,21 @@
           pTooltip="Kliknij, aby skopiować email"
           tooltipPosition="bottom"
           positionLeft="-100"
+          positionTop="5"
           (click)="handleCopy($event, supplier.email, 'Email')"
         >
           {{ supplier.email }}
         </td>
         <td
           style="min-width: 10rem"
+          tooltipPosition="bottom"
+          positionLeft="-30"
+          positionTop="5"
           [pTooltip]="
             supplier.telephone
               ? 'Kliknij, aby skopiować telefon'
               : 'Edytuj dostawcę'
           "
-          tooltipPosition="bottom"
-          positionLeft="-60"
           (click)="handleCopy($event, supplier.telephone, 'Telefon')"
         >
           {{ supplier.telephone }}
