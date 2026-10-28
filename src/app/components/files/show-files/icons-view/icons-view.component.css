@@ -95,19 +95,6 @@
   color: var(--neutral-color-05);
 }
 
-/* .btn-comments-wrapper {
-  position: absolute;
-  top: 5px;
-  left: 15px;
-} */
-
-/* .comments-value-badge {
-  position: absolute;
-  top: -10px;
-  right: -5px;
-  cursor: auto;
-} */
-
 /* MOBILE  */
 @media (max-width: 768px) {
   .file-container {
