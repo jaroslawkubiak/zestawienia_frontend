@@ -5,6 +5,7 @@
     class="m-4"
     alt="Nowa pusta pozycja"
     pTooltip="Nowa pusta pozycja"
+    positionLeft="5"
     (click)="triggerAddEmptyPosition()"
   />
   <p-button
@@ -13,6 +14,7 @@
     class="m-4"
     alt="Klonuj pozycję"
     pTooltip="Klonuj pozycję"
+    positionLeft="5"
     (click)="triggerClonePosition()"
   />
   <p-button
@@ -21,24 +23,25 @@
     icon="pi pi-trash"
     alt="Usuń pozycję"
     pTooltip="Usuń pozycję"
+    positionLeft="5"
     (click)="triggerDeletePosition()"
   />
-  <div class="btn-comments-wrapper">
-    <p-button
-      severity="contrast"
-      icon="pi pi-comments"
-      class="m-4"
-      alt="Zobacz komentarze"
-      pTooltip="Zobacz komentarze"
-      (click)="triggerShowComments()"
-    />
-    <p-badge
-      *ngIf="getCommentsBadgeValue(positionId)"
-      [value]="getCommentsBadgeValue(positionId)"
-      [severity]="getCommentsBadgeSeverity(positionId)"
-      [pTooltip]="getCommentsBadgeTooltip(positionId)"
-      class="comments-value-badge"
-      badgeSize="large"
-    ></p-badge>
-  </div>
+  <p-button
+    severity="contrast"
+    icon="pi pi-comments"
+    class="m-4"
+    alt="Zobacz komentarze"
+    pTooltip="Zobacz komentarze"
+    positionLeft="5"
+    (click)="triggerShowComments()"
+  />
+  <p-badge
+    class="comments-value-badge"
+    badgeSize="large"
+    positionLeft="5"
+    *ngIf="getCommentsBadgeValue(positionId)"
+    [value]="getCommentsBadgeValue(positionId)"
+    [severity]="getCommentsBadgeSeverity(positionId)"
+    [pTooltip]="getCommentsBadgeTooltip(positionId)"
+  ></p-badge>
 </div>
