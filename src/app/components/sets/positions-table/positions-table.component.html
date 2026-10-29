@@ -29,6 +29,8 @@
             class="m-4"
             alt="Nowa pusta pozycja"
             pTooltip="Nowa pusta pozycja"
+            positionLeft="5"
+            positionTop="-5"
             (click)="addEmptyPosition(positionsFromBookmark.length)"
           />
         </th>
@@ -63,6 +65,7 @@
               class="m-4"
               alt="Przegiągnij, aby zmienić pozycję"
               pTooltip="Przegiągnij, aby zmienić pozycję"
+              positionLeft="5"
               pReorderableRowHandle
             />
             <app-action-btns
@@ -184,6 +187,9 @@
                 <!-- VIEW MODE -> type = image  -->
                 <div *ngSwitchCase="'image'" class="view-mode-image">
                   <app-image-clipboard-input
+                    pTooltip="Kliknij, aby wkleić obraz"
+                    tooltipPosition="bottom"
+                    positionTop="-50"
                     [setId]="+set.id"
                     [setHash]="set.hash"
                     [positionId]="position.id"
@@ -191,19 +197,21 @@
                   />
                   <div
                     class="show-image-wrapper flex-center"
-                    *ngIf="position[column.key]"
-                    (click)="onShowImageClick($event, position)"
                     pTooltip="Pokaż obraz"
                     tooltipPosition="bottom"
+                    positionTop="5"
+                    *ngIf="position[column.key]"
+                    (click)="onShowImageClick($event, position)"
                   >
                     <i class="pi pi-search-plus"></i>
                   </div>
                   <div
                     class="delete-image-wrapper flex-center"
-                    *ngIf="position[column.key]"
-                    (click)="onDeleteImage($event, i)"
                     pTooltip="Usuń obraz"
                     tooltipPosition="bottom"
+                    positionTop="5"
+                    *ngIf="position[column.key]"
+                    (click)="onDeleteImage($event, i)"
                   >
                     <i class="pi pi-trash"></i>
                   </div>
@@ -255,6 +263,8 @@
             class="m-4"
             alt="Nowa pusta pozycja"
             pTooltip="Nowa pusta pozycja"
+            positionLeft="5"
+            positionTop="-5"
             (click)="addEmptyPosition(positionsFromBookmark.length)"
           />
         </th>
