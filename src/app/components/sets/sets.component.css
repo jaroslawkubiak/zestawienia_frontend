@@ -83,7 +83,15 @@ tr {
   justify-content: center !important;
 }
 
+::ng-deep .files-button span {
+  font-size: 10px !important;
+}
+
 ::ng-deep .files-button .p-button {
   width: 24px !important;
   justify-content: center !important;
+}
+
+::ng-deep .p-button.p-component.p-button-icon-only.p-button-contrast span {
+  font-size: 10px !important;
 }
