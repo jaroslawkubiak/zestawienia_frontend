@@ -41,12 +41,10 @@
 /* thumbnails  */
 ::ng-deep .p-galleria-thumbnail-item {
   overflow: hidden !important;
-  border: 2px solid transparent !important;
   padding: 0 10px;
 }
 
 ::ng-deep .p-galleria-thumbnail-item:hover {
-  border: 2px solid var(--neutral-color-10) !important;
   border-radius: 5px;
 }
 
