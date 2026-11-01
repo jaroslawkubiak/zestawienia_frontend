@@ -6,31 +6,31 @@
     trackBy: trackByDir
   "
 >
-  <div class="directory-container">
+  <div class="directory-container flex-center">
     <div
-      class="directory-name-wrapper"
+      class="directory-header-wrapper"
       tooltipPosition="bottom"
       positionTop="5"
       showDelay="500"
+      [ngClass]="{ 'collapsed-label': !directory.show }"
       [class.first]="i === 0"
       (click)="toggleVisibility(directory.dir)"
       [pTooltip]="directory.show ? 'Zwiń' : 'Rozwiń'"
-      [ngClass]="{ 'collapsed-label': !directory.show }"
     >
       <i class="pi pi-folder-open"></i>
-      {{ getDirectoryHeader(directory) }}
+      <span class="directory-header">{{ getDirectoryHeader(directory) }}</span>
       <i class="pi pi-chevron-up" *ngIf="directory.show"></i>
       <i class="pi pi-chevron-down" *ngIf="!directory.show"></i>
-      <p-badge
-        class="badge-position"
-        positionLeft="5"
-        *ngIf="getCommentsDirectoryBadgeValue(directory.dir)"
-        [pTooltip]="getCommentsDirectoryTooltipInfo(directory.dir)"
-        [severity]="getCommentsDirectoryBadgeSeverity(directory.dir)"
-        [value]="getCommentsDirectoryBadgeValue(directory.dir)"
-        [badgeSize]="isMobile ? 'small' : 'large'"
-      ></p-badge>
     </div>
+    <p-badge
+      class="badge-position"
+      positionLeft="5"
+      *ngIf="getCommentsDirectoryBadgeValue(directory.dir)"
+      [pTooltip]="getCommentsDirectoryTooltipInfo(directory.dir)"
+      [severity]="getCommentsDirectoryBadgeSeverity(directory.dir)"
+      [value]="getCommentsDirectoryBadgeValue(directory.dir)"
+      [badgeSize]="isMobile ? 'small' : 'large'"
+    ></p-badge>
     <p-checkbox
       tooltipPosition="bottom"
       size="large"

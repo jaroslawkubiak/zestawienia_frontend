@@ -20,6 +20,7 @@
   opacity: 0;
   pointer-events: none;
   overflow: hidden;
+  padding-bottom: 0px;
 }
 
 .file-container {
@@ -51,33 +52,36 @@
 }
 
 .directory-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 12px;
+  width: 500px;
+  gap: 10px;
 }
 
-.directory-name-wrapper {
+.directory-header-wrapper {
+  display: grid;
+  grid-template-columns: 36px auto 36px;
+  width: 450px;
+  height: 50px;
   position: relative;
-  display: flex;
-  gap: 20px;
   padding: 4px 8px;
   align-items: center;
+  font-size: 2.4rem;
+  color: var(--accent-color-06);
+  cursor: pointer;
+}
+
+::ng-deep p-checkbox {
+  display: flex;
   justify-content: center;
+}
+
+.directory-header-wrapper i {
   font-size: 2.4rem;
   color: var(--accent-color-06);
   cursor: pointer;
 }
 
-.directory-name-wrapper i {
-  font-size: 2.4rem;
-  color: var(--accent-color-06);
-  cursor: pointer;
-}
-
-.directory-name-wrapper:hover i,
-.directory-name-wrapper:hover {
+.directory-header-wrapper:hover i,
+.directory-header-wrapper:hover {
   color: var(--accent-color-07);
 }
 
@@ -97,6 +101,16 @@
 
 /* MOBILE  */
 @media (max-width: 768px) {
+  .directory-container {
+    gap: 10px;
+    margin-top: 0;
+  }
+
+  .directory-container {
+    width: 400px;
+    gap: 10px;
+  }
+
   .file-container {
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
@@ -104,19 +118,20 @@
   }
 
   .show-file-directory-wrapper {
-    gap: 12px;
-    width: 100%;
-    padding-top: 12px;
+    gap: 2px;
+    padding-top: 2px;
   }
 
-  .directory-name-wrapper {
-    gap: 12px;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    font-size: 2rem;
+  .directory-header {
+    font-size: 1.8rem;
   }
 
-  .directory-name-wrapper i {
+  .directory-header-wrapper {
+    grid-template-columns: 20px auto 24px;
+    margin: 0;
+    gap: 6px;
+  }
+  .directory-header-wrapper i {
     font-size: 1.6rem;
     margin-right: 4px;
   }
