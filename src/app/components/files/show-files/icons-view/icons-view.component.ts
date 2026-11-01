@@ -13,20 +13,20 @@ import { BadgeModule } from 'primeng/badge';
 import { ButtonModule } from 'primeng/button';
 import { CheckboxModule } from 'primeng/checkbox';
 import { TooltipModule } from 'primeng/tooltip';
+import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { pluralizePL } from '../../../../shared/helpers/pluralizePL';
 import { TAuthorType } from '../../../comments/types/authorType.type';
 import { IUnreadComments } from '../../../comments/types/IUnreadComments';
 import { ImageGalleryComponent } from '../../../image-gallery/image-gallery.component';
 import { IGalleryList } from '../../../image-gallery/types/IGalleryList';
+import { TBadgeSeverity } from '../../../settings/types/badgeSeverity.type';
 import { EFileDirectory } from '../../types/file-directory.enum';
 import { IDirWithShowOptions } from '../../types/IDirWithShowOptions';
 import { IFileFullDetails } from '../../types/IFileFullDetails';
 import { ISelectFilesFromDirectoryEvent } from '../../types/ISelectFilesFromDirectoryEvent';
 import { FilePreviewComponent } from '../file-preview/file-preview.component';
-import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
-import { TBadgeSeverity } from '../../../settings/types/badgeSeverity.type';
-import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcCommentsBadgeTooltip';
 
 @Component({
   selector: 'app-icons-view',
@@ -39,7 +39,7 @@ import { calcCommentsBadgeTooltip } from '../../../../shared/helpers/calcComment
     CheckboxModule,
     BadgeModule,
     ImageGalleryComponent,
-  ],
+],
   templateUrl: './icons-view.component.html',
   styleUrl: './icons-view.component.css',
 })
@@ -124,9 +124,12 @@ export class IconsViewComponent implements OnChanges {
 
   openGalery(file: IFileFullDetails) {
     const clickedImageUrl = file.fullPath;
+    const fileDir = file.dir;
+
     if (!clickedImageUrl) return;
 
     const galleryImages: IGalleryList[] = this.files
+      .filter((file) => file.dir === fileDir)
       .filter((file) =>
         ['JPG', 'JPEG', 'PNG'].includes(file?.type?.toUpperCase()),
       )
