@@ -17,6 +17,9 @@ export class ImageGalleryComponent {
   @Input() activeIndex: number = 0;
   show: boolean = false;
   displayBasic: boolean = false;
+  showIndicators: boolean = true;
+  MAX_VALUE_TO_SHOW_INDICATORS = 78;
+  isMobile = window.innerWidth < 768;
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
@@ -38,5 +41,14 @@ export class ImageGalleryComponent {
     this.activeIndex = index;
     this.show = true;
     this.displayBasic = true;
+  }
+
+  getShowIndicators(): boolean {
+    const indicatorsVisible =
+      this.images.length <= this.MAX_VALUE_TO_SHOW_INDICATORS
+        ? this.showIndicators
+        : !this.showIndicators;
+
+    return this.isMobile ? false : indicatorsVisible;
   }
 }

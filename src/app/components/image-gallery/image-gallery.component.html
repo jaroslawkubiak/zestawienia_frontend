@@ -6,7 +6,7 @@
   [circular]="false"
   [fullScreen]="true"
   [showItemNavigators]="true"
-  [showIndicators]="true"
+  [showIndicators]="getShowIndicators()"
 >
   <ng-template #item let-item>
     <div class="preview-image-wrapper flex-center">
