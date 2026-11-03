@@ -9,7 +9,7 @@
   (showSendFilesWindow)="openSendFilesDialog()"
 />
 
-<p-menubar [model]="menuItems">
+<p-menubar [model]="menuItems" class="position-relative">
   <ng-template #item let-item let-root="root">
     <div class="flex-center">
       <a pRipple class="menu-item">
@@ -62,6 +62,7 @@
       </div>
     </div>
   </ng-template>
+  <div class="pdf-progress"><p-progressbar [value]="pdfProgress" *ngIf="pdfProgress !== 0"/></div>
 </p-menubar>
 
 <p-dialog

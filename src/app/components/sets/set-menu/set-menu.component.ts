@@ -14,6 +14,7 @@ import { MenuItem } from 'primeng/api';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
 import { MenubarModule } from 'primeng/menubar';
+import { ProgressBarModule } from 'primeng/progressbar';
 import { TooltipModule } from 'primeng/tooltip';
 import { NotificationService } from '../../../services/notification.service';
 import { PdfService } from '../../../services/pdf.service';
@@ -50,6 +51,7 @@ import { buildSetMenu } from './set-menu.config';
     TooltipModule,
     BadgeModule,
     SendEmailComponent,
+    ProgressBarModule,
   ],
   templateUrl: './set-menu.component.html',
   styleUrl: './set-menu.component.css',
@@ -82,6 +84,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   attachmentBadge: number = 0;
   clientHash = '';
   isGeneratingPdf = false;
+  pdfProgress = 0;
 
   constructor(
     private notificationService: NotificationService,
@@ -126,6 +129,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
         copyLink: (type, hash) => this.copyLink({ type, hash }),
         editHeader: () => this.editHeader(),
         generatePDF: () => this.generatePDF(),
+        pdfProgress: this.pdfProgress,
         showAttachedFiles: () => this.showAttachedFiles(),
         openSendFilesDialog: () => this.openSendFilesDialog(),
         getCommentsForPositionsBadgeSeverity: () =>
@@ -241,6 +245,10 @@ export class SetMenuComponent implements OnChanges, OnInit {
       const resultPdf = await this.pdfService.generatePDF(
         this.set,
         this.positions,
+        (progress) => {
+          this.pdfProgress = progress;
+          this.updateMenuItems();
+        },
       );
 
       this.updateAttachedFiles(resultPdf.files);
@@ -250,8 +258,11 @@ export class SetMenuComponent implements OnChanges, OnInit {
         'Nie udało się wygenerować PDF.\n' + error,
       );
     } finally {
-      this.isGeneratingPdf = false;
-      this.updateMenuItems();
+      setTimeout(() => {
+        this.isGeneratingPdf = false;
+        this.pdfProgress = 0;
+        this.updateMenuItems();
+      }, 500);
     }
   }
 

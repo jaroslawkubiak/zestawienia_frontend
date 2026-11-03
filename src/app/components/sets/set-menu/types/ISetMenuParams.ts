@@ -16,6 +16,7 @@ export interface ISetMenuParams {
   copyLink: (type: TEmailAudience, hash: string) => void;
   editHeader: () => void;
   generatePDF: () => void;
+  pdfProgress :number;
   showAttachedFiles: () => void;
   openSendFilesDialog: () => void;
   getCommentsForPositionsBadgeSeverity: () => string;

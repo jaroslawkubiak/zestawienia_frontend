@@ -12,6 +12,7 @@ export function buildSetMenu(
     emailsList,
     isEdited,
     isGeneratingPdf,
+    pdfProgress,
     clientHash,
     sendSetToClient,
     sendSetToSupplier,

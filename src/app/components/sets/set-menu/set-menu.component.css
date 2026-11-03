@@ -50,6 +50,17 @@
   cursor: pointer;
 }
 
+.pdf-progress {
+  position: absolute;
+  left: 0;
+  top: 40px;
+  width: 100%;
+}
+
+::ng-deep .p-progressbar {
+  border-radius: 0 !important;
+}
+
 .menu-label-content {
   display: flex;
   justify-content: center;
