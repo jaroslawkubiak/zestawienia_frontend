@@ -84,7 +84,17 @@ export class PdfService {
     this.robotoBoldBase64 = await responseBold.text();
   }
 
-  async generatePDF(set: ISet, positions: IPosition[]): Promise<any> {
+  async generatePDF(
+    set: ISet,
+    positions: IPosition[],
+    onProgress?: (progress: number) => void,
+  ): Promise<any> {
+    const reportProgress = (progress: number) => {
+      onProgress?.(Math.round(progress));
+    };
+
+    reportProgress(0);
+
     if (!this.robotoRegularBase64 || !this.robotoBoldBase64) {
       console.error('Czcionki jeszcze się nie załadowały!');
       return;
@@ -111,14 +121,6 @@ export class PdfService {
     const marginLeft = 5;
     const marginRight = 5;
     const availableWidth = this.pageWidth - marginLeft - marginRight;
-    // TODO
-    // this.columnStyles = this.visibleColumns.reduce(
-    //   (styles, col, index) => {
-    //     styles[index] = { cellWidth: col.pdfWidth || 'auto' };
-    //     return styles;
-    //   },
-    //   {} as { [key: number]: { cellWidth: number | 'auto' } },
-    // );
 
     // width sum of columns defined by pdfWidth
     const fixedWidthSum = this.visibleColumns
@@ -162,6 +164,7 @@ export class PdfService {
     const filteredBookmarks = set.bookmarks
       .filter((bookmark) => uniqueBookmarks.has(bookmark.id))
       .sort((a, b) => a.id - b.id);
+    reportProgress(5);
 
     if (this.drawSummaryPage) {
       // draw summary
@@ -186,7 +189,6 @@ export class PdfService {
       doc.setPage(1);
 
       // header summary
-      const summaryRowHeight = 40;
       this.drawSummaryTitle(doc, `Podsumowanie inwestycji ${set.name}`);
       const totalBrutto = summaryTotals.reduce(
         (acc, row) => acc + row.brutto,
@@ -202,8 +204,6 @@ export class PdfService {
         ]),
         ['', 'WARTOŚĆ CAŁKOWITA (brutto)', formatPLN(totalBrutto)],
       ];
-      const summaryTableYPos =
-        this.pageHeight - summaryRowHeight * (summaryBody.length + 1);
 
       // tabela summary
       autoTable(doc, {
@@ -283,6 +283,11 @@ export class PdfService {
 
       // get all image before creating PDF
       const imageMap = new Map<string, IImage>();
+      let processedImages = 0;
+      const totalImages = sortPositions.filter(
+        (position) => position.image !== null,
+      ).length;
+
       await Promise.all(
         sortPositions.map(async (row) => {
           if (!row.image) {
@@ -305,6 +310,14 @@ export class PdfService {
             });
           } catch (error) {
             console.error(`Błąd ładowania obrazu ${imageUrl}`, error);
+          } finally {
+            processedImages++;
+            const imageProgress = processedImages / totalImages;
+
+            const progress =
+              5 + ((index + imageProgress) / filteredBookmarks.length) * 75;
+
+            reportProgress(progress);
           }
         }),
       );
@@ -370,7 +383,7 @@ export class PdfService {
       autoTable(doc, {
         head: this.headers,
         body: data,
-        margin: { left: 5 },
+        margin: { left: 5, bottom: 40 },
         startY: 20,
         tableWidth: 'wrap',
         didParseCell: (data) => {
@@ -421,7 +434,7 @@ export class PdfService {
             data.cell.text = [''];
           }
 
-          // align cell to center
+          // align cells to center
           const centeredColumns = [
             'lp',
             'ilosc',
@@ -545,6 +558,7 @@ export class PdfService {
         doc.addPage();
       }
     }
+    reportProgress(85);
 
     // draw header and footer for every page
     const totalPages = doc.getNumberOfPages();
@@ -604,6 +618,7 @@ export class PdfService {
       this.colors.white,
       `Copyright @${new Date().getFullYear()} Żurawicki Design`,
     );
+    reportProgress(95);
 
     // openInNewCard
     // const pdfUrl = doc.output('bloburl');
@@ -624,6 +639,8 @@ export class PdfService {
         )
         .subscribe({
           next: (body) => {
+            reportProgress(100);
+
             this.notificationService.showNotification(
               'success',
               'Zestawienie w PDF zostało poprawnie zapisane na serwerze',
