@@ -47,7 +47,11 @@
             item.preview(); $event.stopPropagation(); $event.preventDefault()
           "
         >
-          <i class="pi pi-eye m-2" [pTooltip]="item.previewTooltip"></i>
+          <i
+            class="pi pi-eye m-2"
+            [pTooltip]="item.previewTooltip"
+            positionLeft="10"
+          ></i>
         </button>
 
         <button
@@ -57,12 +61,18 @@
             item.copy(); $event.stopPropagation(); $event.preventDefault()
           "
         >
-          <i class="pi pi-copy m-2" [pTooltip]="item.previewCopyTooltip"></i>
+          <i
+            class="pi pi-copy m-2"
+            [pTooltip]="item.previewCopyTooltip"
+            positionLeft="10"
+          ></i>
         </button>
       </div>
     </div>
   </ng-template>
-  <div class="pdf-progress"><p-progressbar [value]="pdfProgress" *ngIf="pdfProgress !== 0"/></div>
+  <div class="pdf-progress">
+    <p-progressbar [value]="pdfProgress" *ngIf="pdfProgress !== 0" />
+  </div>
 </p-menubar>
 
 <p-dialog
