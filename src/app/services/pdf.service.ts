@@ -111,7 +111,7 @@ export class PdfService {
     const marginLeft = 5;
     const marginRight = 5;
     const availableWidth = this.pageWidth - marginLeft - marginRight;
-    //TODO
+    // TODO
     // this.columnStyles = this.visibleColumns.reduce(
     //   (styles, col, index) => {
     //     styles[index] = { cellWidth: col.pdfWidth || 'auto' };
@@ -120,12 +120,12 @@ export class PdfService {
     //   {} as { [key: number]: { cellWidth: number | 'auto' } },
     // );
 
-    // suma szerokości kolumn zdefiniowanych przez pdfWidth
+    // width sum of columns defined by pdfWidth
     const fixedWidthSum = this.visibleColumns
       .filter((col) => col.pdfWidth)
       .reduce((sum, col) => sum + col.pdfWidth!, 0);
 
-    // ostatnia kolumna, która nie ma pdfWidth
+    // last column without pdfWidth
     const lastFlexibleColumnIndex = this.visibleColumns.findIndex(
       (col) => !col.pdfWidth,
     );
@@ -135,11 +135,11 @@ export class PdfService {
         if (col.pdfWidth) {
           styles[index] = { cellWidth: col.pdfWidth };
         } else if (index === lastFlexibleColumnIndex) {
-          // ta kolumna zajmuje resztę dostępnej szerokości
+          // this column take all remaining width
           styles[index] = { cellWidth: availableWidth - fixedWidthSum };
         } else {
-          // wszystkie inne kolumny bez pdfWidth traktujemy normalnie
-          styles[index] = { cellWidth: 30 }; // opcjonalnie, lub 'auto'
+          // every other columns without pdfWidth we treat it as normal
+          styles[index] = { cellWidth: 30 };
         }
         return styles;
       },
@@ -289,6 +289,7 @@ export class PdfService {
             return;
           }
 
+          // if position has thumbnail - use it
           const positionImage = row.thumbnail != '' ? row.thumbnail : row.image;
 
           const imageUrl = `${environment.FILES_URL}/sets/${set.id}/${set.hash}/positions/${row.id}/${positionImage}`;
@@ -585,7 +586,7 @@ export class PdfService {
       );
     }
 
-    // draw only footer for fisrt page
+    // draw only footer for first page
     doc.setPage(1);
     this.drawRectFull(
       doc,
