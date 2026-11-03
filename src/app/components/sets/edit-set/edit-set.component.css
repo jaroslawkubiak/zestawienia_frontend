@@ -10,7 +10,7 @@
   background-color: var(--accent-color-01);
   color: var(--accent-color-10);
   width: 100%;
-  padding: 8px 16px;
+  padding: 16px 24px;
 }
 
 .set-header-cell {
