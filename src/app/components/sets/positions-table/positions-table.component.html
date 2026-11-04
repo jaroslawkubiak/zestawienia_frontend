@@ -273,7 +273,7 @@
           class="position-footer"
           [innerHTML]="
             column.key === 'wartoscNetto' || column.key === 'wartoscBrutto'
-              ? (column?.value | number: '1.2-2') + ' PLN'
+              ? (column?.value ?? 0 | number: '1.2-2') + ' PLN'
               : ''
           "
           [ngClass]="column.classFooter"
