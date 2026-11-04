@@ -80,8 +80,12 @@
 ::ng-deep .btn-xl {
   font-size: 1.8rem !important;
   gap: 16px !important;
-  background-color: var(--accent-color-06);
-  height: 18px;
+  height: 26px;
+  background-color: var(--accent-color-08) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
 }
 
 .save-btn {
@@ -89,14 +93,6 @@
   top: 0;
   right: 0;
   z-index: 999;
-}
-
-.bookmarks {
-  position: relative;
-}
-
-::ng-deep .btn-xl {
-  background-color: var(--accent-color-08) !important;
 }
 
 ::ng-deep .btn-xl:hover {

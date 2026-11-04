@@ -2,7 +2,7 @@
 <div class="spinner" *ngIf="isLoading">
   <app-loading-spinner [size]="200"></app-loading-spinner>
 </div>
-<div *ngIf="!isLoading" class="set-container">
+<div *ngIf="!isLoading" class="set-container position-relative">
   <!-- set header menu -->
   <app-set-menu
     [allSuppliers]="allSuppliers"
@@ -16,6 +16,15 @@
     (showAllCommentsComponent)="showAllCommentsComponent()"
     (commentsUpdated)="commentsUpdated()"
   />
+  <div class="save-btn">
+    <p-button
+      label="Zapisz"
+      icon="pi pi-save"
+      size="large"
+      styleClass="btn-xl"
+      (click)="onSubmit()"
+    />
+  </div>
   <!-- set header  -->
   <div class="set-header-wrapper" *ngIf="set">
     <div class="set-header-cell">
@@ -43,16 +52,7 @@
       <div class="set-header-value">{{ set.updatedAt }}</div>
     </div>
   </div>
-  <p-tabs [value]="selectedBookmark" scrollable class="bookmarks">
-    <div class="save-btn">
-      <p-button
-        label="Zapisz"
-        icon="pi pi-save"
-        size="large"
-        styleClass="btn-xl"
-        (click)="onSubmit()"
-      />
-    </div>
+  <p-tabs [value]="selectedBookmark" scrollable>
     <p-tablist>
       @for (bookmark of set.bookmarks; track bookmark.id) {
         <p-tab
