@@ -13,6 +13,7 @@
   <div class="header-placeholder"></div>
   <div
     class="tab-list-background"
+    *ngIf="setVisibility.bookmarks.visible"
     [ngClass]="contentToLoad === 'set' ? '' : 'hidden'"
   ></div>
   <div class="header-background" [class.mobile-sticky]="isMobileSticky">
@@ -27,7 +28,7 @@
       <div class="mobile-menu-header">
         <div class="mobile-menu-actions">
           <!-- MOBILE SHOW ATTACHED FILES BTN -->
-          <div class="position-relative">
+          <div class="position-relative" *ngIf="setVisibility.files.visible">
             <i
               class="pi pi-cloud"
               (click)="showAttachedFiles(); toggleMobileMenu()"
@@ -64,7 +65,7 @@
       </div>
 
       <!-- MOBILE MENU BOOKMARKS -->
-      <ul class="mobile-menu-list">
+      <ul class="mobile-menu-list" *ngIf="setVisibility.bookmarks.visible">
         @for (bookmark of set.bookmarks; track bookmark.id) {
           <li (click)="loadContentForBookmark(bookmark.id); toggleMobileMenu()">
             {{ bookmark.name }}
@@ -90,6 +91,7 @@
         <div
           class="attachments-action-btn-wrapper"
           (click)="showAttachedFiles()"
+          *ngIf="setVisibility.files.visible"
         >
           <div class="action-btn-wrapper">
             <i class="pi pi-cloud"></i>
@@ -132,7 +134,10 @@
     </div>
   </div>
 
-  <div class="content" *ngIf="contentToLoad === 'set'">
+  <div
+    class="content"
+    *ngIf="contentToLoad === 'set' && setVisibility.bookmarks.visible"
+  >
     <p-tabs [value]="selectedBookmarkId" scrollable>
       <p-tablist>
         @for (bookmark of set.bookmarks; track bookmark.id) {

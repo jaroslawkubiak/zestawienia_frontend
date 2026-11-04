@@ -3,6 +3,7 @@ import { IComment } from '../../comments/types/IComment';
 import { IUnreadComments } from '../../comments/types/IUnreadComments';
 import { IFileFullDetails } from '../../files/types/IFileFullDetails';
 import { IAvatar } from '../../settings/avatars/types/IAvatarList';
+import { ISetVisibility } from './ISetVisibility';
 
 export interface ISet {
   id: number;
@@ -18,6 +19,7 @@ export interface ISet {
   lastActiveUserBookmark: {
     id: number;
   };
+  visibility: ISetVisibility;
   lastActiveClientBookmarkId: number;
   files?: IFileFullDetails[];
   comments?: IComment[];

@@ -31,6 +31,7 @@ import { IRemainingFiles } from '../../files/types/IRemainingFiles';
 import { IPosition } from '../../sets/positions-table/types/IPosition';
 import { SummaryComponent } from '../../sets/summary/summary.component';
 import { ISet } from '../../sets/types/ISet';
+import { ISetVisibility } from '../../sets/types/ISetVisibility';
 import { AvatarsComponent } from '../../settings/avatars/avatars.component';
 import { IAvatar } from '../../settings/avatars/types/IAvatarList';
 import { TBadgeSeverity } from '../../settings/types/badgeSeverity.type';
@@ -69,7 +70,7 @@ export class ForClientComponent implements OnInit {
   positionsWithComments: IPositionWithComments[] = [];
   comments: IComment[] = [];
   contentToLoad: ContentType = 'set';
-
+  setVisibility!: ISetVisibility;
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
@@ -110,6 +111,7 @@ export class ForClientComponent implements OnInit {
         next: (response) => {
           if (response?.valid) {
             this.set = response.set;
+            this.setVisibility = response.set.visibility;
             this.client = { ...response.set.clientId };
 
             this.modifyData(response.positions);
