@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../login/auth.service';
+import { IBookmarksWithTableColumns } from './types/IBookmarksWithTableColumns';
 
 @Injectable({
   providedIn: 'root',
@@ -31,9 +32,9 @@ export class BookmarksService {
     return throwError(() => new Error('Wystąpił błąd serwera.'));
   }
 
-  getBookmarks(): Observable<any[]> {
+  getBookmarks(): Observable<IBookmarksWithTableColumns[]> {
     return this.http
-      .get<any[]>(`${environment.API_URL}/bookmarks`, {
+      .get<IBookmarksWithTableColumns[]>(`${environment.API_URL}/bookmarks`, {
         headers: this.httpHeaders,
       })
       .pipe(catchError(this.handleError));
