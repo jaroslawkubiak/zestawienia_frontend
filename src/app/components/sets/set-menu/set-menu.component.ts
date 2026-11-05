@@ -64,7 +64,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
   @Input() selectedBookmarks!: IBookmarksWithTableColumns[];
   @Input() isEdited: boolean = false;
   @Input() showAllComments: boolean = false;
-  @Output() editStarted = new EventEmitter<void>();
+  @Output() setHeaderChange = new EventEmitter<ISetHeader>();
   @Output() updateBookmarks = new EventEmitter<void>();
   @Output() commentsUpdated = new EventEmitter<void>();
   @Output() showAllCommentsComponent = new EventEmitter<void>();
@@ -183,6 +183,7 @@ export class SetMenuComponent implements OnChanges, OnInit {
       address: this.set.address,
       selectedStatus: this.set.status,
       selectedBookmarks: this.selectedBookmarks,
+      setVisibility: this.set.visibility,
     };
     this.editHeaderDialog = true;
   }
@@ -210,15 +211,12 @@ export class SetMenuComponent implements OnChanges, OnInit {
     );
     this.updateBookmarks.emit();
 
-    this.set.name = headerData.name;
-    this.set.address = headerData.address;
-    this.set.status = headerData.selectedStatus;
-
     this.notificationService.showNotification(
       'info',
       'Nagłówek zestawienia został zmieniony',
     );
-    this.editStarted.emit();
+
+    this.setHeaderChange.emit(headerData);
   }
 
   // open send files dialog

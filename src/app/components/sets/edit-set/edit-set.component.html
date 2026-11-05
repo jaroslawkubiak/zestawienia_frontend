@@ -11,7 +11,7 @@
     [selectedBookmarks]="selectedBookmarks"
     [isEdited]="setIsDirty"
     [showAllComments]="showAllComments"
-    (editStarted)="isEdited(true)"
+    (setHeaderChange)="setHeaderChange($event)"
     (updateBookmarks)="updateBookmarks()"
     (showAllCommentsComponent)="showAllCommentsComponent()"
     (commentsUpdated)="commentsUpdated()"

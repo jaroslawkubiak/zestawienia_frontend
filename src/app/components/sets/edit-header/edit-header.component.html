@@ -18,9 +18,9 @@
         rows="5"
         pTextarea
         fluid
-        [(ngModel)]="address"
         name="address"
         id="address"
+        [(ngModel)]="address"
       ></textarea>
     </div>
     <div class="field">
@@ -37,24 +37,43 @@
     </div>
 
     <div class="field bookmarks-container">
+      <label for="bookmarks" class="label">Zakładki</label>
       @if (isLoading) {
         <app-loading-spinner [size]="100"></app-loading-spinner>
       } @else {
         <div *ngFor="let bookmark of allBookmarks" class="bookmarks-cell">
           <p-checkbox
-            name="bookmarks"
             size="large"
             class="bookmarks-checkbox"
-            [inputId]="bookmark.id.toString()"
+            [name]="'bookmark-' + bookmark.id"
+            [inputId]="'bookmark-' + bookmark.id"
             [value]="bookmark"
             [(ngModel)]="selectedBookmarks"
-          >
-          </p-checkbox>
-          <label [for]="bookmark.id.toString()" class="ml-2">
+          ></p-checkbox>
+
+          <label [for]="'bookmark-' + bookmark.id" class="ml-2">
             {{ bookmark.name }}
           </label>
         </div>
       }
+    </div>
+
+    <div class="field bookmarks-container">
+      <label class="label">Widoczność elementów dla klienta</label>
+      <div *ngFor="let show of setVisibility | keyvalue" class="bookmarks-cell">
+        <p-checkbox
+          size="large"
+          class="bookmarks-checkbox"
+          [name]="'visibility-' + show.key"
+          [inputId]="'visibility-' + show.key"
+          [binary]="true"
+          [(ngModel)]="show.value.visible"
+        ></p-checkbox>
+
+        <label [for]="'visibility-' + show.key" class="ml-2">
+          {{ show.value.label }}
+        </label>
+      </div>
     </div>
 
     <div class="actions">
@@ -63,15 +82,15 @@
         label="Anuluj"
         icon="pi pi-times"
         text
-        (click)="closeModal.emit()"
         size="large"
+        (click)="closeModal.emit()"
       />
       <p-button
         severity="contrast"
         label="Zapisz"
         icon="pi pi-check"
-        (click)="save()"
         size="large"
+        (click)="save()"
       />
     </div>
   </div>

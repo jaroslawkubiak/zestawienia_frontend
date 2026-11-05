@@ -12,6 +12,7 @@ import { BookmarksService } from '../../bookmarks/bookmarks.service';
 import { IBookmarksWithTableColumns } from '../../bookmarks/types/IBookmarksWithTableColumns';
 import { ISetHeader } from '../types/ISetHeader';
 import { ISetStatus } from '../types/ISetStatus';
+import { ISetVisibility } from '../types/ISetVisibility';
 import { SetStatus } from '../types/set-status.enum';
 
 @Component({
@@ -35,6 +36,7 @@ export class EditHeaderComponent implements OnInit {
   @Input() editHeader!: ISetHeader;
   name: string = '';
   address: string = '';
+  setVisibility!: ISetVisibility;
   selectedStatus: string = '';
   selectedBookmarks: IBookmarksWithTableColumns[] = [];
   allBookmarks: IBookmarksWithTableColumns[] = [];
@@ -55,6 +57,7 @@ export class EditHeaderComponent implements OnInit {
     this.address = this.editHeader.address;
     this.selectedStatus = this.editHeader.selectedStatus;
     this.selectedBookmarks = this.editHeader.selectedBookmarks;
+    this.setVisibility = this.editHeader.setVisibility;
   }
 
   getBookmarks() {
@@ -69,13 +72,14 @@ export class EditHeaderComponent implements OnInit {
       error: (err) => console.error('Error getting bookmarks ', err),
     });
   }
-  
+
   save() {
     const newHeader: ISetHeader = {
       name: this.name,
       address: this.address,
       selectedStatus: this.selectedStatus,
       selectedBookmarks: this.selectedBookmarks,
+      setVisibility: this.setVisibility,
     };
 
     this.setHeaderChange.emit(newHeader);

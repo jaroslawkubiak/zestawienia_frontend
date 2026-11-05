@@ -32,6 +32,7 @@ import { EMPTY_STATUS } from '../PositionStatusList';
 import { SetMenuComponent } from '../set-menu/set-menu.component';
 import { SummaryComponent } from '../summary/summary.component';
 import { ISet } from '../types/ISet';
+import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { EditSetService } from './edit-set.service';
 
@@ -155,6 +156,7 @@ export class EditSetComponent
       error: (err) => console.error('Error loading data', err),
     });
   }
+
   commentsUpdated() {
     this.loadData();
   }
@@ -347,6 +349,19 @@ export class EditSetComponent
     this.setIsDirty = state;
     this.setMenuComponent.updateMenuItems();
     this.cd.markForCheck();
+  }
+
+  setHeaderChange(headerData: ISetHeader) {
+    this.set = {
+      ...this.set,
+      name: headerData.name,
+      address: headerData.address,
+      status: headerData.selectedStatus,
+      visibility: headerData.setVisibility,
+    };
+
+    this.isEdited(true);
+    this.onSubmit(true);
   }
 
   // update comments for set
