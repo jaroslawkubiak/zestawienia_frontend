@@ -6,5 +6,5 @@ export interface ISetHeader {
   address: string;
   selectedStatus: string;
   selectedBookmarks: IBookmarksWithTableColumns[];
-  setVisibility: ISetVisibility;
+  setVisibility: ISetVisibility[];
 }

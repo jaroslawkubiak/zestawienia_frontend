@@ -60,18 +60,18 @@
 
     <div class="field bookmarks-container">
       <label class="label">Widoczność elementów dla klienta</label>
-      <div *ngFor="let show of setVisibility | keyvalue" class="bookmarks-cell">
+      <div *ngFor="let show of setVisibility " class="bookmarks-cell">
         <p-checkbox
           size="large"
           class="bookmarks-checkbox"
-          [name]="'visibility-' + show.key"
-          [inputId]="'visibility-' + show.key"
+          [name]="'visibility-' + show.property"
+          [inputId]="'visibility-' + show.property"
           [binary]="true"
-          [(ngModel)]="show.value.visible"
+          [(ngModel)]="show.visible"
         ></p-checkbox>
 
-        <label [for]="'visibility-' + show.key" class="ml-2">
-          {{ show.value.label }}
+        <label [for]="'visibility-' + show.property" class="ml-2">
+          {{ show.label }}
         </label>
       </div>
     </div>

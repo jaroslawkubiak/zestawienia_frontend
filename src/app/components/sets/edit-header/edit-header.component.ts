@@ -36,7 +36,7 @@ export class EditHeaderComponent implements OnInit {
   @Input() editHeader!: ISetHeader;
   name: string = '';
   address: string = '';
-  setVisibility!: ISetVisibility;
+  setVisibility!: ISetVisibility[];
   selectedStatus: string = '';
   selectedBookmarks: IBookmarksWithTableColumns[] = [];
   allBookmarks: IBookmarksWithTableColumns[] = [];

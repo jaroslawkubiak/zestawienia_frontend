@@ -70,7 +70,7 @@ export class ForClientComponent implements OnInit {
   positionsWithComments: IPositionWithComments[] = [];
   comments: IComment[] = [];
   contentToLoad: ContentType = 'set';
-  setVisibility!: ISetVisibility;
+  setVisibility!: ISetVisibility[];
   @ViewChild(ShowFilesComponent) dialogShowFilesComponent!: ShowFilesComponent;
   @ViewChild(SendFilesComponent) dialogSendFilesComponent!: SendFilesComponent;
 
@@ -311,6 +311,36 @@ export class ForClientComponent implements OnInit {
 
   getCommentsForFilesBadgeValue(): number {
     return countCommentsBadgeValue(this.set.newCommentsCountForFiles);
+  }
+
+  getShowAvatars(): boolean {
+    const showItem = this.setVisibility.find(
+      (item) => item.property === 'avatars',
+    );
+
+    if (!showItem) return true;
+
+    return showItem.visible;
+  }
+
+  getShowBookmarks(): boolean {
+    const showItem = this.setVisibility.find(
+      (item) => item.property === 'bookmarks',
+    );
+
+    if (!showItem) return true;
+
+    return showItem.visible;
+  }
+
+  getShowFiles(): boolean {
+    const showItem = this.setVisibility.find(
+      (item) => item.property === 'files',
+    );
+
+    if (!showItem) return true;
+
+    return showItem.visible;
   }
 
   toggleMobileMenu() {

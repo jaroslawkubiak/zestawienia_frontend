@@ -19,7 +19,7 @@ export interface ISet {
   lastActiveUserBookmark: {
     id: number;
   };
-  visibility: ISetVisibility;
+  visibility: ISetVisibility[];
   lastActiveClientBookmarkId: number;
   files?: IFileFullDetails[];
   comments?: IComment[];
