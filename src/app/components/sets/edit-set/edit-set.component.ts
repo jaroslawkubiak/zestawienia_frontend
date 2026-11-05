@@ -442,4 +442,9 @@ export class EditSetComponent
       this.changedPositions.set(item.id, item);
     });
   }
+
+  getVisibilityClass(): boolean {
+    const show = this.set.visibility.every((item) => item.visible);
+    return show;
+  }
 }

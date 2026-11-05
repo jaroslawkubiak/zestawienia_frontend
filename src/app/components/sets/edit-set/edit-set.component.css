@@ -39,6 +39,25 @@
   color: var(--neutral-color-09);
 }
 
+.set-header-value-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 20px;
+}
+
+.set-header-value-icon i {
+  font-size: 40px;
+}
+
+.visibility-all {
+  color: var(--accent-color-06);
+}
+
+.visibility-not-all {
+  color: var(--error-color);
+}
+
 ::ng-deep .p-tab {
   font-size: 1.4rem !important;
   background-color: var(--table-header-bg) !important;

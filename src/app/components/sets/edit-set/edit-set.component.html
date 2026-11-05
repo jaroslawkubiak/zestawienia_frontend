@@ -51,6 +51,17 @@
       <div class="set-header-title">Zaktualizowane</div>
       <div class="set-header-value">{{ set.updatedAt }}</div>
     </div>
+    <div class="set-header-cell">
+      <div class="set-header-title">Widoczność</div>
+      <div class="set-header-value-icon">
+        <i
+          class="pi pi-eye"
+          [ngClass]="
+            getVisibilityClass() ? 'visibility-all' : 'visibility-not-all'
+          "
+        ></i>
+      </div>
+    </div>
   </div>
   <p-tabs [value]="selectedBookmark" scrollable>
     <p-tablist>
