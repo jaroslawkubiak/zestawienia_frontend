@@ -52,6 +52,18 @@ tr {
   justify-content: space-between;
 }
 
+.visibility-icon-wrapper i {
+  font-size: 2rem;
+}
+
+.visibility-all {
+  color: var(--accent-color-06);
+}
+
+.visibility-not-all {
+  color: var(--error-color);
+}
+
 .btn-files {
   width: 100%;
   min-width: 0;

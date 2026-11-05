@@ -35,6 +35,7 @@ import { ISet } from '../types/ISet';
 import { ISetHeader } from '../types/ISetHeader';
 import { IUpdateSet } from '../types/IUpdateSet';
 import { EditSetService } from './edit-set.service';
+import { ISetVisibility } from '../types/ISetVisibility';
 
 @Component({
   selector: 'app-set',
@@ -446,5 +447,13 @@ export class EditSetComponent
   getVisibilityClass(): boolean {
     const show = this.set.visibility.every((item) => item.visible);
     return show;
+  }
+
+  getVisibilityTooltipInfo(visibility: ISetVisibility[]): string {
+    const show = visibility.every((item) => item.visible);
+
+    return show
+      ? 'Wszystkie elementy widoczne'
+      : 'Część elementów jest ukrytych';
   }
 }

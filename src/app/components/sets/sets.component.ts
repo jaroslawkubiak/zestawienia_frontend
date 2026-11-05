@@ -32,6 +32,7 @@ import { SetsService } from './sets.service';
 import { ISet } from './types/ISet';
 import { SetStatus } from './types/set-status.enum';
 import { pluralizePL } from '../../shared/helpers/pluralizePL';
+import { ISetVisibility } from './types/ISetVisibility';
 
 @Component({
   selector: 'app-sets',
@@ -278,5 +279,17 @@ export class SetsComponent implements OnInit {
     return currentSet.status !== this.statusesList.new
       ? 'Można usunąć tylko zestawienia ze statusem: Nowe'
       : 'Usuń Zestawienie';
+  }
+
+  getVisibilityClass(visibility: ISetVisibility[]): boolean {
+    return visibility.every((item) => item.visible);
+  }
+
+  getVisibilityTooltipInfo(visibility: ISetVisibility[]): string {
+    const show = visibility.every((item) => item.visible);
+
+    return show
+      ? 'Wszystkie elementy widoczne'
+      : 'Część elementów jest ukrytych';
   }
 }

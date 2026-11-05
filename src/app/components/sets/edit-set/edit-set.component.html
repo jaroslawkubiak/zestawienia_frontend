@@ -56,6 +56,9 @@
       <div class="set-header-value-icon">
         <i
           class="pi pi-eye"
+          tooltipPosition="bottom"
+          positionTop="5"
+          [pTooltip]="getVisibilityTooltipInfo(set.visibility)"
           [ngClass]="
             getVisibilityClass() ? 'visibility-all' : 'visibility-not-all'
           "
