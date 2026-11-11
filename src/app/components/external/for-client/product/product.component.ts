@@ -4,7 +4,7 @@ import {
   Component,
   EventEmitter,
   Input,
-  Output
+  Output,
 } from '@angular/core';
 import { BadgeModule } from 'primeng/badge';
 import { Dialog } from 'primeng/dialog';
@@ -12,6 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { environment } from '../../../../../environments/environment';
 import { NotificationService } from '../../../../services/notification.service';
 import { calcCommentsBadgeSeverity } from '../../../../shared/helpers/calcCommentsBadgeSeverity';
+import { commentsButtonLabel } from '../../../../shared/helpers/commentsButtonLabel';
 import { countCommentsBadgeValue } from '../../../../shared/helpers/countCommentsBadgeValue';
 import { CommentsComponent } from '../../../comments/comments.component';
 import { IComment } from '../../../comments/types/IComment';
@@ -88,11 +89,16 @@ export class ProductComponent {
 
     return `${this.FILES_URL}/sets/${this.set.id}/${this.set.hash}/positions/${position.id}/${fileName}`;
   }
+
   getCommentsBadgeSeverity(): TBadgeSeverity {
     return calcCommentsBadgeSeverity(this.position.newCommentsCount, 'light');
   }
 
   getCommentsBadgeValue(): number {
     return countCommentsBadgeValue(this.position.newCommentsCount);
+  }
+
+  getCommentsButtonLabel(): string {
+    return commentsButtonLabel(this.position.newCommentsCount.all);
   }
 }

@@ -76,65 +76,78 @@
   color: var(--neutral-color-09);
 }
 
-.product-supplier{
-  display: flex; 
+.product-supplier {
+  display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
+/* ACTION BUTTONS */
 .position-action-btn-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   width: 400px;
   gap: 12px;
-  padding: 0;
+  align-items: stretch;
 }
 
+.product-buttons {
+  gap: 20px;
+  padding: 12px 16px;
+  border-radius: 50px;
+  color: var(--neutral-color-01);
+  font-size: 1.4rem;
+  box-shadow: 0 0 10px -4px var(--neutral-color-09);
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.product-buttons i {
+  font-size: 1.8rem;
+  color: var(--neutral-color-01);
+}
+
+.comment-button {
+  background-color: var(--neutral-color-09);
+}
+
+.comment-button:hover {
+  background-color: var(--neutral-color-08);
+  box-shadow: 0 0 10px -4px var(--neutral-color-10);
+}
+
+.link-button {
+  background-color: var(--accent-color-06);
+}
+
+.link-button:hover {
+  background-color: var(--accent-color-08);
+  box-shadow: 0 0 10px -4px var(--accent-color-10);
+}
+
+.button-label {
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* COMMENTS ICON + BADGE */
 .comments-cell {
   position: relative;
-  width: 40px;
-  height: 40px;
+  display: inline-flex;
+  flex-shrink: 0;
 }
 
 .comments-badge-position {
   position: absolute;
-  top: -5px;
-  right: -16px;
-  cursor: auto;
-}
-
-.link-cell {
-  font-size: 2rem;
-  gap: 20px;
-  color: var(--neutral-color-02);
-  font-weight: 700;
-  transition: color 0.2s ease;
-}
-
-.link-cell i,
-.comments-cell i {
-  font-size: 3rem;
-  color: var(--neutral-color-02);
-  transition: color 0.2s ease;
-}
-
-.product-buttons {
-  width: 195px;
-  padding: 8px 4px;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--neutral-color-02);
-  gap: 20px;
-  transition: color 0.2s ease;
-
-  border-radius: 14px;
-  background-color: var(--neutral-color-09);
-  box-shadow: 0px 0px 10px -4px #c4c4c450;
-  cursor: pointer;
-}
-
-.product-buttons:hover {
-  box-shadow: 0px 0px 10px -4px #000000;
+  top: 0;
+  right: 0;
+  transform: translate(80%, -60%);
+  z-index: 2;
+  pointer-events: none;
 }
 
 .product-status {
@@ -234,40 +247,23 @@
     padding: 0 12px;
   }
 
-  .product-buttons {
-    font-size: 1.6rem;
-    border-radius: 10px;
-  }
-
-  .link-cell {
-    gap: 16px;
-    font-size: 1.6rem;
-  }
-
-  .link-cell i,
-  .comments-cell i {
-    font-size: 1.8rem;
-  }
-
-  .comments-cell {
-    width: 20px;
-    height: 20px;
-  }
-
   .status-wrapper {
     border-radius: 0px;
     padding: 8px;
   }
 
   .position-action-btn-container {
-    display: flex;
     width: 100%;
-    gap: 12px;
-    padding: 0;
+    gap: 8px;
   }
 
-  .comments-badge-position {
-    top: -5px;
-    right: -16px;
+  .product-buttons {
+    padding: 8px;
+    font-size: 1.2rem;
+  }
+
+  .product-buttons i,
+  .comments-cell i {
+    font-size: 1.6rem;
   }
 }

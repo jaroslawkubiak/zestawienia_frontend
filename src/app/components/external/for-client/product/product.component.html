@@ -3,50 +3,53 @@
   <div class="product-img-wrapper">
     <div class="product-img">
       <img
-        [src]="getImagePreviewUrl(position)"
         alt="image"
+        [src]="getImagePreviewUrl(position)"
         *ngIf="position['imageUrl']"
       />
       <i
         class="pi pi-image"
-        *ngIf="!getImagePreviewUrl(position)"
         pTooltip="Brak obrazu"
         tooltipPosition="bottom"
+        *ngIf="!getImagePreviewUrl(position)"
       ></i>
     </div>
     <!-- ACTION BUTTONS - COMMENTS AND PRODUCT LINK -->
     <div class="position-action-btn-container">
-      <!-- COMMENTS WRAPPER -->
+      <!-- COMMENTS BUTTON -->
       <div
-        class="product-buttons flex-center"
+        class="product-buttons comment-button flex-center"
+        tooltipPosition="bottom"
+        [pTooltip]="getCommentsButtonLabel()"
         (click)="showComments(position.id)"
       >
-        <div class="comments-cell flex-center">
+        <span class="comments-cell">
           <i class="pi pi-comments"></i>
           <p-badge
+            class="comments-badge-position"
             *ngIf="getCommentsBadgeValue()"
             [value]="getCommentsBadgeValue()"
             [severity]="getCommentsBadgeSeverity()"
-            class="comments-badge-position"
             [badgeSize]="isMobile ? 'small' : 'large'"
           ></p-badge>
-        </div>
-        Komentarze
+        </span>
+
+        <span class="button-label">{{ getCommentsButtonLabel() }}</span>
       </div>
-      <!-- PRODUCT LINK WRAPPER -->
-      <div
-        class="{{ position.link ? 'product-buttons flex-center' : '' }}"
-        pTooltip="Otwórz link do produktu"
-        tooltipPosition="bottom"
-        *ngIf="position.link"
-      >
+
+      <!-- PRODUCT LINK BUTTON -->
+      <div *ngIf="position.link">
         <a
-          href="{{ position.link }}"
-          class="link-cell flex-center"
+          class="product-buttons link-button flex-center"
+          pTooltip="Otwórz link do produktu"
+          tooltipPosition="bottom"
           target="_blank"
           rel="noopener noreferrer"
-          ><i class="pi pi-link"></i>Link</a
+          [href]="position.link"
         >
+          <i class="pi pi-link"></i>
+          <span class="button-label">Link do produktu</span>
+        </a>
       </div>
     </div>
   </div>
