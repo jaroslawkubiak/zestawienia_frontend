@@ -38,140 +38,155 @@
       </div>
 
       <!-- PRODUCT LINK BUTTON -->
-      <div *ngIf="position.link">
-        <a
-          class="product-buttons link-button flex-center"
-          pTooltip="Otwórz link do produktu"
-          tooltipPosition="bottom"
-          target="_blank"
-          rel="noopener noreferrer"
-          [href]="position.link"
-        >
-          <i class="pi pi-link"></i>
-          <span class="button-label">Link do produktu</span>
-        </a>
-      </div>
-    </div>
-  </div>
-  <!-- GROUP - PRODUKT PRODUCENT DOSTAWCA-->
-  <div class="product-details">
-    <!-- PRODUKT -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.produkt"
-    >
-      <div class="product-title">PRODUKT</div>
-      <div class="product-name">{{ position.produkt }}</div>
-    </div>
-    <!-- PRODUCENT -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.producent"
-    >
-      <div class="product-title">PRODUCENT</div>
-      <div class="product-name">{{ position.producent }}</div>
-    </div>
-    <!-- DOSTAWCA -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.supplierId"
-    >
-      <div class="product-title">DOSTAWCA</div>
-      <div class="product-name product-supplier" *ngIf="position.supplierId">
-        <p>{{ position.supplierId["company"] }}</p>
-        <p>{{ position.supplierId["email"] }}</p>
-        <p>{{ position.supplierId["telephone"] }}</p>
-      </div>
-    </div>
-  </div>
-  <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
-  <div class="product-details">
-    <!-- KOLEKCJA -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.kolekcja"
-    >
-      <div class="product-title">KOLEKCJA</div>
-      <div class="product-name">
-        {{ position.kolekcja }}
-      </div>
-    </div>
-    <!-- NR KATALOGOWY -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.nrKatalogowy"
-    >
-      <div class="product-title">NR KATALOGOWY</div>
-      <div class="product-name">
-        {{ position.nrKatalogowy }}
-      </div>
-    </div>
-    <!-- KOLOR -->
-    <div
-      class="product-group product-group-heigher"
-      *ngIf="!isMobile || position.kolor"
-    >
-      <div class="product-title">KOLOR</div>
-      <div class="product-name">
-        {{ position.kolor }}
-      </div>
-    </div>
-  </div>
-  <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO STATUS-->
-  <div
-    class="product-details product-price"
-    [style.margin-bottom]="isMobile && position.status.label ? '60px' : '0px'"
-  >
-    <!-- ILOŚĆ -->
-    <div
-      class="product-group product-group-price"
-      *ngIf="!isMobile || position.ilosc"
-    >
-      <div class="product-title">ILOŚĆ</div>
-      <div class="product-name">
-        {{ position.ilosc | number: "1.2-2" }}
-      </div>
-    </div>
-    <!-- CENA BRUTTO -->
-    <div
-      class="product-group product-group-price"
-      *ngIf="!isMobile || position.brutto"
-    >
-      <div class="product-title">CENA BRUTTO</div>
-      <div class="product-name">
-        {{
-          position.brutto ? (position.brutto | number: "1.2-2") + " PLN" : ""
-        }}
-      </div>
-    </div>
-    <!-- WARTOŚĆ BRUTTO -->
-    <div
-      class="product-group product-group-price"
-      *ngIf="!isMobile || position.wartoscBrutto"
-    >
-      <div class="product-title">WARTOŚĆ BRUTTO</div>
-      <div class="product-name">
-        {{
-          position.wartoscBrutto
-            ? (position.wartoscBrutto | number: "1.2-2") + " PLN"
-            : ""
-        }}
-      </div>
-    </div>
-    <!-- STATUS  -->
-    <div
-      class="product-group product-status"
-      *ngIf="position.status.label ? position.status.cssClass : ''"
-    >
-      <div
-        class="product-title"
-        [class]="!isMobile ? '' : position.status.cssClass"
+      <a
+        class="product-buttons link-button flex-center"
+        pTooltip="Otwórz link do produktu"
+        tooltipPosition="bottom"
+        target="_blank"
+        rel="noopener noreferrer"
+        *ngIf="position.link"
+        [href]="position.link"
       >
-        STATUS
+        <i class="pi pi-link"></i>
+        <span class="button-label">Link do produktu</span>
+      </a>
+    </div>
+  </div>
+  <div class="product-container">
+    <div class="product-details-container">
+      <!-- GROUP - PRODUKT PRODUCENT DOSTAWCA-->
+      <div class="product-details">
+        <!-- PRODUKT -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.produkt"
+        >
+          <div class="product-title">PRODUKT</div>
+          <div class="product-name">{{ position.produkt }}</div>
+        </div>
+        <!-- PRODUCENT -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.producent"
+        >
+          <div class="product-title">PRODUCENT</div>
+          <div class="product-name">{{ position.producent }}</div>
+        </div>
+        <!-- DOSTAWCA -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.supplierId"
+        >
+          <div class="product-title">DOSTAWCA</div>
+          <div
+            class="product-name product-supplier"
+            *ngIf="position.supplierId"
+          >
+            <p>{{ position.supplierId["company"] }}</p>
+            <p>{{ position.supplierId["email"] }}</p>
+            <p>{{ position.supplierId["telephone"] }}</p>
+          </div>
+        </div>
       </div>
-      <div class="product-name status-wrapper {{ position.status.cssClass }} ">
-        {{ position.status.label }}
+      <!-- GROUP - KOLEKCJA NR KATALOGOWY KOLOR-->
+      <div class="product-details">
+        <!-- KOLEKCJA -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.kolekcja"
+        >
+          <div class="product-title">KOLEKCJA</div>
+          <div class="product-name">
+            {{ position.kolekcja }}
+          </div>
+        </div>
+        <!-- NR KATALOGOWY -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.nrKatalogowy"
+        >
+          <div class="product-title">NR KATALOGOWY</div>
+          <div class="product-name">
+            {{ position.nrKatalogowy }}
+          </div>
+        </div>
+        <!-- KOLOR -->
+        <div
+          class="product-group product-group-heigher"
+          *ngIf="!isMobile || position.kolor"
+        >
+          <div class="product-title">KOLOR</div>
+          <div class="product-name">
+            {{ position.kolor }}
+          </div>
+        </div>
       </div>
+      <div class="product-order-notes" *ngIf="isMobile && position.uwagi">
+        <div class="product-title">UWAGI</div>
+        <div class="product-name">{{ position.uwagi }}</div>
+      </div>
+      <!-- GROUP - ILOŚĆ CENA BRUTTO WARTOŚĆ BRUTTO STATUS-->
+      <div class="product-details product-price">
+        <!-- ILOŚĆ -->
+        <div
+          class="product-group product-group-price"
+          *ngIf="!isMobile || position.ilosc"
+        >
+          <div class="product-title">ILOŚĆ</div>
+          <div class="product-name">
+            {{ position.ilosc | number: "1.2-2" }}
+          </div>
+        </div>
+        <!-- CENA BRUTTO -->
+        <div
+          class="product-group product-group-price"
+          *ngIf="!isMobile || position.brutto"
+        >
+          <div class="product-title">CENA BRUTTO</div>
+          <div class="product-name">
+            {{
+              position.brutto
+                ? (position.brutto | number: "1.2-2") + " PLN"
+                : ""
+            }}
+          </div>
+        </div>
+        <!-- WARTOŚĆ BRUTTO -->
+        <div
+          class="product-group product-group-price"
+          *ngIf="!isMobile || position.wartoscBrutto"
+        >
+          <div class="product-title">WARTOŚĆ BRUTTO</div>
+          <div class="product-name">
+            {{
+              position.wartoscBrutto
+                ? (position.wartoscBrutto | number: "1.2-2") + " PLN"
+                : ""
+            }}
+          </div>
+        </div>
+        <!-- STATUS  -->
+        <div
+          class="product-group product-status"
+          *ngIf="position.status.label ? position.status.cssClass : ''"
+        >
+          <div
+            class="product-title"
+            [class]="!isMobile ? '' : position.status.cssClass"
+          >
+            STATUS
+          </div>
+          <div
+            class="product-name status-wrapper {{ position.status.cssClass }} "
+          >
+            {{ position.status.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="product-order-notes" *ngIf="!isMobile">
+      <div class="product-title">UWAGI</div>
+      <div class="product-name">{{ position.uwagi }}</div>
     </div>
   </div>
 </div>
